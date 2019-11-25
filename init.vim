@@ -8,7 +8,6 @@ set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
 source ~/.vimrc
 
-
 "======================================================================
 " Nvim Plugins: Dein Plugin Manager
 "======================================================================
@@ -1019,8 +1018,8 @@ endfunction
 " Comfortable Motion Config
 "--------------------------------------------------
 
-let g:comfortable_motion_interval = 700.0/60  " Default: 1000.0/60
-let g:comfortable_motion_friction = 120.0       " Default: 80
+let g:comfortable_motion_interval = 1000.0/60  " Default: 1000.0/60
+let g:comfortable_motion_friction = 200.0       " Default: 80
 let g:comfortable_motion_air_drag = 1.0        " Default: 2.0
 
 " Scrolling configuration proportional to the window height

@@ -6,11 +6,11 @@ alias docs='cd /mnt/c/Users/Mark/Documents; clear'
 alias trade='cd /mnt/c/Users/Mark/OneDrive/Trading/Stocks; clear'
 alias down='cd /mnt/c/Users/Mark/Downloads; clear'
 
-alias work='cd /mnt/c/Users/Mark/Programming; clear'
-alias workgit='cd /mnt/c/Users/Mark/Programming/GitHub\ Repositories; clear'
+alias work='cd ~/Work; clear'
+alias workgit='cd ~/Work/GitHub\ Repositories; clear'
 
-alias res='cd /mnt/c/Users/Mark/Programming/Resources; clear'
-alias reslinux='cd /mnt/c/Users/Mark/Programming/Resources/Windows\ System/Linux/WSL; clear'
+alias res='cd ~/Work/Resources; clear'
+alias reslinux='cd ~/Work/Resources/WSL; clear'
 
 # Secure files Aliases
 alias seclock='cd /mnt/c/Users/Mark/Documents; cmd.exe /c ./Folder\ Lock.bat; clear'
@@ -65,4 +65,7 @@ alias pwdp='cd "`vs clipboard`"; clear'
 
 # Remapping native commands with newer programs
 alias ls='exa'
+
+# Updating dotfiles Repo
+alias dotupdate='cd ~/Work/GitHub\ Repositories/dotfiles;yes | cp -i ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile .;git add .;clear; git status'
 
