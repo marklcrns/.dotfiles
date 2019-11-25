@@ -26,9 +26,11 @@ call plug#end()
 filetype plugin indent on
 syntax enable
 
+set viminfo='100,n$HOME/.vim/files/info/viminfo'
+
 " Navigation
 set number
-set relativenumber
+"set relativenumber
 set hlsearch incsearch
 set mouse=a
 
@@ -60,10 +62,8 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab smarttab
 
-" Enable system clipboard copy and pasting
-if has('clipboard')
-	set clipboard& clipboard+=unnamedplus
-endif
+" enable system clipboard
+set clipboard+=unnamedplus
 
 " Panes and Windows
 set splitright
@@ -197,9 +197,6 @@ nnoremap gk k
 
 " Make Y more consistent with C and D
 nnoremap Y y$
-
-" Insert newline
-inoremap <C-O> <Esc>o
 
 " Remove spaces at the end of lines
 nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
