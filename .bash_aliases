@@ -1,4 +1,4 @@
-# Addition aliases for .basrc and .zshrc
+# Additional aliases for .basrc and .zshrc
 
 # Directories Aliases
 alias home='cd /mnt/c/Users/Mark; clear'
@@ -40,6 +40,7 @@ alias gist='open https://gist.github.com; clear'
 
 # live browser server
 alias live='http-server'
+alias browsync='browser-sync start --server --files "*/**"'
 
 # Flask
 alias flask='FLASK_APP=app.py FLASK_DEBUG=1 python -m flask run --port 8080'

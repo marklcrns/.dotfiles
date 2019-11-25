@@ -39,7 +39,7 @@ export TLDR_CODE='red'
 export TLDR_PARAM='blue'
 
 # WSL 2 X Server Issue workaround
-export DISPLAY=$(awk '/nameserver/ {print $2}' /etc/resolv.conf):0.0
+export DISPLAY=$(awk '/nameserver/ {print $2}' /etc/resolv.conf):0
 
 # truncate command line prompt user
 DEFAULT_USER=`whoami`

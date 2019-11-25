@@ -37,11 +37,11 @@ if dein#load_state('/home/marklcrns/.cache/dein')
 
   " Language Plugins
   call dein#add('sheerun/vim-polyglot')
-  "call dein#add('turbio/bracey.vim')
   call dein#add('iamcco/markdown-preview.nvim',
     \ {'on_ft': ['markdown', 'pandoc.markdown', 'rmd'],
     \ 'build': 'cd app & npm install' })
   call dein#add('othree/html5.vim')
+  "call dein#add('turbio/bracey.vim')
 
   " Utilities
   call dein#add('dhruvasagar/vim-zoom')
@@ -78,6 +78,7 @@ if dein#load_state('/home/marklcrns/.cache/dein')
   call dein#add('tpope/vim-sleuth')
   call dein#add('jiangmiao/auto-pairs')
   call dein#add('junegunn/vim-easy-align')
+  call dein#add('Yggdroot/indentLine')
 
   " Editor Navigation
   call dein#add('easymotion/vim-easymotion')
@@ -132,14 +133,14 @@ endif
 " Plugins Configurations:
 "======================================================================
 
-"--------------------------------------------------
-" CoC Config
-"--------------------------------------------------
-" Resources:
-" https://www.narga.net/how-to-set-up-code-completion-for-vim/
-" https://www.youtube.com/watch?v=gnupOrSEikQ&t=266s
-" https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
-" https://github.com/neoclide/coc.nvim/wiki
+""--------------------------------------------------
+"" CoC Config
+""--------------------------------------------------
+"" Resources:
+"" https://www.narga.net/how-to-set-up-code-completion-for-vim/
+"" https://www.youtube.com/watch?v=gnupOrSEikQ&t=266s
+"" https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
+"" https://github.com/neoclide/coc.nvim/wiki
 
 let g:coc_global_extensions = [
   \ 'coc-json',
@@ -149,8 +150,8 @@ let g:coc_global_extensions = [
   \ 'coc-emmet',
   \ 'coc-html',
   \ 'coc-tsserver',
-  \ 'coc-css',
   \ 'coc-stylelint',
+  \ 'coc-css',
   \ 'coc-python',
   \ 'coc-markdownlint',
   \ 'coc-highlight',
@@ -158,6 +159,7 @@ let g:coc_global_extensions = [
   \ 'coc-yank',
   \ 'coc-git'
   \ ]
+
 
 " if hidden is not set, TextEdit might fail.
 set hidden
@@ -1035,18 +1037,18 @@ nnoremap <silent> <C-b> :call comfortable_motion#flick(g:comfortable_motion_impu
 "--------------------------------------------------
 
 " conservative deceleration
-let g:accelerated_jk_enable_deceleration = 1
+"let g:accelerated_jk_enable_deceleration = 1
 
 " if default key-repeat interval check(150 ms) is too short
-let g:accelerated_jk_acceleration_limit = 250
+"let g:accelerated_jk_acceleration_limit = 250
 
 " Time-driven acceleration
-"nmap j <Plug>(accelerated_jk_gj)
-"nmap k <Plug>(accelerated_jk_gk)
+nmap j <Plug>(accelerated_jk_gj)
+nmap k <Plug>(accelerated_jk_gk)
 
 " Position-driven acceleration
-nmap j <Plug>(accelerated_jk_gj_position)
-nmap k <Plug>(accelerated_jk_gk_position)
+"nmap j <Plug>(accelerated_jk_gj_position)
+"nmap k <Plug>(accelerated_jk_gk_position)
 
 "--------------------------------------------------
 " Easy Align Config
@@ -1057,6 +1059,15 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
+"--------------------------------------------------
+" IndentLine Config
+"--------------------------------------------------
+
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+
+" Colors
+let g:indentLine_color_term = 239
 
 "--------------------------------------------------
 " Goyo Config
@@ -1185,8 +1196,9 @@ let g:VimuxOrientation = "v"    " Horizontal (defailt: v)
 
 let g:bracey_refresh_on_save=1
 let g:bracey_auto_start_browser=1
-let g:bracey_browser_command='chrome'
-let g:bracey_server_port=5050
+"let g:bracey_browser_command='chrome'
+let g:bracey_server_port=8080
+"let g:bracey_server_path='https://localhost'
 auto FileType html,css,javascript map <leader>bo :Bracey<CR>
 auto FileType html,css,javascript map <leader>bs :BraceyStop<CR>
 auto FileType html,css,javascript map <leader>br :BraceyReload<CR>

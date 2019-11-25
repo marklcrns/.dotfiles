@@ -1,6 +1,8 @@
 {
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "html",
     "markdown",
     "javascript",
     "typescript",
@@ -76,7 +78,7 @@
   "prettier.statusItemText": "ⓟ ",
   "prettier.eslintIntegration": true,
   "prettier.tslintIntegration": true,
-  "prettier.stylelintIntegration": true,
+  "prettier.stylelintIntegration": false,
 
   "eslint.filetypes": ["javascript", "javascript.jsx", "javascriptreact"],
   "eslint.autoFix": true,
