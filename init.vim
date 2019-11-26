@@ -77,6 +77,7 @@ if dein#load_state('/home/marklcrns/.cache/dein')
   call dein#add('tpope/vim-repeat')
   call dein#add('tpope/vim-sleuth')
   call dein#add('jiangmiao/auto-pairs')
+  call dein#add('kien/rainbow_parentheses.vim')
   call dein#add('junegunn/vim-easy-align')
   call dein#add('Yggdroot/indentLine')
 
@@ -1020,8 +1021,8 @@ endfunction
 " Comfortable Motion Config
 "--------------------------------------------------
 
-let g:comfortable_motion_interval = 1000.0/60  " Default: 1000.0/60
-let g:comfortable_motion_friction = 200.0       " Default: 80
+let g:comfortable_motion_interval = 1000.0/80  " Default: 1000.0/60
+let g:comfortable_motion_friction = 180.0       " Default: 80
 let g:comfortable_motion_air_drag = 1.0        " Default: 2.0
 
 " Scrolling configuration proportional to the window height
@@ -1037,18 +1038,18 @@ nnoremap <silent> <C-b> :call comfortable_motion#flick(g:comfortable_motion_impu
 "--------------------------------------------------
 
 " conservative deceleration
-"let g:accelerated_jk_enable_deceleration = 1
+let g:accelerated_jk_enable_deceleration = 1
 
 " if default key-repeat interval check(150 ms) is too short
-"let g:accelerated_jk_acceleration_limit = 250
+let g:accelerated_jk_acceleration_limit = 250
 
 " Time-driven acceleration
-nmap j <Plug>(accelerated_jk_gj)
-nmap k <Plug>(accelerated_jk_gk)
+"nmap j <Plug>(accelerated_jk_gj)
+"nmap k <Plug>(accelerated_jk_gk)
 
 " Position-driven acceleration
-"nmap j <Plug>(accelerated_jk_gj_position)
-"nmap k <Plug>(accelerated_jk_gk_position)
+nmap j <Plug>(accelerated_jk_gj_position)
+nmap k <Plug>(accelerated_jk_gk_position)
 
 "--------------------------------------------------
 " Easy Align Config
@@ -1068,6 +1069,37 @@ let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
 " Colors
 let g:indentLine_color_term = 239
+
+"--------------------------------------------------
+" Rainbow Parentheses
+"--------------------------------------------------
+
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+
+let g:rbpt_max = 16
+
+" Always on
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
 
 "--------------------------------------------------
 " Goyo Config
@@ -1194,8 +1226,9 @@ let g:VimuxOrientation = "v"    " Horizontal (defailt: v)
 " NOTE: Plugin is installed in .vimrc using Vim-plug plugin manager.
 "	Dein plugin manager not working
 
-let g:bracey_refresh_on_save=1
-let g:bracey_auto_start_browser=1
+let g:bracey_refresh_on_save= 1
+let g:bracey_eval_on_save = 1         " Re-evaluate JavaScript on save
+let g:bracey_auto_start_browser= 1
 "let g:bracey_browser_command='chrome'
 let g:bracey_server_port=8080
 "let g:bracey_server_path='https://localhost'
@@ -1344,9 +1377,10 @@ let g:mkdp_markdown_css = "/home/marklcrns/.local/lib/github-markdown-css/github
 " Easy motion Config
 "--------------------------------------------------
 
-let g:EasyMotion_do_mapping = 0
+map <localleader> <Plug>(easymotion-prefix)
+let g:EasyMotion_do_mapping = 1
 let g:EasyMotion_prompt = 'Jump to → '
-let g:EasyMotion_keys = 'fjdkswbeoavn'
+let g:EasyMotion_keys = 'hklyuiopnm,qwertzxcvbasdgjf;'
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_use_smartsign_us = 1
 
@@ -1358,6 +1392,10 @@ nnoremap <silent> <leader>m :MundoToggle<CR>
 
 set undofile
 set undodir=~/.vim/undo
+
+let g:mundo_width = 30
+let g:mundo_preview_height = 15
+let g:mundo_right = 0
 
 "--------------------------------------------------
 " Vista Config
