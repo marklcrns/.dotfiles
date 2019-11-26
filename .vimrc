@@ -128,7 +128,7 @@ runtime! macros/matchit.vim " enabled awesome match abilities like HTML tag matc
 "======================================================================
 
 let mapleader = '\'      " See :help expr-string for syntax docs
-let maplocalleader = '\'
+let maplocalleader = ';'
 
 " Remap f1 to fzf helptags instead of default help
 map <f1> :Helptags<CR>
@@ -182,12 +182,11 @@ vnoremap <silent> < <<cr>gv
 " or that are readonly, bring up a confirm prompt
 nnoremap <leader>W :confirm wqall<CR>
 " quit all without saving
-nnoremap <leader>Q :confirm qall<CR>
+nnoremap <leader>Q :confirm qall!<CR>
 
 " Write buffer (save)
-noremap <Leader>w :w<CR>
 imap <C-S> <esc>:w<CR>
-imap <C-Q> <esc>:wq<CR>
+nnoremap <C-Q> <esc>:wq<CR>
 
 " Seamlessly treat visual lines as actual lines when moving around.
 noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
@@ -257,7 +256,7 @@ map <Leader>ev :tabnew $MYVIMRC<CR>
 map <Leader>sv :source $MYVIMRC<CR>
 
 " Clear search highlights.
-map <Leader><Space> :let @/=''<CR>
+map <Leader><Leader> :let @/=''<CR>
 
 " Toggle spell check.
 map <leader><F3> :setlocal spell!<CR>
@@ -305,7 +304,7 @@ inoremap <C-w> <C-[>diwa
 inoremap <C-h> <BS>
 inoremap <C-d> <Del>
 inoremap <C-k> <ESC>d$a
-inoremap <C-u> <C-G>u<C-U>
+inoremap <C-u> <C>u<C-U>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 inoremap <C-a> <Home>
