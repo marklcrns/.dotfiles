@@ -79,7 +79,7 @@ if dein#load_state('/home/marklcrns/.cache/dein')
   call dein#add('jiangmiao/auto-pairs')
   call dein#add('kien/rainbow_parentheses.vim')
   call dein#add('junegunn/vim-easy-align')
-  call dein#add('Yggdroot/indentLine')
+  call dein#add('nathanaelkane/vim-indent-guides')
 
   " Editor Navigation
   call dein#add('easymotion/vim-easymotion')
@@ -329,7 +329,7 @@ nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
 " NOTES: When uninstalled, set back to showmode to see status line modes
 set noshowmode
 let g:lightline = {
-  \ 'colorscheme': 'jellybeans',
+  \ 'colorscheme': 'powerline',
   \ 'component': {
   \   'lineinfo': '%3l:%-2v',
   \ },
@@ -410,9 +410,9 @@ let g:easygit_enable_command = 1
 " NerdTree Config
 "--------------------------------------------------
 
-let g:NERDTreeShowHidden=1
-let g:NERDTreeAutoDeleteBuffer=1
-let g:NERDTreeQuitOnOpen=1
+let g:NERDTreeShowHidden= 1
+let g:NERDTreeAutoDeleteBuffer= 1
+let g:NERDTreeQuitOnOpen= 1
 let g:NERDTreeHijackNetrw = 0
 let g:NERDTreeShowBookmarks = 1
 let g:NERDTreeCascadeOpenSingleChildDir = 1
@@ -1062,13 +1062,16 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 "--------------------------------------------------
-" IndentLine Config
+" Indent Guides Config
 "--------------------------------------------------
 
-let g:indentLine_char_list = ['|', '¦', '┆', '┊']
-
-" Colors
-let g:indentLine_color_term = 239
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_exclude_filetypes =
+    \ ['help', 'terminal', 'defx', 'denite', 'nerdtree',
+    \ 'startify', 'tagbar', 'vista_kind', 'vista']
+let g:indent_guides_color_change_percent = 10
 
 "--------------------------------------------------
 " Rainbow Parentheses
@@ -1230,7 +1233,7 @@ let g:bracey_refresh_on_save= 1
 let g:bracey_eval_on_save = 1         " Re-evaluate JavaScript on save
 let g:bracey_auto_start_browser= 1
 "let g:bracey_browser_command='chrome'
-let g:bracey_server_port=8080
+let g:bracey_server_port=5050
 "let g:bracey_server_path='https://localhost'
 auto FileType html,css,javascript map <leader>bo :Bracey<CR>
 auto FileType html,css,javascript map <leader>bs :BraceyStop<CR>
@@ -1239,12 +1242,91 @@ auto FileType html,css,javascript map <leader>br :BraceyReload<CR>
 "--------------------------------------------------
 " Gutentags Config
 "--------------------------------------------------
+" Gutentags Guide: https://www.reddit.com/r/vim/comments/d77t6j/guide_how_to_setup_ctags_with_gutentags_properly/
 
+let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
+let g:gutentags_project_root = ['.root', '.git', '.svn', '.hg',
+  \ '.project', 'package.json']
 let g:gutentags_generate_on_write = 1
 let g:gutentags_generate_on_missing = 1
-let g:gutentags_generate_on_new = 0
+let g:gutentags_generate_on_new = 1
+let g:gutentags_generate_on_empty_buffer = 0
 let g:gutentags_exclude_filetypes = ['defx', 'denite', 'vista']
-let g:gutentags_ctags_exclude = ["*.min.js", "*.min.css", "build", "vendor", ".git", "node_modules"]
+"let g:gutentags_ctags_extra_args = [
+      "\ '--tag-relative=yes',
+      "\ '--fields=+ailmnS',
+      "\ ]
+
+let g:gutentags_ctags_extra_args = ['--output-format=e-ctags']
+
+"let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx',
+  "\ '*.css', '*.less', '*.sass', '*.go', '*.dart', 'node_modules',
+  "\ 'dist', 'vendor']
+
+let g:gutentags_ctags_exclude = [
+      \ '*.git', '*.svg', '*.hg',
+      \ '*/tests/*',
+      \ 'build',
+      \ 'dist',
+      \ '*sites/*/files/*',
+      \ 'bin',
+      \ 'node_modules',
+      \ 'bower_components',
+      \ 'cache',
+      \ 'compiled',
+      \ 'docs',
+      \ 'example',
+      \ 'bundle',
+      \ 'vendor',
+      \ '*.md',
+      \ '*-lock.json',
+      \ '*.lock',
+      \ '*bundle*.js',
+      \ '*build*.js',
+      \ '.*rc*',
+      \ '*.json',
+      \ '*.min.*',
+      \ '*.map',
+      \ '*.bak',
+      \ '*.zip',
+      \ '*.pyc',
+      \ '*.class',
+      \ '*.sln',
+      \ '*.Master',
+      \ '*.csproj',
+      \ '*.tmp',
+      \ '*.csproj.user',
+      \ '*.cache',
+      \ '*.pdb',
+      \ 'tags*',
+      \ 'cscope.*',
+      \ '*.css',
+      \ '*.less',
+      \ '*.scss',
+      \ '*.exe', '*.dll',
+      \ '*.mp3', '*.ogg', '*.flac',
+      \ '*.swp', '*.swo',
+      \ '*.bmp', '*.gif', '*.ico', '*.jpg', '*.png',
+      \ '*.rar', '*.zip', '*.tar', '*.tar.gz', '*.tar.xz', '*.tar.bz2',
+      \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx',
+      \ ]
+
+function! s:get_gutentags_status(mods) abort
+    let l:msg = ''
+    if index(a:mods, 'ctags') >= 0
+       let l:msg .= '♨'
+     endif
+     if index(a:mods, 'cscope') >= 0
+       let l:msg .= '♺'
+     endif
+     return l:msg
+endfunction
+
+set statusline+=%{gutentags#statusline_cb(
+	    \function('<SID>get_gutentags_status'))}
+
+" use GutentagsClearCache to clear ctags cache quickly
+command! -nargs=0 GutentagsClearCache call system('rm ' . g:gutentags_cache_dir . '/*')
 
 "--------------------------------------------------
 " Fzf Config
@@ -1266,7 +1348,8 @@ nnoremap <leader>fL :BCommits<CR>
 
 " Using Rgrep with fzf
 if executable('rg')
-  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+  "let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+  let $FZF_DEFAULT_COMMAND = 'fd --type f --follow --exclude .git --exclude node_modules --exclude env --exclude __pycache__ --color=always'
   set grepprg=rg\ --vimgrep
   command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
 endif
@@ -1402,6 +1485,7 @@ let g:mundo_right = 0
 "--------------------------------------------------
 
 nnoremap <silent> <Leader>vv :Vista!!<CR>
+let g:vista#executives = ['coc', 'ctags', 'lcn', 'vim_lsp']
 
 " How each level is indented and what to prepend.
 " This could make the display more compact or more spacious.
@@ -1437,16 +1521,56 @@ let g:vista#renderer#icons = {
 \  }
 
 "--------------------------------------------------
+" Vim Zoom Config
+"--------------------------------------------------
+
+nmap <C-w>z <Plug>(zoom-toggle)
+
+"--------------------------------------------------
 " Startify Config
 "--------------------------------------------------
 
+autocmd User Startified setlocal cursorline
+
+let g:startify_enable_special      = 0
+let g:startify_files_number        = 8
+let g:startify_relative_path       = 1
+let g:startify_change_to_dir       = 1
+let g:startify_update_oldfiles     = 1
+let g:startify_session_persistence = 1
+
+let g:startify_lists = [
+      \ { 'type': 'sessions',  'header': ['   Sessions']       },
+      \ { 'type': 'files',     'header': ['   MRU']            },
+      \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+      \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+      \ { 'type': 'commands',  'header': ['   Commands']       },
+      \ ]
+
+" Centering header
+let g:startify_custom_header =
+	\ startify#center(startify#fortune#cowsay('', '═','║','╔','╗','╝','╚'))
+
+let g:startify_bookmarks = [
+	\ { 'v': '~/.vimrc' },
+	\ { 'n': '~/.config/nvim/init.vim' },
+	\ { 'z': '~/.zshrc' },
+	\ { 'b': '~/.bashrc' },
+	\ { 'a': '~/.bash_aliases' },
+	\ { 't': '~/.tmux.conf' },
+	\ ]
 
 
 "======================================================================
 " Color settings:
 "======================================================================
 
+"--------------------------------------------------
+" Gruvbox Color Scheme
+"--------------------------------------------------
+
 colorscheme gruvbox
+
 " For Gruvbox to look correct in terminal Vim you'll want to source a palette
 " script that comes with the Gruvbox plugin.
 
@@ -1461,6 +1585,76 @@ let g:gruvbox_contrast_light='soft'
 
 " This needs to come last, otherwise the colors aren't correct.
 syntax on
+
+"--------------------------------------------------
+" Janah Color Scheme (modified)
+"--------------------------------------------------
+" Repo: https://github.com/mhinz/vim-janah
+
+" Plugin: vim-startify {{{1
+"highlight StartifyBracket guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+"highlight StartifyFile guifg=#eeeeee ctermfg=255 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+"highlight StartifyFooter guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+"highlight StartifyHeader guifg=#87df87 ctermfg=114 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+"highlight StartifyNumber guifg=#ffaf5f ctermfg=215 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+"highlight StartifyPath guifg=#8a8a8a ctermfg=245 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+"highlight StartifySection guifg=#dfafaf ctermfg=181 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+"highlight StartifySelect guifg=#5fdfff ctermfg=81 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+"highlight StartifySlash guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+"highlight StartifySpecial guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+
+" Plugin: vim-easymotion {{{1
+highlight EasyMotionTarget guifg=#ffff5f ctermfg=227 guibg=NONE ctermbg=NONE gui=bold cterm=bold
+highlight EasyMotionTarget2First guifg=#df005f ctermfg=161 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+highlight EasyMotionTarget2Second guifg=#ffff5f ctermfg=227 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+
+" Pmenu {{{1
+highlight Pmenu guifg=#e4e4e4 ctermfg=254 guibg=#262626 ctermbg=235 gui=NONE cterm=NONE
+highlight PmenuSbar ctermfg=NONE guibg=#444444 ctermbg=238 gui=NONE cterm=NONE
+highlight PmenuSel guifg=#df5f5f ctermfg=167 guibg=#444444 ctermbg=238 gui=bold cterm=bold
+highlight PmenuThumb ctermfg=NONE guibg=#df5f5f ctermbg=167 gui=NONE cterm=NONE
+
+" Folds {{{1
+highlight foldcolumn ctermfg=102 ctermbg=237 cterm=none guifg=#878787 guibg=#3a3a3a gui=none
+highlight folded ctermfg=102 ctermbg=237 cterm=none guifg=#878787 guibg=#3a3a3a gui=none
+
+" Misc {{{1
+highlight Comment guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+
+"--------------------------------------------------
+" ThinkVim Colors
+"--------------------------------------------------
+" Repo: https://github.com/hardcoreplayers/ThinkVim/blob/master/core/color.vim
+
+"Pmenu Colors
+" ---------------------------------------------------------
+"" hi PMenuSel ctermfg=252 ctermbg=15006 guifg=#d0d0d0 guibg=#ba8baf guisp=#ba8baf cterm=NONE gui=NONE
+"hi Pmenu ctermfg=103 ctermbg=236 guifg=#9a9aba guibg=#34323e guisp=NONE cterm=NONE gui=NONE
+"hi PmenuSbar ctermfg=NONE ctermbg=234 guifg=NONE guibg=#212026 guisp=NONE cterm=NONE gui=NONE
+"hi PmenuSel ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5e5079 guisp=NONE cterm=NONE gui=NONE
+"hi PmenuThumb ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5d4d7a guisp=NONE cterm=NONE gui=NONE
+
+"GitGutter Coc-git Highlight
+" ---------------------------------------------------------
+highlight GitGutterAdd ctermfg=22 guifg=#006000 ctermbg=NONE guibg=NONE
+highlight GitGutterChange ctermfg=58 guifg=#5F6000 ctermbg=NONE guibg=NONE
+highlight GitGutterDelete ctermfg=52 guifg=#600000 ctermbg=NONE guibg=NONE
+highlight GitGutterChangeDelete ctermfg=52 guifg=#600000 ctermbg=NONE guibg=NONE
+
+" Defx Highlight
+" ---------------------------------------------------------
+highlight Defx_filename_3_Modified  ctermfg=1  guifg=#D370A3
+highlight Defx_filename_3_Staged    ctermfg=10 guifg=#A3D572
+highlight Defx_filename_3_Ignored   ctermfg=8  guifg=#404660
+highlight def link Defx_filename_3_Untracked Comment
+highlight def link Defx_filename_3_Unknown Comment
+highlight def link Defx_filename_3_Renamed Title
+highlight def link Defx_filename_3_Unmerged Label
+" highlight Defx_git_Deleted   ctermfg=13 guifg=#b294b
+
+" buftabline highlight
+" ---------------------------------------------------------
+highlight BufTabLineCurrent ctermbg=96 guibg=#5d4d7a
 
 
 "======================================================================
@@ -1482,7 +1676,6 @@ autocmd VimResized * wincmd =
 
 " Update a buffer's contents on focus if it changed outside of Vim.
 au FocusGained,BufEnter * :checktime
-
 
 
 
@@ -1751,4 +1944,21 @@ au FocusGained,BufEnter * :checktime
 "call which_key#register(';', 'g:which_key_localmap')
 "call which_key#register(']', 'g:which_key_rsbgmap')
 "call which_key#register('[', 'g:which_key_lsbgmap')
+
+"--------------------------------------------------
+" IndentLine Config
+"--------------------------------------------------
+
+""let g:indentline_char='⎸'
+"let g:indentLine_char_list = ['⎸']
+"let g:indentLine_color_term = 239
+"let g:indentLine_concealcursor = 'niv'
+"let g:indentLine_color_gui= '#725972'
+"let g:vim_json_syntax_conceal = 1    " hide json file quotes
+"let g:indentLine_faster = 1
+"let g:indentLine_bufTypeExclude =
+    "\ ['help', 'terminal', 'defx', 'denite', 'nerdtree',
+    "\ 'startify', 'tagbar', 'vista_kind', 'vista']
+"let g:indentLine_fileTypeExclude = ['text', 'sh']
+"let g:indentLine_leadingSpaceChar = '·'
 

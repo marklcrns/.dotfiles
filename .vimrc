@@ -51,9 +51,14 @@ set timeoutlen=500  " Time out on mappings
 set ttimeoutlen=10  " Time out on key codes
 
 if has('folding')
-	set foldenable
-	set foldmethod=syntax
-	set foldlevelstart=99
+  " folds cheatsheet: https://gist.github.com/lestoni/8c74da455cce3d36eb68
+  set foldmethod=indent
+  set foldnestmax=10
+  set nofoldenable
+  set foldlevel=2
+  "set foldenable
+  "set foldmethod=syntax
+  "set foldlevelstart=99
 endif
 
 " Tabsize
