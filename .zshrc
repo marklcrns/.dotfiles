@@ -171,8 +171,8 @@ fi
 # use ~~ as the trigger sequence instead of the default **
 #export FZF_COMPLETION_TRIGGER='~~'
 
-# environment vaiable for exluding .git and node_modules directory
-fd_options="--follow --exclude .git --exclude node_modules --exclude env --color=always"
+# environment vaiable for exluding directories
+fd_options="--follow --exclude .git --exclude node_modules --exclude env --exclude __pycache__ --color=always"
 
 # for faster traversal with git ls-tree
 #export FZF_DEFAULT_COMMAND='
@@ -181,10 +181,10 @@ fd_options="--follow --exclude .git --exclude node_modules --exclude env --color
       ##sed s/^..//) 2> /dev/null'
 
 # default search filter command
-export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fd --type f --type $fd_options"
+export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fd --type f $fd_options"
 
 # apply fd_options variable to ctrl-t and alt-c
-export FZF_CTRL_T_COMMAND="fd $fd_options"
+export FZF_CTRL_T_COMMAND="fd --type f $fd_options"
 export FZF_ALT_C_COMMAND="fd --type d $fd_options"
 
 # alternative default options
@@ -193,6 +193,7 @@ export FZF_ALT_C_COMMAND="fd --type d $fd_options"
 # default options with preview with bat > highlight > cat > tree
 # also with key bindings:
 # f2: toggle-preview
+# ctrl-e: xdg-open
 # ctrl-d: half-page-down
 # ctrl-u: half-page-update
 # ctrl-a: select-all+accept
@@ -205,7 +206,7 @@ export FZF_DEFAULT_OPTS="--ansi --height 70% -1 --reverse --multi --inline-info
                  cat {} ||
                  tree -c {}) 2> /dev/null | head -200'
                  --preview-window='bottom:70%:wrap:hidden'
-                 --bind='f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(wsl-open {})'"
+                 --bind='f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(xdg-open {})'"
 
 # ctrl-t options
 export FZF_CTRL_T_OPTS="--ansi --preview '(bat --color=always --decorations=always --style=header,grid --line-range :300 {} 2> /dev/null || cat {} || tree -c {}) 2> /dev/null | head -200'"

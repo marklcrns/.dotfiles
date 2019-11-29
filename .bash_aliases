@@ -28,7 +28,7 @@ alias charm='/mnt/c/Users/Mark/AppData/Local/JetBrains/Toolbox/apps/PyCharm-C/ch
 # Running Windows executable
 alias cmd='cmd.exe /C'
 alias ps='powershell.exe /C'
-alias open='wsl-open'
+alias open='xdg-open'
 alias explore='explorer.exe'
 alias firefox='firefox.exe'
 alias chrome='chrome.exe'
@@ -44,6 +44,9 @@ alias browsync='browser-sync start --server --files "*/**"'
 
 # Flask
 alias flask='FLASK_APP=app.py FLASK_DEBUG=1 python -m flask run --port 8080'
+
+# Python env
+alias env-activate='source env/bin/activate'
 
 # Shortcut Commands
 
@@ -68,5 +71,6 @@ alias pwdp='cd "`vs clipboard`"; clear'
 alias ls='exa'
 
 # Updating dotfiles Repo
-alias dotupdate='cd ~/Work/GitHub\ Repositories/dotfiles;yes | cp -i ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile .;git add .;clear; git status'
+alias dotupdate='cd ~/Work/GitHub\ Repositories/dotfiles;yes | cp -ivr ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ .;git add .;clear; git status'
 
+alias linuxgui='startxfce4'

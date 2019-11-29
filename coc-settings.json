@@ -2,7 +2,6 @@
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.formatOnSaveFiletypes": [
     "css",
-    "html",
     "markdown",
     "javascript",
     "typescript",
@@ -73,7 +72,8 @@
   "python.formatting.provider": "autopep8",
   "python.linting.pep8Enabled": true,
   "python.pythonPath": "python3",
-  "python.jediEnabled": false,
+  "python.jediEnabled": true,
+  "python.jediPath": "/usr/local/lib/python3.8/site-packages",
 
   "prettier.statusItemText": "ⓟ ",
   "prettier.eslintIntegration": true,
