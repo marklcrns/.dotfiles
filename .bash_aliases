@@ -73,6 +73,6 @@ alias pwdp='cd "`vs clipboard`"; clear'
 alias ls='exa'
 
 # Updating dotfiles Repo
-alias dotupdate='cd ~/Work/GitHub\ Repositories/dotfiles;yes | cp -ivr ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ ~/.muttrc .;git add .;clear; git status'
+alias dotupdate='cd ~/Work/GitHub\ Repositories/dotfiles;cp -r ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ .;cp -r ~/.mutt/muttrc ~/.mutt/mailcap ./.mutt;git add .;clear; git status'
 
 alias linuxgui='startxfce4'

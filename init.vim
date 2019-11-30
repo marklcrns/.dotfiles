@@ -1554,7 +1554,7 @@ let g:startify_custom_header =
 let g:startify_bookmarks = [
 	\ { 'v': '~/.vimrc' },
 	\ { 'n': '~/.config/nvim/init.vim' },
-	\ { 'm': '~/.muttrc' },
+	\ { 'm': '~/.mutt/muttrc' },
 	\ { 'ma': '~/.mail_aliases' },
 	\ { 'z': '~/.zshrc' },
 	\ { 'b': '~/.bashrc' },
