@@ -1,15 +1,11 @@
+# Learn more about this file at http://www.mutt.org/doc/manual/
+
 # Resources:
 # https://github.com/jtdaugherty/mutt-tutorial
 # https://www.thegeekdiary.com/how-to-install-and-configure-mutt-in-centos-rhel/
 # https://medium.com/@itsjefftong/mutt-gmail-59447a4bffef
+# https://unix.stackexchange.com/questions/226936/how-to-install-setup-mutt-with-gmail-on-centos-and-ubuntu
 
-# Emacs, this is a -*- conf -*- file
-#
-# Learn more about this file at http://www.mutt.org/doc/manual/
-#
-# To use:
-# mkdir -p ~/.mutt/cache
-# Install as ~/.muttrc
 
 # User infos
 set from="marklcrns@gmail.com"
@@ -26,7 +22,7 @@ set signature= "~/.signature"
 
 # Mailboxes
 set folder= "imaps://imap.gmail.com/"
-set spoolfile= "+INBOX"
+set spoolfile = "imaps://imap.gmail.com/INBOX"
 set ssl_force_tls = yes
 
 # Etc
@@ -52,21 +48,21 @@ set reverse_realname=no
 # Where to put sent mail
 set record="+outbox"
 # Where to put drafts
-set postponed="+drafts"
-set header_cache="~/.mutt/cache/headers"
-set message_cachedir="~/.mutt/cache/bodies"
-set certificate_file="~/.mutt/certificates"
+set postponed = "+drafts"
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/bodies"
+set certificate_file = "~/.mutt/certificates"
 set imap_check_subscribed
-set net_inc=5
-set imap_keepalive=30
-set move=no
-set delete=yes
-set mail_check=60
-set timeout=15
+set net_inc = 5
+set imap_keepalive = 900
+set move = no
+set delete = yes
+set mail_check = 60
+set timeout = 15
 
 # Decent defaults for the sidebar patch if you're using that:
-set sidebar_width=30
-set sidebar_visible=yes
+set sidebar_width = 30
+set sidebar_visible = yes
 #set sidebar_delim='|'
 #set sidebar_sort=yes
 
@@ -217,3 +213,5 @@ hdr_order date from subject to cc
 
 auto_view application/x-gunzip
 auto_view application/x-gzip
+auto_view text/html
+alternative_order text/plain text/enriched text/html
