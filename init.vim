@@ -337,7 +337,9 @@ let g:lightline = {
   \   'cocstatus': 'coc#status',
   \   'currentfunction': 'CocCurrentFunction',
   \   'readonly': 'LightlineReadonly',
-  \   'fugitive': 'LightlineFugitive'
+  \   'fugitive': 'LightlineFugitive',
+  \   'gutentags': 'gutentags#statusline',
+  \   'method' : 'NearestMethodOrFunction'
   \ },
   \ 'separator': { 'left': '', 'right': '' },
   \ 'subseparator': { 'left': '', 'right': '' },
@@ -345,9 +347,9 @@ let g:lightline = {
   \   'left': [ [ 'mode', 'paste' ],
   \             [ 'fugitive',
   \               'readonly', 'filename', 'modified' ],
-  \             [ 'cocstatus' ] ],
+  \             [ 'cocstatus', 'method' ] ],
   \  'right': [ [ 'percent', 'lineinfo' ],
-  \            [ 'currentfunction' ] ]
+  \            [ 'currentfunction' ], [ 'gutentags' ] ]
   \ },
   \ }
 
@@ -361,10 +363,23 @@ endfunction
 
 function! LightlineFugitive()
 	if exists('*fugitive#head')
-		let branch = fugitive#head()
-		return branch !=# '' ? ''.branch : ''
+	  let branch = fugitive#head()
+	  return branch !=# '' ? ''.branch : ''
 	endif
 	return ''
+endfunction
+
+" Gutentags Statusline
+augroup MyGutentagsStatusLineRefresher
+	autocmd!
+	autocmd User GutentagsUpdating call lightline#update()
+	autocmd User GutentagsUpdated call lightline#update()
+augroup END
+
+" Vista Statusline
+
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
 
 "--------------------------------------------------
@@ -526,7 +541,7 @@ call defx#custom#option('_', {
       \     '.mypy_cache,.pytest_cache,.git,.hg,.svn,.stversions'
       \   . ',__pycache__,.sass-cache,*.egg-info,.DS_Store,*.pyc'
       \	  . ',node_modules,.eslintrc.*,tags,tags.*,package.json'
-      \	  . ',package-lock.json'
+      \	  . ',package-lock.json,env,.root'
       \ })
       "\ 'listed': 1,
 
@@ -535,11 +550,6 @@ call defx#custom#column('icon', {
       \ 'opened_icon': '▾',
       \ 'root_icon': ' ',
       \ })
-
-"call defx#custom#column('filename', {
-      "\ 'min_width': 40,
-      "\ 'max_width': 40,
-      "\ })
 
 call defx#custom#column('mark', {
       \ 'readonly_icon': '',
@@ -1070,7 +1080,7 @@ let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 let g:indent_guides_exclude_filetypes =
     \ ['help', 'terminal', 'defx', 'denite', 'nerdtree',
-    \ 'startify', 'tagbar', 'vista_kind', 'vista']
+    \ 'startify', 'tagbar', 'vista_kind', 'vista', 'fzf']
 let g:indent_guides_color_change_percent = 10
 
 "--------------------------------------------------
@@ -1252,12 +1262,12 @@ let g:gutentags_generate_on_missing = 1
 let g:gutentags_generate_on_new = 1
 let g:gutentags_generate_on_empty_buffer = 0
 let g:gutentags_exclude_filetypes = ['defx', 'denite', 'vista']
-"let g:gutentags_ctags_extra_args = [
-      "\ '--tag-relative=yes',
-      "\ '--fields=+ailmnS',
-      "\ ]
+let g:gutentags_ctags_extra_args = [
+      \ '--tag-relative=yes',
+      \ '--fields=+ailmnS',
+      \ ]
 
-let g:gutentags_ctags_extra_args = ['--output-format=e-ctags']
+"let g:gutentags_ctags_extra_args = ['--output-format=e-ctags']
 
 "let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx',
   "\ '*.css', '*.less', '*.sass', '*.go', '*.dart', 'node_modules',
@@ -1311,20 +1321,6 @@ let g:gutentags_ctags_exclude = [
       \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx',
       \ ]
 
-function! s:get_gutentags_status(mods) abort
-    let l:msg = ''
-    if index(a:mods, 'ctags') >= 0
-       let l:msg .= '♨'
-     endif
-     if index(a:mods, 'cscope') >= 0
-       let l:msg .= '♺'
-     endif
-     return l:msg
-endfunction
-
-set statusline+=%{gutentags#statusline_cb(
-	    \function('<SID>get_gutentags_status'))}
-
 " use GutentagsClearCache to clear ctags cache quickly
 command! -nargs=0 GutentagsClearCache call system('rm ' . g:gutentags_cache_dir . '/*')
 
@@ -1351,6 +1347,7 @@ if executable('rg')
   "let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
   let $FZF_DEFAULT_COMMAND = 'fd --type f --follow --exclude .git --exclude node_modules --exclude env --exclude __pycache__ --color=always'
   set grepprg=rg\ --vimgrep
+
   command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
 endif
 
@@ -1442,6 +1439,7 @@ endfunction
 "--------------------------------------------------
 
 nnoremap <silent> <leader>tt :TagbarToggle<CR>
+let g:tagbar_width = 30
 
 "--------------------------------------------------
 " Markdown Preview Config
@@ -1496,16 +1494,18 @@ let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 " Executive used when opening vista sidebar without specifying it.
 " See all the avaliable executives via `:echo g:vista#executives`.
 let g:vista_default_executive = 'ctags'
+let g:vista_finder_alternative_executives = ['coc']
+let g:vista#finders = 'fzf'
 
 " Set the executive for some filetypes explicitly. Use the explicit executive
 " instead of the default one for these filetypes when using `:Vista` without
 " specifying the executive.
-let g:vista_executive_for = {
-  \ 'go': 'ctags',
-  \ 'javascript': 'coc',
-  \ 'javascript.jsx': 'coc',
-  \ 'python': 'ctags',
-  \ }
+"let g:vista_executive_for = {
+  "\ 'go': 'ctags',
+  "\ 'javascript': 'coc',
+  "\ 'javascript.jsx': 'coc',
+  "\ 'python': 'ctags',
+  "\ }
 
 " To enable fzf's preview window set g:vista_fzf_preview.
 " The elements of g:vista_fzf_preview will be passed as arguments to fzf#vim#with_preview()
@@ -1554,6 +1554,8 @@ let g:startify_custom_header =
 let g:startify_bookmarks = [
 	\ { 'v': '~/.vimrc' },
 	\ { 'n': '~/.config/nvim/init.vim' },
+	\ { 'm': '~/.muttrc' },
+	\ { 'ma': '~/.mail_aliases' },
 	\ { 'z': '~/.zshrc' },
 	\ { 'b': '~/.bashrc' },
 	\ { 'a': '~/.bash_aliases' },
