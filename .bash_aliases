@@ -62,6 +62,8 @@ alias vs='xclip -o -selection'
 alias rmdebs='find . -name "debug.log" -type f; find . -name "debug.log" -type f -delete'
 # Remove .log files recursively (will also list all .log files before removal)
 alias rmlogs='find . -name "*.log" -type f; find . -name "*.log" -type f -delete'
+# Remove .root files recuresively (will also list all debug files before removal)
+alias rmroot='find . -name "*.root" -type f; find . -name "*.root" -type f -delete'
 
 # Copy and pasting current working directory from and to clipboard
 alias pwdc='pwd | cs clipboard; clear'
@@ -71,6 +73,6 @@ alias pwdp='cd "`vs clipboard`"; clear'
 alias ls='exa'
 
 # Updating dotfiles Repo
-alias dotupdate='cd ~/Work/GitHub\ Repositories/dotfiles;yes | cp -ivr ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ .;git add .;clear; git status'
+alias dotupdate='cd ~/Work/GitHub\ Repositories/dotfiles;yes | cp -ivr ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ ~/.muttrc .;git add .;clear; git status'
 
 alias linuxgui='startxfce4'
