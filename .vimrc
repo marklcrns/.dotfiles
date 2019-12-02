@@ -26,7 +26,7 @@ call plug#end()
 filetype plugin indent on
 syntax enable
 
-set viminfo='100,n$HOME/.vim/files/info/viminfo'
+set viminfo='100,n$HOME/.vim/files/info/viminfo
 
 " Navigation
 set number
@@ -131,6 +131,8 @@ runtime! macros/matchit.vim " enabled awesome match abilities like HTML tag matc
 "======================================================================
 " Basic Mappings:
 "======================================================================
+" Resources:
+" https://vim.fandom.com/wiki/Avoid_the_escape_key
 
 let mapleader = '\'      " See :help expr-string for syntax docs
 let maplocalleader = ';'
@@ -150,15 +152,14 @@ nnoremap <C-x> :bd<CR>
 "tabline navigation
 noremap [t :tabprevious<cr>
 noremap ]t :tabnext<cr>
-noremap [T :tabfirst<cr>
-noremap ]T :tablast<cr>
+noremap [T :tabm -1<cr>
+noremap ]T :tabm +1<cr>
 noremap <leader>tn :tabnew<cr>
 noremap <leader>tc :tabclose<cr>
 noremap <leader>te :tabedit
-noremap <leader>tm :tabmove
 
 " Open current file with wsl-open
-nnoremap <leader>xo :!wsl-open %<cr>
+nnoremap <leader>xo :!xdg-open %<cr>
 
 " Move through the valid compilers. Set by b:valid_compilers
 "nnoremap <silent> [c :CompilerPrevious<CR>
@@ -207,6 +208,19 @@ nnoremap <silent> ,<Space> :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
 
 " Keep cursor at the bottom of the visual selection after you yank it.
 vmap y ygv<Esc>
+
+" Moves curser to the right when using ESC to exit insert mode
+inoremap <Esc> <Esc>`^
+
+" Esc from insert, visual and command mode shortcuts (also moves cursor to the right)
+imap jw <Esc>`^
+imap wj <Esc>`^
+inoremap <expr> <C-L> (pumvisible() <bar><bar> &insertmode) ? '<C-e><Esc>`^' : '<Esc>`^'
+vmap <C-l> <Esc>
+cmap <C-l> <C-c>
+
+" Closing pop-up auto-completion before inserting new line with alt + o
+inoremap <expr> <M-o> (pumvisible() <bar><bar> &insertmode) ? '<C-e><M-o>' : '<M-o>'
 
 " Navigate around splits in any mode `ALT+{h,j,k,l}
 "tnoremap <A-h> <C-\><C-N><C-w>h

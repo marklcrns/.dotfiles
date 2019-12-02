@@ -43,7 +43,7 @@ alias live='http-server'
 alias browsync='browser-sync start --server --files "*/**"'
 
 # Flask
-alias flask='FLASK_APP=app.py FLASK_DEBUG=1 python -m flask run --port 8080'
+alias flask='FLASK_APP=application.py FLASK_DEBUG=1 python -m flask run --port 8080'
 
 # Python env
 alias env-activate='source env/bin/activate'

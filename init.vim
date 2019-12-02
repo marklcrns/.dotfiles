@@ -1,7 +1,7 @@
 " Useful Default Mappings Vim Commands Reference
 " https://bencrowder.net/files/vim-fu/
 "======================================================================
-" Basic Configurations and Mappings in ~/.vimrc
+" General Configurations and Mappings in ~/.vimrc
 "======================================================================
 
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
@@ -77,9 +77,9 @@ if dein#load_state('/home/marklcrns/.cache/dein')
   call dein#add('tpope/vim-repeat')
   call dein#add('tpope/vim-sleuth')
   call dein#add('jiangmiao/auto-pairs')
-  call dein#add('kien/rainbow_parentheses.vim')
   call dein#add('junegunn/vim-easy-align')
   call dein#add('nathanaelkane/vim-indent-guides')
+  call dein#add('dhruvasagar/vim-table-mode')
 
   " Editor Navigation
   call dein#add('easymotion/vim-easymotion')
@@ -103,6 +103,7 @@ if dein#load_state('/home/marklcrns/.cache/dein')
   " Themes
   call dein#add('gruvbox-community/gruvbox')
   call dein#add('itchyny/lightline.vim')
+  call dein#add('bagrat/vim-buffet')
 
   " Extras
   call dein#add('wlemuel/vim-tldr')
@@ -420,6 +421,56 @@ let g:easygit_enable_command = 1
 "Gstatus - Show git status in a temporary buffer.
 "Ggrep - Git grep repo of current file, and show result in quickfix
 "Gmerge - Git merge with branch complete
+
+"--------------------------------------------------
+" Buffet Config
+"--------------------------------------------------
+
+" Disables lightline tabline
+let g:lightline.enable = {
+    \ 'statusline': 1,
+    \ 'tabline': 0
+    \ }
+
+" Resources:
+" https://github.com/hardcoreplayers/ThinkVim/blob/master/layers/%2Bui/buffet/config.vim
+let g:buffet_tab_icon = "\uf00a"
+function! g:BuffetSetCustomColors()
+    hi! BuffetCurrentBuffer cterm=NONE ctermbg=106 ctermfg=8 guibg=#b8bb26 guifg=#000000
+    hi! BuffetTrunc cterm=bold ctermbg=66 ctermfg=8 guibg=#458588 guifg=#000000
+    hi! BuffetBuffer cterm=NONE ctermbg=239 ctermfg=8 guibg=#504945 guifg=#000000
+    hi! BuffetTab cterm=NONE ctermbg=66 ctermfg=8 guibg=#458588 guifg=#000000
+    hi! BuffetActiveBuffer cterm=NONE ctermbg=10 ctermfg=239 guibg=#999999 guifg=#504945
+endfunction
+
+let g:buffet_left_trunc_icon = "\uf0a8"
+let g:buffet_right_trunc_icon = "\uf0a9"
+
+nmap <leader>1 <Plug>BuffetSwitch(1)
+nmap <leader>2 <Plug>BuffetSwitch(2)
+nmap <leader>3 <Plug>BuffetSwitch(3)
+nmap <leader>4 <Plug>BuffetSwitch(4)
+nmap <leader>5 <Plug>BuffetSwitch(5)
+nmap <leader>6 <Plug>BuffetSwitch(6)
+nmap <leader>7 <Plug>BuffetSwitch(7)
+nmap <leader>8 <Plug>BuffetSwitch(8)
+nmap <leader>9 <Plug>BuffetSwitch(9)
+nmap <leader>0 <Plug>BuffetSwitch(10)
+
+let g:buffet_max_plug = 10
+
+" Navigate Through buffers
+noremap <Tab> :bn<CR>
+noremap <S-Tab> :bp<CR>
+
+" Wipe current buffer
+noremap <Leader><Tab> :Bw<CR>
+noremap <Leader><S-Tab> :Bonly<CR>
+
+let g:buffet_always_show_tabline = 0
+let g:buffet_use_devicons = 1
+let g:buffet_separator = ""
+let g:buffet_show_index = 1
 
 "--------------------------------------------------
 " NerdTree Config
@@ -1084,37 +1135,6 @@ let g:indent_guides_exclude_filetypes =
 let g:indent_guides_color_change_percent = 10
 
 "--------------------------------------------------
-" Rainbow Parentheses
-"--------------------------------------------------
-
-let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['black',       'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
-
-let g:rbpt_max = 16
-
-" Always on
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
-
-"--------------------------------------------------
 " Goyo Config
 "--------------------------------------------------
 
@@ -1438,8 +1458,8 @@ endfunction
 " Tagbar Config
 "--------------------------------------------------
 
-nnoremap <silent> <leader>tt :TagbarToggle<CR>
-let g:tagbar_width = 30
+nnoremap <silent> <leader>tb :TagbarToggle<CR>
+let g:tagbar_width = 35
 
 "--------------------------------------------------
 " Markdown Preview Config
@@ -1511,6 +1531,7 @@ let g:vista#finders = 'fzf'
 " The elements of g:vista_fzf_preview will be passed as arguments to fzf#vim#with_preview()
 " For example:
 let g:vista_fzf_preview = ['right:50%']
+let g:vista_sidebar_width = 35
 " Ensure you have installed some decent font to show these pretty symbols, then you can enable icon for the kind.
 let g:vista#renderer#enable_icon = 1
 
@@ -1524,7 +1545,7 @@ let g:vista#renderer#icons = {
 " Vim Zoom Config
 "--------------------------------------------------
 
-nmap <C-w>z <Plug>(zoom-toggle)
+nmap <C-w>f <Plug>(zoom-toggle)
 
 "--------------------------------------------------
 " Startify Config
@@ -1561,6 +1582,29 @@ let g:startify_bookmarks = [
 	\ { 'a': '~/.bash_aliases' },
 	\ { 't': '~/.tmux.conf' },
 	\ ]
+
+"--------------------------------------------------
+" Tablet Mode Config
+"--------------------------------------------------
+
+function! s:isAtStartOfLine(mapping)
+  let text_before_cursor = getline('.')[0 : col('.')-1]
+  let mapping_pattern = '\V' . escape(a:mapping, '\')
+  let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', '', ''), '\')
+  return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
+endfunction
+
+inoreabbrev <expr> <bar><bar>
+          \ <SID>isAtStartOfLine('\|\|') ?
+          \ '<c-o>:TableModeEnable<cr><bar><space><bar><left><left>' : '<bar><bar>'
+inoreabbrev <expr> __
+          \ <SID>isAtStartOfLine('__') ?
+          \ '<c-o>:silent! TableModeDisable<cr>' : '__'
+
+" For Markdown-compatible table use
+let g:table_mode_corner='|'
+let g:table_mode_corner_corner='+'
+let g:table_mode_header_fillchar='='
 
 
 "======================================================================
@@ -1656,7 +1700,7 @@ highlight def link Defx_filename_3_Unmerged Label
 
 " buftabline highlight
 " ---------------------------------------------------------
-highlight BufTabLineCurrent ctermbg=96 guibg=#5d4d7a
+"highlight BufTabLineCurrent ctermbg=96 guibg=#5d4d7a
 
 
 "======================================================================
@@ -1724,6 +1768,7 @@ au FocusGained,BufEnter * :checktime
   "call dein#add('xolox/vim-misc')
   "call dein#add('jiangmiao/auto-pairs')
   "call dein#add('python-mode/python-mode',
+  "call dein#add('kien/rainbow_parentheses.vim')
     "\ { 'on_ft': 'python' })
 
 "--------------------------------------------------
@@ -1951,8 +1996,8 @@ au FocusGained,BufEnter * :checktime
 " IndentLine Config
 "--------------------------------------------------
 
-""let g:indentline_char='⎸'
-"let g:indentLine_char_list = ['⎸']
+"let g:indentline_char='▸'
+"let g:indentLine_char_list = ['▸']
 "let g:indentLine_color_term = 239
 "let g:indentLine_concealcursor = 'niv'
 "let g:indentLine_color_gui= '#725972'
@@ -1960,7 +2005,39 @@ au FocusGained,BufEnter * :checktime
 "let g:indentLine_faster = 1
 "let g:indentLine_bufTypeExclude =
     "\ ['help', 'terminal', 'defx', 'denite', 'nerdtree',
-    "\ 'startify', 'tagbar', 'vista_kind', 'vista']
-"let g:indentLine_fileTypeExclude = ['text', 'sh']
-"let g:indentLine_leadingSpaceChar = '·'
+    "\ 'startify', 'tagbar', 'vista_kind', 'vista', 'nofile']
+"let g:indentLine_bufNameExclude =
+    "\ ['_.*', '\[defx\]*']
+"let g:indentLine_fileTypeExclude = ['text', 'sh', 'defx']
+"let g:indentLine_faster = 1     " May cause some issue
 
+"--------------------------------------------------
+" Rainbow Parentheses
+"--------------------------------------------------
+
+"let g:rbpt_colorpairs = [
+    "\ ['brown',       'RoyalBlue3'],
+    "\ ['Darkblue',    'SeaGreen3'],
+    "\ ['darkgray',    'DarkOrchid3'],
+    "\ ['darkgreen',   'firebrick3'],
+    "\ ['darkcyan',    'RoyalBlue3'],
+    "\ ['darkred',     'SeaGreen3'],
+    "\ ['darkmagenta', 'DarkOrchid3'],
+    "\ ['brown',       'firebrick3'],
+    "\ ['gray',        'RoyalBlue3'],
+    "\ ['black',       'SeaGreen3'],
+    "\ ['darkmagenta', 'DarkOrchid3'],
+    "\ ['Darkblue',    'firebrick3'],
+    "\ ['darkgreen',   'RoyalBlue3'],
+    "\ ['darkcyan',    'SeaGreen3'],
+    "\ ['darkred',     'DarkOrchid3'],
+    "\ ['red',         'firebrick3'],
+    "\ ]
+
+"let g:rbpt_max = 16
+
+"" Always on
+"au VimEnter * RainbowParenthesesToggle
+"au Syntax * RainbowParenthesesLoadRound
+"au Syntax * RainbowParenthesesLoadSquare
+"au Syntax * RainbowParenthesesLoadBraces
