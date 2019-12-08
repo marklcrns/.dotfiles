@@ -220,6 +220,18 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " Or use `complete_info` if your vim support it, like:
 "inoremap <expr> <Tab> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<Tab>"
 
+" alt + j and alt + k to scroll pop-up menu float when visible and scrollable
+nnoremap <expr><A-j> coc#util#has_float() ?
+      \ coc#util#float_scrollable() ?
+      \ coc#util#float_scroll(1)
+      \ : ""
+      \ : "\<A-j>"
+nnoremap <expr><A-k> coc#util#has_float() ?
+      \ coc#util#float_scrollable() ?
+      \ coc#util#float_scroll(0)
+      \ : ""
+      \ : "\<A-k>"
+
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
@@ -242,6 +254,10 @@ endfunction
 
 " Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Display context info pop-up on CursorHold if any
+" Ref: https://github.com/neoclide/coc.nvim/issues/609#issuecomment-478177267
+"autocmd CursorHold * if ! coc#util#has_float() | call CocAction('doHover') | endif
 
 " Remap for rename current word
 nmap <leader><F2> <Plug>(coc-rename)
@@ -1285,8 +1301,7 @@ auto FileType html,css,javascript map <leader>br :BraceyReload<CR>
 " Gutentags Guide: https://www.reddit.com/r/vim/comments/d77t6j/guide_how_to_setup_ctags_with_gutentags_properly/
 
 let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
-let g:gutentags_project_root = ['.root', '.git', '.svn', '.hg',
-  \ '.project', 'package.json']
+let g:gutentags_project_root = ['.root', '.git', '.project', 'package.json', 'env']
 let g:gutentags_generate_on_write = 1
 let g:gutentags_generate_on_missing = 1
 let g:gutentags_generate_on_new = 1

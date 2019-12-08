@@ -1,15 +1,15 @@
 {
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.formatOnSaveFiletypes": [
-    "css",
-    "markdown",
-    "javascript",
-    "typescript",
-    "typescriptreact",
-    "json",
-    "javascriptreact",
-    "typescript.tsx",
-    "python"
+      "css",
+      "markdown",
+      "javascript",
+      "typescript",
+      "typescriptreact",
+      "json",
+      "javascriptreact",
+      "typescript.tsx",
+      "python"
   ],
 
   "coc.preferences.snippetStatusText": "Ⓢ ",
@@ -67,7 +67,7 @@
   "diagnostic.refreshOnInsertMode": true,
   "diagnostic.checkCurrentLine": true,
   "diagnostic.signOffset": 9999999,
-	"diagnostic.errorSign": "●",
+      "diagnostic.errorSign": "●",
 
   "python.formatting.provider": "autopep8",
   "python.linting.pep8Enabled": true,
@@ -79,8 +79,21 @@
   "prettier.eslintIntegration": true,
   "prettier.tslintIntegration": true,
   "prettier.stylelintIntegration": false,
+  "prettier.htmlWhitespaceSensitivity": "css",
 
   "eslint.filetypes": ["javascript", "javascript.jsx", "javascriptreact"],
   "eslint.autoFix": true,
-  "eslint.autoFixOnSave": true
+  "eslint.autoFixOnSave": true,
+
+  "html.filetypes": [
+      "html",
+      "handlebars",
+      "htmldjango"
+  ],
+
+  "emmet.includeLanguages": {
+      "vue-html": "html",
+      "htmldjango": "html",
+      "javascript": "javascriptreact"
+  }
 }

@@ -244,6 +244,8 @@ export FZF_ALT_C_COMMAND="fd --type d $fd_options"
 # ctrl-u: half-page-update
 # ctrl-a: select-all+accept
 # ctrl-y: yank current selection to clipboard using xclip
+# up arrow: preview scroll up
+# down arrow: preview scroll down
 export FZF_DEFAULT_OPTS="--ansi --height 70% -1 --reverse --multi --inline-info
                  --preview '[[ \$(file --mime {}) =~ binary ]] &&
                  echo {} is a binary file ||
@@ -252,7 +254,7 @@ export FZF_DEFAULT_OPTS="--ansi --height 70% -1 --reverse --multi --inline-info
                  cat {} ||
                  tree -c {}) 2> /dev/null | head -200'
                  --preview-window='bottom:70%:wrap:hidden'
-                 --bind='f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(wsl-open {})'"
+                 --bind='f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(wsl-open {}),up:preview-up,down:preview-down'"
 
 # ctrl-t options
 export FZF_CTRL_T_OPTS="--ansi --preview '(bat --color=always --decorations=always --style=header,grid --line-range :300 {} 2> /dev/null || cat {} || tree -c {}) 2> /dev/null | head -200'"
