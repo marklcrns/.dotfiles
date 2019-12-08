@@ -220,7 +220,10 @@ vmap <C-l> <Esc>
 cmap <C-l> <C-c>
 
 " Closing pop-up auto-completion before inserting new line with alt + o
-inoremap <expr> <M-o> (pumvisible() <bar><bar> &insertmode) ? '<C-e><M-o>' : '<M-o>'
+inoremap <expr> <A-o> (pumvisible() <bar><bar> &insertmode) ? '<C-e><A-o>' : '<A-o>'
+
+" Insert newline above the cursor with alt + shift + o
+inoremap <A-O> <Esc>O
 
 " Navigate around splits in any mode `ALT+{h,j,k,l}
 "tnoremap <A-h> <C-\><C-N><C-w>h
@@ -243,7 +246,7 @@ tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 tnoremap <Esc> <C-\><C-n>
 
 " Cycle through splits.
-nnoremap <S-Tab> <C-w>w
+"nnoremap <S-Tab> <C-w>w
 
 " Press * to search for the term under the cursor or a visual selection and
 " then press a key below to replace all instances of it in the current file.
@@ -268,8 +271,10 @@ xnoremap <Leader>g gqa
 " Prevent selecting and pasting from overwriting what you originally copied.
 xnoremap p pgvy
 
-" Edit Vim config file in a new tab.
-map <Leader>ev :tabnew $MYVIMRC<CR>
+" Edit Vim config file.
+"map <Leader>ev :e $MYVIMRC<CR>
+map <Leader>ev :e ~/.vimrc<CR>                 " .vimrc
+map <Leader>en :e ~/.config/nvim/init.vim<CR>  " init.vim
 
 " Source Vim config file.
 map <Leader>sv :source $MYVIMRC<CR>
@@ -304,7 +309,7 @@ noremap <expr> <C-b> max([winheight(0) - 2, 1])
 noremap <expr> <C-e> (line("w$") >= line('$') ? "j" : "3\<C-e>")
 noremap <expr> <C-y> (line("w0") <= 1         ? "k" : "3\<C-y>")
 
-" open current file with system default
+" open current file in chrome browser
 nnoremap <leader>p :!chrome.exe %<CR>
 
 " command line alias

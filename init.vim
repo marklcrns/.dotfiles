@@ -41,7 +41,7 @@ if dein#load_state('/home/marklcrns/.cache/dein')
     \ {'on_ft': ['markdown', 'pandoc.markdown', 'rmd'],
     \ 'build': 'cd app & npm install' })
   call dein#add('othree/html5.vim')
-  "call dein#add('turbio/bracey.vim')
+  call dein#add('plasticboy/vim-markdown')
 
   " Utilities
   call dein#add('dhruvasagar/vim-zoom')
@@ -446,22 +446,22 @@ endfunction
 let g:buffet_left_trunc_icon = "\uf0a8"
 let g:buffet_right_trunc_icon = "\uf0a9"
 
-nmap <leader>1 <Plug>BuffetSwitch(1)
-nmap <leader>2 <Plug>BuffetSwitch(2)
-nmap <leader>3 <Plug>BuffetSwitch(3)
-nmap <leader>4 <Plug>BuffetSwitch(4)
-nmap <leader>5 <Plug>BuffetSwitch(5)
-nmap <leader>6 <Plug>BuffetSwitch(6)
-nmap <leader>7 <Plug>BuffetSwitch(7)
-nmap <leader>8 <Plug>BuffetSwitch(8)
-nmap <leader>9 <Plug>BuffetSwitch(9)
-nmap <leader>0 <Plug>BuffetSwitch(10)
+nmap <localleader>1 <Plug>BuffetSwitch(1)
+nmap <localleader>2 <Plug>BuffetSwitch(2)
+nmap <localleader>3 <Plug>BuffetSwitch(3)
+nmap <localleader>4 <Plug>BuffetSwitch(4)
+nmap <localleader>5 <Plug>BuffetSwitch(5)
+nmap <localleader>6 <Plug>BuffetSwitch(6)
+nmap <localleader>7 <Plug>BuffetSwitch(7)
+nmap <localleader>8 <Plug>BuffetSwitch(8)
+nmap <localleader>9 <Plug>BuffetSwitch(9)
+nmap <localleader>0 <Plug>BuffetSwitch(10)
 
 let g:buffet_max_plug = 10
 
 " Navigate Through buffers
-noremap <Tab> :bn<CR>
-noremap <S-Tab> :bp<CR>
+noremap <Localleader><Tab> :bn<CR>
+noremap <Localleader><S-Tab> :bp<CR>
 
 " Wipe current buffer
 noremap <Leader><Tab> :Bw<CR>
@@ -471,6 +471,16 @@ let g:buffet_always_show_tabline = 0
 let g:buffet_use_devicons = 1
 let g:buffet_separator = ""
 let g:buffet_show_index = 1
+
+"--------------------------------------------------
+" Vim-Tmux Navigator Config
+"--------------------------------------------------
+
+" Disable vim-tmux navigator mappings when current pane is zoomed
+let g:tmux_navigator_disable_when_zoomed = 1
+
+" Auto save on pane switch
+let g:tmux_navigator_save_on_switch = 1
 
 "--------------------------------------------------
 " NerdTree Config
@@ -1462,6 +1472,23 @@ nnoremap <silent> <leader>tb :TagbarToggle<CR>
 let g:tagbar_width = 35
 
 "--------------------------------------------------
+" Markdown Config
+"--------------------------------------------------
+
+autocmd Filetype markdown let b:sleuth_automatic=0
+autocmd Filetype markdown set conceallevel=0
+autocmd Filetype markdown normal zR
+
+let g:vim_markdown_math = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_toml_frontmatter = 1
+let g:vim_markdown_json_frontmatter = 1
+let g:vim_markdown_strikethrough = 1
+let g:vim_markdown_auto_extension_ext = 'txt'
+let g:vim_markdown_auto_insert_bullets = 0
+let g:vim_markdown_new_list_item_indent = 0
+
+"--------------------------------------------------
 " Markdown Preview Config
 "--------------------------------------------------
 
@@ -1503,6 +1530,9 @@ let g:mundo_right = 0
 "--------------------------------------------------
 
 nnoremap <silent> <Leader>vv :Vista!!<CR>
+nnoremap <silent> <Leader>vc :Vista coc<CR>
+nnoremap <silent> <Leader>vf :Vista finder coc<CR>
+
 let g:vista#executives = ['coc', 'ctags', 'lcn', 'vim_lsp']
 
 " How each level is indented and what to prepend.
@@ -1520,12 +1550,12 @@ let g:vista#finders = 'fzf'
 " Set the executive for some filetypes explicitly. Use the explicit executive
 " instead of the default one for these filetypes when using `:Vista` without
 " specifying the executive.
-"let g:vista_executive_for = {
-  "\ 'go': 'ctags',
-  "\ 'javascript': 'coc',
-  "\ 'javascript.jsx': 'coc',
-  "\ 'python': 'ctags',
-  "\ }
+let g:vista_executive_for = {
+  \ 'go': 'ctags',
+  \ 'javascript': 'coc',
+  \ 'javascript.jsx': 'coc',
+  \ 'python': 'ctags',
+  \ }
 
 " To enable fzf's preview window set g:vista_fzf_preview.
 " The elements of g:vista_fzf_preview will be passed as arguments to fzf#vim#with_preview()
@@ -1655,10 +1685,10 @@ highlight EasyMotionTarget2First guifg=#df005f ctermfg=161 guibg=NONE ctermbg=NO
 highlight EasyMotionTarget2Second guifg=#ffff5f ctermfg=227 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 
 " Pmenu {{{1
-highlight Pmenu guifg=#e4e4e4 ctermfg=254 guibg=#262626 ctermbg=235 gui=NONE cterm=NONE
-highlight PmenuSbar ctermfg=NONE guibg=#444444 ctermbg=238 gui=NONE cterm=NONE
-highlight PmenuSel guifg=#df5f5f ctermfg=167 guibg=#444444 ctermbg=238 gui=bold cterm=bold
-highlight PmenuThumb ctermfg=NONE guibg=#df5f5f ctermbg=167 gui=NONE cterm=NONE
+"highlight Pmenu guifg=#e4e4e4 ctermfg=254 guibg=#262626 ctermbg=235 gui=NONE cterm=NONE
+"highlight PmenuSbar ctermfg=NONE guibg=#444444 ctermbg=238 gui=NONE cterm=NONE
+"highlight PmenuSel guifg=#df5f5f ctermfg=167 guibg=#444444 ctermbg=238 gui=bold cterm=bold
+"highlight PmenuThumb ctermfg=NONE guibg=#df5f5f ctermbg=167 gui=NONE cterm=NONE
 
 " Folds {{{1
 highlight foldcolumn ctermfg=102 ctermbg=237 cterm=none guifg=#878787 guibg=#3a3a3a gui=none
@@ -1674,11 +1704,11 @@ highlight Comment guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cte
 
 "Pmenu Colors
 " ---------------------------------------------------------
-"" hi PMenuSel ctermfg=252 ctermbg=15006 guifg=#d0d0d0 guibg=#ba8baf guisp=#ba8baf cterm=NONE gui=NONE
-"hi Pmenu ctermfg=103 ctermbg=236 guifg=#9a9aba guibg=#34323e guisp=NONE cterm=NONE gui=NONE
-"hi PmenuSbar ctermfg=NONE ctermbg=234 guifg=NONE guibg=#212026 guisp=NONE cterm=NONE gui=NONE
-"hi PmenuSel ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5e5079 guisp=NONE cterm=NONE gui=NONE
-"hi PmenuThumb ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5d4d7a guisp=NONE cterm=NONE gui=NONE
+hi PMenuSel ctermfg=252 ctermbg=15006 guifg=#d0d0d0 guibg=#ba8baf guisp=#ba8baf cterm=NONE gui=NONE
+hi Pmenu ctermfg=103 ctermbg=236 guifg=#9a9aba guibg=#34323e guisp=NONE cterm=NONE gui=NONE
+hi PmenuSbar ctermfg=NONE ctermbg=234 guifg=NONE guibg=#212026 guisp=NONE cterm=NONE gui=NONE
+hi PmenuSel ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5e5079 guisp=NONE cterm=NONE gui=NONE
+hi PmenuThumb ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5d4d7a guisp=NONE cterm=NONE gui=NONE
 
 "GitGutter Coc-git Highlight
 " ---------------------------------------------------------
@@ -1770,6 +1800,7 @@ au FocusGained,BufEnter * :checktime
   "call dein#add('python-mode/python-mode',
   "call dein#add('kien/rainbow_parentheses.vim')
     "\ { 'on_ft': 'python' })
+  "call dein#add('turbio/bracey.vim')
 
 "--------------------------------------------------
 " Ale Config
