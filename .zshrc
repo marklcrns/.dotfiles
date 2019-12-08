@@ -121,12 +121,57 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+
+plugins=(git vi-mode zsh-autosuggestions zsh-syntax-highlighting)
+
+# Accepts auto-suggestion with ctrl-n in vi mode
+#ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(down-history)
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+bindkey '^ ' autosuggest-accept
+bindkey '^z' autosuggest-toggle
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
+# Vi mode
+# Resources:
+# https://dougblack.io/words/zsh-vi-mode.html
+# https://www.youtube.com/watch?v=eLEo4OQ-cuQ&t=37s
 
+# Change cursor shape for different vi modes.
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] ||
+     [[ $1 = 'block' ]]; then
+    echo -ne '\e[1 q'
+  elif [[ ${KEYMAP} == main ]] ||
+       [[ ${KEYMAP} == viins ]] ||
+       [[ ${KEYMAP} = '' ]] ||
+       [[ $1 = 'beam' ]]; then
+    echo -ne '\e[5 q'
+  fi
+}
+zle -N zle-keymap-select
+zle-line-init() {
+    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+    echo -ne "\e[5 q"
+}
+zle -N zle-line-init
+echo -ne '\e[5 q' # Use beam shape cursor on startup.
+preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
+
+# Use vim keys in tab complete menu:
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+
+# Edit line in vim with ctrl-o:
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^o' edit-command-line
+
+export KEYTIMEOUT=1
+
+
+# User configuration
 export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -153,6 +198,7 @@ export EDITOR=$VISUAL
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
 
 alias sozsh='source ~/.zshrc'
 alias zshrc='nvim ~/.zshrc'
@@ -206,7 +252,7 @@ export FZF_DEFAULT_OPTS="--ansi --height 70% -1 --reverse --multi --inline-info
                  cat {} ||
                  tree -c {}) 2> /dev/null | head -200'
                  --preview-window='bottom:70%:wrap:hidden'
-                 --bind='f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(xdg-open {})'"
+                 --bind='f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(wsl-open {})'"
 
 # ctrl-t options
 export FZF_CTRL_T_OPTS="--ansi --preview '(bat --color=always --decorations=always --style=header,grid --line-range :300 {} 2> /dev/null || cat {} || tree -c {}) 2> /dev/null | head -200'"
@@ -241,4 +287,3 @@ alias nvimfzf='nvim "$(fzf)"'
 if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
   source "${VIRTUAL_ENV}/bin/activate"
 fi
-

@@ -43,7 +43,7 @@ alias live='http-server'
 alias browsync='browser-sync start --server --files "*/**"'
 
 # Flask
-alias flask='FLASK_APP=application.py FLASK_DEBUG=1 python -m flask run --port 8080'
+alias flask='FLASK_APP=application.py FLASK_DEBUG=1 python -m flask run'
 
 # Python env
 alias env-activate='source env/bin/activate'
@@ -73,6 +73,7 @@ alias pwdp='cd "`vs clipboard`"; clear'
 alias ls='exa'
 
 # Updating dotfiles Repo
-alias dotupdate='cd ~/Work/GitHub\ Repositories/dotfiles;cp -r ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ .;cp -r ~/.mutt/muttrc ~/.mutt/mailcap ./.mutt;git add .;clear; git status'
+alias dotupdate='cd ~/Work/GitHub\ Repositories/dotfiles;cp -r ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ .;cp -r ~/.mutt/muttrc ~/.mutt/mailcap ./.mutt;git add .;clear; git status; cd -'
+alias dotfiles='cd ~/Work/GitHub\ Repositories/dotfiles'
 
 alias linuxgui='startxfce4'
