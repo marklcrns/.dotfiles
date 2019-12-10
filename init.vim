@@ -67,7 +67,6 @@ if dein#load_state('/home/marklcrns/.cache/dein')
   call dein#add('kristijanhusak/defx-icons')
   call dein#add('Shougo/denite.nvim')
   call dein#add('neoclide/denite-git')
-  call dein#add('neoclide/vim-easygit')
 
   " Syntax Helpers
   call dein#add('scrooloose/nerdcommenter')
@@ -99,6 +98,7 @@ if dein#load_state('/home/marklcrns/.cache/dein')
   " Git
   call dein#add('tpope/vim-fugitive')
   call dein#add('airblade/vim-gitgutter')
+  call dein#add('neoclide/vim-easygit')
 
   " Themes
   call dein#add('gruvbox-community/gruvbox')
@@ -604,9 +604,9 @@ let g:NERDTreeLimitedSyntax = 1
 
 nnoremap <silent> <Leader>ee
 	\ :<C-u>Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>
+" Make sure the directory/file is not in the ignored_files to be able to jump onto
 nnoremap <silent> <Leader>ea
 	\ :<C-u>Defx -resume -buffer-name=tab`tabpagenr()` -search=`expand('%:p')`<CR>
-
 
 call defx#custom#option('_', {
       \ 'winwidth': 30,
