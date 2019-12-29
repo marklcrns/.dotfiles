@@ -7,10 +7,11 @@ alias trade='cd /mnt/c/Users/Mark/OneDrive/Trading/Stocks; clear'
 alias down='cd /mnt/c/Users/Mark/Downloads; clear'
 
 alias work='cd ~/Work; clear'
-alias workgit='cd ~/Work/GitHub\ Repositories; clear'
+alias workgit='cd ~/Work/GitHubRepos; clear'
 
-alias res='cd ~/Work/Resources; clear'
-alias reslinux='cd ~/Work/Resources/WSL; clear'
+alias ref='cd ~/Work/GitHubRepos/Private/References; clear'
+alias reflinux='cd ~/Work/GitHubRepos/Private/References/WSL; clear'
+alias refubuntu='cd ~/Work/GitHubRepos/Private/References/WSL/Ubuntu; clear'
 
 # Secure files Aliases
 alias seclock='cd /mnt/c/Users/Mark/Documents; cmd.exe /c ./Folder\ Lock.bat; clear'
@@ -30,23 +31,34 @@ alias cmd='cmd.exe /C'
 alias ps='powershell.exe /C'
 alias open='xdg-open'
 alias explore='explorer.exe'
-alias firefox='firefox.exe'
-alias chrome='chrome.exe'
 
-# Websites
+# Windows installed browsers
+alias winfirefox='firefox.exe'
+alias winchrome='chrome.exe'
+
+# Linux installed browsers
+#alias firefox='firefox'
+#alias chrome='google-chrome-stable'
+#alias chromium='chromium-browser'
+
+# GitHub
 alias gh='open https://github.com; clear'
 alias repo='open `git remote -v | grep fetch | awk "{print $2}" | sed 's/git@/http:\/\//' | sed "s/com:/com\//"`| head -n1'
 alias gist='open https://gist.github.com; clear'
 
 # live browser server
 alias live='http-server'
-alias browsync='browser-sync start --server --files "*/**"'
+# tutorial https://www.youtube.com/watch?v=L9zfMeB2Zcc&app=desktop
+alias browsersync='browser-sync start --server --files "*"'
+# Proxy configured to work with Django
+# https://www.metaltoad.com/blog/instant-reload-django-npm-and-browsersync
+alias browsersync-proxy='browser-sync start --proxy 127.0.0.1:8000 --files "*"'
 
 # Flask
 alias flask='FLASK_APP=application.py FLASK_DEBUG=1 python -m flask run'
 
 # Python env
-alias env-activate='source env/bin/activate'
+alias envactivate='source env/bin/activate'
 
 # Shortcut Commands
 
@@ -73,7 +85,7 @@ alias pwdp='cd "`vs clipboard`"; clear'
 alias ls='exa'
 
 # Updating dotfiles Repo
-alias dotupdate='cd ~/Work/GitHubRepos/dotfiles;cp -r ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ .;cp -r ~/.mutt/muttrc ~/.mutt/mailcap ./.mutt;git add .;clear; git status; cd -'
+alias dotupdate='cd ~/Work/GitHubRepos/dotfiles;cp -r ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ .;cp -r ~/.mutt/muttrc ~/.mutt/mailcap ./.mutt;cp -r ~/.config/ranger/rc.conf .;git add .;clear; git status; cd -; nvim ~/Work/GitHubRepos/dotfiles/updates.txt'
 alias dotfiles='cd ~/Work/GitHubRepos/dotfiles'
 
 alias linuxgui='startxfce4'

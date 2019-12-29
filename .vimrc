@@ -30,7 +30,7 @@ set viminfo='100,n$HOME/.vim/files/info/viminfo
 
 " Navigation
 set number
-"set relativenumber
+set relativenumber
 set hlsearch incsearch
 set mouse=a
 
@@ -83,7 +83,7 @@ set spelllang=en_us
 set smartcase
 set ignorecase
 set nospell
-set wrap
+set nowrap
 set whichwrap=b,s,<,>
 set textwidth=0
 set encoding=utf-8
@@ -147,7 +147,7 @@ nnoremap [B :bfirst<CR>
 nnoremap ]B :blast<CR>
 
 " delete buffer
-nnoremap <C-x> :bd<CR>
+nnoremap <Leader>q :bd<CR>
 
 "tabline navigation
 noremap [t :tabprevious<cr>
@@ -158,12 +158,14 @@ noremap <leader>tn :tabnew<cr>
 noremap <leader>tc :tabclose<cr>
 noremap <leader>te :tabedit
 
-" Open current file with wsl-open
-nnoremap <leader>xo :!xdg-open %<cr>
-
 " Move through the valid compilers. Set by b:valid_compilers
 "nnoremap <silent> [c :CompilerPrevious<CR>
 "nnoremap <silent> ]c :CompilerNext<CR>
+
+
+noremap <leader><C-h> :split<CR>
+noremap <leader><C-v> :vsplit<CR>
+
 
 " Move through the loclist
 nnoremap <silent> <leader>l :call utils#ToggleList("Location List", 'l')<CR>
@@ -187,12 +189,14 @@ vnoremap <silent> < <<cr>gv
 " If there are buffers without a name,
 " or that are readonly, bring up a confirm prompt
 nnoremap <leader>W :confirm wqall<CR>
-" quit all without saving
+" Quit withou saving
+nnoremap <C-q> :confirm q!<CR>
+" Quit all without saving
 nnoremap <leader>Q :confirm qall!<CR>
 
 " Write buffer (save)
-imap <C-S> <esc>:w<CR>
-nnoremap <C-Q> <esc>:wq<CR>
+inoremap <C-s> <esc>:w<CR>
+nnoremap <C-s> :w<CR>
 
 " Seamlessly treat visual lines as actual lines when moving around.
 noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
@@ -309,8 +313,11 @@ noremap <expr> <C-b> max([winheight(0) - 2, 1])
 noremap <expr> <C-e> (line("w$") >= line('$') ? "j" : "3\<C-e>")
 noremap <expr> <C-y> (line("w0") <= 1         ? "k" : "3\<C-y>")
 
-" open current file in chrome browser
+" open current file in Windows Google Chrome application
 nnoremap <leader>p :!chrome.exe %<CR>
+
+" Open current file with xdg-open
+nnoremap <leader>xo :!xdg-open "%"<cr>
 
 " command line alias
 "cnoremap w!! w !sudo tee % >/dev/null
@@ -334,9 +341,13 @@ inoremap <C-f> <Right>
 inoremap <C-a> <Home>
 
 " settings for resize splitted window
-nmap <C-w>[ :vertical resize -3<CR>
-nmap <C-w>] :vertical resize +3<CR>
+nmap <Leader>[ :vertical resize -3<CR>
+nmap <Leader>] :vertical resize +3<CR>
+nmap <Leader>{ :resize -3<CR>
+nmap <Leader>} :resize +3<CR>
 
+nmap <M-z> :set wrap!<CR>
+imap <M-z> <ESC>:set wrap!<CR>i
 
 "======================================================================
 " Autocommands:
