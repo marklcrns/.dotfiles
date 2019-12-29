@@ -25,7 +25,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 # Path to alternate neovim from squashfs-root
 export PATH=~/squashfs-root/usr/bin:$PATH
 
-# Path to browsers
+# Path to Windows installed brows/ers
 export PATH=$PATH:/mnt/c/Program\ Files/Mozilla\ Firefox/
 export PATH=$PATH:/mnt/c/Program\ Files\ \(x86\)/Google/Chrome/Application/
 
@@ -39,7 +39,14 @@ export TLDR_CODE='red'
 export TLDR_PARAM='blue'
 
 # WSL 2 X Server Issue workaround
+# nameserver 172.24.112.1
+# echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 export DISPLAY=$(awk '/nameserver/ {print $2}' /etc/resolv.conf):0
+
+# DPI Scaling for Linux GUI apps with 3840x2160 screen res
+# https://superuser.com/questions/1370361/blurry-fonts-on-using-windows-default-scaling-with-wsl-gui-applications-hidpi
+export GDK_SCALE=0.5
+export GDK_DPI_SCALE=1
 
 # truncate command line prompt user
 DEFAULT_USER=`whoami`
@@ -250,6 +257,7 @@ export FZF_DEFAULT_OPTS="--ansi --height 70% -1 --reverse --multi --inline-info
                  --preview '[[ \$(file --mime {}) =~ binary ]] &&
                  echo {} is a binary file ||
                  (bat --style=header --color=always {} ||
+                 bat --style=header --color=always {} ||
                  highlight -O ansi -l {} 2> /dev/null ||
                  cat {} ||
                  tree -c {}) 2> /dev/null | head -200'

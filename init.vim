@@ -31,7 +31,7 @@ if dein#load_state('/home/marklcrns/.cache/dein')
 " Required:
   call dein#add('/home/marklcrns/.cache/dein/repos/github.com/Shougo/dein.vim')
 
-  " Auto Completion (Completion sources in Coc Config section below)
+  " Auto Completion (Completion sources in Coc Config below)
   call dein#add('neoclide/coc.nvim', {'merge':0, 'rev': 'release'})
   call dein#add('honza/vim-snippets')
 
@@ -101,9 +101,11 @@ if dein#load_state('/home/marklcrns/.cache/dein')
   call dein#add('neoclide/vim-easygit')
 
   " Themes
-  call dein#add('gruvbox-community/gruvbox')
+  " call dein#add('gruvbox-community/gruvbox')
+  call dein#add('sainnhe/gruvbox-material')
   call dein#add('itchyny/lightline.vim')
   call dein#add('bagrat/vim-buffet')
+  call dein#add('numirias/semshi', {'do': ':UpdateRemotePlugins'})
 
   " Extras
   call dein#add('wlemuel/vim-tldr')
@@ -111,6 +113,7 @@ if dein#load_state('/home/marklcrns/.cache/dein')
   call dein#add('yuttie/comfortable-motion.vim')
   call dein#add('thinca/vim-quickrun')
   call dein#add('simnalamburt/vim-mundo')
+  call dein#add('terryma/vim-multiple-cursors')
   "call dein#add('liuchengxu/vim-which-key',
     "\ { 'on_cmd': ['WhichKey', 'WhichKey!'] })
 
@@ -152,6 +155,7 @@ let g:coc_global_extensions = [
   \ 'coc-emmet',
   \ 'coc-html',
   \ 'coc-tsserver',
+  \ 'coc-tslint-plugin',
   \ 'coc-stylelint',
   \ 'coc-css',
   \ 'coc-python',
@@ -221,16 +225,16 @@ inoremap <silent><expr> <c-space> coc#refresh()
 "inoremap <expr> <Tab> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<Tab>"
 
 " alt + j and alt + k to scroll pop-up menu float when visible and scrollable
-nnoremap <expr><A-j> coc#util#has_float() ?
+nnoremap <expr><M-n> coc#util#has_float() ?
       \ coc#util#float_scrollable() ?
       \ coc#util#float_scroll(1)
       \ : ""
-      \ : "\<A-j>"
-nnoremap <expr><A-k> coc#util#has_float() ?
+      \ : "\<M-n>"
+nnoremap <expr><M-p> coc#util#has_float() ?
       \ coc#util#float_scrollable() ?
       \ coc#util#float_scroll(0)
       \ : ""
-      \ : "\<A-k>"
+      \ : "\<M-p>"
 
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
@@ -263,8 +267,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader><F2> <Plug>(coc-rename)
 
 " Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+xmap <leader>fs  <Plug>(coc-format-selected)
+nmap <leader>fs  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -291,8 +295,8 @@ omap af <Plug>(coc-funcobj-a)
 
 " Use <C-s> for select selections ranges, needs server support, like:
 " coc-tsserver, coc-python
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
+nmap <silent> <M-s> <Plug>(coc-range-select)
+xmap <silent> <M-s> <Plug>(coc-range-select)
 
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
@@ -338,6 +342,19 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
 
 "--------------------------------------------------
+" Emmet Config
+"--------------------------------------------------
+
+let g:user_emmet_mode='a'    "enable all function in all mode.
+
+" Remap emmet leader key from <C-y>
+let g:user_emmet_leader_key='<C-e>'
+
+" Enable emmet only for certain files
+let g:user_emmet_install_global = 0
+autocmd FileType html,htmldjango,css EmmetInstall
+
+"--------------------------------------------------
 " Lightline Config (Coc and fugitive integration)
 "--------------------------------------------------
 " Resources:
@@ -346,7 +363,7 @@ nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
 " NOTES: When uninstalled, set back to showmode to see status line modes
 set noshowmode
 let g:lightline = {
-  \ 'colorscheme': 'powerline',
+  \ 'colorscheme': 'gruvbox_material',
   \ 'component': {
   \   'lineinfo': '%3l:%-2v',
   \ },
@@ -480,6 +497,7 @@ noremap <Localleader><Tab> :bn<CR>
 noremap <Localleader><S-Tab> :bp<CR>
 
 " Wipe current buffer
+noremap <C-x> :Bw<CR>
 noremap <Leader><Tab> :Bw<CR>
 noremap <Leader><S-Tab> :Bonly<CR>
 
@@ -496,7 +514,15 @@ let g:buffet_show_index = 1
 let g:tmux_navigator_disable_when_zoomed = 1
 
 " Auto save on pane switch
-let g:tmux_navigator_save_on_switch = 1
+let g:tmux_navigator_save_on_switch = 0
+
+"let g:tmux_navigator_no_mappings = 1
+
+"nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+"nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+"nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+"nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+"nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
 
 "--------------------------------------------------
 " NerdTree Config
@@ -511,7 +537,7 @@ let g:NERDTreeCascadeOpenSingleChildDir = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 
-"let NERDTreeIgnore=['^node_modules$[[dir]]', '^env$[[dir]]', '^__[[dir]]', '^.git$[[dir]]']
+let NERDTreeIgnore=['^node_modules$[[dir]]', '^env$[[dir]]', '^__[[dir]]', '^.git$[[dir]]']
 
 " Open nerd tree at the current file or close nerd tree if pressed again.
 nnoremap <silent> <expr> <Leader>nc g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : bufexists(expand('%')) ? "\:NERDTreeFind<CR>" : "\:NERDTree<CR>"
@@ -733,8 +759,8 @@ function! s:defx_mappings() abort
 	nnoremap <silent><buffer><expr> h     defx#do_action('close_tree')
 	nnoremap <silent><buffer><expr> t     defx#do_action('open_tree_recursive')
 	nnoremap <silent><buffer><expr> st    defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
-	nnoremap <silent><buffer><expr> sg    defx#do_action('multi', [['drop', 'vsplit'], 'quit'])
-	nnoremap <silent><buffer><expr> sv    defx#do_action('multi', [['drop', 'split'], 'quit'])
+	nnoremap <silent><buffer><expr> sv    defx#do_action('multi', [['drop', 'vsplit'], 'quit'])
+	nnoremap <silent><buffer><expr> sh    defx#do_action('multi', [['drop', 'split'], 'quit'])
 	nnoremap <silent><buffer><expr> P     defx#do_action('open', 'pedit')
 	nnoremap <silent><buffer><expr> y     defx#do_action('yank_path')
 	nnoremap <silent><buffer><expr> x     defx#do_action('execute_system')
@@ -748,11 +774,11 @@ function! s:defx_mappings() abort
 	nnoremap <silent><buffer><expr> <C-g>  defx#do_action('print')
 
 	" File/dir management
-	nnoremap <silent><buffer><expr><nowait> c  defx#do_action('copy')
-	nnoremap <silent><buffer><expr><nowait> m  defx#do_action('move')
-	nnoremap <silent><buffer><expr><nowait> p  defx#do_action('paste')
-	nnoremap <silent><buffer><expr><nowait> r  defx#do_action('rename')
-	nnoremap <silent><buffer><expr><nowait> d  defx#do_action('remove_trash')
+	nnoremap <silent><buffer><expr><nowait> C  defx#do_action('copy')
+	nnoremap <silent><buffer><expr><nowait> M  defx#do_action('move')
+	nnoremap <silent><buffer><expr><nowait> P  defx#do_action('paste')
+	nnoremap <silent><buffer><expr><nowait> R  defx#do_action('rename')
+	nnoremap <silent><buffer><expr><nowait> D  defx#do_action('remove_trash')
 	nnoremap <silent><buffer><expr> K  defx#do_action('new_directory')
 	nnoremap <silent><buffer><expr> N  defx#do_action('new_multiple_files')
 
@@ -1108,13 +1134,13 @@ endfunction
 " Comfortable Motion Config
 "--------------------------------------------------
 
-let g:comfortable_motion_interval = 1000.0/80  " Default: 1000.0/60
+let g:comfortable_motion_interval = 1000.0/60  " Default: 1000.0/60
 let g:comfortable_motion_friction = 180.0       " Default: 80
 let g:comfortable_motion_air_drag = 1.0        " Default: 2.0
 
 " Scrolling configuration proportional to the window height
 let g:comfortable_motion_no_default_key_mappings = 1
-let g:comfortable_motion_impulse_multiplier = 1.5  " Feel free to increase/decrease this value.
+let g:comfortable_motion_impulse_multiplier = 1  " Feel free to increase/decrease this value.
 nnoremap <silent> <C-d> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
 nnoremap <silent> <C-u> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
 nnoremap <silent> <C-f> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 4)<CR>
@@ -1301,7 +1327,7 @@ auto FileType html,css,javascript map <leader>br :BraceyReload<CR>
 " Gutentags Guide: https://www.reddit.com/r/vim/comments/d77t6j/guide_how_to_setup_ctags_with_gutentags_properly/
 
 let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
-let g:gutentags_project_root = ['.root', '.git', '.project', 'package.json', 'env']
+let g:gutentags_project_root = ['.root', '.git', '.project', 'env']
 let g:gutentags_generate_on_write = 1
 let g:gutentags_generate_on_missing = 1
 let g:gutentags_generate_on_new = 1
@@ -1358,6 +1384,8 @@ let g:gutentags_ctags_exclude = [
       \ '*.css',
       \ '*.less',
       \ '*.scss',
+      \ '*.html',
+      \ '*.js',
       \ '*.exe', '*.dll',
       \ '*.mp3', '*.ogg', '*.flac',
       \ '*.swp', '*.swo',
@@ -1373,32 +1401,66 @@ command! -nargs=0 GutentagsClearCache call system('rm ' . g:gutentags_cache_dir 
 " Fzf Config
 "--------------------------------------------------
 
+" File search
 nnoremap <leader>ff :call Fzf_dev()<CR>
-nnoremap <leader>fF :Files!<CR>
-nnoremap <leader>Ff :FZF<CR>
+nnoremap <leader>Ff :Files!<CR>
+nnoremap <leader>fF :FZF<CR>
 nnoremap <leader>FF :FZF!<CR>
+
+
+" <leader>f_ where 'f' is the window size and '_' the object to search
+" Lowercase 'f' for floating window and uppercase 'F' for fullscreen fzf search
+" Lowercase '_' for regular object search and uppercase '_' for objects from buffer search
+
+" File search for current buffers
 nnoremap <leader>fb :Buffers<CR>
+nnoremap <leader>Fb :Buffers!<CR>
+
+" File search for current windows
 nnoremap <leader>fw :Windows<CR>
+nnoremap <leader>Fw :Windows!<CR>
+
+" Ctags and ctags from buffer search
 nnoremap <leader>ft :Tags<CR>
+nnoremap <leader>Ft :Tags!<CR>
 nnoremap <leader>fT :BTags<CR>
+nnoremap <leader>FT :BTags!<CR>
+
+" Command history search
 nnoremap <leader>fh :History<CR>
+nnoremap <leader>Fh :History!<CR>
+
+" Lines from current files and lines from files within buffer search
 nnoremap <leader>fl :Lines<CR>
+nnoremap <leader>Fl :Lines!<CR>
 nnoremap <leader>fL :BLines<CR>
+nnoremap <leader>FL :BLines!<CR>
+
+" Git commits and git commits from buffer search
 nnoremap <leader>fc :Commits<CR>
-nnoremap <leader>fL :BCommits<CR>
+nnoremap <leader>Fc :Commits!<CR>
+nnoremap <leader>fC :BCommits<CR>
+nnoremap <leader>FC :BCommits!<CR>
+
+" Custome find function with fzf that searches for every characters from every
+" files within the root folder, and returns the file and the line in which the
+" the matched characters are located. Same as :Lines command but with Rgrep as
+" default command.
+nnoremap <leader>fd :Find<CR>
+nnoremap <leader>Fd :Find!<CR>
 
 " Using Rgrep with fzf
 if executable('rg')
   "let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
-  let $FZF_DEFAULT_COMMAND = 'fd --type f --follow --exclude .git --exclude node_modules --exclude env --exclude __pycache__ --color=always'
+  let $FZF_DEFAULT_COMMAND = 'fd --type f --follow --exclude .git --exclude node_modules --exclude env --exclude "__*" --color=always'
   set grepprg=rg\ --vimgrep
 
-  command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+  command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --glob "!env" --glob "!__*" --glob "!node_modules" --glob "!package.json" --glob "!package-lock.json" --glob "!.eslintrc.json" --glob "!gulpfile.js" --glob "!*.md" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
 endif
 
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
+  \ 'ctrl-h': 'split',
   \ 'ctrl-v': 'vsplit' }
 
 let g:fzf_layout = { 'window': 'call FloatingFZF()' }
@@ -1516,6 +1578,9 @@ let g:mkdp_auto_start = 0
 let g:mkdp_command_for_global = 1
 let g:mkdp_markdown_css = "/home/marklcrns/.local/lib/github-markdown-css/github-markdown.css"
 
+" Uses any available IP instead of just listening for localhost
+let g:mkdp_open_to_the_world = 1
+
 "--------------------------------------------------
 " Easy motion Config
 "--------------------------------------------------
@@ -1531,7 +1596,7 @@ let g:EasyMotion_use_smartsign_us = 1
 " Mundo Config
 "--------------------------------------------------
 
-nnoremap <silent> <leader>m :MundoToggle<CR>
+nnoremap <silent> <leader>mm :MundoToggle<CR>
 
 set undofile
 set undodir=~/.vim/undo
@@ -1590,7 +1655,13 @@ let g:vista#renderer#icons = {
 " Vim Zoom Config
 "--------------------------------------------------
 
-nmap <C-w>f <Plug>(zoom-toggle)
+nmap <Leader><C-f> <Plug>(zoom-toggle)
+
+"--------------------------------------------------
+" Better Whitespace Config
+"--------------------------------------------------
+
+nmap <Leader>sw :StripWhitespace<Cr>
 
 "--------------------------------------------------
 " Startify Config
@@ -1629,6 +1700,13 @@ let g:startify_bookmarks = [
 	\ ]
 
 "--------------------------------------------------
+" NERDCommenter Config
+"--------------------------------------------------
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+"--------------------------------------------------
 " Tablet Mode Config
 "--------------------------------------------------
 
@@ -1651,59 +1729,74 @@ let g:table_mode_corner='|'
 let g:table_mode_corner_corner='+'
 let g:table_mode_header_fillchar='='
 
+"--------------------------------------------------
+" Multiple Cursors Config
+"--------------------------------------------------
+
+let g:multi_cursor_use_default_mapping=0
+
+" Default mapping
+let g:multi_cursor_start_word_key      = '<C-n>'
+let g:multi_cursor_select_all_word_key = '<A-m>'
+let g:multi_cursor_start_key           = 'g<C-n>'
+let g:multi_cursor_select_all_key      = 'g<A-n>'
+let g:multi_cursor_next_key            = '<C-n>'
+let g:multi_cursor_prev_key            = '<C-p>'
+let g:multi_cursor_skip_key            = '<C-x>'
+let g:multi_cursor_quit_key            = '<Esc>'
+
+"--------------------------------------------------
+" Semshi Config
+"--------------------------------------------------
+
+function MyCustomHighlights()
+  hi semshiLocal           ctermfg=209 guifg=#ff875f
+  hi semshiGlobal          ctermfg=214 guifg=#ffaf00
+  hi semshiImported        ctermfg=214 guifg=#ffaf00 cterm=bold gui=bold
+  hi semshiParameter       ctermfg=75  guifg=#5fafff
+  hi semshiParameterUnused ctermfg=117 guifg=#87d7ff cterm=underline gui=underline
+  hi semshiFree            ctermfg=218 guifg=#ffafd7
+  hi semshiBuiltin         ctermfg=207 guifg=#ff5fff
+  hi semshiAttribute       ctermfg=49  guifg=#00ffaf
+  hi semshiSelf            ctermfg=249 guifg=#b2b2b2
+  hi semshiUnresolved      ctermfg=226 guifg=#ffff00 cterm=underline gui=underline
+  hi semshiSelected        ctermfg=231 guifg=#ffffff ctermbg=161 guibg=#d7005f
+
+  hi semshiErrorSign       ctermfg=231 guifg=#ffffff ctermbg=160 guibg=#d70000
+  hi semshiErrorChar       ctermfg=231 guifg=#ffffff ctermbg=160 guibg=#d70000
+  sign define semshiError text=E> texthl=semshiErrorSign
+endfunction
+autocmd FileType python call MyCustomHighlights()
+
+" highlight groups to persist across colorscheme switches
+autocmd ColorScheme * call MyCustomHighlights()
+
 
 "======================================================================
 " Color settings:
 "======================================================================
 
 "--------------------------------------------------
-" Gruvbox Color Scheme
+" Gruvbox Colorscheme
 "--------------------------------------------------
 
-colorscheme gruvbox
+" if you don't set this option, this color scheme will fall back to the original gruvbox
+set termguicolors
 
-" For Gruvbox to look correct in terminal Vim you'll want to source a palette
-" script that comes with the Gruvbox plugin.
-
-" Add this to your ~/.profile file:
-"   source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
-
-" Gruvbox comes with both a dark and light theme.
+" for dark version
 set background=dark
 
-" Gruvbox has 'hard', 'medium' (default) and 'soft' contrast options.
-let g:gruvbox_contrast_light='soft'
+" set contrast
+" this configuration option should be placed before `colorscheme gruvbox-material`
+" available values: 'hard', 'medium'(default), 'soft'
+let g:gruvbox_material_background = 'medium'
 
-" This needs to come last, otherwise the colors aren't correct.
-syntax on
+colorscheme gruvbox-material
 
 "--------------------------------------------------
 " Janah Color Scheme (modified)
 "--------------------------------------------------
 " Repo: https://github.com/mhinz/vim-janah
-
-" Plugin: vim-startify {{{1
-"highlight StartifyBracket guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-"highlight StartifyFile guifg=#eeeeee ctermfg=255 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-"highlight StartifyFooter guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-"highlight StartifyHeader guifg=#87df87 ctermfg=114 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-"highlight StartifyNumber guifg=#ffaf5f ctermfg=215 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-"highlight StartifyPath guifg=#8a8a8a ctermfg=245 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-"highlight StartifySection guifg=#dfafaf ctermfg=181 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-"highlight StartifySelect guifg=#5fdfff ctermfg=81 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-"highlight StartifySlash guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-"highlight StartifySpecial guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-
-" Plugin: vim-easymotion {{{1
-highlight EasyMotionTarget guifg=#ffff5f ctermfg=227 guibg=NONE ctermbg=NONE gui=bold cterm=bold
-highlight EasyMotionTarget2First guifg=#df005f ctermfg=161 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-highlight EasyMotionTarget2Second guifg=#ffff5f ctermfg=227 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-
-" Pmenu {{{1
-"highlight Pmenu guifg=#e4e4e4 ctermfg=254 guibg=#262626 ctermbg=235 gui=NONE cterm=NONE
-"highlight PmenuSbar ctermfg=NONE guibg=#444444 ctermbg=238 gui=NONE cterm=NONE
-"highlight PmenuSel guifg=#df5f5f ctermfg=167 guibg=#444444 ctermbg=238 gui=bold cterm=bold
-"highlight PmenuThumb ctermfg=NONE guibg=#df5f5f ctermbg=167 gui=NONE cterm=NONE
 
 " Folds {{{1
 highlight foldcolumn ctermfg=102 ctermbg=237 cterm=none guifg=#878787 guibg=#3a3a3a gui=none
@@ -1716,14 +1809,6 @@ highlight Comment guifg=#585858 ctermfg=240 guibg=NONE ctermbg=NONE gui=NONE cte
 " ThinkVim Colors
 "--------------------------------------------------
 " Repo: https://github.com/hardcoreplayers/ThinkVim/blob/master/core/color.vim
-
-"Pmenu Colors
-" ---------------------------------------------------------
-hi PMenuSel ctermfg=252 ctermbg=15006 guifg=#d0d0d0 guibg=#ba8baf guisp=#ba8baf cterm=NONE gui=NONE
-hi Pmenu ctermfg=103 ctermbg=236 guifg=#9a9aba guibg=#34323e guisp=NONE cterm=NONE gui=NONE
-hi PmenuSbar ctermfg=NONE ctermbg=234 guifg=NONE guibg=#212026 guisp=NONE cterm=NONE gui=NONE
-hi PmenuSel ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5e5079 guisp=NONE cterm=NONE gui=NONE
-hi PmenuThumb ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5d4d7a guisp=NONE cterm=NONE gui=NONE
 
 "GitGutter Coc-git Highlight
 " ---------------------------------------------------------
@@ -1742,10 +1827,6 @@ highlight def link Defx_filename_3_Unknown Comment
 highlight def link Defx_filename_3_Renamed Title
 highlight def link Defx_filename_3_Unmerged Label
 " highlight Defx_git_Deleted   ctermfg=13 guifg=#b294b
-
-" buftabline highlight
-" ---------------------------------------------------------
-"highlight BufTabLineCurrent ctermbg=96 guibg=#5d4d7a
 
 
 "======================================================================
@@ -2087,3 +2168,28 @@ au FocusGained,BufEnter * :checktime
 "au Syntax * RainbowParenthesesLoadRound
 "au Syntax * RainbowParenthesesLoadSquare
 "au Syntax * RainbowParenthesesLoadBraces
+
+
+"--------------------------------------------------
+" Gruvbox Colorscheme
+"--------------------------------------------------
+" Ref: https://github.com/nickjj/dotfiles/blob/master/.vimrc
+
+" call dein#add('gruvbox-community/gruvbox')
+
+" colorscheme gruvbox
+
+" " For Gruvbox to look correct in terminal Vim you'll want to source a palette
+" " script that comes with the Gruvbox plugin.
+
+" " Add this to your ~/.profile file:
+" "   source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
+
+" " Gruvbox comes with both a dark and light theme.
+" set background=dark
+
+" " Gruvbox has 'hard', 'medium' (default) and 'soft' contrast options.
+" let g:gruvbox_contrast_light='hard'
+
+" " This needs to come last, otherwise the colors aren't correct.
+" syntax on

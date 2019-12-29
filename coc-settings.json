@@ -86,9 +86,9 @@
   "eslint.autoFixOnSave": true,
 
   "html.filetypes": [
+      "htmldjango",
       "html",
-      "handlebars",
-      "htmldjango"
+      "handlebars"
   ],
 
   "emmet.includeLanguages": {
