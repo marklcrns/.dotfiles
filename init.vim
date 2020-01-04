@@ -6,11 +6,12 @@
 
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
-source ~/.vimrc
+source ~/.vim/.vimrc
 
 "======================================================================
 " Nvim Plugins: Dein Plugin Manager
 "======================================================================
+
 " Resources:
 " Lazy Loading: https://herringtondarkholme.github.io/2016/02/26/dein/
 
@@ -39,7 +40,7 @@ if dein#load_state('/home/marklcrns/.cache/dein')
   call dein#add('sheerun/vim-polyglot')
   call dein#add('iamcco/markdown-preview.nvim',
     \ {'on_ft': ['markdown', 'pandoc.markdown', 'rmd'],
-    \ 'build': 'cd app & npm install' })
+    \ 'build': 'cd app & yarn install' })
   call dein#add('othree/html5.vim')
   call dein#add('plasticboy/vim-markdown')
 
@@ -101,7 +102,6 @@ if dein#load_state('/home/marklcrns/.cache/dein')
   call dein#add('neoclide/vim-easygit')
 
   " Themes
-  " call dein#add('gruvbox-community/gruvbox')
   call dein#add('sainnhe/gruvbox-material')
   call dein#add('itchyny/lightline.vim')
   call dein#add('bagrat/vim-buffet')
@@ -138,14 +138,14 @@ endif
 " Plugins Configurations:
 "======================================================================
 
-""--------------------------------------------------
-"" CoC Config
-""--------------------------------------------------
-"" Resources:
-"" https://www.narga.net/how-to-set-up-code-completion-for-vim/
-"" https://www.youtube.com/watch?v=gnupOrSEikQ&t=266s
-"" https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
-"" https://github.com/neoclide/coc.nvim/wiki
+"--------------------------------------------------
+" CoC Config
+"--------------------------------------------------
+" Resources:
+" https://www.narga.net/how-to-set-up-code-completion-for-vim/
+" https://www.youtube.com/watch?v=gnupOrSEikQ&t=266s
+" https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
+" https://github.com/neoclide/coc.nvim/wiki
 
 let g:coc_global_extensions = [
   \ 'coc-json',
@@ -1305,23 +1305,6 @@ map <Leader>vz :call VimuxZoomRunner()<CR>
 let g:VimuxOrientation = "v"    " Horizontal (defailt: v)
 
 "--------------------------------------------------
-" Bracey Config
-"--------------------------------------------------
-
-" NOTE: Plugin is installed in .vimrc using Vim-plug plugin manager.
-"	Dein plugin manager not working
-
-let g:bracey_refresh_on_save= 1
-let g:bracey_eval_on_save = 1         " Re-evaluate JavaScript on save
-let g:bracey_auto_start_browser= 1
-"let g:bracey_browser_command='chrome'
-let g:bracey_server_port=5050
-"let g:bracey_server_path='https://localhost'
-auto FileType html,css,javascript map <leader>bo :Bracey<CR>
-auto FileType html,css,javascript map <leader>bs :BraceyStop<CR>
-auto FileType html,css,javascript map <leader>br :BraceyReload<CR>
-
-"--------------------------------------------------
 " Gutentags Config
 "--------------------------------------------------
 " Gutentags Guide: https://www.reddit.com/r/vim/comments/d77t6j/guide_how_to_setup_ctags_with_gutentags_properly/
@@ -1576,7 +1559,10 @@ nmap <leader>mc <Plug>MarkdownPreviewStop
 let g:mkdp_auto_close = 0
 let g:mkdp_auto_start = 0
 let g:mkdp_command_for_global = 1
-let g:mkdp_markdown_css = "/home/marklcrns/.local/lib/github-markdown-css/github-markdown.css"
+
+" Go to markdown-preview plugin directory and run 'yarn add github-markdown-css'
+" Ref: https://github.com/sindresorhus/github-markdown-css#install
+let g:mkdp_markdown_css = "/home/marklcrns/.cache/dein/repos/github.com/iamcco/markdown-preview.nvim/node_modules/github-markdown-css/github-markdown.css"
 
 " Uses any available IP instead of just listening for localhost
 let g:mkdp_open_to_the_world = 1
@@ -1610,6 +1596,7 @@ let g:mundo_right = 0
 "--------------------------------------------------
 
 nnoremap <silent> <Leader>vv :Vista!!<CR>
+nnoremap <silent> <Leader>vs :Vista show<CR>
 nnoremap <silent> <Leader>vc :Vista coc<CR>
 nnoremap <silent> <Leader>vf :Vista finder coc<CR>
 
@@ -1669,12 +1656,22 @@ nmap <Leader>sw :StripWhitespace<Cr>
 
 autocmd User Startified setlocal cursorline
 
+" Start vim with startify and defx on
+autocmd VimEnter *
+	    \   if !argc()
+	    \ |   Startify
+	    \ |   Defx
+	    \ |   wincmd w
+	    \ | endif
+
 let g:startify_enable_special      = 0
 let g:startify_files_number        = 8
 let g:startify_relative_path       = 1
 let g:startify_change_to_dir       = 1
 let g:startify_update_oldfiles     = 1
+let g:startify_session_autoload    = 1
 let g:startify_session_persistence = 1
+let NERDTreeHijackNetrw = 0
 
 let g:startify_lists = [
       \ { 'type': 'sessions',  'header': ['   Sessions']       },
@@ -1689,7 +1686,7 @@ let g:startify_custom_header =
 	\ startify#center(startify#fortune#cowsay('', '═','║','╔','╗','╝','╚'))
 
 let g:startify_bookmarks = [
-	\ { 'v': '~/.vimrc' },
+	\ { 'v': '~/.vim/.vimrc' },
 	\ { 'n': '~/.config/nvim/init.vim' },
 	\ { 'm': '~/.mutt/muttrc' },
 	\ { 'ma': '~/.mail_aliases' },
@@ -2193,3 +2190,18 @@ au FocusGained,BufEnter * :checktime
 
 " " This needs to come last, otherwise the colors aren't correct.
 " syntax on
+
+"--------------------------------------------------
+" Bracey Config
+"--------------------------------------------------
+
+" let g:bracey_refresh_on_save= 1
+" let g:bracey_eval_on_save = 1         " Re-evaluate JavaScript on save
+" let g:bracey_auto_start_browser= 1
+" "let g:bracey_browser_command='chrome'
+" let g:bracey_server_port=5050
+" "let g:bracey_server_path='https://localhost'
+" auto FileType html,css,javascript map <leader>bo :Bracey<CR>
+" auto FileType html,css,javascript map <leader>bs :BraceyStop<CR>
+" auto FileType html,css,javascript map <leader>br :BraceyReload<CR>
+

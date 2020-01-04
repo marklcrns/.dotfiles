@@ -69,11 +69,11 @@
   "diagnostic.signOffset": 9999999,
       "diagnostic.errorSign": "●",
 
-  "python.formatting.provider": "autopep8",
-  "python.linting.pep8Enabled": true,
   "python.pythonPath": "python3",
   "python.jediEnabled": true,
-  "python.jediPath": "/usr/local/lib/python3.8/site-packages",
+  "python.formatting.provider": "autopep8",
+  "python.jediPath": "~/.local/lib/python3.6/site-packages/",
+  "python.formatting.autopep8Path": "~/.local/lib/python3.6/site-packages/autopep8.py",
 
   "prettier.statusItemText": "ⓟ ",
   "prettier.eslintIntegration": true,
