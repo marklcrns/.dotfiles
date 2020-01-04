@@ -1,30 +1,38 @@
 # Additional aliases for .basrc and .zshrc
 
+alias bashrc='nvim ~/.bashrc'
+alias zshrc='nvim ~/.zshrc'
+alias vimrc='nvim ~/.vim/.vimrc'
+alias nvimrc='nvim ~/.config/nvim/init.vim'
+
+# Completely remove apt package and its configuration
+alias aptremove='sudo apt purge --auto-remove'
+
 # Directories Aliases
-alias home='cd /mnt/c/Users/Mark; clear'
-alias docs='cd /mnt/c/Users/Mark/Documents; clear'
-alias trade='cd /mnt/c/Users/Mark/OneDrive/Trading/Stocks; clear'
-alias down='cd /mnt/c/Users/Mark/Downloads; clear'
+alias home='cd /mnt/c/Users/MarkL; clear'
+alias docs='cd /mnt/c/Users/MarkL/Documents; clear'
+alias trade='cd /mnt/c/Users/MarkL/OneDrive/Trading/Stocks; clear'
+alias down='cd /mnt/c/Users/MarkL/Downloads; clear'
 
-alias work='cd ~/Work; clear'
-alias workgit='cd ~/Work/GitHubRepos; clear'
+alias dev='cd ~/Projects/Dev; clear'
+alias devgit='cd ~/Projects/Dev/GitHubRepos; clear'
 
-alias ref='cd ~/Work/GitHubRepos/Private/References; clear'
-alias reflinux='cd ~/Work/GitHubRepos/Private/References/WSL; clear'
-alias refubuntu='cd ~/Work/GitHubRepos/Private/References/WSL/Ubuntu; clear'
+alias ref='cd ~/Projects/Dev/GitHubRepos/References; clear'
+alias refwsl='cd ~/Projects/Dev/GitHubRepos/References/WSL; clear'
+alias refubuntu='cd ~/Projects/Dev/GitHubRepos/References/WSL/Ubuntu; clear'
 
 # Secure files Aliases
-alias seclock='cd /mnt/c/Users/Mark/Documents; cmd.exe /c ./Folder\ Lock.bat; clear'
-alias sec='cd /mnt/c/Users/Mark/Documents/Secure/; clear'
-alias secfiles='cd /mnt/c/Users/Mark/Documents/Secure; clear'
-alias secdocs='cd /mnt/c/Users/Mark/Documents/Secure/e-Files; clear'
-alias secpersonal='cd /mnt/c/Users/Mark/Documents/Secure/Personal; clear'
-alias secenter='cd /mnt/c/Users/Mark/Documents; cmd.exe /C ./Folder\ Lock.bat; cd ./Secure; clear'
-alias secbrowse='cd /mnt/c/Users/Mark/Documents/Secure; explorer.exe .; cd -; clear'
+alias secenter='cd /mnt/c/Users/MarkL; cmd.exe /C Secure.bat; cd ./Secure; clear'
+alias seclock='cd /mnt/c/Users/MarkL; cmd.exe /c Secure.bat; clear'
+alias sec='cd /mnt/c/Users/MarkL/Secure/; clear'
+alias secfiles='cd /mnt/c/Users/MarkL/Secure; clear'
+alias secdocs='cd /mnt/c/Users/MarkL/Secure/e-Files; clear'
+alias secpersonal='cd /mnt/c/Users/MarkL/Secure/Personal; clear'
+alias secbrowse='cd /mnt/c/Users/MarkL/Secure; explorer.exe .; cd -; clear'
 
 # Editors Aliases
 alias subl='/mnt/c/Program\ Files/Sublime\ Text\ 3/subl.exe'
-alias charm='/mnt/c/Users/Mark/AppData/Local/JetBrains/Toolbox/apps/PyCharm-C/ch-0/192.6817.19/bin/pycharm64.exe'
+alias charm='/mnt/c/Users/MarkL/AppData/Local/JetBrains/Toolbox/apps/PyCharm-C/ch-0/192.6817.19/bin/pycharm64.exe'
 
 # Running Windows executable
 alias cmd='cmd.exe /C'
@@ -47,7 +55,8 @@ alias repo='open `git remote -v | grep fetch | awk "{print $2}" | sed 's/git@/ht
 alias gist='open https://gist.github.com; clear'
 
 # live browser server
-alias live='http-server'
+# alias live='http-server'
+
 # tutorial https://www.youtube.com/watch?v=L9zfMeB2Zcc&app=desktop
 alias browsersync='browser-sync start --server --files "*"'
 # Proxy configured to work with Django
@@ -85,7 +94,23 @@ alias pwdp='cd "`vs clipboard`"; clear'
 alias ls='exa'
 
 # Updating dotfiles Repo
-alias dotupdate='cd ~/Work/GitHubRepos/dotfiles;cp -r ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ .;cp -r ~/.mutt/muttrc ~/.mutt/mailcap ./.mutt;cp -r ~/.config/ranger/rc.conf .;git add .;clear; git status; cd -; nvim ~/Work/GitHubRepos/dotfiles/updates.txt'
-alias dotfiles='cd ~/Work/GitHubRepos/dotfiles'
+alias dotupdate='cd ~/Projects/Dev/GitHubRepos/dotfiles;cp -r ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vim/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ .;cp -r ~/.config/ranger/rc.conf .;git add .;clear; git status; cd -; nvim ~/Projects/Dev/GitHubRepos/dotfiles/updates.txt'
+alias dotfiles='cd ~/Projects/Dev/GitHubRepos/dotfiles'
 
-alias linuxgui='startxfce4'
+# Nameserver workaround for WSL
+alias backupns='cat /etc/resolv.conf > ~/nameserver.txt'
+alias setns='echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf'
+alias restorens='cat ~/nameserver.txt | sudo tee /etc/resolv.conf'
+alias printns='cat /etc/resolv.conf'
+
+# Web Servers
+alias starta2='sudo service apache2 start'
+alias startms='sudo service mysql start'
+alias startpg='sudo service postgresql start'
+alias stopa2='sudo service apache2 stop'
+alias stopms='sudo service mysql stop'
+alias stoppg='sudo service postgresql stop'
+alias runms='sudo mysql -u root -p'
+alias runpg='sudo -u postgres psql'
+
+# alias linuxgui='startxfce4'
