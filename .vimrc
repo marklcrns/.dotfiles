@@ -5,17 +5,6 @@
 "   \_/ |_|_| |_| |_|_|  \___|
 "
 "======================================================================
-" Plugins: Vim-plug Plugin Manager
-"======================================================================
-
-call plug#begin('~/.vim/plugged')
-
-Plug 'turbio/bracey.vim'
-
-call plug#end()
-
-
-"======================================================================
 " Basic Configuration:
 "======================================================================
 " Resources:
@@ -23,10 +12,10 @@ call plug#end()
 " https://github.com/nickjj/dotfiles/blob/master/.vimrc
 " https://github.com/srydell/dotfiles/blob/master/vim/.vim/vimrc
 
+set viminfo='100,n$HOME/.vim/files/info/viminfo
+
 filetype plugin indent on
 syntax enable
-
-set viminfo='100,n$HOME/.vim/files/info/viminfo
 
 " Navigation
 set number
@@ -117,6 +106,11 @@ endif
 set backupdir=~/.vim/tmp/backup//
 set directory=~/.vim/tmp/swap//
 set undodir=~/.vim/tmp/undo//
+
+" Delete old backup, backup current file
+" set backup
+" set writebackup
+
 
 " Nvim specific settings
 if !has('nvim')
@@ -277,7 +271,7 @@ xnoremap p pgvy
 
 " Edit Vim config file.
 "map <Leader>ev :e $MYVIMRC<CR>
-map <Leader>ev :e ~/.vimrc<CR>                 " .vimrc
+map <Leader>ev :e ~/.vim/.vimrc<CR>                 " .vimrc
 map <Leader>en :e ~/.config/nvim/init.vim<CR>  " init.vim
 
 " Source Vim config file.

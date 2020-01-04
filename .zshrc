@@ -8,73 +8,20 @@ fi
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Solution for the npm issue. Also includes VS Code Path
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
-
-# Windows System32 Path (for cmd.exe, powershell.exe, notepad.exe, etc)
-export PATH=$PATH:/mnt/c/Windows/System32:/mnt/c/Windows:/mnt/c/Windows/System32/wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0
-
-# VS Code and VS Code Insiders Path
-export PATH=$PATH:/mnt/c/Users/Mark/AppData/Local/Programs/Microsoft\ VS\ Code/bin
-export PATH=$PATH:/mnt/c/Users/Mark/AppData/Local/Programs/Microsoft\ VS\ Code\ Insiders/bin
-
-# Java Home/JDK Path
-export JAVA_HOME=~/jdk-13.0.1
-export PATH=$JAVA_HOME/bin:$PATH
-
-# Path to alternate neovim from squashfs-root
-export PATH=~/squashfs-root/usr/bin:$PATH
-
-# Path to Windows installed brows/ers
-export PATH=$PATH:/mnt/c/Program\ Files/Mozilla\ Firefox/
-export PATH=$PATH:/mnt/c/Program\ Files\ \(x86\)/Google/Chrome/Application/
-
-# tldr Config
-# Repo: https://github.com/raylee/tldr
-export PATH=$PATH:~/bin
-export TLDR_HEADER='magenta bold underline'
-export TLDR_QUOTE='italic'
-export TLDR_DESCRIPTION='green'
-export TLDR_CODE='red'
-export TLDR_PARAM='blue'
-
-# WSL 2 X Server Issue workaround
-# nameserver 172.24.112.1
-# echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
-export DISPLAY=$(awk '/nameserver/ {print $2}' /etc/resolv.conf):0
-
-# DPI Scaling for Linux GUI apps with 3840x2160 screen res
-# https://superuser.com/questions/1370361/blurry-fonts-on-using-windows-default-scaling-with-wsl-gui-applications-hidpi
-export GDK_SCALE=0.5
-export GDK_DPI_SCALE=1
-
-# truncate command line prompt user
-DEFAULT_USER=`whoami`
-
-# Activate dir_colors 256dark theme
-if [ -f ~/.dircolors ]; then
-  eval `dircolors ~/.dircolors`
-fi
-
-# Sends to home directory on zsh startup
-# if [ -t 1 ]; then
-#  cd ~
-# fi
-
 # Path to your oh-my-zsh installation.
 export ZSH="/home/marklcrns/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
 # If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "bira" "myCobalt2" )
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -128,16 +75,19 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+plugins=(git npm node pip vi-mode zsh-autosuggestions zsh-syntax-highlighting)
 
-plugins=(git vi-mode zsh-autosuggestions zsh-syntax-highlighting)
+source $ZSH/oh-my-zsh.sh
 
 # Accepts auto-suggestion with ctrl-n in vi mode
 #ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(down-history)
+
+# Accepts auto-suggestion with ctrl-space
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 bindkey '^ ' autosuggest-accept
-bindkey '^z' autosuggest-toggle
 
-source $ZSH/oh-my-zsh.sh
+# Toggles zsh auto-suggestion
+bindkey '^z' autosuggest-toggle
 
 # Vi mode
 # Resources:
@@ -177,8 +127,8 @@ bindkey '^o' edit-command-line
 
 export KEYTIMEOUT=1
 
-
 # User configuration
+
 export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -202,18 +152,17 @@ export EDITOR=$VISUAL
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
-# Example aliases
+# Example aliaseou
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-
 alias sozsh='source ~/.zshrc'
-alias zshrc='nvim ~/.zshrc'
 
 # Aliases moved to ~/.bash_aliases
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+
 
 # Fuzzy file finder configurations
 # resources:
@@ -257,8 +206,8 @@ export FZF_DEFAULT_OPTS="--ansi --height 70% -1 --reverse --multi --inline-info
                  --preview '[[ \$(file --mime {}) =~ binary ]] &&
                  echo {} is a binary file ||
                  (bat --style=header --color=always {} ||
-                 bat --style=header --color=always {} ||
                  highlight -O ansi -l {} 2> /dev/null ||
+                 bat --style=header --color=always {} ||
                  cat {} ||
                  tree -c {}) 2> /dev/null | head -200'
                  --preview-window='bottom:70%:wrap:hidden'
@@ -279,21 +228,18 @@ export FZF_ALT_C_OPTS="--preview 'tree -c {} | head -200'"
 # alias for opening nvim on fzf selection
 alias nvimfzf='nvim "$(fzf)"'
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-
-## pyenv PATH
-## Repo: https://github.com/pyenv/pyenv
-#export PYENV_ROOT="$HOME/.pyenv"
-#export PATH="$PYENV_ROOT/bin:$PATH"
-#eval "$(pyenv init -)"
-##eval "$(pyenv virtualenv-init -)"
+# Fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # lets vim/nvim to use $VIRTUAL_ENV interpreter when activated
 if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
   source "${VIRTUAL_ENV}/bin/activate"
 fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

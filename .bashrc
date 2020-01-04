@@ -1,45 +1,25 @@
-
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-# connecting to X11 server
-export DISPLAY=localhost:0.0
+# Path to Windows installed browsers
+export PATH=$PATH:/mnt/c/Program\ Files/Mozilla\ Firefox/
+export PATH=$PATH:/mnt/c/Program\ Files\ \(x86\)/Google/Chrome/Application/
 
-# DPI Scaling for Terminator with 3840x2160 screen res
-# https://superuser.com/questions/1370361/blurry-fonts-on-using-windows-default-scaling-with-wsl-gui-applications-hidpi
-# export GDK_SCALE=0.5
-# export GDK_DPI_SCALE=2
+# Tldr Config
+# Repo: https://github.com/raylee/tldr
+export PATH=$PATH:~/bin
+export TLDR_HEADER='magenta bold underline'
+export TLDR_QUOTE='italic'
+export TLDR_DESCRIPTION='green'
+export TLDR_CODE='red'
+export TLDR_PARAM='blue'
 
-# Solution for the npm issue.
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+# WSL 2 XServer Issue workaround
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
 
-# Windows System32 Path (for cmd.exe, powershell.exe, notepad.exe, etc)
-export PATH=$PATH:/mnt/c/Windows/System32:/mnt/c/Windows:/mnt/c/Windows/System32/wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0
-
-# VS Code Path
-export PATH=$PATH:/mnt/c/Users/Mark/AppData/Local/Programs/Microsoft\ VS\ Code/bin
-export PATH=$PATH:/mnt/c/Users/Mark/AppData/Local/Programs/Microsoft\ VS\ Code\ Insiders/bin
-
-# JDK Path
-export JAVA_HOME=~/jdk-13.0.1
-export PATH=$JAVA_HOME/bin:$PATH
-
-# Path to alternate neovim from squashfs-root
-export PATH=~/squashfs-root/usr/bin:$PATH
-
-# Truncate prompt directory line to 2 directory (current and the one above)
-export PROMPT_DIRTRIM=3
-
-# Home Directory on startup
-#if [ -t 1 ]; then
-# cd ~
-#fi
-
-# Launch Zsh on startup (uncomment to activate)
-#if [ -t 1 ]; then
-  #exec zsh
-#fi
+# Gpg signing issue fix with git commits
+export GPG_TTY=$(tty)
 
 # If not running interactively, don't do anything
 case $- in
@@ -96,9 +76,9 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -141,7 +121,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 alias sobash='source ~/.bashrc'
-alias bashrc='nvim ~/.bashrc'
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -158,82 +137,13 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export VISUAL="nvim"
-export EDITOR=$VISUAL
-
-# Fuzzy file finder configurations
-# resources:
-# https://github.com/junegunn/fzf/wiki/configuring-shell-key-bindings
-# https://www.youtube.com/watch?v=qgg5jhi_els
-# https://remysharp.com/2018/08/23/cli-improved
-
-# use ~~ as the trigger sequence instead of the default **
-#export FZF_COMPLETION_TRIGGER='~~'
-
-# environment vaiable for exluding .git and node_modules directory
-fd_options="--follow --exclude .git --exclude node_modules --color=always"
-
-# for faster traversal with git ls-tree
-#export FZF_DEFAULT_COMMAND='
-  #(git ls-tree -r --name-only head ||
-   #find . -path "*/\.*" -prune -o -type f -print -o -type l -print |
-      ##sed s/^..//) 2> /dev/null'
-
-# default search filter command
-export FZF_DEFAULT_COMMAND="git ls-files --cahed --others --exclude-standard | fd --type f --type $fd_options"
-
-# apply fd_options variable to ctrl-t and alt-c
-export FZF_CTRL_T_COMMAND="fd $fd_options"
-export FZF_ALT_C_COMMAND="fd --type d $fd_options"
-
-# alternative default options
-#export FZF_DEFAULT_OPTS="--bind='ctrl-e:execute(code {})+abort' --ansi --height 70% --layout=reverse --inline-info --preview-window 'bottom:70%:hidden' --bind='ctrl-o:toggle-preview' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
-
-# default options with preview with bat > highlight > cat > tree
-# also with key bindings:
-# f2: toggle-preview
-# ctrl-d: half-page-down
-# ctrl-u: half-page-update
-# ctrl-a: select-all+accept
-# ctrl-y: yank current selection to clipboard using xclip
-export FZF_DEFAULT_OPTS="--ansi --height 70% -1 --reverse --multi --inline-info
-                 --preview '[[ \$(file --mime {}) =~ binary ]] &&
-                 echo {} is a binary file ||
-                 (bat --style=header --color=always {} ||
-                 highlight -O ansi -l {} 2> /dev/null ||
-                 cat {} ||
-                 tree -c {}) 2> /dev/null | head -200'
-                 --preview-window='bottom:70%:wrap:hidden'
-                 --bind='f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(code {})'"
-
-# ctrl-t options
-export FZF_CTRL_T_OPTS="--ansi --preview '(bat --color=always --decorations=always --style=header,grid --line-range :300 {} 2> /dev/null || cat {} || tree -c {}) 2> /dev/null | head -200'"
-
-# ctrl-r options
-export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:wrap"
-
-# alternative alt-c search filter command
-#export fzf_alt_c_command="rg --sort-files --files --null 2> /dev/null | xargs -0 dirname | uniq"
-
-# alt-c options will open preview window for tree
-export FZF_ALT_C_OPTS="--preview 'tree -c {} | head -200'"
-
-# alias for opening nvim on fzf selection
-alias nvimfzf='nvim "$(fzf)"'
-
+# Always run zsh on bash startup
+# if [ -t 1 ]; then
+# 	exec zsh
+# fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-
-## pyenv PATH
-## Repo: https://github.com/pyenv/pyenv
-#export PYENV_ROOT="$HOME/.pyenv"
-#export PATH="$PYENV_ROOT/bin:$PATH"
-#eval "$(pyenv init -)"
-##eval "$(pyenv virtualenv-init -)"
-

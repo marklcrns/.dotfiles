@@ -8,10 +8,6 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-if [ -f ~/.dir_colors ]; then
-  eval `dircolors ~/.dir_colors`
-fi
-
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
@@ -29,8 +25,5 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
-
-# required script for vim gruvbox color scheme
-source "$HOME/.cache/dein/repos/github.com/gruvbox-community/gruvbox/gruvbox_256palette.sh"
 
 export PATH="$HOME/.cargo/bin:$PATH"
