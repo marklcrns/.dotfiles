@@ -98,7 +98,7 @@ alias la='exa -la'
 
 # Updating dotfiles-wsl-ubuntu Repo
 alias dotupdate='cd ~/Projects/Dev/GitHubRepos/dotfiles-wsl-ubuntu;cp -r ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vim/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ .;cp -r ~/.config/ranger/rc.conf .;git add .;clear; git status; cd -; nvim ~/Projects/Dev/GitHubRepos/dotfiles-wsl-ubuntu/updates.txt'
-alias dotfiles-wsl-ubuntu='cd ~/Projects/Dev/GitHubRepos/dotfiles-wsl-ubuntu'
+alias dotfiles='cd ~/Projects/Dev/GitHubRepos/dotfiles-wsl-ubuntu'
 
 # Nameserver workaround for WSL
 alias backupns='cat /etc/resolv.conf > ~/nameserver.txt'
