@@ -14,12 +14,13 @@ alias docs='cd /mnt/c/Users/MarkL/Documents; clear'
 alias trade='cd /mnt/c/Users/MarkL/OneDrive/Trading/Stocks; clear'
 alias down='cd /mnt/c/Users/MarkL/Downloads; clear'
 
+alias proj='cd ~/Projects; clear'
 alias dev='cd ~/Projects/Dev; clear'
 alias devgit='cd ~/Projects/Dev/GitHubRepos; clear'
 
 alias ref='cd ~/Projects/Dev/GitHubRepos/References; clear'
 alias refwsl='cd ~/Projects/Dev/GitHubRepos/References/WSL; clear'
-alias refubuntu='cd ~/Projects/Dev/GitHubRepos/References/WSL/Ubuntu; clear'
+alias refubu='cd ~/Projects/Dev/GitHubRepos/References/WSL/Ubuntu; clear'
 
 # Secure files Aliases
 alias secenter='cd /mnt/c/Users/MarkL; cmd.exe /C Secure.bat; cd ./Secure; clear'
@@ -90,8 +91,10 @@ alias rmroot='find . -name "*.root" -type f; find . -name "*.root" -type f -dele
 alias pwdc='pwd | cs clipboard; clear'
 alias pwdp='cd "`vs clipboard`"; clear'
 
-# Remapping native commands with newer programs
+# Replace ls with exa
 alias ls='exa'
+alias l='exa -l'
+alias la='exa -la'
 
 # Updating dotfiles Repo
 alias dotupdate='cd ~/Projects/Dev/GitHubRepos/dotfiles;cp -r ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vim/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ .;cp -r ~/.config/ranger/rc.conf .;git add .;clear; git status; cd -; nvim ~/Projects/Dev/GitHubRepos/dotfiles/updates.txt'
