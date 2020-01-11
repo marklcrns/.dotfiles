@@ -18,9 +18,9 @@ alias proj='cd ~/Projects; clear'
 alias dev='cd ~/Projects/Dev; clear'
 alias devgit='cd ~/Projects/Dev/GitHubRepos; clear'
 
-alias ref='cd ~/Projects/Dev/GitHubRepos/References; clear'
-alias refwsl='cd ~/Projects/Dev/GitHubRepos/References/WSL; clear'
-alias refubu='cd ~/Projects/Dev/GitHubRepos/References/WSL/Ubuntu; clear'
+alias ref='cd ~/Projects/references; clear'
+alias refwsl='cd ~/Projects/references/WSL; clear'
+alias refubu='cd ~/Projects/references/WSL/Ubuntu; clear'
 
 # Secure files Aliases
 alias secenter='cd /mnt/c/Users/MarkL; cmd.exe /C Secure.bat; cd ./Secure; clear'
@@ -96,9 +96,9 @@ alias ls='exa'
 alias l='exa -l'
 alias la='exa -la'
 
-# Updating dotfiles-wsl-ubuntu Repo
-alias dotupdate='cd ~/Projects/Dev/GitHubRepos/dotfiles-wsl-ubuntu;cp -r ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vim/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ .;cp -r ~/.config/ranger/rc.conf .;git add .;clear; git status; cd -; nvim ~/Projects/Dev/GitHubRepos/dotfiles-wsl-ubuntu/updates.txt'
-alias dotfiles='cd ~/Projects/Dev/GitHubRepos/dotfiles-wsl-ubuntu'
+# Updating dotfiles Repo
+alias dotupdate='cd ~/Projects/dotfiles;cp -r ~/.bashrc ~/.bash_aliases ~/.tmux.conf ~/.vim/.vimrc ~/.zshrc ~/.config/nvim/init.vim ~/.config/nvim/coc-settings.json ~/.profile ~/.ctags.d/ .;cp -r ~/.config/ranger/rc.conf .;git add .;clear; git status; cd -; nvim ~/Projects/dotfiles/updates.txt'
+alias dotfiles='cd ~/Projects/dotfiles'
 
 # Nameserver workaround for WSL
 alias backupns='cat /etc/resolv.conf > ~/nameserver.txt'
