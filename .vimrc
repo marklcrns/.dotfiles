@@ -73,6 +73,7 @@ set smartcase
 set ignorecase
 set nospell
 set nowrap
+set cursorline
 set whichwrap=b,s,<,>
 set textwidth=0
 set encoding=utf-8
@@ -94,10 +95,13 @@ set magic                    " For regular expressions turn magic on
 set path=.,**                " Directories to search when using gf
 set colorcolumn=80
 
-" Enables 24-bit RGB color in the TUI
-if has('termguicolors')
-	set termguicolors
-endif
+" " Enables 24-bit RGB color in the TUI
+" if has('termguicolors')
+	" set termguicolors
+" endif
+
+" To get vim syntax colors inside tmux instance
+set notermguicolors
 
 " Creating backup files when editing in case vim crashes
 " Resources:
@@ -128,7 +132,7 @@ runtime! macros/matchit.vim " enabled awesome match abilities like HTML tag matc
 " Resources:
 " https://vim.fandom.com/wiki/Avoid_the_escape_key
 
-let mapleader = '\'      " See :help expr-string for syntax docs
+let mapleader = ' '      " See :help expr-string for syntax docs
 let maplocalleader = ';'
 
 " Remap f1 to fzf helptags instead of default help
@@ -156,10 +160,8 @@ noremap <leader>te :tabedit
 "nnoremap <silent> [c :CompilerPrevious<CR>
 "nnoremap <silent> ]c :CompilerNext<CR>
 
-
 noremap <leader><C-h> :split<CR>
 noremap <leader><C-v> :vsplit<CR>
-
 
 " Move through the loclist
 nnoremap <silent> <leader>l :call utils#ToggleList("Location List", 'l')<CR>
@@ -211,17 +213,21 @@ vmap y ygv<Esc>
 inoremap <Esc> <Esc>`^
 
 " Esc from insert, visual and command mode shortcuts (also moves cursor to the right)
-imap jw <Esc>`^
-imap wj <Esc>`^
-inoremap <expr> <C-L> (pumvisible() <bar><bar> &insertmode) ? '<C-e><Esc>`^' : '<Esc>`^'
+inoremap <expr> jj (pumvisible() <bar><bar> &insertmode) ? '<C-e><Esc>`^' : '<Esc>`^'
+inoremap <expr> kk (pumvisible() <bar><bar> &insertmode) ? '<C-e><Esc>`^' : '<Esc>`^'
+inoremap <expr> <C-l> (pumvisible() <bar><bar> &insertmode) ? '<C-e><Esc>`^' : '<Esc>`^'
 vmap <C-l> <Esc>
 cmap <C-l> <C-c>
+
+" Select all
+nmap <C-a> ggVG
+vmap <C-a> <Esc>ggVG
 
 " Closing pop-up auto-completion before inserting new line with alt + o
 inoremap <expr> <A-o> (pumvisible() <bar><bar> &insertmode) ? '<C-e><A-o>' : '<A-o>'
 
 " Insert newline above the cursor with alt + shift + o
-inoremap <A-O> <Esc>O
+" inoremap <A-O> <Esc>O
 
 " Navigate around splits in any mode `ALT+{h,j,k,l}
 "tnoremap <A-h> <C-\><C-N><C-w>h
@@ -272,7 +278,7 @@ xnoremap p pgvy
 " Edit Vim config file.
 "map <Leader>ev :e $MYVIMRC<CR>
 map <Leader>ev :e ~/.vim/.vimrc<CR>                 " .vimrc
-map <Leader>en :e ~/.config/nvim/init.vim<CR>  " init.vim
+map <Leader>en :e ~/.config/nvim/init.vim<CR>       " init.vim
 
 " Source Vim config file.
 map <Leader>sv :source $MYVIMRC<CR>

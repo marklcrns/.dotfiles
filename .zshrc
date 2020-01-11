@@ -75,7 +75,8 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git npm node pip vi-mode zsh-autosuggestions zsh-syntax-highlighting)
+# plugins=(git npm node pip vi-mode zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git vi-mode zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -84,7 +85,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Accepts auto-suggestion with ctrl-space
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-bindkey '^ ' autosuggest-accept
+bindkey '^x' autosuggest-accept
 
 # Toggles zsh auto-suggestion
 bindkey '^z' autosuggest-toggle
@@ -152,7 +153,7 @@ export EDITOR=$VISUAL
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
-# Example aliaseou
+# Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
@@ -162,6 +163,9 @@ alias sozsh='source ~/.zshrc'
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
 # Fuzzy file finder configurations
@@ -228,11 +232,6 @@ export FZF_ALT_C_OPTS="--preview 'tree -c {} | head -200'"
 # alias for opening nvim on fzf selection
 alias nvimfzf='nvim "$(fzf)"'
 
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# Fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # lets vim/nvim to use $VIRTUAL_ENV interpreter when activated

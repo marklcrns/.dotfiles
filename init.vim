@@ -6,7 +6,7 @@
 
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
-source ~/.vim/.vimrc
+source ~/.vimrc
 
 "======================================================================
 " Nvim Plugins: Dein Plugin Manager
@@ -50,19 +50,14 @@ if dein#load_state('/home/marklcrns/.cache/dein')
     \ {'on_cmd': 'Goyo'})
   call dein#add('junegunn/limelight.vim',
     \ {'on_cmd': ['Limelight', 'Limelight!']})
-  call dein#add('janko/vim-test',
-    \ {'on_cmd': ['TestFile', 'TestNearest', 'TestSuit']})
   call dein#add('haya14busa/is.vim')  " Automate clearing search hightlight
   call dein#add('~/.fzf')
   call dein#add('junegunn/fzf.vim')
   call dein#add('airblade/vim-rooter')
+  call dein#add('tmhedberg/SimpylFold')
 
   " File Managers
-  call dein#add('scrooloose/nerdtree',
-    \ {'on_cmd': ['NERDTree', 'NERDTreeClose', 'NERDTreeFind']})
-  call dein#add('Xuyuanp/nerdtree-git-plugin')
   call dein#add('ryanoasis/vim-devicons')
-  call dein#add('tiagofumo/vim-nerdtree-syntax-highlight')
   call dein#add('Shougo/defx.nvim')
   call dein#add('kristijanhusak/defx-git')
   call dein#add('kristijanhusak/defx-icons')
@@ -76,10 +71,8 @@ if dein#load_state('/home/marklcrns/.cache/dein')
   call dein#add('ntpeters/vim-better-whitespace')
   call dein#add('tpope/vim-repeat')
   call dein#add('tpope/vim-sleuth')
-  call dein#add('jiangmiao/auto-pairs')
   call dein#add('junegunn/vim-easy-align')
   call dein#add('nathanaelkane/vim-indent-guides')
-  call dein#add('dhruvasagar/vim-table-mode')
 
   " Editor Navigation
   call dein#add('easymotion/vim-easymotion')
@@ -87,7 +80,6 @@ if dein#load_state('/home/marklcrns/.cache/dein')
 
   " Tags Manager
   call dein#add('ludovicchabant/vim-gutentags')
-  call dein#add('majutsushi/tagbar')
   call dein#add('liuchengxu/vista.vim')
 
   " Tmux
@@ -108,7 +100,6 @@ if dein#load_state('/home/marklcrns/.cache/dein')
   call dein#add('numirias/semshi', {'do': ':UpdateRemotePlugins'})
 
   " Extras
-  call dein#add('wlemuel/vim-tldr')
   call dein#add('mhinz/vim-startify')
   call dein#add('yuttie/comfortable-motion.vim')
   call dein#add('thinca/vim-quickrun')
@@ -312,21 +303,21 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Using CocList
 " Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> \a  :<C-u>CocList diagnostics<cr>
 " Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+nnoremap <silent> \e  :<C-u>CocList extensions<cr>
 " Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+nnoremap <silent> \c  :<C-u>CocList commands<cr>
 " Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+nnoremap <silent> \o  :<C-u>CocList outline<cr>
 " Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+nnoremap <silent> \s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent> \j  :<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent> \k  :<C-u>CocPrev<CR>
 " Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+nnoremap <silent> \p  :<C-u>CocListResume<CR>
 
 " Configure highlight color of Coc error signs
 highlight link CocErrorSign GruvboxRed
@@ -339,7 +330,7 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 "===Coc-yank Config===
 
 " Open yank list history
-nnoremap <silent> <space>y  :<C-u>CocList -A --normal yank<cr>
+nnoremap <silent> \y  :<C-u>CocList -A --normal yank<cr>
 
 "--------------------------------------------------
 " Emmet Config
@@ -523,101 +514,6 @@ let g:tmux_navigator_save_on_switch = 0
 "nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
 "nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
 "nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
-
-"--------------------------------------------------
-" NerdTree Config
-"--------------------------------------------------
-
-let g:NERDTreeShowHidden= 1
-let g:NERDTreeAutoDeleteBuffer= 1
-let g:NERDTreeQuitOnOpen= 1
-let g:NERDTreeHijackNetrw = 0
-let g:NERDTreeShowBookmarks = 1
-let g:NERDTreeCascadeOpenSingleChildDir = 1
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-
-let NERDTreeIgnore=['^node_modules$[[dir]]', '^env$[[dir]]', '^__[[dir]]', '^.git$[[dir]]']
-
-" Open nerd tree at the current file or close nerd tree if pressed again.
-nnoremap <silent> <expr> <Leader>nc g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : bufexists(expand('%')) ? "\:NERDTreeFind<CR>" : "\:NERDTree<CR>"
-
- "Open NerdTree from root directory
-nnoremap <leader>nn :NERDTreeToggle<CR>
-
-"" sync open file with NERDTree
-"" " Check if NERDTree is open or active
-"function! IsNERDTreeOpen()
-  "return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
-"endfunction
-
-"" Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
-"" file, and we're not in vimdiff
-"function! SyncTree()
-  "if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
-    "NERDTreeFind
-    "wincmd p
-  "endif
-"endfunction
-
-"" Highlight currently open buffer in NERDTree
-"autocmd BufEnter * call SyncTree()
-
-"--------------------------------------------------
-" NerdTree Git Plugin Config
-"--------------------------------------------------
-
-let g:NERDTreeIndicatorMapCustom = {
-  \ "Modified"  : "✹",
-  \ "Staged"    : "✚",
-  \ "Untracked" : "✭",
-  \ "Renamed"   : "➜",
-  \ "Unmerged"  : "",
-  \ "Deleted"   : "✖",
-  \ "Dirty"     : "✗",
-  \ "Clean"     : "✔︎",
-  \ 'Ignored'   : '☒',
-  \ "Unknown"   : "?"
-  \ }
-
-"--------------------------------------------------
-" NerdTree Syntax Highlight Config
-"--------------------------------------------------
-
-let s:brown = "905532"
-let s:aqua =  "3AFFDB"
-let s:blue = "689FB6"
-let s:darkBlue = "44788E"
-let s:purple = "834F79"
-let s:lightPurple = "834F79"
-let s:red = "AE403F"
-let s:beige = "F5C06F"
-let s:yellow = "F09F17"
-let s:orange = "D4843E"
-let s:darkOrange = "F16529"
-let s:pink = "CB6F6F"
-let s:salmon = "EE6E73"
-let s:green = "8FAA54"
-let s:lightGreen = "31B53E"
-let s:white = "FFFFFF"
-let s:rspec_red = 'FE405F'
-let s:git_orange = 'F54D27'
-
-let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
-let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
-
-let g:NERDTreeExtensionHighlightColor = {} " this line is needed to avoid error
-let g:NERDTreeExtensionHighlightColor['css'] = s:blue " sets the color of css files to blue
-
-let g:NERDTreeExactMatchHighlightColor = {} " this line is needed to avoid error
-let g:NERDTreeExactMatchHighlightColor['.gitignore'] = s:git_orange " sets the color for .gitignore files
-
-let g:NERDTreePatternMatchHighlightColor = {} " this line is needed to avoid error
-let g:NERDTreePatternMatchHighlightColor['.*_spec\.rb$'] = s:rspec_red " sets the color for files ending with _spec.rb
-
-" Limit syntax highlighting to reduce lag
-let g:NERDTreeLimitedSyntax = 1
-
 
 "--------------------------------------------------
 " Defx Config
@@ -1191,10 +1087,10 @@ let g:indent_guides_color_change_percent = 10
 "--------------------------------------------------
 
 function! s:goyo_enter()
-  if executable('tmux') && strlen($TMUX)
-    silent !tmux set status off
-    silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
-  endif
+  " if executable('tmux') && strlen($TMUX)
+    " silent !tmux set status off
+    " silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  " endif
   set noshowmode
   set noshowcmd
   set scrolloff=999
@@ -1203,10 +1099,10 @@ function! s:goyo_enter()
 endfunction
 
 function! s:goyo_leave()
-  if executable('tmux') && strlen($TMUX)
-    silent !tmux set status on
-    silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-  endif
+  " if executable('tmux') && strlen($TMUX)
+    " silent !tmux set status on
+    " silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  " endif
   set showmode
   set showcmd
   set scrolloff=7
@@ -1660,7 +1556,6 @@ autocmd User Startified setlocal cursorline
 autocmd VimEnter *
 	    \   if !argc()
 	    \ |   Startify
-	    \ |   Defx
 	    \ |   wincmd w
 	    \ | endif
 
@@ -1695,6 +1590,8 @@ let g:startify_bookmarks = [
 	\ { 'a': '~/.bash_aliases' },
 	\ { 't': '~/.tmux.conf' },
 	\ ]
+
+nmap <Leader><C-t> :Startify<CR>
 
 "--------------------------------------------------
 " NERDCommenter Config
@@ -1894,6 +1791,10 @@ au FocusGained,BufEnter * :checktime
   "call dein#add('kien/rainbow_parentheses.vim')
     "\ { 'on_ft': 'python' })
   "call dein#add('turbio/bracey.vim')
+
+
+  " call dein#add('janko/vim-test',
+    " \ {'on_cmd': ['TestFile', 'TestNearest', 'TestSuit']})
 
 "--------------------------------------------------
 " Ale Config
@@ -2205,3 +2106,101 @@ au FocusGained,BufEnter * :checktime
 " auto FileType html,css,javascript map <leader>bs :BraceyStop<CR>
 " auto FileType html,css,javascript map <leader>br :BraceyReload<CR>
 
+"--------------------------------------------------
+" NerdTree Config
+"--------------------------------------------------
+
+  " call dein#add('scrooloose/nerdtree',
+    " \ {'on_cmd': ['NERDTree', 'NERDTreeClose', 'NERDTreeFind']})
+  " call dein#add('Xuyuanp/nerdtree-git-plugin')
+  " call dein#add('tiagofumo/vim-nerdtree-syntax-highlight')
+
+" let g:NERDTreeShowHidden= 1
+" let g:NERDTreeAutoDeleteBuffer= 1
+" let g:NERDTreeQuitOnOpen= 1
+" let g:NERDTreeHijackNetrw = 0
+" let g:NERDTreeShowBookmarks = 1
+" let g:NERDTreeCascadeOpenSingleChildDir = 1
+" let NERDTreeMinimalUI = 1
+" let NERDTreeDirArrows = 1
+
+" let NERDTreeIgnore=['^node_modules$[[dir]]', '^env$[[dir]]', '^__[[dir]]', '^.git$[[dir]]']
+
+" " Open nerd tree at the current file or close nerd tree if pressed again.
+" nnoremap <silent> <expr> <Leader>nc g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : bufexists(expand('%')) ? "\:NERDTreeFind<CR>" : "\:NERDTree<CR>"
+
+ " "Open NerdTree from root directory
+" nnoremap <leader>nn :NERDTreeToggle<CR>
+
+" "" sync open file with NERDTree
+" "" " Check if NERDTree is open or active
+" "function! IsNERDTreeOpen()
+  " "return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+" "endfunction
+
+" "" Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
+" "" file, and we're not in vimdiff
+" "function! SyncTree()
+  " "if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
+    " "NERDTreeFind
+    " "wincmd p
+  " "endif
+" "endfunction
+
+" "" Highlight currently open buffer in NERDTree
+" "autocmd BufEnter * call SyncTree()
+
+"--------------------------------------------------
+" NerdTree Git Plugin Config
+"--------------------------------------------------
+
+" let g:NERDTreeIndicatorMapCustom = {
+  " \ "Modified"  : "✹",
+  " \ "Staged"    : "✚",
+  " \ "Untracked" : "✭",
+  " \ "Renamed"   : "➜",
+  " \ "Unmerged"  : "",
+  " \ "Deleted"   : "✖",
+  " \ "Dirty"     : "✗",
+  " \ "Clean"     : "✔︎",
+  " \ 'Ignored'   : '☒',
+  " \ "Unknown"   : "?"
+  " \ }
+
+"--------------------------------------------------
+" NerdTree Syntax Highlight Config
+"--------------------------------------------------
+
+" let s:brown = "905532"
+" let s:aqua =  "3AFFDB"
+" let s:blue = "689FB6"
+" let s:darkBlue = "44788E"
+" let s:purple = "834F79"
+" let s:lightPurple = "834F79"
+" let s:red = "AE403F"
+" let s:beige = "F5C06F"
+" let s:yellow = "F09F17"
+" let s:orange = "D4843E"
+" let s:darkOrange = "F16529"
+" let s:pink = "CB6F6F"
+" let s:salmon = "EE6E73"
+" let s:green = "8FAA54"
+" let s:lightGreen = "31B53E"
+" let s:white = "FFFFFF"
+" let s:rspec_red = 'FE405F'
+" let s:git_orange = 'F54D27'
+
+" let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
+" let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
+
+" let g:NERDTreeExtensionHighlightColor = {} " this line is needed to avoid error
+" let g:NERDTreeExtensionHighlightColor['css'] = s:blue " sets the color of css files to blue
+
+" let g:NERDTreeExactMatchHighlightColor = {} " this line is needed to avoid error
+" let g:NERDTreeExactMatchHighlightColor['.gitignore'] = s:git_orange " sets the color for .gitignore files
+
+" let g:NERDTreePatternMatchHighlightColor = {} " this line is needed to avoid error
+" let g:NERDTreePatternMatchHighlightColor['.*_spec\.rb$'] = s:rspec_red " sets the color for files ending with _spec.rb
+
+" " Limit syntax highlighting to reduce lag
+" let g:NERDTreeLimitedSyntax = 1

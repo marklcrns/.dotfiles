@@ -15,6 +15,9 @@ export TLDR_DESCRIPTION='green'
 export TLDR_CODE='red'
 export TLDR_PARAM='blue'
 
+export VISUAL="nvim"
+export EDITOR=$VISUAL
+
 # WSL 2 XServer Issue workaround
 export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
 
@@ -141,6 +144,70 @@ fi
 # if [ -t 1 ]; then
 # 	exec zsh
 # fi
+
+# Fuzzy file finder configurations
+# resources:
+# https://github.com/junegunn/fzf/wiki/configuring-shell-key-bindings
+# https://www.youtube.com/watch?v=qgg5jhi_els
+# https://remysharp.com/2018/08/23/cli-improved
+
+# use ~~ as the trigger sequence instead of the default **
+#export FZF_COMPLETION_TRIGGER='~~'
+
+# environment vaiable for exluding directories
+fd_options="--follow --exclude .git --exclude node_modules --exclude env --exclude __pycache__ --color=always"
+
+# for faster traversal with git ls-tree
+#export FZF_DEFAULT_COMMAND='
+  #(git ls-tree -r --name-only head ||
+   #find . -path "*/\.*" -prune -o -type f -print -o -type l -print |
+      ##sed s/^..//) 2> /dev/null'
+
+# default search filter command
+export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fd --type f $fd_options"
+
+# apply fd_options variable to ctrl-t and alt-c
+export FZF_CTRL_T_COMMAND="fd --type f $fd_options"
+export FZF_ALT_C_COMMAND="fd --type d $fd_options"
+
+# alternative default options
+#export FZF_DEFAULT_OPTS="--bind='ctrl-e:execute(code {})+abort' --ansi --height 70% --layout=reverse --inline-info --preview-window 'bottom:70%:hidden' --bind='ctrl-o:toggle-preview' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
+
+# default options with preview with bat > highlight > cat > tree
+# also with key bindings:
+# f2: toggle-preview
+# ctrl-e: xdg-open
+# ctrl-d: half-page-down
+# ctrl-u: half-page-update
+# ctrl-a: select-all+accept
+# ctrl-y: yank current selection to clipboard using xclip
+# up arrow: preview scroll up
+# down arrow: preview scroll down
+export FZF_DEFAULT_OPTS="--ansi --height 70% -1 --reverse --multi --inline-info
+                 --preview '[[ \$(file --mime {}) =~ binary ]] &&
+                 echo {} is a binary file ||
+                 (bat --style=header --color=always {} ||
+                 highlight -O ansi -l {} 2> /dev/null ||
+                 bat --style=header --color=always {} ||
+                 cat {} ||
+                 tree -c {}) 2> /dev/null | head -200'
+                 --preview-window='bottom:70%:wrap:hidden'
+                 --bind='f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(wsl-open {}),up:preview-up,down:preview-down'"
+
+# ctrl-t options
+export FZF_CTRL_T_OPTS="--ansi --preview '(bat --color=always --decorations=always --style=header,grid --line-range :300 {} 2> /dev/null || cat {} || tree -c {}) 2> /dev/null | head -200'"
+
+# ctrl-r options
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:wrap"
+
+# alternative alt-c search filter command
+#export fzf_alt_c_command="rg --sort-files --files --null 2> /dev/null | xargs -0 dirname | uniq"
+
+# alt-c options will open preview window for tree
+export FZF_ALT_C_OPTS="--preview 'tree -c {} | head -200'"
+
+# alias for opening nvim on fzf selection
+alias nvimfzf='nvim "$(fzf)"'
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
