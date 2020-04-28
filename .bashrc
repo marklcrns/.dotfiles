@@ -2,9 +2,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-# Path to Windows installed browsers
 export PATH=$PATH:/mnt/c/Program\ Files/Mozilla\ Firefox/
-export PATH=$PATH:/mnt/c/Program\ Files\ \(x86\)/Google/Chrome/Application/
+export PATH=$PATH:/mnt/c/Program\ Files\ \(x86\)/Google/Chrome/Application
 
 # Tldr Config
 # Repo: https://github.com/raylee/tldr
@@ -15,14 +14,10 @@ export TLDR_DESCRIPTION='green'
 export TLDR_CODE='red'
 export TLDR_PARAM='blue'
 
-export VISUAL="nvim"
-export EDITOR=$VISUAL
+# Environent PATHs
+export PATH=$PATH:~/.local/bin
 
-# WSL 2 XServer Issue workaround
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
-
-# Gpg signing issue fix with git commits
-export GPG_TTY=$(tty)
+export EDITOR='nvim'
 
 # If not running interactively, don't do anything
 case $- in
@@ -30,16 +25,18 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
+# Workaround for WSL 2 X Server not working
+export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+export LIBGL_ALWAYS_INDIRECT=1
 
-# append to the history file, don't overwrite it
-shopt -s histappend
+# Ref: https://unix.stackexchange.com/a/48113
+export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
+export HISTSIZE=100000                   # big big history
+export HISTFILESIZE=100000               # big big history
+shopt -s histappend                      # append to history, don't overwrite it
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+# Save and reload the history after each command finishes
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -50,7 +47,7 @@ shopt -s checkwinsize
 #shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -101,22 +98,18 @@ if [ -x /usr/bin/dircolors ]; then
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+    #alias grep='grep --color=auto'
+    #alias fgrep='fgrep --color=auto'
+    #alias egrep='egrep --color=auto'
 fi
 
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+#alias ll='ls -l'
+#alias la='ls -A'
+#alias l='ls -CF'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -140,16 +133,13 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Always run zsh on bash startup
-# if [ -t 1 ]; then
-# 	exec zsh
-# fi
-
 # Fuzzy file finder configurations
 # resources:
 # https://github.com/junegunn/fzf/wiki/configuring-shell-key-bindings
 # https://www.youtube.com/watch?v=qgg5jhi_els
 # https://remysharp.com/2018/08/23/cli-improved
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # use ~~ as the trigger sequence instead of the default **
 #export FZF_COMPLETION_TRIGGER='~~'
@@ -164,11 +154,11 @@ fd_options="--follow --exclude .git --exclude node_modules --exclude env --exclu
       ##sed s/^..//) 2> /dev/null'
 
 # default search filter command
-export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fd --type f $fd_options"
+export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fdfind --type f $fd_options"
 
 # apply fd_options variable to ctrl-t and alt-c
-export FZF_CTRL_T_COMMAND="fd --type f $fd_options"
-export FZF_ALT_C_COMMAND="fd --type d $fd_options"
+export FZF_CTRL_T_COMMAND="fdfind --type f $fd_options"
+export FZF_ALT_C_COMMAND="fdfind --type d $fd_options"
 
 # alternative default options
 #export FZF_DEFAULT_OPTS="--bind='ctrl-e:execute(code {})+abort' --ansi --height 70% --layout=reverse --inline-info --preview-window 'bottom:70%:hidden' --bind='ctrl-o:toggle-preview' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
@@ -209,8 +199,16 @@ export FZF_ALT_C_OPTS="--preview 'tree -c {} | head -200'"
 # alias for opening nvim on fzf selection
 alias nvimfzf='nvim "$(fzf)"'
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# Execute fish on startup
+#if [ -t 1 ]; then
+#exec fish
+#fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+cd $HOME
