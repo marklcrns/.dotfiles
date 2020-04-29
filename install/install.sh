@@ -6,7 +6,10 @@
 
 # For Java Oracle JDK 11, Download Java SE that matches default-jdk installation
 # if the one provided in the install directory is not matched here:
+# new release:
 # https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
+# for previous versions:
+# https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html
 
 echo "The following packages are about to be installed:"
 echo apache2
@@ -151,14 +154,14 @@ pip3 install pipenv
 sudo apt install default-jre default-jdk -y
 ## Oracle JDK 11.0.7
 cd $BASEDIR/install/
-sudo cp jdk-11.0.7_linux-x64_bin.tar.gz /var/cache/oracle-jdk11-installer-local/
-echo "deb http://ppa.launchpad.net/linuxuprising/java/ubuntu focal main" | \
-  sudo tee /etc/apt/sources.list.d/linuxuprising-java.list
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 73C3DB2A
-sudo apt update
-sudo apt install oracle-java11-installer-local -y
-sudo apt install oracle-java11-set-default-local -y
-sudo update-alternatives --set java /usr/lib/jvm/java-11-oracle/bin/java
+sudo cp jdk-11.0.7_linux-x64_bin.tar.gz /var/cache/oracle-jdk11-installer-local && \
+  echo "deb http://ppa.launchpad.net/linuxuprising/java/ubuntu focal main" | \
+  sudo tee /etc/apt/sources.list.d/linuxuprising-java.list && \
+  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 73C3DB2A && \
+  sudo apt update && \
+  sudo apt install oracle-java11-installer-local -y && \
+  sudo apt install oracle-java11-set-default-local -y && \
+  sudo update-alternatives --set java /usr/lib/jvm/java-11-oracle/bin/java
 ## copy the Java path excluding the 'bin/java' if not exist
 grep -qxF 'JAVA_HOME="/usr/lib/jvm/java-11-oracle/"' /etc/environment || \
   echo 'TEST="/usr/lib/jvm/java-11-oracle/"' | sudo tee -a /etc/environment && \
@@ -317,6 +320,8 @@ curl -sSL https://get.haskellstack.org/ | sh
 git clone https://github.com/cdupont/R-pandoc.git && \
   cd R-pandoc && \
   stack install
+## clone configs
+git clone https://github.com/marklcrns/pandoc-goodies ~/.pandoc
 
 # Exa
 ## dependencies
