@@ -7,7 +7,94 @@
 # For Java Oracle JDK 11, Download Java SE that matches default-jdk installation
 # here: https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
 
-# Save script location
+echo "You are about to download the following packages:"
+echo apache2
+echo atool
+echo autoconf
+echo automake
+echo build-essential
+echo caca-utils
+echo cmatrix
+echo curl
+echo dbus-x11
+echo default-jdk
+echo default-jre
+echo emacs
+echo fd-find
+echo gawk
+echo gcc
+echo git
+echo git-lfs
+echo google-chrome-stable
+echo highlight
+echo htop
+echo libapache2-mod-php
+echo libffi-dev
+echo libjansson-dev
+echo libreoffice
+echo libseccomp-dev
+echo libsqlite3-dev
+echo libssl-dev
+echo libxml2-dev
+echo libyaml-dev
+echo make
+echo mysql-server
+echo mysql-workbench
+echo neofetch
+echo neovim
+echo oracle-java11-set-default-local
+echo pandoc
+echo pandoc-data
+echo php
+echo php-mysql
+echo phpmyadmin
+echo pkg-config
+echo python3-dev
+echo python3-docutils
+echo python3-neovim
+echo python3-pip
+echo python3-venv
+echo r-base
+echo ranger
+echo rclone-browser
+echo ripgrep
+echo screenfetch
+echo software-properties-common
+echo sqlite3
+echo sqlitebrowser
+echo taskwarrior
+echo texlive
+echo timewarrior
+echo tmux
+echo tmuxinator
+echo tree
+echo unzip
+echo urlview
+echo w3m
+echo w3m-img
+echo wget
+echo xclip
+echo xdg-utils
+echo xdotool
+echo xfce4
+echo xubuntu-desktop
+echo yad
+echo yarn
+echo zathura
+echo zenity
+echo zip
+echo zsh
+echo
+
+# Ref: https://stackoverflow.com/a/1885534/11850077
+read -p "Proceed installing? (y/n)" -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
+fi
+
+#Save script location
 BASEDIR="$( cd "$( dirname "$0" )" && pwd )"
 
 cd ~
@@ -22,14 +109,15 @@ echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 ################ Essentials #######################
 
 sudo apt update && sudo apt upgrade -y
-sudo apt install curl wget zip unzip git -y
 sudo apt install build-essential libssl-dev libffi-dev -y
 sudo apt install software-properties-common -y
 sudo apt-add-repository universe -y
+sudo apt install curl wget zip unzip git -y
 
 # XServer
 sudo apt install dbus-x11 -y
 sudo systemd-machine-id-setup
+
 
 #################### Languages ####################
 
@@ -210,18 +298,18 @@ curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.s
 # Pandoc & others
 sudo apt install pandoc-data pandoc texlive -y
 ## R-Pandoc
-### Dependencies
+### dependencies
 sudo apt install r-base -y
 curl -sSL https://get.haskellstack.org/ | sh
-### Installation
+### installation
 git clone https://github.com/cdupont/R-pandoc.git
 cd R-pandoc
 stack install
 
 # Exa
-## Dependencies
+## dependencies
 curl https://sh.rustup.rs -sSf | sh
-## Installation
+## installation
 wget -c https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-0.9.0.zip
 unzip exa-linux-x86_64-0.9.0.zip
 sudo mv exa-linux-x86_64 /usr/local/bin/exa
