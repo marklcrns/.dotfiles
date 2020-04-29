@@ -203,7 +203,9 @@ sudo make install
 cd ..
 
 # Git-lfs
-curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash && \
+  sudo apt install git-lfs -y && \
+  git lfs install
 
 # Pandoc & others
 sudo apt install pandoc-data pandoc texlive -y
