@@ -170,11 +170,11 @@ grep -qxF 'JAVA_HOME="/usr/lib/jvm/java-11-oracle/"' /etc/environment || \
 cd ~/Downloads
 
 # NVM/NodeJS
-curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
-LATESTNPM=`nvm ls-remote | tail -1 | sed 's/^.*\(v[0-9\.]\)/\1/'`
-nvm install $LATESTNPM
-nvm use $LATESTNPM
-nvm alias default $LATESTNPM
+curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash && \
+  LATESTNPM=`nvm ls-remote | tail -1 | sed 's/^.*\(v[0-9\.]\)/\1/'`
+  nvm install $LATESTNPM
+  nvm use $LATESTNPM
+  nvm alias default $LATESTNPM
 
 # NPM
 sudp apt install npm -y
@@ -245,15 +245,10 @@ git clone https://github.com/marklcrns/ThinkVim ~/.config/nvim/
 sudo apt install yad zenity -y
 cd ~/.config/nvim
 mkdir -p env/python3 && cd env/python3
-python3 -m venv env
-source env/bin/activate
-pip3 install neovim
-pip3 install tasklib
-pip3 install send2trash
-# checkers & linters
-pip3 install vim-vint
-pip3 install flake8 pylint autopep8
-deactivate
+python3 -m venv env && \
+  source env/bin/activate && \
+  pip3 install neovim tasklib send2trash vim-vint flake8 pylint autopep8 && \
+  deactivate
 npm install -g eslint stylelint prettier
 
 cd ~/Downloads
@@ -261,8 +256,8 @@ cd ~/Downloads
 # Emacs
 sudo apt install emacs -y
 # Doom Emacs
-git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
-~/.emacs.d/bin/doom install
+git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d && \
+  ~/.emacs.d/bin/doom install
 
 # Libre Office
 sudo apt install libreoffice -y
@@ -275,12 +270,12 @@ cd ~/Downloads
 sudo apt install tree xclip xdg-utils fd-find -y
 
 # Rclone
-curl https://rclone.org/install.sh | sudo bash
-sudo apt install rclone-browser -y
+curl https://rclone.org/install.sh | sudo bash && \
+  sudo apt install rclone-browser -y
 
 # Fzf
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
+  ~/.fzf/install
 
 # Ripgrep
 sudo apt install ripgrep -y
@@ -294,13 +289,13 @@ curl -LO https://github.com/sharkdp/bat/releases/download/v0.15.0/bat_0.15.0_amd
 ## Dependencies
 sudo apt install gcc make pkg-config autoconf automake python3-docutils libseccomp-dev libjansson-dev libyaml-dev libxml2-dev -y
 ## Installation
-git clone https://github.com/universal-ctags/ctags.git --depth=1
-cd ctags
-./autogen.sh
-./configure
-make
-sudo make install
-cd ..
+git clone https://github.com/universal-ctags/ctags.git --depth=1 && \
+  cd ctags && \
+  ./autogen.sh && \
+  ./configure && \
+  make && \
+  sudo make install && \
+  cd ..
 
 # Git-lfs
 curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash && \
@@ -314,17 +309,17 @@ sudo apt install pandoc-data pandoc texlive -y
 sudo apt install r-base -y
 curl -sSL https://get.haskellstack.org/ | sh
 ### installation
-git clone https://github.com/cdupont/R-pandoc.git
-cd R-pandoc
-stack install
+git clone https://github.com/cdupont/R-pandoc.git && \
+  cd R-pandoc && \
+  stack install
 
 # Exa
 ## dependencies
 curl https://sh.rustup.rs -sSf | sh
 ## installation
-wget -c https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-0.9.0.zip
-unzip exa-linux-x86_64-0.9.0.zip
-sudo mv exa-linux-x86_64 /usr/local/bin/exa
+wget -c https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-0.9.0.zip && \
+  unzip exa-linux-x86_64-0.9.0.zip && \
+  sudo mv exa-linux-x86_64 /usr/local/bin/exa
 
 
 #################### Browser ####################
@@ -332,8 +327,8 @@ sudo mv exa-linux-x86_64 /usr/local/bin/exa
 cd ~/Downloads
 
 # Google Chrome
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo apt install ./google-chrome-stable_current_amd64.deb
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+  sudo apt install ./google-chrome-stable_current_amd64.deb
 
 #################### Web Server (LAMP) ####################
 
@@ -415,13 +410,13 @@ sudo apt install xfce4 xubuntu-desktop -y
 sudo apt install taskwarrior timewarrior -y
 pip3 install --user git+git://github.com/tbabej/tasklib@develop
 # task hooks
-git clone https://github.com/marklcrns/.task ~/.task
-ln -s ~/.task/.taskrc ~/.taskrc
-cd ~/.task/hooks
-sudo chmod +x on-modify-pirate on-add-pirate on-modify.timewarrior
+git clone https://github.com/marklcrns/.task ~/.task && \
+  ln -s ~/.task/.taskrc ~/.taskrc && \
+  cd ~/.task/hooks && \
+  sudo chmod +x on-modify-pirate on-add-pirate on-modify.timewarrior
 git clone https://github.com/tbabej/task.default-date-time ~/.task/hooks/default-date-time/
-pip3 install taskwarrior-time-tracking-hook
-ln -s `which taskwarrior_time_tracking_hook` ~/.task/hooks/on-modify.timetracking
+pip3 install taskwarrior-time-tracking-hook && \
+  ln -s `which taskwarrior_time_tracking_hook` ~/.task/hooks/on-modify.timetracking
 
 
 #################### Dotfiles ####################
