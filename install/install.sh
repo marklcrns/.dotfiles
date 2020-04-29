@@ -5,7 +5,8 @@
 # Stores dotfiles repo in ~/Projects/dotfiles
 
 # For Java Oracle JDK 11, Download Java SE that matches default-jdk installation
-# here: https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
+# if the one provided in the install directory is not matched here:
+# https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
 
 echo "The following packages are about to be installed:"
 echo apache2
@@ -38,6 +39,7 @@ echo libssl-dev
 echo libxml2-dev
 echo libyaml-dev
 echo make
+echo mysql-client
 echo mysql-server
 echo mysql-workbench
 echo neofetch
@@ -46,7 +48,18 @@ echo oracle-java11-set-default-local
 echo pandoc
 echo pandoc-data
 echo php
+echo php-bcmath
+echo php-cli
+echo php-curl
+echo php-fpm
+echo php-gd
+echo php-json
+echo php-mbstring
 echo php-mysql
+echo php-pdo
+echo php-pear
+echo php-xml
+echo php-zip
 echo phpmyadmin
 echo pkg-config
 echo python3-dev
@@ -137,13 +150,13 @@ pip3 install pipenv
 ## Latest JRE & JDK 11
 sudo apt install default-jre default-jdk -y
 ## Oracle JDK 11.0.7
-cd $BASEDIR/install
+cd $BASEDIR/install/
 sudo cp jdk-11.0.7_linux-x64_bin.tar.gz /var/cache/oracle-jdk11-installer-local/
 echo "deb http://ppa.launchpad.net/linuxuprising/java/ubuntu focal main" | \
   sudo tee /etc/apt/sources.list.d/linuxuprising-java.list
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 73C3DB2A
 sudo apt update
-sudo apt-get install oracle-java11-installer-local -y
+sudo apt install oracle-java11-installer-local -y
 sudo apt install oracle-java11-set-default-local -y
 sudo update-alternatives --set java /usr/lib/jvm/java-11-oracle/bin/java
 ## copy the Java path excluding the 'bin/java' if not exist
@@ -328,7 +341,7 @@ cd ~/Downloads
 
 # Apache 2
 sudo apt update -y
-sudo apt install apache2 -y
+sudo apt install apache2 apache2-utils -y
 ## create backup of apache2.conf and copy www dir to ~/Projects/www
 sudo cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.bak
 # Append only if not already
@@ -354,7 +367,7 @@ echo "<h1>This is Apache2 default site</h1>" > ~/Projects/www/default/index.html
 sudo service apache2 restart
 
 # MySQL
-sudo apt install mysql-server -y
+sudo apt install mysql-server mysql-client -y
 sudo service mysql start
 sudo mysql_secure_installation # This will promt for the installation setup
 ## When passsword prompt:
@@ -364,14 +377,18 @@ sudo mysql_secure_installation # This will promt for the installation setup
 sudo apt install mysql-workbench -y
 
 # PHP
-sudo apt install php libapache2-mod-php php-mysql -y
-## PhpMyAdmin
-sudo service mysql start # its IMPORTANT that mysql is running before installing
-sudo apt install phpmyadmin -y
-### PhpMyAdmin Prompt
-# apache2
-# Yes
-# MYSQL application password for phpmyadmin set up
+sudo apt install php libapache2-mod-php php-cli php-fpm php-json php-pdo \
+  php-mysql php-zip php-gd  php-mbstring php-curl php-xml php-pear php-bcmath -y
+  echo '<?php\nphpinfo();\n?>' > ~/Projects/www/default/info.php
+
+# ## PhpMyAdmin
+# ## Ref: https://www.fosslinux.com/6745/how-to-install-phpmyadmin-with-lamp-stack-on-ubuntu.htm
+# # MYSQL application password for phpmyadmin set up
+# sudo service mysql start # its IMPORTANT that mysql is running before installing
+# sudo apt install phpmyadmin -y
+# ### PhpMyAdmin Prompt
+# # apache2
+# # Yes
 
 
 #################### Web Server (Others) ####################
