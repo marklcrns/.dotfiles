@@ -190,7 +190,7 @@ sudo apt install ripgrep -y
 curl -LO https://github.com/sharkdp/bat/releases/download/v0.15.0/bat_0.15.0_amd64.deb && \
   sudo dpkg -i bat_0.15.0_amd64.deb
 
-# Ctags
+# Universal-ctags
 ## Dependencies
 sudo apt install gcc make pkg-config autoconf automake python3-docutils libseccomp-dev libjansson-dev libyaml-dev libxml2-dev -y
 ## Installation
@@ -201,6 +201,9 @@ cd ctags
 make
 sudo make install
 cd ..
+
+# Git-lfs
+curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
 
 # Pandoc & others
 sudo apt install pandoc-data pandoc texlive -y
