@@ -46,30 +46,23 @@ pip3 install pipenv
 
 # Java
 # Ref: https://www.itzgeek.com/post/how-to-install-java-on-ubuntu-20-04/
-# latest JRE & JDK 11
+## Latest JRE & JDK 11
 sudo apt install default-jre default-jdk -y
-
-# TODO: Download Oracle JDK 11 before running script
-# Oracle JDK 11 Download page: https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
-############################################################################
-##### UNCOMMENT when latest Java SE has been downloaded in ~/Downloads #####
-############################################################################
-# cd ~/Downloads
-# sudo cp ./jdk-11.0.7_linux-x64_bin.tar.gz /var/cache/oracle-jdk11-installer-local/
-#
-# echo "deb http://ppa.launchpad.net/linuxuprising/java/ubuntu focal main" | \
-#   sudo tee /etc/apt/sources.list.d/linuxuprising-java.list
-# sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 73C3DB2A
-# sudo apt update
-# sudo apt-get install oracle-java11-installer-local -y
-# sudo apt install oracle-java11-set-default-local -y
-#
-# sudo update-alternatives --set java /usr/lib/jvm/java-11-oracle/bin/java
-#
-# # copy the Java path excluding the 'bin/java' if not exist
-# grep -qxF 'JAVA_HOME="/usr/lib/jvm/java-11-oracle/"' /etc/environment | \
-#   echo 'TEST="/usr/lib/jvm/java-11-oracle/"' | sudo tee -a /etc/environment && \
-#   source /etc/environment
+## Oracle JDK 11.0.7
+cd $BASEDIR
+sudo cp ./jdk-11.0.7_linux-x64_bin.tar.gz /var/cache/oracle-jdk11-installer-local/
+echo "deb http://ppa.launchpad.net/linuxuprising/java/ubuntu focal main" | \
+  sudo tee /etc/apt/sources.list.d/linuxuprising-java.list
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 73C3DB2A
+sudo apt update
+sudo apt-get install oracle-java11-installer-local -y
+sudo apt install oracle-java11-set-default-local -y
+sudo update-alternatives --set java /usr/lib/jvm/java-11-oracle/bin/java
+## copy the Java path excluding the 'bin/java' if not exist
+# TODO: append only if not existing
+grep -qxF 'JAVA_HOME="/usr/lib/jvm/java-11-oracle/"' /etc/environment | \
+  echo 'TEST="/usr/lib/jvm/java-11-oracle/"' | sudo tee -a /etc/environment && \
+  source /etc/environment
 
 
 ############### Shell ################
@@ -246,13 +239,15 @@ sudo apt update -y
 sudo apt install apache2
 ## create backup of apache2.conf and copy www dir to ~/Projects/www
 sudo cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.bak
+# TODO: Append only if not existing
 sudo sed -i '$i<Directory ~/Projects/www>\n\tOptions Indexes FollowSymLinks\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n' /etc/apache2/apache2.conf
-## TODO: resolve "forbidden You don't have permission to access / on this server" issue
-## Ref: https://askubuntu.com/a/738527
-## Resource: https://unix.stackexchange.com/questions/26284/how-can-i-use-sed-to-replace-a-multi-line-string
+# TODO: resolve "forbidden You don't have permission to access / on this server" issue
+# Solution: https://askubuntu.com/a/738527
+# Resource: https://unix.stackexchange.com/questions/26284/how-can-i-use-sed-to-replace-a-multi-line-string
 cp -r /var/www ~/Projects/
 mkdir -p ~/Projects/www/default
 # replace DocumentRoot in /etc/apache2/sites-enabled/000-default.conf
+# TODO: Append only if not existing
 sudo sed -i 's,DocumentRoot /var/www/html,# DocumentRoot /var/www/html\n\tDocumentRoot ~/Projects/www/default,' /etc/apache2/sites-enabled/000-default.conf
 echo "<h1>This is Apache2 default site</h1>" > ~/Projects/www/default/index.html
 sudo service apache2 restart
@@ -331,11 +326,11 @@ cp -r \
   .config/ranger/rc.conf \
   .config/zathura/zathurarc \
   /mnt/c/Users/MarkL/Documents/gtd \
-  $BASEDIR/.`date "+%Y-%m-%d"`_old.bak/
+  .`date "+%Y-%m-%d"`_old.bak/; \
 cd -; echo "\nDOTFILES BACKUP COMPLETE...\n"
 
 # Distribute dotfiles
-cd $BASEDIR
+cd $BASEDIR/..
 cp -r \
   bin \
   .bashrc .bash_aliases .profile \
