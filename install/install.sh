@@ -362,14 +362,16 @@ echo "<h1>This is Apache2 default site</h1>" > ~/Projects/www/default/index.html
 sudo service apache2 restart
 
 # MySQL
-sudo apt install mysql-server mysql-client -y
-sudo service mysql start
-sudo mysql_secure_installation # This will promt for the installation setup
+sudo apt install mysql-server mysql-client -y && \
+  sudo service mysql start && \
+  sudo mysql_secure_installation # This will promt for the installation setup
 ## When passsword prompt:
-# Password valdation: Low `0`
-# Then Answer `y` for the rest of the question prompts
+## Password valdation: Low `0`
+## Then Answer `y` for the rest of the question prompts
 ## MYSQL Workbench
-sudo apt install mysql-workbench -y
+
+# package not found
+# sudo apt install mysql-workbench -y
 
 # PHP
 sudo apt install php libapache2-mod-php php-cli php-fpm php-json php-pdo \
@@ -400,15 +402,15 @@ sudo apt install screenfetch neofetch htop cmatrix -y
 
 # Tldr
 mkdir -p ~/bin
-curl -o ~/bin/tldr https://raw.githubusercontent.com/raylee/tldr/master/tldr
-chmod +x ~/bin/tldr
+curl -o ~/bin/tldr https://raw.githubusercontent.com/raylee/tldr/master/tldr && \
+  chmod +x ~/bin/tldr
 
 # Xfce4
 sudo apt install xfce4 xubuntu-desktop -y
 
 # Taskwarrior & Timewarrior
-sudo apt install taskwarrior timewarrior -y
-pip3 install --user git+git://github.com/tbabej/tasklib@develop
+sudo apt install taskwarrior timewarrior -y && \
+  pip3 install --user git+git://github.com/tbabej/tasklib@develop
 # task hooks
 git clone https://github.com/marklcrns/.task ~/.task && \
   ln -s ~/.task/.taskrc ~/.taskrc && \
