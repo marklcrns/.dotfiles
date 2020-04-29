@@ -153,7 +153,7 @@ alias dotbackup="cd $HOME; \
   ~/.config/zathura/zathurarc \
   /mnt/c/Users/MarkL/Documents/gtd \
   ~/.config/fish \
-  $DOTFILES/.`date '+%Y-%m-%d'`_old.bak/; \
+  ~/.`date '+%Y-%m-%d'`_old_dotfiles.bak/; \
   cd -; clear; echo 'dotfiles backup complete'"
 alias dotdist="dotbackup; \
   cd $DOTFILES; cp -r \

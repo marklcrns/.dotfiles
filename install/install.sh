@@ -7,7 +7,7 @@
 # For Java Oracle JDK 11, Download Java SE that matches default-jdk installation
 # here: https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
 
-echo "You are about to download the following packages:"
+echo "The following packages are about to be installed:"
 echo apache2
 echo atool
 echo autoconf
@@ -87,11 +87,12 @@ echo zsh
 echo
 
 # Ref: https://stackoverflow.com/a/1885534/11850077
-read -p "Proceed installing? (y/n)" -n 1 -r
+read -p "Proceed installing? (Y/y)" -n 1 -r
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
-    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
+  echo Aborting...
+  [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
 fi
 
 #Save script location
@@ -101,7 +102,7 @@ cd ~
 mkdir ~/Downloads
 
 # Nameserver workaround for WSL2
-# Creates resolve.conf backup at $HOME as namesserver.txt
+# Creates resolve.conf backup to $HOME as nameserver.txt
 cat /etc/resolv.conf > ~/nameserver.txt
 echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 
@@ -129,7 +130,6 @@ sudo apt install python3-dev python3-pip python3-venv -y
 # Python Modules
 pip3 install notebook
 pip3 install Send2Trash # included in notebook module
-pip3 install virtualenv
 pip3 install pipenv
 
 # Java
@@ -137,8 +137,8 @@ pip3 install pipenv
 ## Latest JRE & JDK 11
 sudo apt install default-jre default-jdk -y
 ## Oracle JDK 11.0.7
-cd $BASEDIR
-sudo cp ./jdk-11.0.7_linux-x64_bin.tar.gz /var/cache/oracle-jdk11-installer-local/
+cd $BASEDIR/install
+sudo cp jdk-11.0.7_linux-x64_bin.tar.gz /var/cache/oracle-jdk11-installer-local/
 echo "deb http://ppa.launchpad.net/linuxuprising/java/ubuntu focal main" | \
   sudo tee /etc/apt/sources.list.d/linuxuprising-java.list
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 73C3DB2A
@@ -147,10 +147,34 @@ sudo apt-get install oracle-java11-installer-local -y
 sudo apt install oracle-java11-set-default-local -y
 sudo update-alternatives --set java /usr/lib/jvm/java-11-oracle/bin/java
 ## copy the Java path excluding the 'bin/java' if not exist
-# TODO: append only if not existing
-grep -qxF 'JAVA_HOME="/usr/lib/jvm/java-11-oracle/"' /etc/environment | \
+grep -qxF 'JAVA_HOME="/usr/lib/jvm/java-11-oracle/"' /etc/environment || \
   echo 'TEST="/usr/lib/jvm/java-11-oracle/"' | sudo tee -a /etc/environment && \
   source /etc/environment
+
+
+#################### Package Managers ####################
+
+cd ~/Downloads
+
+# NVM/NodeJS
+curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+LATESTNPM=`nvm ls-remote | tail -1 | sed 's/^.*\(v[0-9\.]\)/\1/'`
+nvm install $LATESTNPM
+nvm use $LATESTNPM
+nvm alias default $LATESTNPM
+
+# NPM
+sudp apt install npm -y
+npm i npm@latest -g
+# NPM glob packages (Optional)
+npm -g install browser-sync
+npm -g install gulp-cli
+
+# Yarn
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update -y
+sudo apt install yarn -y
 
 
 ############### Shell ################
@@ -163,43 +187,6 @@ curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | 
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 git clone https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/themes/powerlevel10k
-
-############### Editors ##################
-
-cd ~/Downloads
-
-# Neovim
-sudo apt install neovim -y
-# sudo apt install python-neovim # (DEPRECATED)
-sudo apt install python3-neovim -y
-# configs
-git clone https://github.com/marklcrns/ThinkVim ~/.config/nvim/
-# other tools and dependencies
-sudo apt install yad zenity -y
-pip3 install virtualenv
-cd ~/.config/nvim
-mkdir -p env/python3
-virtualenv --python=python3 ./env/python3/env
-source ./env/python3/env/bin/activate
-pip3 install neovim
-pip3 install tasklib
-pip3 install send2trash
-# checkers & linters
-pip3 install vim-vint
-pip3 install flake8 pylint autopep8
-deactivate
-npm install -g eslint stylelint prettier
-
-cd ~/Downloads
-
-# Emacs
-sudo apt install emacs -y
-# Doom Emacs
-git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
-~/.emacs.d/bin/doom install
-
-# Libre Office
-sudo apt install libreoffice -y
 
 
 #################### Screen Manager ####################
@@ -231,29 +218,41 @@ sudo apt install caca-utils highlight atool w3m w3m-img zathura xdotool \
   poppler-utils mediainfo mupdf mupdf-tools -y
 
 
-#################### Package Managers ####################
+############### Editors ##################
 
 cd ~/Downloads
 
-# NVM/NodeJS
-curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
-LATESTNPM=`nvm ls-remote | tail -1 | sed 's/^.*\(v[0-9\.]\)/\1/'`
-nvm install $LATESTNPM
-nvm use $LATESTNPM
-nvm alias default $LATESTNPM
+# Neovim
+sudo apt install neovim -y
+# sudo apt install python-neovim # (DEPRECATED)
+sudo apt install python3-neovim -y
+# configs
+git clone https://github.com/marklcrns/ThinkVim ~/.config/nvim/
+# other tools and dependencies
+sudo apt install yad zenity -y
+cd ~/.config/nvim
+mkdir -p env/python3 && cd env/python3
+python3 -m venv env
+source env/bin/activate
+pip3 install neovim
+pip3 install tasklib
+pip3 install send2trash
+# checkers & linters
+pip3 install vim-vint
+pip3 install flake8 pylint autopep8
+deactivate
+npm install -g eslint stylelint prettier
 
-# NPM
-sudp apt install npm -y
-npm i npm@latest -g
-# NPM glob packages (Optional)
-npm -g install browser-sync
-npm -g install gulp-cli
+cd ~/Downloads
 
-# Yarn
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt update -y
-sudo apt install yarn -y
+# Emacs
+sudo apt install emacs -y
+# Doom Emacs
+git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+~/.emacs.d/bin/doom install
+
+# Libre Office
+sudo apt install libreoffice -y
 
 
 #################### Utilities ####################
@@ -329,19 +328,28 @@ cd ~/Downloads
 
 # Apache 2
 sudo apt update -y
-sudo apt install apache2
+sudo apt install apache2 -y
 ## create backup of apache2.conf and copy www dir to ~/Projects/www
 sudo cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.bak
-# TODO: Append only if not existing
-sudo sed -i '$i<Directory ~/Projects/www>\n\tOptions Indexes FollowSymLinks\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n' /etc/apache2/apache2.conf
-# TODO: resolve "forbidden You don't have permission to access / on this server" issue
+# Append only if not already
+sudo grep -qF '<Directory ~/Projects/www>' /etc/apache2/apache2.conf || \
+  sudo sed -i '$i<Directory ~/Projects/www>\n\tOptions Indexes FollowSymLinks\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n' /etc/apache2/apache2.conf
+# resolve "forbidden You don't have permission to access / on this server" issue
 # Solution: https://askubuntu.com/a/738527
-# Resource: https://unix.stackexchange.com/questions/26284/how-can-i-use-sed-to-replace-a-multi-line-string
+# Resources:
+# https://unix.stackexchange.com/questions/26284/how-can-i-use-sed-to-replace-a-multi-line-string
+# https://stackoverflow.com/questions/11234001/replace-multiple-lines-using-sed
+# TODO: Fix. Multiple \n match does not work
+# sudo sed 'N; s/<Directory \/>\n\tOptions FollowSymLinks\n\tAllowOverride None\n\tRequire all denied/<Directory \/>\n\tOptions Indexes FollowSymLinks Includes ExecCGI\n\tAllowOverride all\n\tRequire all granted/g' \
+#  /etc/apache2/apache2.conf
+
 cp -r /var/www ~/Projects/
 mkdir -p ~/Projects/www/default
 # replace DocumentRoot in /etc/apache2/sites-enabled/000-default.conf
-# TODO: Append only if not existing
-sudo sed -i 's,DocumentRoot /var/www/html,# DocumentRoot /var/www/html\n\tDocumentRoot ~/Projects/www/default,' /etc/apache2/sites-enabled/000-default.conf
+# Modify only if not already
+sudo grep -qF "# DocumentRoot /var/www/html" /etc/apache2/sites-enabled/000-default.conf || \
+  sudo sed -i 's,DocumentRoot /var/www/html,# DocumentRoot /var/www/html\n\tDocumentRoot ~/Projects/www/default,' \
+  /etc/apache2/sites-enabled/000-default.conf
 echo "<h1>This is Apache2 default site</h1>" > ~/Projects/www/default/index.html
 sudo service apache2 restart
 
@@ -390,20 +398,18 @@ sudo apt install xfce4 xubuntu-desktop -y
 sudo apt install taskwarrior timewarrior -y
 pip3 install --user git+git://github.com/tbabej/tasklib@develop
 # task hooks
+git clone https://github.com/marklcrns/.task ~/.task
+ln -s ~/.task/.taskrc ~/.taskrc
 cd ~/.task/hooks
-wget https://raw.githubusercontent.com/tbabej/taskpirate/master/on-modify-pirate
-wget https://raw.githubusercontent.com/tbabej/taskpirate/master/on-add-pirate
-wget https://raw.githubusercontent.com/GothenburgBitFactory/timewarrior/dev/ext/on-modify.timewarrior
 sudo chmod +x on-modify-pirate on-add-pirate on-modify.timewarrior
 git clone https://github.com/tbabej/task.default-date-time ~/.task/hooks/default-date-time/
 pip3 install taskwarrior-time-tracking-hook
 ln -s `which taskwarrior_time_tracking_hook` ~/.task/hooks/on-modify.timetracking
-cd ~/Downloads
 
 
 #################### Dotfiles ####################
 
-# Backup dotfiles
+# Backup dotfiles (creates ~/.YY-MM-DD_old.bak directory)
 cd ~
 cp -r \
   bin \
@@ -419,8 +425,8 @@ cp -r \
   .config/ranger/rc.conf \
   .config/zathura/zathurarc \
   /mnt/c/Users/MarkL/Documents/gtd \
-  .`date "+%Y-%m-%d"`_old.bak/; \
-cd -; echo "\nDOTFILES BACKUP COMPLETE...\n"
+  ~/.`date "+%Y-%m-%d"`_old_dotfiles.bak/; \
+cd -; printf '\nDOTFILES BACKUP COMPLETE...\n\n'
 
 # Distribute dotfiles
 cd $BASEDIR/..
@@ -439,7 +445,7 @@ cp -r \
   cp rc.conf ~/.config/ranger/; \
   cp zathurarc ~/.config/zathura/; \
   cp -r gtd /mnt/c/Users/MarkL/Documents; \
-cd -; echo "\nDOTFILES DISTRIBUTION COMPLETE...\n"
+cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
 
 # source bashrc
 source ~/.bashrc
@@ -447,4 +453,4 @@ source ~/.bashrc
 # restore nameserver
 cat ~/nameserver.txt | sudo tee /etc/resolv.conf
 
-echo "\nINSTALLATION COMPLETE!"
+printf '\nINSTALLATION COMPLETE!\n\n'
