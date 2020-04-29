@@ -303,9 +303,9 @@ curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.s
   git lfs install
 
 # Lazygit
-sudo add-apt-repository ppa:lazygit-team/release && \
-  sudo apt-get update && \
-  sudo apt-get install lazygit
+sudo add-apt-repository ppa:lazygit-team/release
+sudo apt-get update
+sudo apt-get install lazygit
 
 # Pandoc & others
 sudo apt install pandoc-data pandoc texlive -y
