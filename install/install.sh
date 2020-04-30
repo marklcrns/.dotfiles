@@ -436,12 +436,13 @@ sudo apt install xfce4 xubuntu-desktop -y
 sudo apt install taskwarrior timewarrior -y && \
   pip3 install --user git+git://github.com/tbabej/tasklib@develop && \
   pip install --user git+git://github.com/tbabej/tasklib@develop
-# task hooks
+## Timewarrior configs
+git clone https://github.com/marklcrns/.timewarrior ~/.timewarrior
+# Taskwarrior hooks
 git clone https://github.com/marklcrns/.task ~/.task && \
   ln -s ~/.task/.taskrc ~/.taskrc && \
   cd ~/.task/hooks && \
   sudo chmod +x on-modify-pirate on-add-pirate on-modify.timewarrior
-git clone https://github.com/tbabej/task.default-date-time ~/.task/hooks/default-date-time/
 pip3 install taskwarrior-time-tracking-hook && \
   ln -s `which taskwarrior_time_tracking_hook` ~/.task/hooks/on-modify.timetracking
 
