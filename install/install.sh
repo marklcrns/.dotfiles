@@ -65,6 +65,7 @@ echo php-xml
 echo php-zip
 echo phpmyadmin
 echo pkg-config
+echo python2-dev
 echo python3-dev
 echo python3-docutils
 echo python3-neovim
@@ -138,9 +139,15 @@ sudo systemd-machine-id-setup
 
 #################### Languages ####################
 
+cd ~/Downloads
+
 # Python (DEPRECATED, Ubuntu 20.04 on longer supports older python)
 # Uncomment if you still want to install old python from universe repository
-# sudo apt install python-dev -y
+sudo apt install python2-dev -y
+## Python2 pip
+## Ref: https://linuxize.com/post/how-to-install-pip-on-ubuntu-20.04/
+curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
+sudo python2 get-pip.py
 # Python3
 sudo apt install python3-dev python3-pip python3-venv -y
 # Python Modules
@@ -240,25 +247,32 @@ cd ~/Downloads
 
 # Neovim
 sudo apt install neovim -y
-# sudo apt install python-neovim # (DEPRECATED)
+# sudo apt install python-neovim -y # (DEPRECATED, not found)
 sudo apt install python3-neovim -y
-# configs
+## configs
 git clone https://github.com/marklcrns/ThinkVim ~/.config/nvim/
-# other tools and dependencies
+## other tools and dependencies
 sudo apt install yad zenity -y
 cd ~/.config/nvim
+## python3 host prog
 mkdir -p env/python3 && cd env/python3
 python3 -m venv env && \
   source env/bin/activate && \
   pip3 install neovim tasklib send2trash vim-vint flake8 pylint autopep8 && \
   deactivate
-npm install -g eslint stylelint prettier
+## python2 host prog (DEPRECATED)
+# mkdir -p env/python && cd env/python
+# python2 -m venv env && \
+#   source env/bin/activate && \
+#   pip install neovim tasklib send2trash vim-vint flake8 pylint autopep8 && \
+#   deactivate
 
+npm install -g eslint stylelint prettier
 cd ~/Downloads
 
 # Emacs
 sudo apt install emacs -y
-# Doom Emacs
+## Doom Emacs
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d && \
   ~/.emacs.d/bin/doom install
 
@@ -420,7 +434,8 @@ sudo apt install xfce4 xubuntu-desktop -y
 
 # Taskwarrior & Timewarrior
 sudo apt install taskwarrior timewarrior -y && \
-  pip3 install --user git+git://github.com/tbabej/tasklib@develop
+  pip3 install --user git+git://github.com/tbabej/tasklib@develop && \
+  pip install --user git+git://github.com/tbabej/tasklib@develop
 # task hooks
 git clone https://github.com/marklcrns/.task ~/.task && \
   ln -s ~/.task/.taskrc ~/.taskrc && \
