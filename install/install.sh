@@ -279,6 +279,9 @@ git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d && \
 # Libre Office
 sudo apt install libreoffice -y
 
+# ImageMagick
+sudo apt install imagemagick -y
+
 
 #################### Utilities ####################
 
