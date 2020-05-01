@@ -65,7 +65,7 @@ echo php-xml
 echo php-zip
 echo phpmyadmin
 echo pkg-config
-echo python2-dev
+echo python-dev
 echo python3-dev
 echo python3-docutils
 echo python3-neovim
@@ -143,11 +143,11 @@ cd ~/Downloads
 
 # Python (DEPRECATED, Ubuntu 20.04 on longer supports older python)
 # Uncomment if you still want to install old python from universe repository
-sudo apt install python2-dev -y
+sudo apt install python-dev -y
 ## Python2 pip
 ## Ref: https://linuxize.com/post/how-to-install-pip-on-ubuntu-20.04/
 curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
-sudo python2 get-pip.py
+sudo python get-pip.py
 # Python3
 sudo apt install python3-dev python3-pip python3-venv -y
 # Python Modules
@@ -262,7 +262,7 @@ python3 -m venv env && \
   deactivate
 ## python2 host prog (DEPRECATED)
 # mkdir -p env/python && cd env/python
-# python2 -m venv env && \
+# python -m venv env && \
 #   source env/bin/activate && \
 #   pip install neovim tasklib send2trash vim-vint flake8 pylint autopep8 && \
 #   deactivate
@@ -339,6 +339,7 @@ git clone https://github.com/cdupont/R-pandoc.git && \
   stack install
 ## clone configs
 git clone https://github.com/marklcrns/pandoc-goodies ~/.pandoc
+cd ..
 
 # Exa
 ## dependencies
