@@ -187,7 +187,7 @@ curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash &
   nvm alias default $LATESTNPM
 
 # NPM
-sudp apt install npm -y
+sudo apt install npm -y
 npm i npm@latest -g
 # NPM glob packages (Optional)
 npm -g install browser-sync
@@ -492,5 +492,7 @@ source ~/.bashrc
 
 # restore nameserver
 cat ~/nameserver.txt | sudo tee /etc/resolv.conf
+
+# TODO: change URLs default program handler to Windows browser
 
 printf '\nINSTALLATION COMPLETE!\n\n'
