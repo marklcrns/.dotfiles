@@ -128,8 +128,8 @@ alias ppath='cd "`vs clipboard`"; clear'
 # Access last returned value: https://askubuntu.com/questions/324423/how-to-access-the-last-return-value-in-bash
 winpath() {
   regex1='s/\//\\/g'
-  regex2='s/~/\\\\wsl$\\WLinux\\home\\marklcrns/g'
-  regex3='s/\\home/\\\\wsl$\\WLinux\\home/g'
+  regex2='s/~/\\\\wsl$\\Ubuntu\\home\\marklcrns/g'
+  regex3='s/\\home/\\\\wsl$\\Ubuntu\\home/g'
   regex4='s/^\\mnt\\(\w)/\U\1:/g'
 
   output=$(pwd | sed -e "$regex1" -e "$regex2" -e "$regex3" -re "$regex4")
