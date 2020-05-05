@@ -65,7 +65,6 @@ pandoc_template="pandoc \
     -c $CSSFILENAME \
     -s \
     -M root_path:$ROOT_PATH"
-# --filter=R-pandoc \
 # --filter=diagrams-pandoc \
 
 # Searches for markdown markdown anchor links and append .html after the filename

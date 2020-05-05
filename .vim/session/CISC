@@ -7,15 +7,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +17 school/md/spring-2020/CISC-190/modules/module_5.md
-badd +30 school/md/spring-2020/CISC-190/cisc-190.md
-badd +474 school/md/spring-2020/CISC-190/notes/m-5.md
-badd +13 school/md/spring-2020/CISC-190/modules/module_2.md
-badd +13 school/md/spring-2020/CISC-190/modules/module_3.md
-badd +227 school/md/spring-2020/CISC-190/notes/m-3.md
+badd +46 school/md/spring-2020/CISC-190/cisc-190.md
+badd +15 school/md/spring-2020/CISC-190/modules/module_6.md
+badd +53 school/md/spring-2020/CISC-190/notes/m-6.md
 argglobal
 %argdel
-edit school/md/spring-2020/CISC-190/modules/module_5.md
+edit school/md/spring-2020/CISC-190/modules/module_6.md
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -32,17 +29,12 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 11 - ((3 * winheight(0) + 6) / 13)
+let s:l = 15 - ((14 * winheight(0) + 26) / 53)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-11
-let s:c = 8 - ((6 * winwidth(0) + 9) / 19)
-if s:c > 0
-  exe 'normal! ' . s:c . '|zs' . 8 . '|'
-else
-  normal! 08|
-endif
+15
+normal! 0
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

@@ -7,7 +7,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +117 school/md/spring-2020/MATH-141/math-141.md
+badd +131 school/md/spring-2020/MATH-141/math-141.md
+badd +40 school/md/spring-2020/MATH-141/notes/ch-7.md
 argglobal
 %argdel
 edit school/md/spring-2020/MATH-141/math-141.md
@@ -27,11 +28,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 119 - ((13 * winheight(0) + 12) / 25)
+let s:l = 131 - ((13 * winheight(0) + 13) / 27)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-119
+131
 normal! 0
 lcd ~/Docs/wiki
 tabnext 1
