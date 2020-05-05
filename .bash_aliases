@@ -154,7 +154,7 @@ alias dotbackup="cd $HOME; \
   /mnt/c/Users/MarkL/Documents/gtd \
   ~/.config/fish \
   ~/.`date '+%Y-%m-%d'`_old_dotfiles.bak/; \
-  cd -; clear; echo 'dotfiles backup complete'"
+  cd -; echo 'dotfiles backup complete'"
 alias dotdist="dotbackup; \
   cd $DOTFILES; cp -r \
   .bashrc .bash_aliases .profile \
@@ -169,7 +169,7 @@ alias dotdist="dotbackup; \
   cp zathurarc ~/.config/zathura/; \
   cp -r gtd /mnt/c/Users/MarkL/Documents; \
   cp -r fish ~/.config; \
-  cd -; clear; echo 'dotfiles distribute complete'"
+  cd -; echo 'dotfiles distribute complete'"
 alias dotupdate="cd $DOTFILES;\
   cp -r \
   ~/.bashrc ~/.bash_aliases ~/.profile \
