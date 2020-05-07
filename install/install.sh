@@ -488,10 +488,10 @@ cp -r \
   .vim/ \
   .scimrc \
   /mnt/c/Users/MarkL/Documents/gtd \
-  ~/.`date "+%Y-%m-%d"`_old_dotfiles.bak/
+  .`date "+%Y-%m-%d"`_old_dotfiles.bak/
 cp .config/ranger/rc.conf $DOTBACKUPDIR.config/ranger
 cp .config/zathura/zathurarc $DOTBACKUPDIR.config/zathura
-printf '\nDOTFILES BACKUP COMPLETE...\n\n'
+cd -; printf '\nDOTFILES BACKUP COMPLETE...\n\n'
 
 # Distribute dotfiles
 cd $DOTFILES
@@ -506,10 +506,10 @@ cp -r \
   .mutt/ \
   .vim/ \
   .scimrc \
-  $HOME; \
-  cp ./config/ranger/rc.conf ~/.config/ranger/; \
-  cp ./config/zathura/zathurarc ~/.config/zathura/; \
-  cp -r gtd /mnt/c/Users/MarkL/Documents; \
+  $HOME
+cp ./config/ranger/rc.conf ~/.config/ranger/
+cp ./config/zathura/zathurarc ~/.config/zathura/
+cp -r gtd /mnt/c/Users/MarkL/Documents
 cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
 
 # source bashrc

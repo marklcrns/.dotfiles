@@ -160,10 +160,13 @@ dotfilesbackup() {
     ~/.`date "+%Y-%m-%d"`_old_dotfiles.bak/
   cp .config/ranger/rc.conf $DOTBACKUPDIR.config/ranger
   cp .config/zathura/zathurarc $DOTBACKUPDIR.config/zathura
-  printf '\nDOTFILES BACKUP COMPLETE...\n\n'
+  cd -; printf '\nDOTFILES BACKUP COMPLETE...\n\n'
 }
 
 dotfilesdist() {
+  # backup files first
+  dotfilesbackup
+  # distribute dotfiles
   cd $DOTFILES
   cp -r \
     bin \
@@ -176,11 +179,11 @@ dotfilesdist() {
     .mutt/ \
     .vim/ \
     .scimrc \
-    $HOME; \
-    cp ./config/ranger/rc.conf ~/.config/ranger/; \
-    cp ./config/zathura/zathurarc ~/.config/zathura/; \
-    cp -r gtd /mnt/c/Users/MarkL/Documents; \
-    cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
+    $HOME
+  cp ./config/ranger/rc.conf ~/.config/ranger/
+  cp ./config/zathura/zathurarc ~/.config/zathura/
+  cp -r gtd /mnt/c/Users/MarkL/Documents
+  cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
 }
 
 dotfilesupdate() {
