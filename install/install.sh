@@ -112,8 +112,11 @@ then
   [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
 fi
 
-#Save script location
-BASEDIR="$( cd "$( dirname "$0" )" && pwd )"
+# Save script location
+SCRIPTDIR="$( cd "$( dirname "$0" )" && pwd )"
+
+# Save dotfiles location
+DOTFILES=$SCRIPTDIR/..
 
 cd ~
 mkdir ~/Downloads
@@ -160,7 +163,7 @@ pip3 install pipenv
 ## Latest JRE & JDK 11
 sudo apt install default-jre default-jdk -y
 ## Oracle JDK 11.0.7
-cd $BASEDIR/install/
+cd $SCRIPTDIR/install/
 sudo cp jdk-11.0.7_linux-x64_bin.tar.gz /var/cache/oracle-jdk11-installer-local && \
   echo "deb http://ppa.launchpad.net/linuxuprising/java/ubuntu focal main" | \
   sudo tee /etc/apt/sources.list.d/linuxuprising-java.list && \
@@ -451,10 +454,22 @@ pip3 install taskwarrior-time-tracking-hook && \
   ln -s `which taskwarrior_time_tracking_hook` ~/.task/hooks/on-modify.timetracking
 
 
+#################### MIME Applications ####################
+
+cd $DOTFILES
+
+cp .config/mimeapps.list ~/.config/
+ln -sf ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
+cp applications/* ~/.local/share/applications/
+
+
 #################### Dotfiles ####################
 
 # Backup dotfiles (creates ~/.YY-MM-DD_old.bak directory)
 cd ~
+DOTBACKUPDIR=.`date "+%Y-%m-%d"`_old_dotfiles.bak/
+mkdir $DOTBACKUPDIR
+mkdir -p $DOTBACKUPDIR.config/ranger $DOTBACKUPDIR.config/zathura
 cp -r \
   bin \
   .bashrc .bash_aliases .profile \
@@ -466,14 +481,14 @@ cp -r \
   .mutt/ \
   .vim/ \
   .scimrc \
-  .config/ranger/rc.conf \
-  .config/zathura/zathurarc \
   /mnt/c/Users/MarkL/Documents/gtd \
-  ~/.`date "+%Y-%m-%d"`_old_dotfiles.bak/; \
-cd -; printf '\nDOTFILES BACKUP COMPLETE...\n\n'
+  ~/.`date "+%Y-%m-%d"`_old_dotfiles.bak/
+cp .config/ranger/rc.conf $DOTBACKUPDIR.config/ranger
+cp .config/zathura/zathurarc $DOTBACKUPDIR.config/zathura
+printf '\nDOTFILES BACKUP COMPLETE...\n\n'
 
 # Distribute dotfiles
-cd $BASEDIR/..
+cd $DOTFILES
 cp -r \
   bin \
   .bashrc .bash_aliases .profile \
@@ -486,8 +501,8 @@ cp -r \
   .vim/ \
   .scimrc \
   $HOME; \
-  cp rc.conf ~/.config/ranger/; \
-  cp zathurarc ~/.config/zathura/; \
+  cp ./config/ranger/rc.conf ~/.config/ranger/; \
+  cp ./config/zathura/zathurarc ~/.config/zathura/; \
   cp -r gtd /mnt/c/Users/MarkL/Documents; \
 cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
 

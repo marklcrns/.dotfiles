@@ -138,51 +138,71 @@ winpath() {
 alias winypath="winpath | xclip -selection clipboard; printf '%s\n...win path copied' '$output'"
 
 # Update dotfiles backup repository
-DOTFILES='~/Projects/dotfiles'
+DOTFILES="$HOME/Projects/dotfiles"
+
+dotfilesbackup() {
+  cd $HOME
+  DOTBACKUPDIR=.`date "+%Y-%m-%d"`_old_dotfiles.bak/
+  mkdir $DOTBACKUPDIR
+  mkdir -p $DOTBACKUPDIR.config/ranger $DOTBACKUPDIR.config/zathura
+  cp -r \
+    bin \
+    .bashrc .bash_aliases .profile \
+    .zshenv .zshrc \
+    .tmux.conf \
+    .gitconfig \
+    .ctags \
+    .ctags.d/ \
+    .mutt/ \
+    .vim/ \
+    .scimrc \
+    /mnt/c/Users/MarkL/Documents/gtd \
+    ~/.`date "+%Y-%m-%d"`_old_dotfiles.bak/
+  cp .config/ranger/rc.conf $DOTBACKUPDIR.config/ranger
+  cp .config/zathura/zathurarc $DOTBACKUPDIR.config/zathura
+  printf '\nDOTFILES BACKUP COMPLETE...\n\n'
+}
+
+dotfilesdist() {
+  cd $DOTFILES
+  cp -r \
+    bin \
+    .bashrc .bash_aliases .profile \
+    .zshenv .zshrc \
+    .tmux.conf \
+    .gitconfig \
+    .ctags \
+    .ctags.d/ \
+    .mutt/ \
+    .vim/ \
+    .scimrc \
+    $HOME; \
+    cp ./config/ranger/rc.conf ~/.config/ranger/; \
+    cp ./config/zathura/zathurarc ~/.config/zathura/; \
+    cp -r gtd /mnt/c/Users/MarkL/Documents; \
+    cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
+}
+
+dotfilesupdate() {
+  cd $DOTFILES
+  cp -r \
+    ~/.bashrc ~/.bash_aliases ~/.profile \
+    ~/.zshenv ~/.zshrc \
+    ~/.tmux.conf \
+    ~/.gitconfig \
+    ~/bin \
+    ~/.vim/ \
+    ~/.scimrc \
+    /mnt/c/Users/MarkL/Documents/gtd .
+  cp ~/.config/ranger/rc.conf .config/ranger/
+  cp ~/.config/zathura/zathurarc .config/zathura/
+  git add .; git status; echo 'dotfiles update complete'
+}
+
 alias dotfiles="cd $DOTFILES"
-alias dotbackup="cd $HOME; \
-  cp -r \
-  .bashrc .bash_aliases .profile \
-  .zshenv .zshrc \
-  .tmux.conf \
-  .gitconfig \
-  bin \
-  ~/.vim/ \
-  ~/.scimrc \
-  ~/.config/ranger/rc.conf \
-  ~/.config/zathura/zathurarc \
-  /mnt/c/Users/MarkL/Documents/gtd \
-  ~/.config/fish \
-  ~/.`date '+%Y-%m-%d'`_old_dotfiles.bak/; \
-  cd -; echo 'dotfiles backup complete'"
-alias dotdist="dotbackup; \
-  cd $DOTFILES; cp -r \
-  .bashrc .bash_aliases .profile \
-  .zshenv .zshrc \
-  .tmux.conf \
-  .gitconfig \
-  bin \
-  .vim/ \
-  .scimrc \
-  $HOME; \
-  cp \rc.conf ~/.config/ranger/; \
-  cp zathurarc ~/.config/zathura/; \
-  cp -r gtd /mnt/c/Users/MarkL/Documents; \
-  cp -r fish ~/.config; \
-  cd -; echo 'dotfiles distribute complete'"
-alias dotupdate="cd $DOTFILES;\
-  cp -r \
-  ~/.bashrc ~/.bash_aliases ~/.profile \
-  ~/.zshenv ~/.zshrc \
-  ~/.tmux.conf \
-  ~/.gitconfig \
-  ~/bin \
-  ~/.vim/ \
-  ~/.scimrc \
-  ~/.config/ranger/rc.conf \
-  ~/.config/zathura/zathurarc \
-  /mnt/c/Users/MarkL/Documents/gtd \
-  git add .; git status; echo 'dotfiles update complete'"
+alias dotbackup=dotfilesbackup
+alias dotdist=dotfilesdist
+alias dotupdate=dotfilesupdate
 alias dotcommit="cd $DOTFILES;git commit -m"
 alias dotpush="cd $DOTFILES;git push"
 

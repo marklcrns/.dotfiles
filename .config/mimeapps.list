@@ -1,0 +1,14 @@
+[Default Applications]
+application/pdf=org.pwmt.zathura-pdf-poppler.desktop
+x-scheme-handler/ftp=google-chrome-windows.desktop;firefox.desktop
+x-scheme-handler/http=google-chrome-windows.desktop;firefox.desktop
+x-scheme-handler/https=google-chrome-windows.desktop;firefox.desktop
+x-scheme-handler/about=google-chrome-windows.desktop;firefox.desktop
+x-scheme-handler/unknown=google-chrome-windows.desktop;firefox.desktop
+application/xhtml+xml=google-chrome-windows.desktop;firefox.desktop
+text/markdown=google-chrome-windows.desktop;firefox.desktop
+text/xml=google-chrome-windows.desktop;firefox.desktop
+text/html=firefox.desktop;
+
+[Added Associations]
+text/x-java=nvim.desktop;
