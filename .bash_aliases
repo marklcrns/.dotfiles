@@ -142,7 +142,7 @@ DOTFILES="$HOME/Projects/dotfiles"
 
 dotfilesbackup() {
   cd $HOME
-  DOTBACKUPDIR=.`date "+%Y-%m-%d"`_old_dotfiles.bak/
+  DOTBACKUPDIR=$HOME/.`date -u +"%Y-%m-%dT%H:%M:%SZ"`_old_dotfiles.bak
   mkdir $DOTBACKUPDIR
   mkdir -p $DOTBACKUPDIR.config/ranger $DOTBACKUPDIR.config/zathura
   cp -r \
@@ -157,9 +157,9 @@ dotfilesbackup() {
     .vim/ \
     .scimrc \
     /mnt/c/Users/MarkL/Documents/gtd \
-    ~/.`date "+%Y-%m-%d"`_old_dotfiles.bak/
-  cp .config/ranger/rc.conf $DOTBACKUPDIR.config/ranger
-  cp .config/zathura/zathurarc $DOTBACKUPDIR.config/zathura
+    $DOTBACKUPDIR
+  cp .config/ranger/rc.conf $DOTBACKUPDIR/.config/ranger
+  cp .config/zathura/zathurarc $DOTBACKUPDIR/.config/zathura
   cd -; printf '\nDOTFILES BACKUP COMPLETE...\n\n'
 }
 
@@ -180,8 +180,8 @@ dotfilesdist() {
     .vim/ \
     .scimrc \
     $HOME
-  cp ./config/ranger/rc.conf ~/.config/ranger/
-  cp ./config/zathura/zathurarc ~/.config/zathura/
+  cp .config/ranger/rc.conf ~/.config/ranger/
+  cp .config/zathura/zathurarc ~/.config/zathura/
   cp -r gtd /mnt/c/Users/MarkL/Documents
   cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
 }
