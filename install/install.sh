@@ -185,9 +185,10 @@ cd ~/Downloads
 # NVM/NodeJS
 curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash && \
   LATESTNPM=`nvm ls-remote | tail -1 | sed 's/^.*\(v[0-9\.]\)/\1/'`
-  nvm install $LATESTNPM
-  nvm use $LATESTNPM
-  nvm alias default $LATESTNPM
+## install latest npm
+nvm install $LATESTNPM
+nvm use $LATESTNPM
+nvm alias default $LATESTNPM
 
 # NPM
 sudo apt install npm -y
@@ -222,6 +223,8 @@ cd ~/Downloads
 # Tmux
 sudo apt install tmux -y
 sudo apt install tmuxinator -y
+# Tmuxinator configs
+git clone https://github.com/marklcrns/.tmuxinator ~/.tmuxinator
 # TPM Plugins
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # dependencies
@@ -252,6 +255,7 @@ cd ~/Downloads
 sudo apt install neovim -y
 # sudo apt install python-neovim -y # (DEPRECATED, not found)
 sudo apt install python3-neovim -y
+npm install -g neovim
 ## configs
 git clone https://github.com/marklcrns/ThinkVim ~/.config/nvim/
 ## other tools and dependencies
@@ -458,9 +462,11 @@ pip3 install taskwarrior-time-tracking-hook && \
 
 cd $DOTFILES
 
+# Custom MIME handlers
 cp .config/mimeapps.list ~/.config/
-ln -sf ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
+mkdir ~/.local/share/applications
 cp applications/* ~/.local/share/applications/
+ln -sf ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
 
 
 #################### Dotfiles ####################
@@ -511,7 +517,5 @@ source ~/.bashrc
 
 # restore nameserver
 cat ~/nameserver.txt | sudo tee /etc/resolv.conf
-
-# TODO: change URLs default program handler to Windows browser
 
 printf '\nINSTALLATION COMPLETE!\n\n'
