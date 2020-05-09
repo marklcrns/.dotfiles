@@ -160,8 +160,8 @@ pip3 install pipenv
 
 # Java
 # Ref: https://www.itzgeek.com/post/how-to-install-java-on-ubuntu-20-04/
-## Latest JRE & JDK 11
-sudo apt install default-jre default-jdk -y
+## OpenJDK 11
+sudo apt install openjdk-11-jdk -y
 ## Oracle JDK 11.0.7
 cd $SCRIPTDIR/install/
 sudo cp jdk-11.0.7_linux-x64_bin.tar.gz /var/cache/oracle-jdk11-installer-local && \
