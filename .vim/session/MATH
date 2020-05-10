@@ -26,11 +26,11 @@ setlocal fdm=expr
 setlocal fde=Foldexpr_markdown(v:lnum)
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=1
+setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 36 - ((35 * winheight(0) + 13) / 26)
+let s:l = 36 - ((16 * winheight(0) + 10) / 20)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt

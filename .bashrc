@@ -212,3 +212,5 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="$PATH:$HOME/.rvm/bin"
 
 cd $HOME
+
+neofetch

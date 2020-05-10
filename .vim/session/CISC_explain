@@ -8,10 +8,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +29 ModuleSixExplain.java
-badd +120 ZombieLand.java
+badd +103 ZombieLand.java
 argglobal
 %argdel
-edit ZombieLand.java
+edit ModuleSixExplain.java
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -28,14 +28,14 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-8
+10
 normal! zo
-let s:l = 120 - ((23 * winheight(0) + 16) / 32)
+let s:l = 20 - ((10 * winheight(0) + 12) / 25)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-120
-normal! 0
+20
+normal! 096|
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

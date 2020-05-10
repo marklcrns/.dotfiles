@@ -31,7 +31,7 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 664 - ((5 * winheight(0) + 5) / 10)
+let s:l = 664 - ((7 * winheight(0) + 7) / 14)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
