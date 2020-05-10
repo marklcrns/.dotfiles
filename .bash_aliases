@@ -244,7 +244,7 @@ alias rclone-dev-dbox="cd ~/Projects; zip -re dev.zip ~/Projects/Dev; rclone cop
 alias rclone-dbox-dev='rclone copy Dropbox:dev.zip ~/Projects --backup-dir ~/Projects/.dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2'
 
 # Switch to JDK 8
-jdk8() {
+openjdk8() {
   sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
   sudo update-alternatives --set javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac
   # replace JAVA_HOME with jdk 8 path if exist, else append
@@ -256,7 +256,7 @@ jdk8() {
 }
 
 # Switch to JDK 11
-jdk11() {
+openjdk11() {
   sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java
   sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-amd64/bin/javac
   # replace JAVA_HOME with jdk 11 path if exist, else append

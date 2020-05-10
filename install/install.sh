@@ -159,11 +159,13 @@ pip3 install Send2Trash # included in notebook module
 pip3 install pipenv
 
 # Java
-# Ref: https://www.itzgeek.com/post/how-to-install-java-on-ubuntu-20-04/
+# Ref:
+# https://www.itzgeek.com/post/how-to-install-java-on-ubuntu-20-04/
+# https://linuxize.com/post/install-java-on-ubuntu-20-04/
 ## OpenJDK 11
-sudo apt install openjdk-11-jdk -y
+sudo apt install openjdk-11-jdk openjdk-11-jre -y
 ## OpenJDK 8
-sudo apt install openjdk-8-jdk -y
+sudo apt install openjdk-8-jdk openjdk-8-jre -y
 
 ## Set java and javac 11 as default
 sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java
