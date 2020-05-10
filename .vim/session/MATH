@@ -7,8 +7,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +131 school/md/spring-2020/MATH-141/math-141.md
-badd +40 school/md/spring-2020/MATH-141/notes/ch-7.md
+badd +36 school/md/spring-2020/MATH-141/math-141.md
+badd +172 school/md/spring-2020/MATH-141/notes/ch-7.md
+badd +18 school/md/spring-2020/MATH-141/notes/ch-6.md
+badd +83 ~/.config/nvim/layers/+tools/whichkey/config.vim
 argglobal
 %argdel
 edit school/md/spring-2020/MATH-141/math-141.md
@@ -24,16 +26,16 @@ setlocal fdm=expr
 setlocal fde=Foldexpr_markdown(v:lnum)
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=99
+setlocal fdl=1
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 131 - ((13 * winheight(0) + 13) / 27)
+let s:l = 36 - ((35 * winheight(0) + 13) / 26)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-131
-normal! 0
+36
+normal! 03|
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

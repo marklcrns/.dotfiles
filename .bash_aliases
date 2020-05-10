@@ -238,11 +238,34 @@ alias runpg='sudo -u postgres psql'
 # Rclone
 alias rcopy='rclone copy -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2'
 alias rsync='rclone sync -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2'
-
 alias rclone-dev-gdrive="cd ~/Projects; zip -re dev.zip ~/Projects/Dev; rclone copy ~/Projects/dev.zip GoogleDrive: --backup-dir GoogleDrive:.`date '+%Y-%m-%d'`.dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
 alias rclone-gdrive-dev='rclone copy GoogleDrive:dev.zip ~/Projects --backup-dir ~/Projects/.dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2'
 alias rclone-dev-dbox="cd ~/Projects; zip -re dev.zip ~/Projects/Dev; rclone copy ~/Projects/dev.zip Dropbox: --backup-dir Dropbox:.`date '+%Y-%m-%d'`.dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
 alias rclone-dbox-dev='rclone copy Dropbox:dev.zip ~/Projects --backup-dir ~/Projects/.dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2'
+
+# Switch to JDK 8
+jdk8() {
+  sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+  sudo update-alternatives --set javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac
+  # replace JAVA_HOME with jdk 8 path if exist, else append
+  grep -q 'JAVA_HOME=' /etc/environment && \
+    sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre/",' /etc/environment || \
+    echo 'JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre/"' | sudo tee -a /etc/environment
+  # source environ
+  source /etc/environment
+}
+
+# Switch to JDK 11
+jdk11() {
+  sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+  sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-amd64/bin/javac
+  # replace JAVA_HOME with jdk 11 path if exist, else append
+  grep -q 'JAVA_HOME=' /etc/environment && \
+    sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64/",' /etc/environment || \
+    echo 'JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64/"' | sudo tee -a /etc/environment
+  # source environ
+  source /etc/environment
+}
 
 # gtd shell script
 alias on='gtd -ts'
