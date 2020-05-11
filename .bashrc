@@ -16,8 +16,18 @@ export TLDR_PARAM='blue'
 
 # Environent PATHs
 export PATH=$PATH:~/.local/bin
+export PATH=$PATH:~/.emacs.d/bin # emacs bin
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
 
-export EDITOR='nvim'
+export BROWSER='/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe'
+
+# NetBeans
+export PATH=$PATH:/opt/netbeans/bin/
+
+# Default editor
+export VISUAL="nvim"
+export EDITOR=$VISUAL
 
 # If not running interactively, don't do anything
 case $- in
@@ -26,7 +36,8 @@ case $- in
 esac
 
 # Workaround for WSL 2 X Server not working
-export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+# export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
 export LIBGL_ALWAYS_INDIRECT=1
 
 # Ref: https://unix.stackexchange.com/a/48113
@@ -139,13 +150,13 @@ fi
 # https://www.youtube.com/watch?v=qgg5jhi_els
 # https://remysharp.com/2018/08/23/cli-improved
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # use ~~ as the trigger sequence instead of the default **
 #export FZF_COMPLETION_TRIGGER='~~'
 
 # environment vaiable for exluding directories
-fd_options="--follow --exclude .git --exclude node_modules --exclude env --exclude __pycache__ --color=always"
+fd_options="--follow --hidden --exclude .git --exclude node_modules --exclude env --exclude __pycache__ --color=always"
 
 # for faster traversal with git ls-tree
 #export FZF_DEFAULT_COMMAND='
@@ -165,27 +176,27 @@ export FZF_ALT_C_COMMAND="fdfind --type d $fd_options"
 
 # default options with preview with bat > highlight > cat > tree
 # also with key bindings:
-# f2: toggle-preview
+# ?: toggle-preview
 # ctrl-e: xdg-open
 # ctrl-d: half-page-down
 # ctrl-u: half-page-update
 # ctrl-a: select-all+accept
 # ctrl-y: yank current selection to clipboard using xclip
+# ctrl-z: toggle-preview-wrap
 # up arrow: preview scroll up
 # down arrow: preview scroll down
-export FZF_DEFAULT_OPTS="--ansi --height 70% -1 --reverse --multi --inline-info
+export FZF_DEFAULT_OPTS="--ansi --height 90% -1 --reverse --multi --inline-info
                  --preview '[[ \$(file --mime {}) =~ binary ]] &&
                  echo {} is a binary file ||
-                 (bat --style=header --color=always {} ||
+                 (bat --style=numbers --color=always {} ||
                  highlight -O ansi -l {} 2> /dev/null ||
-                 bat --style=header --color=always {} ||
                  cat {} ||
                  tree -c {}) 2> /dev/null | head -200'
-                 --preview-window='bottom:70%:wrap:hidden'
-                 --bind='f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(wsl-open {}),up:preview-up,down:preview-down'"
+                 --preview-window='bottom:55%:wrap:hidden'
+                 --bind='ctrl-z:toggle-preview-wrap,?:toggle-preview,ctrl-l:cancel,ctrl-d:preview-page-down,ctrl-u:preview-page-up,ctrl-a:select-all,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(wsl-open {})'"
 
 # ctrl-t options
-export FZF_CTRL_T_OPTS="--ansi --preview '(bat --color=always --decorations=always --style=header,grid --line-range :300 {} 2> /dev/null || cat {} || tree -c {}) 2> /dev/null | head -200'"
+export FZF_CTRL_T_OPTS="--ansi --preview '(bat --color=always --decorations=always --style=numbers,grid --line-range :300 {} 2> /dev/null || cat {} || tree -c {}) 2> /dev/null | head -200'"
 
 # ctrl-r options
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:wrap"
@@ -198,19 +209,58 @@ export FZF_ALT_C_OPTS="--preview 'tree -c {} | head -200'"
 
 # alias for opening nvim on fzf selection
 alias nvimfzf='nvim "$(fzf)"'
+alias vimfzf='vim "$(fzf)"'
 
-# Execute fish on startup
-#if [ -t 1 ]; then
-#exec fish
-#fi
+
+# Codi
+# Usage: codi [filetype] [filename]
+codi() {
+  local syntax="${1:-python}"
+  shift
+  nvim -c \
+    "let g:startify_disable_at_vimenter = 1 |\
+    set bt=nofile ls=0 noru nonu nornu |\
+    hi ColorColumn ctermbg=NONE |\
+    hi VertSplit ctermbg=NONE |\
+    hi NonText ctermfg=0 |\
+    Codi $syntax" "$@"
+}
+
+# Taskwarrior add emojis
+# Ref: http://jessachandler.com/2018/03/setup-task-and-time-warrior/
+# https://twitter.com/pjf/status/852466839145795584
+URGENT="2757"
+DUETOMORROW="2690"
+DUETODAY="2691"
+OVERDUE="2639"
+OK="2714"
+
+# shows if any TaskWarrior tasks are in need of attention
+function task_indicator {
+    if [ `task +READY +OVERDUE count` -gt "0" ]  ; then
+        printf "%b" "\u$OVERDUE"
+    elif [ `task +READY +DUETODAY count` -gt "0" ]  ; then
+        printf "%b" "\u$DUETODAY"
+    elif [ `task +READY +DUETomorrow count` -gt "0" ]  ; then
+        printf "%b" "\u$DUETOMORROW"
+    elif [ `task +READY urgency \> 10 count` -gt "0" ]  ; then
+        printf "%b" "\u$URGENT"
+    else
+        printf "%b" "\u$OK"
+    fi
+}
+task="\$(task_indicator)"
+addprompt=$task
+PROMPT="$addprompt $PROMPT"
+
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
 
 cd $HOME
-
 neofetch
