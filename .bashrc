@@ -29,16 +29,16 @@ export PATH=$PATH:/opt/netbeans/bin/
 export VISUAL="nvim"
 export EDITOR=$VISUAL
 
+# Workaround for WSL 2 X Server not working
+# export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
+export LIBGL_ALWAYS_INDIRECT=1
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
       *) return;;
 esac
-
-# Workaround for WSL 2 X Server not working
-# export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
-export LIBGL_ALWAYS_INDIRECT=1
 
 # Ref: https://unix.stackexchange.com/a/48113
 export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
@@ -144,13 +144,14 @@ if ! shopt -oq posix; then
   fi
 fi
 
+
 # Fuzzy file finder configurations
 # resources:
 # https://github.com/junegunn/fzf/wiki/configuring-shell-key-bindings
 # https://www.youtube.com/watch?v=qgg5jhi_els
 # https://remysharp.com/2018/08/23/cli-improved
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # use ~~ as the trigger sequence instead of the default **
 #export FZF_COMPLETION_TRIGGER='~~'
@@ -253,14 +254,9 @@ task="\$(task_indicator)"
 addprompt=$task
 PROMPT="$addprompt $PROMPT"
 
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 
 cd $HOME
 neofetch
