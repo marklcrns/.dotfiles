@@ -162,19 +162,23 @@ pip3 install pipenv
 # Ref:
 # https://www.itzgeek.com/post/how-to-install-java-on-ubuntu-20-04/
 # https://linuxize.com/post/install-java-on-ubuntu-20-04/
-## OpenJDK 11
-sudo apt install openjdk-11-jdk openjdk-11-jre -y
 ## OpenJDK 8
 sudo apt install openjdk-8-jdk openjdk-8-jre -y
+## OpenJDK 11
+sudo apt install openjdk-11-jdk openjdk-11-jre -y
+## OpenJDK 13
+sudo apt install openjdk-13-jdk openjdk-13-jre -y
 
+export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 ## Set java and javac 11 as default
-sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java
-sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-amd64/bin/javac
+sudo update-alternatives --set java ${JDK_HOME}/bin/java
+sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
 
 ## Copy the Java path excluding the 'bin/java' to environment if not exist
 grep -q 'JAVA_HOME=' /etc/environment && \
-  sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64/",' /etc/environment || \
-  echo 'JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64/"' | sudo tee -a /etc/environment
+  sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="${JDK_HOME}",' /etc/environment || \
+  echo 'JAVA_HOME="${JDK_HOME}"' | sudo tee -a /etc/environment
+# source environ
 source /etc/environment
 
 # ## Oracle JDK 11.0.7

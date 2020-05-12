@@ -7,12 +7,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +34 school/md/spring-2020/MATH-141/math-141.md
-badd +135 school/md/spring-2020/MATH-141/notes/ch-7.md
+badd +126 school/md/spring-2020/MATH-141/math-141.md
+badd +53 school/md/spring-2020/MATH-141/notes/ch-7.md
 badd +10 school/md/spring-2020/MATH-141/notes/ch-6.md
 argglobal
 %argdel
-edit school/md/spring-2020/MATH-141/notes/ch-7.md
+edit school/md/spring-2020/MATH-141/math-141.md
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -29,12 +29,12 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 53 - ((6 * winheight(0) + 10) / 20)
+let s:l = 128 - ((14 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-53
-normal! 0
+128
+normal! 03|
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

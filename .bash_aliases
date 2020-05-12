@@ -262,24 +262,39 @@ alias rclone-dbox-dev="rclone copy Dropbox:dev.zip ~/Projects --backup-dir `date
 
 # Switch to JDK 8
 openjdk8() {
-  sudo update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
-  sudo update-alternatives --set javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac
+  export JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+  sudo update-alternatives --set java ${JDK_HOME}/jre/bin/java
+  sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
   # replace JAVA_HOME with jdk 8 path if exist, else append
   grep -q 'JAVA_HOME=' /etc/environment && \
-    sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre/",' /etc/environment || \
-    echo 'JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre/"' | sudo tee -a /etc/environment
+    sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="${JDK_HOME}/jre/",' /etc/environment || \
+    echo 'JAVA_HOME="${JDK_HOME}/jre/"' | sudo tee -a /etc/environment
   # source environ
   source /etc/environment
 }
 
 # Switch to JDK 11
 openjdk11() {
-  sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java
-  sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-amd64/bin/javac
+  export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+  sudo update-alternatives --set java ${JDK_HOME}/bin/java
+  sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
   # replace JAVA_HOME with jdk 11 path if exist, else append
   grep -q 'JAVA_HOME=' /etc/environment && \
-    sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64/",' /etc/environment || \
-    echo 'JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64/"' | sudo tee -a /etc/environment
+    sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="${JDK_HOME}",' /etc/environment || \
+    echo 'JAVA_HOME="${JDK_HOME}"' | sudo tee -a /etc/environment
+  # source environ
+  source /etc/environment
+}
+
+# Switch to JDK 13
+openjdk13() {
+  export JDK_HOME=/usr/lib/jvm/java-13-openjdk-amd64
+  sudo update-alternatives --set java ${JDK_HOME}/bin/java
+  sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
+  # replace JAVA_HOME with jdk 11 path if exist, else append
+  grep -q 'JAVA_HOME=' /etc/environment && \
+    sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="${JDK_HOME}",' /etc/environment || \
+    echo 'JAVA_HOME="${JDK_HOME}"' | sudo tee -a /etc/environment
   # source environ
   source /etc/environment
 }

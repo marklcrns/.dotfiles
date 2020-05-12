@@ -7,10 +7,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +29 ModuleSixExplain.java
-badd +103 ZombieLand.java
+badd +13 ZombieLand.java
+badd +24 ModuleSixExplain.java
 argglobal
 %argdel
+$argadd ZombieLand.java
 edit ModuleSixExplain.java
 set splitbelow splitright
 set nosplitright
@@ -30,18 +31,19 @@ setlocal fdn=20
 setlocal fen
 10
 normal! zo
-let s:l = 20 - ((10 * winheight(0) + 12) / 25)
+let s:l = 17 - ((8 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-20
-normal! 096|
+17
+normal! 0
+lcd /mnt/c/Users/MarkL/Dropbox/School/CISC-190/bookClasses
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
 unlet! s:wipebuf
-set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=aFcI
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=aFc
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if file_readable(s:sx)
   exe "source " . fnameescape(s:sx)
