@@ -83,6 +83,40 @@ touched() {
     nvim -- "$1"
 }
 
+# Move junk files to ~/.Trash
+# Ref: https://stackoverflow.com/a/23659385/11850077
+# When iterating through commands, DON'T for get the semi-colon before the
+# closing brackets
+junk() {
+  for item in "$@" ; do echo "Trashing: $item" ; mv "$item" ~/.Trash/; done;
+}
+
+# Resources
+# prompt: https://stackoverflow.com/a/1885534/11850077
+# params: https://stackoverflow.com/a/23659385/11850077
+clearjunk() {
+  JUNK_COUNTER=0
+  for item in ~/.Trash/*
+    do
+      echo "$item"
+      JUNK_COUNTER=$((JUNK_COUNTER + 1))
+    done
+
+  read -p "Proceed deleting all $JUNK_COUNTER files? (Y/y)" -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo Aborting...
+    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
+  fi
+
+  for item in ~/.Trash/*
+  do
+    rm -rf "$item"
+  done
+
+  echo "All $JUNK_COUNTER false in ~/.Trash were permanently deleted"
+}
+
 # Binaries
 alias open='xdg-open'
 alias ls='exa'
@@ -118,7 +152,7 @@ alias rmdebs='find . -name "debug.log" -type f; find . -name "debug.log" -type f
 alias rmlogs='find . -name "*.log" -type f; find . -name "*.log" -type f -delete'
 
 # Yank and pasting current working directory system clipboard
-alias ypath='pwd | cs clipboard; clear; echo "`pwd`\n...path copied!"'
+alias ypath='pwd | cs clipboard; clear; echo "Current path copied to clipboard"'
 alias ppath='cd "`vs clipboard`"; clear'
 
 # Yank currant path and convert to windows path
@@ -136,6 +170,23 @@ winpath() {
   printf "%s" "$output"
 }
 alias winypath="winpath | xclip -selection clipboard; printf '%s\n...win path copied' '$output'"
+
+# cd to Windows path string arg
+# Resources:
+# https://stackoverflow.com/questions/7131670/make-a-bash-alias-that-takes-a-parameter
+cdwinpath() {
+  if [[ $# -eq 0 ]] ; then
+    printf "%s" "Missing Windows path string arg"
+    exit 1 || return 1
+  fi
+
+  regex1='s/\\/\//g'
+  regex2='s/\(\w\):/\/mnt\/\L\1/g'
+
+  output=$(printf "%s" "$1" | sed -e "$regex1" -e "$regex2")
+  cd "$output"
+}
+
 
 # Update dotfiles backup repository
 DOTFILES="$HOME/Projects/dotfiles"

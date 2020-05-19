@@ -120,6 +120,7 @@ DOTFILES=$SCRIPTDIR/..
 
 cd ~
 mkdir ~/Downloads
+mkdir ~/.Trash
 
 # Nameserver workaround for WSL2
 # Creates resolve.conf backup to $HOME as nameserver.txt
