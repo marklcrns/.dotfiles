@@ -7,12 +7,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +318 school/md/spring-2020/MATH-141/notes/ch-7.md
-badd +18 school/md/index.md
-badd +0 school/md/spring-2020/MATH-141/index.md
 argglobal
 %argdel
-edit school/md/spring-2020/MATH-141/index.md
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -21,20 +17,15 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-setlocal fdm=expr
-setlocal fde=Foldexpr_markdown(v:lnum)
+enew
+setlocal fdm=manual
+setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
 setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 183 - ((30 * winheight(0) + 15) / 31)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-183
-normal! 06|
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

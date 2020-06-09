@@ -1,3 +1,6 @@
+# TODO Delete later
+alias nvimt='nvim -u ~/.config/nvim-test/init.vim'
+
 # config files
 alias vimrc='nvim ~/.vim/.vimrc'
 alias tmuxconf='nvim ~/.tmux.conf'
@@ -43,7 +46,7 @@ alias charm='/mnt/c/Users/MarkL/AppData/Local/JetBrains/Toolbox/apps/PyCharm-C/c
 
 # Running Windows executable
 alias cmd='cmd.exe /C'
-alias ps='powershell.exe /C'
+alias pows='powershell.exe /C'
 alias explore='explorer.exe'
 # Windows installed browsers
 alias ffox='firefox.exe'
@@ -110,9 +113,9 @@ clearjunk() {
   fi
 
   for item in ~/.Trash/*
-  do
-    rm -rf "$item"
-  done
+    do
+      rm -rf "$item"
+    done
 
   echo "All $JUNK_COUNTER false in ~/.Trash were permanently deleted"
 }
@@ -152,8 +155,8 @@ alias rmdebs='find . -name "debug.log" -type f; find . -name "debug.log" -type f
 alias rmlogs='find . -name "*.log" -type f; find . -name "*.log" -type f -delete'
 
 # Yank and pasting current working directory system clipboard
-alias ypath='pwd | cs clipboard; clear; echo "Current path copied to clipboard"'
-alias ppath='cd "`vs clipboard`"; clear'
+alias ypath='pwd | cs clipboard && clear; echo "Current path copied to clipboard"'
+alias ppath='cd "`vs clipboard`" && clear'
 
 # Yank currant path and convert to windows path
 # Resources:
@@ -169,7 +172,7 @@ winpath() {
   output=$(pwd | sed -e "$regex1" -e "$regex2" -e "$regex3" -re "$regex4")
   printf "%s" "$output"
 }
-alias winypath="winpath | xclip -selection clipboard; printf '%s\n...win path copied' '$output'"
+alias winypath="winpath | xclip -selection clipboard && printf '%s\n...win path copied' '$output'"
 
 # cd to Windows path string arg
 # Resources:

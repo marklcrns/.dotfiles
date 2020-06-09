@@ -8,7 +8,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +13 ZombieLand.java
-badd +24 ModuleSixExplain.java
+badd +16 ModuleSixExplain.java
 argglobal
 %argdel
 $argadd ZombieLand.java
@@ -31,11 +31,11 @@ setlocal fdn=20
 setlocal fen
 10
 normal! zo
-let s:l = 17 - ((8 * winheight(0) + 17) / 34)
+let s:l = 13 - ((12 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-17
+13
 normal! 0
 lcd /mnt/c/Users/MarkL/Dropbox/School/CISC-190/bookClasses
 tabnext 1
