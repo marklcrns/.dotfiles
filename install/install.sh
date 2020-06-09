@@ -494,7 +494,7 @@ ln -sf ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
 
 # Backup dotfiles (creates ~/.YY-MM-DD_old.bak directory)
 cd ~
-DOTBACKUPDIR=$HOME/.`date -u +"%Y-%m-%dT%H:%M:%SZ"`_old_dotfiles.bak
+DOTBACKUPDIR=$HOME/.`date +"%Y-%m-%dT%H:%M:%SZ"`_old_dotfiles.bak
 mkdir $DOTBACKUPDIR
 mkdir -p $DOTBACKUPDIR.config/ranger $DOTBACKUPDIR.config/zathura
 cp -r \
