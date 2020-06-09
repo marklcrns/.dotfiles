@@ -32,6 +32,7 @@ echo git-lfs
 echo google-chrome-stable
 echo highlight
 echo htop
+echo inotify-tools
 echo libapache2-mod-php
 echo libffi-dev
 echo libjansson-dev
@@ -377,6 +378,8 @@ wget -c https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-0
   unzip exa-linux-x86_64-0.9.0.zip && \
   sudo mv exa-linux-x86_64 /usr/local/bin/exa
 
+# Inotify-tools
+sudo apt install inotify-tools
 
 #################### Browser ####################
 
