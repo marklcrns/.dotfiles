@@ -156,7 +156,7 @@ alias rmlogs='find . -name "*.log" -type f; find . -name "*.log" -type f -delete
 
 # Yank and pasting current working directory system clipboard
 alias ypath='pwd | cs clipboard && clear; echo "Current path copied to clipboard"'
-alias ppath='cd "`vs clipboard`" && clear'
+alias cdypath='cd "`vs clipboard`" && clear'
 
 # Yank currant path and convert to windows path
 # Resources:

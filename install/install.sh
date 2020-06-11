@@ -88,6 +88,8 @@ echo tmuxinator
 echo tree
 echo unzip
 echo urlview
+echo vagrant
+echo virtualbox
 echo w3m
 echo w3m-img
 echo wget
@@ -451,6 +453,18 @@ sudo apt install php libapache2-mod-php php-cli php-fpm php-json php-pdo \
 
 # SQLite3 && SQLite browser
 sudo apt install sqlite3 libsqlite3-dev sqlitebrowser -y
+
+
+#################### Virtual Machine ####################
+
+# VirtualBox
+sudo apt install virtualbox
+
+# Ref: https://computingforgeeks.com/install-latest-vagrant-on-ubuntu-debian-kali-linux/
+# Vagrant 2.2.9
+wget https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.deb && \
+  sudo dpkg -i vagrant_2.2.9_x86_64.deb && \
+  sudo apt -f install
 
 
 #################### Misc ####################
