@@ -1,12 +1,11 @@
 #!/bin/bash
 
 # INSTALLER SCRIPT FOr WSL2 UBUNTU 20.04 FOCAL FOSSA
-# Creates ~/Downloads directory for installers package
+# Creates ~/Downloads directory for installer packages
 # Stores dotfiles repo in ~/Projects/dotfiles
 
 # For Java Oracle JDK 11, Download Java SE that matches default-jdk installation
-# if the one provided in the install directory is not matched here:
-# new release:
+# if the one provided in the install directory is not matched:
 # https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
 # for previous versions:
 # https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html
@@ -451,14 +450,15 @@ sudo apt install php libapache2-mod-php php-cli php-fpm php-json php-pdo \
 
 #################### Web Server (Others) ####################
 
+cd ~/Downloads
+
 # SQLite3 && SQLite browser
 sudo apt install sqlite3 libsqlite3-dev sqlitebrowser -y
 
 
 #################### Virtual Machine ####################
 
-# VirtualBox
-sudo apt install virtualbox
+cd ~/Downloads
 
 # Ref: https://computingforgeeks.com/install-latest-vagrant-on-ubuntu-debian-kali-linux/
 # Vagrant 2.2.9
