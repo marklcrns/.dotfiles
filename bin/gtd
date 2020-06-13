@@ -5,6 +5,9 @@
 # All the credits goes to Conner McDaniel for this amazing script
 # https://github.com/connermcd/gtd
 # ---------------------------------------------------------------
+# Updates:
+# 2020-06-12: Added WSL support. gtd .wav files needs to be stored at
+# "/mnt/c/Users/${WIN_USERNAME}/Documents/gtd/espeak
 
 set -e
 
@@ -13,7 +16,13 @@ CUSTOM_CMD="${CUSTOM_CMD:-"clear"}"
 MPD_CMD_BREAK="${MPD_CMD_BREAK:-"spotifycli --pause"}"
 MPD_CMD_WORK="${MPD_CMD_WORK:-"spotifycli --play"}"
 NOTIFY_CMD="${NOTIFY_CMD:-"notify-send"}"
-SPEAK_CMD="${SPEAK_CMD:-"cd /mnt/c/Users/MarkL/Documents/gtd/espeak; cmd.exe /c start"}"
+if [[ $(grep -i microsoft /proc/version) ]]
+then
+  WIN_USERNAME=$(cmd.exe /c echo %username%)
+  SPEAK_CMD="${SPEAK_CMD:-"cd /mnt/c/Users/${WIN_USERNAME}/Documents/gtd/espeak; cmd.exe /c start"}"
+else
+  SPEAK_CMD="${SPEAK_CMD:-"&>/dev/null aplay"}"
+fi
 
 # Setting configuration
 DEFAULT_WORK_LENGTH="${DEFAULT_WORK_LENGTH:-15}"
