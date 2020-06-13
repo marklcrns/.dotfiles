@@ -134,7 +134,7 @@ DOTFILES="$HOME/Projects/.dotfiles"
 
 dotfilesbackup() {
   cd $HOME
-  DOTBACKUPDIR=$HOME/.`date -u +"%Y-%m-%dT%H:%M:%SZ"`_old_dotfiles.bak
+  DOTBACKUPDIR=$HOME/.`date -u +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
   mkdir $DOTBACKUPDIR
   mkdir -p $DOTBACKUPDIR.config/ranger $DOTBACKUPDIR.config/zathura $DOTBACKUPDIR.vim/session
   cp -r \
