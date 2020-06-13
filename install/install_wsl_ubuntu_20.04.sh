@@ -2,7 +2,7 @@
 
 # INSTALLER SCRIPT FOr WSL2 UBUNTU 20.04 FOCAL FOSSA
 # Creates ~/Downloads directory for installer packages
-# Stores dotfiles repo in ~/Projects/dotfiles
+# Stores dotfiles repo in ~/Projects/.dotfiles
 
 # For Java Oracle JDK 11, Download Java SE that matches default-jdk installation
 # if the one provided in the install directory is not matched:

@@ -1,4 +1,4 @@
-# All my WSL and Linux dotfiles
+# All my WSL and Linux dotfiles and configurations
 
 ## Packages Installation
 
