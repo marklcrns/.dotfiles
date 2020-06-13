@@ -153,7 +153,7 @@ dotfilesbackup() {
   cp .config/zathura/zathurarc $DOTBACKUPDIR/.config/zathura
 
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
-    WIN_USERNAME=$(cmd.exe /c echo %username%)
+    WIN_USERNAME=$(cmd.exe /c "echo %username%")
     cp -r "/mnt/c/Users/${WIN_USERNAME}/Documents/gtd/" ${DOTBACKUPDIR}
   else
     cp -r ~/.gtd/ ${DOTBACKUPDIR}
@@ -183,7 +183,7 @@ dotfilesdist() {
   cp .config/zathura/zathurarc ~/.config/zathura/
 
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
-    WIN_USERNAME=$(cmd.exe /c echo %username%)
+    WIN_USERNAME=$(cmd.exe /c "echo %username%")
     cp -r gtd /mnt/c/Users/${WIN_USERNAME}/Documents
   else
     cp -r gtd ${HOME}
@@ -206,7 +206,7 @@ dotfilesupdate() {
   cp ~/.config/zathura/zathurarc .config/zathura/
 
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
-    WIN_USERNAME=$(cmd.exe /c echo %username%)
+    WIN_USERNAME=$(cmd.exe /c "echo %username%")
     cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/gtd .
   else
     cp -R ~/.gtd/.* gtd
@@ -314,7 +314,7 @@ alias mux='tmuxinator'
 
 # WSL aliases
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
-  WIN_USERNAME=$(cmd.exe /c echo %username%)
+  WIN_USERNAME=$(cmd.exe /c "echo %username%")
   # Directory Aliases
   alias winhome="cd /mnt/c/Users/${WIN_USERNAME}; clear"
   alias windocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents; clear"
