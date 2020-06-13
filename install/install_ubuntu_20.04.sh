@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# INSTALLER SCRIPT FOr WSL2 UBUNTU 20.04 FOCAL FOSSA
-# Creates ~/Downloads directory for installer packages
-# Stores dotfiles repo in ~/Projects/.dotfiles
-
+# INSTALLER SCRIPT FOr UBUNTU 20.04 FOCAL FOSSA
+#
+# Store dotfiles repo in ~/Projects/.dotfiles
+#
 # For Java Oracle JDK 11, Download Java SE that matches default-jdk installation
 # if the one provided in the install directory is not matched:
 # https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
@@ -19,7 +19,6 @@ echo build-essential
 echo caca-utils
 echo cmatrix
 echo curl
-echo dbus-x11
 echo default-jdk
 echo default-jre
 echo emacs
@@ -31,7 +30,6 @@ echo git-lfs
 echo google-chrome-stable
 echo highlight
 echo htop
-echo imagemagick
 echo inotify-tools
 echo libapache2-mod-php
 echo libffi-dev
@@ -66,8 +64,6 @@ echo php-xml
 echo php-zip
 echo phpmyadmin
 echo pkg-config
-echo python-dev
-echo python3-dev
 echo python3-docutils
 echo python3-neovim
 echo python3-pip
@@ -89,6 +85,7 @@ echo tree
 echo unzip
 echo urlview
 echo vagrant
+echo vim
 echo virtualbox
 echo w3m
 echo w3m-img
@@ -96,8 +93,6 @@ echo wget
 echo xclip
 echo xdg-utils
 echo xdotool
-echo xfce4
-echo xubuntu-desktop
 echo yad
 echo yarn
 echo zathura
@@ -125,11 +120,6 @@ cd ~
 mkdir ~/Downloads
 mkdir ~/.Trash
 
-# Nameserver workaround for WSL2
-# Creates resolve.conf backup to $HOME as nameserver.txt
-cat /etc/resolv.conf > ~/nameserver.txt
-echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
-
 
 ################ Essentials #######################
 
@@ -137,24 +127,22 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install build-essential libssl-dev libffi-dev -y
 sudo apt install software-properties-common -y
 sudo apt-add-repository universe -y
-sudo apt install curl wget zip unzip git -y
-
-# XServer
-sudo apt install dbus-x11 -y
-sudo systemd-machine-id-setup
+sudo apt install curl wget zip unzip git vim -y
 
 
 #################### Languages ####################
 
 cd ~/Downloads
 
-# Python (DEPRECATED, Ubuntu 20.04 on longer supports older python)
+# Python 2 (DEPRECATED, Ubuntu 20.04 on longer supports older python)
 # Uncomment if you still want to install old python from universe repository
-sudo apt install python-dev -y
+# sudo apt install python-dev -y
+
 ## Python2 pip
 ## Ref: https://linuxize.com/post/how-to-install-pip-on-ubuntu-20.04/
-curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
-sudo python get-pip.py
+# curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
+# sudo python get-pip.py
+
 # Python3
 sudo apt install python3-dev python3-pip python3-venv -y
 # Python Modules
@@ -304,17 +292,17 @@ python3 -m venv env && \
 npm install -g eslint stylelint prettier
 cd ~/Downloads
 
-# Emacs
-sudo apt install emacs -y
-## Doom Emacs
-git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d && \
-  ~/.emacs.d/bin/doom install
+# # Emacs
+# sudo apt install emacs -y
+# ## Doom Emacs
+# git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d && \
+#   ~/.emacs.d/bin/doom install
 
 # Libre Office
 sudo apt install libreoffice -y
 
 # ImageMagick
-sudo apt install imagemagick -y
+# sudo apt install imagemagick -y
 
 
 #################### Utilities ####################
@@ -471,6 +459,9 @@ wget https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.deb && \
   sudo dpkg -i vagrant_2.2.9_x86_64.deb && \
   sudo apt -f install
 
+# VirtualBox
+sudo apt install virtualbox -y
+
 
 #################### Misc ####################
 
@@ -482,9 +473,6 @@ sudo apt install screenfetch neofetch htop cmatrix -y
 mkdir -p ~/bin
 curl -o ~/bin/tldr https://raw.githubusercontent.com/raylee/tldr/master/tldr && \
   chmod +x ~/bin/tldr
-
-# Xfce4
-sudo apt install xfce4 xubuntu-desktop -y
 
 # Taskwarrior & Timewarrior
 sudo apt install taskwarrior timewarrior -y && \
@@ -503,13 +491,13 @@ pip3 install taskwarrior-time-tracking-hook && \
 
 #################### MIME Applications ####################
 
-cd $DOTFILES
+# cd $DOTFILES
 
 # Custom MIME handlers
-cp .config/mimeapps.list ~/.config/
-mkdir ~/.local/share/applications
-cp applications/* ~/.local/share/applications/
-ln -sf ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
+# cp .config/mimeapps.list ~/.config/
+# mkdir ~/.local/share/applications
+# cp applications/* ~/.local/share/applications/
+# ln -sf ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
 
 
 #################### Dotfiles ####################
