@@ -117,8 +117,8 @@ SCRIPTDIR="$( cd "$( dirname "$0" )" && pwd )"
 DOTFILES=$SCRIPTDIR/..
 
 cd ~
-if [[ ! -d "~/Downloads" ]]; then; mkdir ~/Downloads; fi
-if [[ ! -d "~/.Trash" ]]; then; mkdir ~/.Trash; fi
+if [[ ! -d "~/Downloads" ]]; then mkdir ~/Downloads; fi
+if [[ ! -d "~/.Trash" ]]; then mkdir ~/.Trash; fi
 
 
 ################ Essentials #######################
