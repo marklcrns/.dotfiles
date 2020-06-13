@@ -1,6 +1,3 @@
-# TODO Delete later
-alias nvimt='nvim -u ~/.config/nvim-test/init.vim'
-
 # config files
 alias vimrc='nvim ~/.vim/.vimrc'
 alias tmuxconf='nvim ~/.tmux.conf'
@@ -16,11 +13,6 @@ alias aptremove='sudo apt purge --auto-remove'
 alias updateall='sudo apt update && sudo apt upgrade -y'
 
 # Directory Aliases
-alias winhome='cd /mnt/c/Users/MarkL; clear'
-alias windocs='cd /mnt/c/Users/MarkL/Documents; clear'
-alias wintrade='cd /mnt/c/Users/MarkL/OneDrive/Trading/Stocks; clear'
-alias windown='cd /mnt/c/Users/MarkL/Downloads; clear'
-alias winbin='cd /mnt/c/bin; clear'
 alias down='cd ~/Downloads'
 alias docs='cd ~/Docs; clear'
 alias prof='cd ~/Projects; clear'
@@ -30,27 +22,6 @@ alias devgit='cd ~/Projects/Dev/GitHubRepos; clear'
 alias ref='cd ~/Projects/references; clear'
 alias refwsl='cd ~/Projects/references/WSL; clear'
 alias refubu='cd ~/Projects/references/WSL/Ubuntu; clear'
-
-# Secure files Aliases
-alias secenter='cd /mnt/c/Users/MarkL; cmd.exe /C Secure.bat; cd ./Secure; clear'
-alias seclock='cd /mnt/c/Users/MarkL; cmd.exe /c Secure.bat; clear'
-alias sec='cd /mnt/c/Users/MarkL/Secure/; clear'
-alias secfiles='cd /mnt/c/Users/MarkL/Secure; clear'
-alias secdocs='cd /mnt/c/Users/MarkL/Secure/e-Files; clear'
-alias secpersonal='cd /mnt/c/Users/MarkL/Secure/Personal; clear'
-alias secbrowse='cd /mnt/c/Users/MarkL/Secure; explorer.exe .; cd -; clear'
-
-# Editors Aliases
-alias subl='/mnt/c/Program\ Files/Sublime\ Text\ 3/subl.exe'
-alias charm='/mnt/c/Users/MarkL/AppData/Local/JetBrains/Toolbox/apps/PyCharm-C/ch-0/192.6817.19/bin/pycharm64.exe'
-
-# Running Windows executable
-alias cmd='cmd.exe /C'
-alias pows='powershell.exe /C'
-alias explore='explorer.exe'
-# Windows installed browsers
-alias ffox='firefox.exe'
-alias gchrome='chrome.exe'
 
 # live browser server
 # alias live='http-server'
@@ -79,12 +50,12 @@ alias rmdir='rmdir -v'
 mkcdir () {
   mkdir -pv -- "$1" &&
     cd -P -- "$1"
-}
+  }
 
 touched() {
   touch -- "$1" &&
     nvim -- "$1"
-}
+  }
 
 # Move junk files to ~/.Trash
 # Ref: https://stackoverflow.com/a/23659385/11850077
@@ -92,7 +63,7 @@ touched() {
 # closing brackets
 junk() {
   for item in "$@" ; do echo "Trashing: $item" ; mv "$item" ~/.Trash/; done;
-}
+  }
 
 # Resources
 # prompt: https://stackoverflow.com/a/1885534/11850077
@@ -100,10 +71,10 @@ junk() {
 clearjunk() {
   JUNK_COUNTER=0
   for item in ~/.Trash/*
-    do
-      echo "$item"
-      JUNK_COUNTER=$((JUNK_COUNTER + 1))
-    done
+  do
+    echo "$item"
+    JUNK_COUNTER=$((JUNK_COUNTER + 1))
+  done
 
   read -p "Proceed deleting all $JUNK_COUNTER files? (Y/y)" -n 1 -r
   echo
@@ -113,9 +84,9 @@ clearjunk() {
   fi
 
   for item in ~/.Trash/*
-    do
-      rm -rf "$item"
-    done
+  do
+    rm -rf "$item"
+  done
 
   echo "All $JUNK_COUNTER false in ~/.Trash were permanently deleted"
 }
@@ -158,39 +129,6 @@ alias rmlogs='find . -name "*.log" -type f; find . -name "*.log" -type f -delete
 alias ypath='pwd | cs clipboard && clear; echo "Current path copied to clipboard"'
 alias cdypath='cd "`vs clipboard`" && clear'
 
-# Yank currant path and convert to windows path
-# Resources:
-# Sed substitute uppercase lowercase: https://stackoverflow.com/questions/4569825/sed-one-liner-to-convert-all-uppercase-to-lowercase
-# Printf: https://linuxconfig.org/bash-printf-syntax-basics-with-examples
-# Access last returned value: https://askubuntu.com/questions/324423/how-to-access-the-last-return-value-in-bash
-winpath() {
-  regex1='s/\//\\/g'
-  regex2='s/~/\\\\wsl$\\Ubuntu\\home\\marklcrns/g'
-  regex3='s/\\home/\\\\wsl$\\Ubuntu\\home/g'
-  regex4='s/^\\mnt\\(\w)/\U\1:/g'
-
-  output=$(pwd | sed -e "$regex1" -e "$regex2" -e "$regex3" -re "$regex4")
-  printf "%s" "$output"
-}
-alias winypath="winpath | xclip -selection clipboard && printf '%s\n...win path copied' '$output'"
-
-# cd to Windows path string arg
-# Resources:
-# https://stackoverflow.com/questions/7131670/make-a-bash-alias-that-takes-a-parameter
-cdwinpath() {
-  if [[ $# -eq 0 ]] ; then
-    printf "%s" "Missing Windows path string arg"
-    exit 1 || return 1
-  fi
-
-  regex1='s/\\/\//g'
-  regex2='s/\(\w\):/\/mnt\/\L\1/g'
-
-  output=$(printf "%s" "$1" | sed -e "$regex1" -e "$regex2")
-  cd "$output"
-}
-
-
 # Update dotfiles backup repository
 DOTFILES="$HOME/Projects/dotfiles"
 
@@ -210,10 +148,14 @@ dotfilesbackup() {
     .mutt/ \
     .vim/ \
     .scimrc \
-    /mnt/c/Users/MarkL/Documents/gtd \
     $DOTBACKUPDIR
   cp .config/ranger/rc.conf $DOTBACKUPDIR/.config/ranger
   cp .config/zathura/zathurarc $DOTBACKUPDIR/.config/zathura
+
+  if [[ "$(grep -i microsoft /proc/version)" ]]; then
+    cp -r /mnt/c/Users/MarkL/Documents/gtd $DOTBACKUPDIR
+  fi
+
   cd -; printf '\nDOTFILES BACKUP COMPLETE...\n\n'
 }
 
@@ -236,7 +178,11 @@ dotfilesdist() {
     $HOME
   cp .config/ranger/rc.conf ~/.config/ranger/
   cp .config/zathura/zathurarc ~/.config/zathura/
-  cp -r gtd /mnt/c/Users/MarkL/Documents
+
+  if [[ "$(grep -i microsoft /proc/version)" ]]; then
+    cp -r gtd /mnt/c/Users/MarkL/Documents
+  fi
+
   cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
 }
 
@@ -249,10 +195,14 @@ dotfilesupdate() {
     ~/.gitconfig \
     ~/bin \
     ~/.vim/ \
-    ~/.scimrc \
-    /mnt/c/Users/MarkL/Documents/gtd .
+    ~/.scimrc .
   cp ~/.config/ranger/rc.conf .config/ranger/
   cp ~/.config/zathura/zathurarc .config/zathura/
+
+  if [[ "$(grep -i microsoft /proc/version)" ]]; then
+    cp -r /mnt/c/Users/MarkL/Documents/gtd .
+  fi
+
   git add .; git status; echo 'dotfiles update complete'
 }
 
@@ -323,8 +273,8 @@ openjdk8() {
   grep -q 'JAVA_HOME=' /etc/environment && \
     sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="${JDK_HOME}/jre/",' /etc/environment || \
     echo 'JAVA_HOME="${JDK_HOME}/jre/"' | sudo tee -a /etc/environment
-  # source environ
-  source /etc/environment
+      # source environ
+      source /etc/environment
 }
 
 # Switch to JDK 11
@@ -336,8 +286,8 @@ openjdk11() {
   grep -q 'JAVA_HOME=' /etc/environment && \
     sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="${JDK_HOME}",' /etc/environment || \
     echo 'JAVA_HOME="${JDK_HOME}"' | sudo tee -a /etc/environment
-  # source environ
-  source /etc/environment
+      # source environ
+    source /etc/environment
 }
 
 # Switch to JDK 13
@@ -349,8 +299,8 @@ openjdk13() {
   grep -q 'JAVA_HOME=' /etc/environment && \
     sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="${JDK_HOME}",' /etc/environment || \
     echo 'JAVA_HOME="${JDK_HOME}"' | sudo tee -a /etc/environment
-  # source environ
-  source /etc/environment
+      # source environ
+      source /etc/environment
 }
 
 # gtd shell script
@@ -359,4 +309,64 @@ alias on='gtd -ts'
 # tmuxinator
 alias mux='tmuxinator'
 
-alias linuxgui='startxfce4'
+# WSL aliases
+if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  # Directory Aliases
+  alias winhome='cd /mnt/c/Users/MarkL; clear'
+  alias windocs='cd /mnt/c/Users/MarkL/Documents; clear'
+  alias wintrade='cd /mnt/c/Users/MarkL/OneDrive/Trading/Stocks; clear'
+  alias windown='cd /mnt/c/Users/MarkL/Downloads; clear'
+  alias winbin='cd /mnt/c/bin; clear'
+
+  # Secure files Aliases
+  alias secenter='cd /mnt/c/Users/MarkL; cmd.exe /C Secure.bat; cd ./Secure; clear'
+  alias seclock='cd /mnt/c/Users/MarkL; cmd.exe /c Secure.bat; clear'
+  alias sec='cd /mnt/c/Users/MarkL/Secure/; clear'
+  alias secfiles='cd /mnt/c/Users/MarkL/Secure; clear'
+  alias secdocs='cd /mnt/c/Users/MarkL/Secure/e-Files; clear'
+  alias secpersonal='cd /mnt/c/Users/MarkL/Secure/Personal; clear'
+  alias secbrowse='cd /mnt/c/Users/MarkL/Secure; explorer.exe .; cd -; clear'
+
+  # Yank currant path and convert to windows path
+  # Resources:
+  # Sed substitute uppercase lowercase: https://stackoverflow.com/questions/4569825/sed-one-liner-to-convert-all-uppercase-to-lowercase
+  # Printf: https://linuxconfig.org/bash-printf-syntax-basics-with-examples
+  # Access last returned value: https://askubuntu.com/questions/324423/how-to-access-the-last-return-value-in-bash
+  winpath() {
+    regex1='s/\//\\/g'
+    regex2='s/~/\\\\wsl$\\Ubuntu\\home\\marklcrns/g'
+    regex3='s/\\home/\\\\wsl$\\Ubuntu\\home/g'
+    regex4='s/^\\mnt\\(\w)/\U\1:/g'
+
+    output=$(pwd | sed -e "$regex1" -e "$regex2" -e "$regex3" -re "$regex4")
+    printf "%s" "$output"
+  }
+  alias winypath="winpath | xclip -selection clipboard && printf '%s\n...win path copied' '$output'"
+
+  # cd to Windows path string arg
+  # Resources:
+  # https://stackoverflow.com/questions/7131670/make-a-bash-alias-that-takes-a-parameter
+  # TODO: Fix and return string instead of "cd-ing" to the output
+  cdwinpath() {
+    if [[ $# -eq 0 ]] ; then
+      printf "%s" "Missing Windows path string arg"
+      exit 1 || return 1
+    fi
+
+    regex1='s/\\/\//g'
+    regex2='s/\(\w\):/\/mnt\/\L\1/g'
+
+    output=$(printf "%s" "$1" | sed -e "$regex1" -e "$regex2")
+    cd "$output"
+  }
+
+  # Running Windows executable
+  alias cmd='cmd.exe /C'
+  alias pows='powershell.exe /C'
+  alias explore='explorer.exe'
+
+  # Windows installed browsers
+  alias ffox='firefox.exe'
+  alias gchrome='chrome.exe'
+fi
+

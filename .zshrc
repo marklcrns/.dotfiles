@@ -5,9 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export PATH=$PATH:/mnt/c/Program\ Files/Mozilla\ Firefox/
-export PATH=$PATH:/mnt/c/Program\ Files\ \(x86\)/Google/Chrome/Application
-
 # Tldr Config
 # Repo: https://github.com/raylee/tldr
 export PATH=$PATH:~/bin
@@ -23,15 +20,32 @@ export PATH=$PATH:~/.emacs.d/bin # emacs bin
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
 
-export BROWSER='/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe'
+# Default editor
+export VISUAL="nvim"
+export EDITOR=$VISUAL
 
-# NetBeans
-export PATH=$PATH:/opt/netbeans/bin/
+# WSL Configs
+if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  # Browser PATHS
+  export PATH="$PATH:/mnt/c/Program Files/Mozilla Firefox/"
+  export PATH="$PATH:/mnt/c/Program Files (x86)/Google/Chrome/Application"
 
-# Workaround for WSL 2 X Server not working
-# export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
-export LIBGL_ALWAYS_INDIRECT=1
+  export BROWSER="/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
+
+  # NetBeans
+  export PATH=$PATH:/opt/netbeans/bin/
+
+  # Enable Vagrant access outisde of WSL.
+  export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+  export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/mnt/c/vagrant"
+  # VirtualBox Windows path
+  export PATH="$PATH:/mnt/c/Program Files/Oracle/VirtualBox"
+
+  # Workaround for WSL 2 X Server not working
+  # export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+  export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
+  export LIBGL_ALWAYS_INDIRECT=1
+fi
 
 # truncate command line prompt user
 DEFAULT_USER=`whoami`
@@ -177,9 +191,6 @@ export LANG=en_US.UTF-8
 #   export EDITOR='mvim'
 # fi
 
-export VISUAL="nvim"
-export EDITOR=$VISUAL
-
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
@@ -200,73 +211,72 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-
 # Fuzzy file finder configurations
-# resources:
+# Ref:
 # https://github.com/junegunn/fzf/wiki/configuring-shell-key-bindings
 # https://www.youtube.com/watch?v=qgg5jhi_els
 # https://remysharp.com/2018/08/23/cli-improved
+if [[ -f ~/.fzf.zsh ]]; then
+  source ~/.fzf.zsh
+  # use ~~ as the trigger sequence instead of the default **
+  #export FZF_COMPLETION_TRIGGER='~~'
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+  # environment vaiable for exluding directories
+  fd_options="--follow --hidden --exclude .git --exclude node_modules --exclude env --exclude __pycache__ --color=always"
 
-# use ~~ as the trigger sequence instead of the default **
-#export FZF_COMPLETION_TRIGGER='~~'
+  # for faster traversal with git ls-tree
+  #export FZF_DEFAULT_COMMAND='
+  #(git ls-tree -r --name-only head ||
+  #find . -path "*/\.*" -prune -o -type f -print -o -type l -print |
+  ##sed s/^..//) 2> /dev/null'
 
-# environment vaiable for exluding directories
-fd_options="--follow --hidden --exclude .git --exclude node_modules --exclude env --exclude __pycache__ --color=always"
+  # default search filter command
+  export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fdfind --type f $fd_options"
 
-# for faster traversal with git ls-tree
-#export FZF_DEFAULT_COMMAND='
-#(git ls-tree -r --name-only head ||
-#find . -path "*/\.*" -prune -o -type f -print -o -type l -print |
-##sed s/^..//) 2> /dev/null'
+  # apply fd_options variable to ctrl-t and alt-c
+  export FZF_CTRL_T_COMMAND="fdfind --type f $fd_options"
+  export FZF_ALT_C_COMMAND="fdfind --type d $fd_options"
 
-# default search filter command
-export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fdfind --type f $fd_options"
+  # alternative default options
+  #export FZF_DEFAULT_OPTS="--bind='ctrl-e:execute(code {})+abort' --ansi --height 70% --layout=reverse --inline-info --preview-window 'bottom:70%:hidden' --bind='ctrl-o:toggle-preview' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 
-# apply fd_options variable to ctrl-t and alt-c
-export FZF_CTRL_T_COMMAND="fdfind --type f $fd_options"
-export FZF_ALT_C_COMMAND="fdfind --type d $fd_options"
+  # default options with preview with bat > highlight > cat > tree
+  # also with key bindings:
+  # ?: toggle-preview
+  # ctrl-e: xdg-open
+  # ctrl-d: half-page-down
+  # ctrl-u: half-page-update
+  # ctrl-a: select-all+accept
+  # ctrl-y: yank current selection to clipboard using xclip
+  # ctrl-z: toggle-preview-wrap
+  # up arrow: preview scroll up
+  # down arrow: preview scroll down
+  export FZF_DEFAULT_OPTS="--ansi --height 90% -1 --reverse --multi --inline-info
+  --preview '[[ \$(file --mime {}) =~ binary ]] &&
+    echo {} is a binary file ||
+    (bat --style=numbers --color=always {} ||
+    highlight -O ansi -l {} 2> /dev/null ||
+    cat {} ||
+    tree -c {}) 2> /dev/null | head -200'
+    --preview-window='bottom:55%:wrap:hidden'
+    --bind='ctrl-z:toggle-preview-wrap,?:toggle-preview,ctrl-l:cancel,ctrl-d:preview-page-down,ctrl-u:preview-page-up,ctrl-a:select-all,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(wsl-open {})'"
 
-# alternative default options
-#export FZF_DEFAULT_OPTS="--bind='ctrl-e:execute(code {})+abort' --ansi --height 70% --layout=reverse --inline-info --preview-window 'bottom:70%:hidden' --bind='ctrl-o:toggle-preview' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
+  # ctrl-t options
+  export FZF_CTRL_T_OPTS="--ansi --preview '(bat --color=always --decorations=always --style=numbers,grid --line-range :300 {} 2> /dev/null || cat {} || tree -c {}) 2> /dev/null | head -200'"
 
-# default options with preview with bat > highlight > cat > tree
-# also with key bindings:
-# ?: toggle-preview
-# ctrl-e: xdg-open
-# ctrl-d: half-page-down
-# ctrl-u: half-page-update
-# ctrl-a: select-all+accept
-# ctrl-y: yank current selection to clipboard using xclip
-# ctrl-z: toggle-preview-wrap
-# up arrow: preview scroll up
-# down arrow: preview scroll down
-export FZF_DEFAULT_OPTS="--ansi --height 90% -1 --reverse --multi --inline-info
---preview '[[ \$(file --mime {}) =~ binary ]] &&
-  echo {} is a binary file ||
-  (bat --style=numbers --color=always {} ||
-  highlight -O ansi -l {} 2> /dev/null ||
-  cat {} ||
-  tree -c {}) 2> /dev/null | head -200'
-  --preview-window='bottom:55%:wrap:hidden'
-  --bind='ctrl-z:toggle-preview-wrap,?:toggle-preview,ctrl-l:cancel,ctrl-d:preview-page-down,ctrl-u:preview-page-up,ctrl-a:select-all,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(wsl-open {})'"
+  # ctrl-r options
+  export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:wrap"
 
-# ctrl-t options
-export FZF_CTRL_T_OPTS="--ansi --preview '(bat --color=always --decorations=always --style=numbers,grid --line-range :300 {} 2> /dev/null || cat {} || tree -c {}) 2> /dev/null | head -200'"
+  # alternative alt-c search filter command
+  #export fzf_alt_c_command="rg --sort-files --files --null 2> /dev/null | xargs -0 dirname | uniq"
 
-# ctrl-r options
-export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:wrap"
+  # alt-c options will open preview window for tree
+  export FZF_ALT_C_OPTS="--preview 'tree -c {} | head -200'"
 
-# alternative alt-c search filter command
-#export fzf_alt_c_command="rg --sort-files --files --null 2> /dev/null | xargs -0 dirname | uniq"
-
-# alt-c options will open preview window for tree
-export FZF_ALT_C_OPTS="--preview 'tree -c {} | head -200'"
-
-# alias for opening nvim on fzf selection
-alias nvimfzf='nvim "$(fzf)"'
-alias vimfzf='vim "$(fzf)"'
+  # alias for opening nvim on fzf selection
+  alias nvimfzf='nvim "$(fzf)"'
+  alias vimfzf='vim "$(fzf)"'
+fi
 
 
 # Codi
@@ -313,9 +323,7 @@ PROMPT="$addprompt $PROMPT"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 
