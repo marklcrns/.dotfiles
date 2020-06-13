@@ -152,8 +152,11 @@ dotfilesbackup() {
   cp .config/ranger/rc.conf $DOTBACKUPDIR/.config/ranger
   cp .config/zathura/zathurarc $DOTBACKUPDIR/.config/zathura
 
-  if [[ "$(grep -i microsoft /proc/version)" ]]; then
-    cp -r /mnt/c/Users/MarkL/Documents/gtd $DOTBACKUPDIR
+  if [[ "$(grep -i microsoft /proc/version)" ]]
+  then
+    cp -r /mnt/c/Users/MarkL/Documents/gtd/ $DOTBACKUPDIR
+  else
+    cp -r ~/.gtd/ $DOTBACKUPDIR
   fi
 
   cd -; printf '\nDOTFILES BACKUP COMPLETE...\n\n'
@@ -179,8 +182,11 @@ dotfilesdist() {
   cp .config/ranger/rc.conf ~/.config/ranger/
   cp .config/zathura/zathurarc ~/.config/zathura/
 
-  if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  if [[ "$(grep -i microsoft /proc/version)" ]]
+  then
     cp -r gtd /mnt/c/Users/MarkL/Documents
+  else
+    cp -r gtd $HOME
   fi
 
   cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
@@ -199,8 +205,11 @@ dotfilesupdate() {
   cp ~/.config/ranger/rc.conf .config/ranger/
   cp ~/.config/zathura/zathurarc .config/zathura/
 
-  if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  if [[ "$(grep -i microsoft /proc/version)" ]]
+  then
     cp -r /mnt/c/Users/MarkL/Documents/gtd .
+  else
+    cp -r ~/.gtd .
   fi
 
   git add .; git status; echo 'dotfiles update complete'
@@ -222,12 +231,6 @@ alias commit='git commit'
 alias commitall='git add . && git commit'
 alias pushallrepo="cd ~/Docs/wiki; git add .; git commit; git push; cd ~/.config/nvim; pwd; git add .; git commit; git push; cd ~/Projects/references; git add .; git commit; git push; dotupdate; dotfiles; git commit; git push; echo 'Update finished'"
 alias pullallrepo="cd ~/Docs/wiki; pwd; git pull; cd ~/.config/nvim; pwd; git pull; ~/Projects/references; pwd; git pull;  $DOTFILES; pwd; git pull; echo 'Syncing complete'"
-
-# Nameserver workaround for WSL2
-alias backupns='cat /etc/resolv.conf > ~/nameserver.txt'
-alias setns='echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf'
-alias restorens='cat ~/nameserver.txt | sudo tee /etc/resolv.conf'
-alias printns='cat /etc/resolv.conf'
 
 # Web Servers
 alias starta2='sudo service apache2 start'
@@ -327,6 +330,15 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   alias secpersonal='cd /mnt/c/Users/MarkL/Secure/Personal; clear'
   alias secbrowse='cd /mnt/c/Users/MarkL/Secure; explorer.exe .; cd -; clear'
 
+  # Running Windows executable
+  alias cmd='cmd.exe /C'
+  alias pows='powershell.exe /C'
+  alias explore='explorer.exe'
+
+  # Windows installed browsers
+  alias ffox='firefox.exe'
+  alias gchrome='chrome.exe'
+
   # Yank currant path and convert to windows path
   # Resources:
   # Sed substitute uppercase lowercase: https://stackoverflow.com/questions/4569825/sed-one-liner-to-convert-all-uppercase-to-lowercase
@@ -360,13 +372,10 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
     cd "$output"
   }
 
-  # Running Windows executable
-  alias cmd='cmd.exe /C'
-  alias pows='powershell.exe /C'
-  alias explore='explorer.exe'
-
-  # Windows installed browsers
-  alias ffox='firefox.exe'
-  alias gchrome='chrome.exe'
+  # Nameserver workaround for WSL2
+  alias backupns='cat /etc/resolv.conf > ~/nameserver.txt'
+  alias setns='echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf'
+  alias restorens='cat ~/nameserver.txt | sudo tee /etc/resolv.conf'
+  alias printns='cat /etc/resolv.conf'
 fi
 
