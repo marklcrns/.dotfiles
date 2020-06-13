@@ -152,11 +152,11 @@ dotfilesbackup() {
   cp .config/ranger/rc.conf $DOTBACKUPDIR/.config/ranger
   cp .config/zathura/zathurarc $DOTBACKUPDIR/.config/zathura
 
-  if [[ "$(grep -i microsoft /proc/version)" ]]
-  then
-    cp -r /mnt/c/Users/MarkL/Documents/gtd/ $DOTBACKUPDIR
+  if [[ "$(grep -i microsoft /proc/version)" ]]; then
+    WIN_USERNAME=$(cmd.exe /c echo %username%)
+    cp -r "/mnt/c/Users/${WIN_USERNAME}/Documents/gtd/" ${DOTBACKUPDIR}
   else
-    cp -r ~/.gtd/ $DOTBACKUPDIR
+    cp -r ~/.gtd/ ${DOTBACKUPDIR}
   fi
 
   cd -; printf '\nDOTFILES BACKUP COMPLETE...\n\n'
@@ -182,18 +182,18 @@ dotfilesdist() {
   cp .config/ranger/rc.conf ~/.config/ranger/
   cp .config/zathura/zathurarc ~/.config/zathura/
 
-  if [[ "$(grep -i microsoft /proc/version)" ]]
-  then
-    cp -r gtd /mnt/c/Users/MarkL/Documents
+  if [[ "$(grep -i microsoft /proc/version)" ]]; then
+    WIN_USERNAME=$(cmd.exe /c echo %username%)
+    cp -r gtd /mnt/c/Users/${WIN_USERNAME}/Documents
   else
-    cp -r gtd $HOME
+    cp -r gtd ${HOME}
   fi
 
   cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
 }
 
 dotfilesupdate() {
-  cd $DOTFILES
+  cd ${DOTFILES}
   cp -r \
     ~/.bashrc ~/.bash_aliases ~/.profile \
     ~/.zshenv ~/.zshrc \
@@ -205,9 +205,9 @@ dotfilesupdate() {
   cp ~/.config/ranger/rc.conf .config/ranger/
   cp ~/.config/zathura/zathurarc .config/zathura/
 
-  if [[ "$(grep -i microsoft /proc/version)" ]]
-  then
-    cp -r /mnt/c/Users/MarkL/Documents/gtd .
+  if [[ "$(grep -i microsoft /proc/version)" ]]; then
+    WIN_USERNAME=$(cmd.exe /c echo %username%)
+    cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/gtd .
   else
     cp -r ~/.gtd .
   fi
@@ -215,12 +215,12 @@ dotfilesupdate() {
   git add .; git status; echo 'dotfiles update complete'
 }
 
-alias dotfiles="cd $DOTFILES"
+alias dotfiles="cd ${DOTFILES}"
 alias dotbackup=dotfilesbackup
 alias dotdist=dotfilesdist
 alias dotupdate=dotfilesupdate
-alias dotcommit="cd $DOTFILES;git commit -m"
-alias dotpush="cd $DOTFILES;git push"
+alias dotcommit="cd ${DOTFILES};git commit -m"
+alias dotpush="cd ${DOTFILES};git push"
 
 # GitHub
 alias gh='open https://github.com; clear'
@@ -314,21 +314,22 @@ alias mux='tmuxinator'
 
 # WSL aliases
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  WIN_USERNAME=$(cmd.exe /c echo %username%)
   # Directory Aliases
-  alias winhome='cd /mnt/c/Users/MarkL; clear'
-  alias windocs='cd /mnt/c/Users/MarkL/Documents; clear'
-  alias wintrade='cd /mnt/c/Users/MarkL/OneDrive/Trading/Stocks; clear'
-  alias windown='cd /mnt/c/Users/MarkL/Downloads; clear'
-  alias winbin='cd /mnt/c/bin; clear'
+  alias winhome="cd /mnt/c/Users/${WIN_USERNAME}; clear"
+  alias windocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents; clear"
+  alias wintrade="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive/Trading/Stocks; clear"
+  alias windown="cd /mnt/c/Users/${WIN_USERNAME}/Downloads; clear"
+  alias winbin="cd /mnt/c/bin; clear"
 
   # Secure files Aliases
-  alias secenter='cd /mnt/c/Users/MarkL; cmd.exe /C Secure.bat; cd ./Secure; clear'
-  alias seclock='cd /mnt/c/Users/MarkL; cmd.exe /c Secure.bat; clear'
-  alias sec='cd /mnt/c/Users/MarkL/Secure/; clear'
-  alias secfiles='cd /mnt/c/Users/MarkL/Secure; clear'
-  alias secdocs='cd /mnt/c/Users/MarkL/Secure/e-Files; clear'
-  alias secpersonal='cd /mnt/c/Users/MarkL/Secure/Personal; clear'
-  alias secbrowse='cd /mnt/c/Users/MarkL/Secure; explorer.exe .; cd -; clear'
+  alias secenter="cd /mnt/c/Users/${WIN_USERNAME}; cmd.exe /C Secure.bat; cd ./Secure; clear"
+  alias seclock="cd /mnt/c/Users/${WIN_USERNAME}; cmd.exe /c Secure.bat; clear"
+  alias sec="cd /mnt/c/Users/${WIN_USERNAME}/Secure/; clear"
+  alias secfiles="cd /mnt/c/Users/${WIN_USERNAME}/Secure; clear"
+  alias secdocs="cd /mnt/c/Users/${WIN_USERNAME}/Secure/e-Files; clear"
+  alias secpersonal="cd /mnt/c/Users/${WIN_USERNAME}/Secure/Personal; clear"
+  alias secbrowse="cd /mnt/c/Users/${WIN_USERNAME}/Secure; explorer.exe .; cd -; clear"
 
   # Running Windows executable
   alias cmd='cmd.exe /C'
