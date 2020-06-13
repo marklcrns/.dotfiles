@@ -136,7 +136,7 @@ dotfilesbackup() {
   cd $HOME
   DOTBACKUPDIR=$HOME/.`date -u +"%Y-%m-%dT%H:%M:%SZ"`_old_dotfiles.bak
   mkdir $DOTBACKUPDIR
-  mkdir -p $DOTBACKUPDIR.config/ranger $DOTBACKUPDIR.config/zathura
+  mkdir -p $DOTBACKUPDIR.config/ranger $DOTBACKUPDIR.config/zathura $DOTBACKUPDIR.vim/session
   cp -r \
     bin \
     .bashrc .bash_aliases .profile \
@@ -146,9 +146,9 @@ dotfilesbackup() {
     .ctags \
     .ctags.d/ \
     .mutt/ \
-    .vim/ \
     .scimrc \
     $DOTBACKUPDIR
+  cp -r .vim/session $DOTBACKUPDIR.vim/session
   cp .config/ranger/rc.conf $DOTBACKUPDIR/.config/ranger
   cp .config/zathura/zathurarc $DOTBACKUPDIR/.config/zathura
 
@@ -200,8 +200,8 @@ dotfilesupdate() {
     ~/.tmux.conf \
     ~/.gitconfig \
     ~/bin \
-    ~/.vim/ \
     ~/.scimrc .
+  cp ~/.vim/session .vim/session
   cp ~/.config/ranger/rc.conf .config/ranger/
   cp ~/.config/zathura/zathurarc .config/zathura/
 
@@ -209,7 +209,7 @@ dotfilesupdate() {
     WIN_USERNAME=$(cmd.exe /c echo %username%)
     cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/gtd .
   else
-    cp -r ~/.gtd .
+    cp -R ~/.gtd/.* gtd
   fi
 
   git add .; git status; echo 'dotfiles update complete'

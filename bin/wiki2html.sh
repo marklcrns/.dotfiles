@@ -59,13 +59,13 @@ pandoc_template="pandoc \
     -f $SYNTAX \
     -t html \
     --toc \
-    --filter=R-pandoc \
     --resource-path=$OUTPUTDIR
     --toc-depth=3 \
     -c $CSSFILENAME \
     -s \
     -M root_path:$ROOT_PATH"
-# --filter=diagrams-pandoc \
+    # --filter=diagrams-pandoc \
+    # --filter=R-pandoc \
 
 # Searches for markdown markdown anchor links and append .html after the filename
 # Sample anchor link: [Some Text](filename#anchor-name)
