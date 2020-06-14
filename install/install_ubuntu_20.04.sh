@@ -468,6 +468,17 @@ wget https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.deb && \
 
 # VirtualBox
 sudo apt install virtualbox -y
+## dependencies
+sudo apt install virtualbox-dkms linux-headers-generic linux-headers-$(uname -r) -y
+
+
+#################### Windows Manager ####################
+
+# DWM
+# Ref: https://medium.com/hacker-toolbelt/dwm-windows-manager-in-ubuntu-14958224a782
+sudo apt install dwm suckless-tools xdm dmenu xorg
+## If asked, choose XDM as display manager (you can even remove gdm3: sudo apt-get remove gdm3)
+echo dwm > .xsession
 
 
 #################### Misc ####################
