@@ -117,8 +117,8 @@ SCRIPTDIR="$( cd "$( dirname "$0" )" && pwd )"
 DOTFILES=$SCRIPTDIR/..
 
 cd ~
-if [[ ! -d "~/Downloads" ]]; then mkdir ~/Downloads; fi
-if [[ ! -d "~/.Trash" ]]; then mkdir ~/.Trash; fi
+[[ ! -d "${HOME}/Downloads" ]] && mkdir ~/Downloads
+[[ ! -d "${HOME}/.Trash" ]] && mkdir ~/.Trash
 
 
 ################ Essentials #######################
@@ -204,10 +204,10 @@ nvm alias default $LATESTNPM
 
 # NPM
 sudo apt install npm -y
-npm i npm@latest -g
+sudo npm i npm@latest -g
 # NPM glob packages (Optional)
-npm -g install browser-sync
-npm -g install gulp-cli
+sudo npm -g install browser-sync
+sudo npm -g install gulp-cli
 
 # yarn
 # ref: https://linuxhint.com/install_yarn_ubuntu/
@@ -225,10 +225,10 @@ cd ~/Downloads
 
 # Zsh, Oh-my-zsh, plugins and themes
 sudo apt install zsh -y
-curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-git clone https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/themes/powerlevel10k
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting &&; \
+  git clone https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/themes/powerlevel10k
 
 
 #################### Screen Manager ####################
@@ -270,7 +270,7 @@ cd ~/Downloads
 sudo apt install neovim -y
 # sudo apt install python-neovim -y # (DEPRECATED, not found)
 sudo apt install python3-neovim -y
-npm install -g neovim
+sudo npm install -g neovim
 ## configs
 git clone https://github.com/marklcrns/ThinkVim ~/.config/nvim/
 ## other tools and dependencies
@@ -289,8 +289,13 @@ python3 -m venv env && \
 #   pip install neovim tasklib send2trash vim-vint flake8 pylint autopep8 && \
 #   deactivate
 
-npm install -g eslint stylelint prettier
+sudo npm install -g eslint stylelint prettier
 cd ~/Downloads
+
+## Clone Vimwiki wikis
+[[ -d "${HOME}/Docs/wiki" ]] && rm -rf ~/Docs/wiki
+git clone https://github.com/marklcrns/wiki ~/Docs/wiki && \
+  git clone https://github.com/marklcrns/wiki-wiki ~/Docs/wiki/wiki
 
 # # Emacs
 # sudo apt install emacs -y
@@ -373,7 +378,7 @@ wget -c https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-0
   sudo mv exa-linux-x86_64 /usr/local/bin/exa
 
 # Inotify-tools
-sudo apt install inotify-tools
+sudo apt install inotify-tools -y
 
 #################### Browser ####################
 

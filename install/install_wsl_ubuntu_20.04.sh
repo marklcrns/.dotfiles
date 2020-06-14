@@ -122,8 +122,8 @@ SCRIPTDIR="$( cd "$( dirname "$0" )" && pwd )"
 DOTFILES=$SCRIPTDIR/..
 
 cd ~
-if [[ ! -d "~/Downloads" ]]; then mkdir ~/Downloads; fi
-if [[ ! -d "~/.Trash" ]]; then mkdir ~/.Trash; fi
+[[ ! -d "${HOME}/Downloads" ]] && mkdir ~/Downloads
+[[ ! -d "${HOME}/.Trash" ]] && mkdir ~/.Trash
 
 # Nameserver workaround for WSL2
 # Creates resolve.conf backup to $HOME as nameserver.txt
@@ -237,10 +237,10 @@ cd ~/Downloads
 
 # Zsh, Oh-my-zsh, plugins and themes
 sudo apt install zsh -y
-curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-git clone https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/themes/powerlevel10k
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting &&; \
+  git clone https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/themes/powerlevel10k
 
 
 #################### Screen Manager ####################
@@ -303,6 +303,11 @@ python3 -m venv env && \
 
 npm install -g eslint stylelint prettier
 cd ~/Downloads
+
+## Clone Vimwiki wikis
+[[ -d "${HOME}/Docs/wiki" ]] && rm -rf ~/Docs/wiki
+git clone https://github.com/marklcrns/wiki ~/Docs/wiki && \
+  git clone https://github.com/marklcrns/wiki-wiki ~/Docs/wiki/wiki
 
 # Emacs
 sudo apt install emacs -y
