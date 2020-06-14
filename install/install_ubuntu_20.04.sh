@@ -64,6 +64,8 @@ echo php-xml
 echo php-zip
 echo phpmyadmin
 echo pkg-config
+echo python2
+echo python2-pip
 echo python3-docutils
 echo python3-neovim
 echo python3-pip
@@ -136,12 +138,11 @@ cd ~/Downloads
 
 # Python 2 (DEPRECATED, Ubuntu 20.04 on longer supports older python)
 # Uncomment if you still want to install old python from universe repository
-# sudo apt install python-dev -y
-
+sudo apt install python-dev -y
 ## Python2 pip
 ## Ref: https://linuxize.com/post/how-to-install-pip-on-ubuntu-20.04/
-# curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
-# sudo python get-pip.py
+curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
+sudo python get-pip.py
 
 # Python3
 sudo apt install python3-dev python3-pip python3-venv -y
@@ -282,6 +283,7 @@ python3 -m venv env && \
   source env/bin/activate && \
   pip3 install neovim tasklib send2trash vim-vint flake8 pylint autopep8 && \
   deactivate
+
 ## python2 host prog (DEPRECATED)
 # mkdir -p env/python && cd env/python
 # python -m venv env && \

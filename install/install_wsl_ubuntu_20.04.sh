@@ -67,6 +67,7 @@ echo php-zip
 echo phpmyadmin
 echo pkg-config
 echo python-dev
+echo python-pip
 echo python3-dev
 echo python3-docutils
 echo python3-neovim
@@ -148,7 +149,7 @@ sudo systemd-machine-id-setup
 
 cd ~/Downloads
 
-# Python (DEPRECATED, Ubuntu 20.04 on longer supports older python)
+# Python2 (DEPRECATED, Ubuntu 20.04 on longer supports older python)
 # Uncomment if you still want to install old python from universe repository
 sudo apt install python-dev -y
 ## Python2 pip
@@ -294,6 +295,7 @@ python3 -m venv env && \
   source env/bin/activate && \
   pip3 install neovim tasklib send2trash vim-vint flake8 pylint autopep8 && \
   deactivate
+
 ## python2 host prog (DEPRECATED)
 # mkdir -p env/python && cd env/python
 # python -m venv env && \
