@@ -56,7 +56,7 @@ DEFAULT_USER=`whoami`
 # fi
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/marklcrns/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
