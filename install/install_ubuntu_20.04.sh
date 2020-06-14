@@ -247,6 +247,7 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # dependencies
 sudo apt install gawk -y # tmux-fingers
 sudo apt install urlview -y # tmux-urlview
+pip3 install spotify-cli-linux # tmux-plugin-spotify
 
 
 #################### File Manager ####################
