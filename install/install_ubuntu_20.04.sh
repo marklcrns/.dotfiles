@@ -170,8 +170,8 @@ sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
 
 ## Copy the Java path excluding the 'bin/java' to environment if not exist
 grep -q 'JAVA_HOME=' /etc/environment && \
-  sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="${JDK_HOME}",' /etc/environment || \
-  echo 'JAVA_HOME="${JDK_HOME}"' | sudo tee -a /etc/environment
+  sudo sed -i 's/^JAVA_HOME=.*/JAVA_HOME="${JDK_HOME}"/' /etc/environment || \
+  echo "JAVA_HOME=${JDK_HOME}" | sudo tee -a /etc/environment
 # source environ
 source /etc/environment
 
@@ -307,11 +307,22 @@ git clone https://github.com/marklcrns/wiki ~/Docs/wiki && \
 # git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d && \
 #   ~/.emacs.d/bin/doom install
 
+
+#################### Desktop Apps ####################
+
 # Libre Office
 sudo apt install libreoffice -y
 
-# ImageMagick
-# sudo apt install imagemagick -y
+# Flameshot
+sudo apt install flameshot -y
+
+# GIMP
+sudo apt install gimp -y
+
+# Peek
+sudo add-apt-repository ppa:peek-developers/stable -y
+sudo apt update -y
+sudo apt install peek -y
 
 
 #################### Utilities ####################

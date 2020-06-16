@@ -182,8 +182,8 @@ sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
 
 ## Copy the Java path excluding the 'bin/java' to environment if not exist
 grep -q 'JAVA_HOME=' /etc/environment && \
-  sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="${JDK_HOME}",' /etc/environment || \
-  echo 'JAVA_HOME="${JDK_HOME}"' | sudo tee -a /etc/environment
+  sudo sed -i 's/^JAVA_HOME=.*/JAVA_HOME="${JDK_HOME}"/' /etc/environment || \
+  echo "JAVA_HOME=${JDK_HOME}" | sudo tee -a /etc/environment
 # source environ
 source /etc/environment
 
