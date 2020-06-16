@@ -29,6 +29,7 @@ echo gawk
 echo gcc
 echo git
 echo git-lfs
+echo gnupg2
 echo google-chrome-stable
 echo highlight
 echo htop
@@ -140,6 +141,7 @@ sudo apt install build-essential libssl-dev libffi-dev -y
 sudo apt install software-properties-common -y
 sudo apt-add-repository universe -y
 sudo apt install curl wget zip unzip git -y
+sudo apt install gnupg2
 
 # XServer
 sudo apt install dbus-x11 -y
