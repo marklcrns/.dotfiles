@@ -15,13 +15,9 @@ alias updateall='sudo apt update && sudo apt upgrade -y'
 # Directory Aliases
 alias down='cd ~/Downloads'
 alias docs='cd ~/Docs; clear'
-alias prof='cd ~/Projects; clear'
+alias proj='cd ~/Projects; clear'
 alias dev='cd ~/Projects/Dev; clear'
-alias devgit='cd ~/Projects/Dev/GitHubRepos; clear'
-
 alias ref='cd ~/Projects/references; clear'
-alias refwsl='cd ~/Projects/references/WSL; clear'
-alias refubu='cd ~/Projects/references/WSL/Ubuntu; clear'
 
 # live browser server
 # alias live='http-server'
@@ -247,19 +243,16 @@ alias rcopy='rclone copy -vvP --fast-list --drive-chunk-size=32M --transfers=6 -
 alias rsync='rclone sync -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2'
 
 zdev() {
-  cd ~/Projects
-  zip -r dev.zip Dev
+  zip -r ~/Projects/dev.zip ~/Projects/Dev
 }
 
 ezdev() {
-  cd ~/Projects
-  zip -er dev.zip Dev
+  zip -er ~/Projects/dev.zip ~/Projects/Dev
 }
 
 uzdev() {
-  cd ~/Projects
-  mv Dev `date "+%Y-%m-%d"`.Dev.old
-  unzip dev.zip -d .
+  [[ -d "${HOME}/Projects/Dev" ]] && mv ~/Projects/Dev ~/Projects/`date "+%Y-%m-%d"`.Dev.old
+  unzip ~/Projects/dev.zip -d ~/Projects
 }
 
 alias rclone-dev-gdrive="rclone copy ~/Projects/dev.zip GoogleDrive: --backup-dir GoogleDrive:$(date '+%Y-%m-%d').dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
@@ -267,44 +260,21 @@ alias rclone-dev-dbox="rclone copy ~/Projects/dev.zip Dropbox: --backup-dir Drop
 alias rclone-gdrive-dev="rclone copy GoogleDrive:dev.zip ~/Projects --backup-dir $(date '+%Y-%m-%d').dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
 alias rclone-dbox-dev="rclone copy Dropbox:dev.zip ~/Projects --backup-dir $(date '+%Y-%m-%d').dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
 
-# Switch to JDK 8
-openjdk8() {
-  export JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+# Switch JDK version
+setjavahome() {
   sudo update-alternatives --set java ${JDK_HOME}/jre/bin/java
   sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
-  # replace JAVA_HOME with jdk 8 path if exist, else append
+  # replace JAVA_HOME with $JDK_HOME path if exist, else append
   grep -q 'JAVA_HOME=' /etc/environment && \
-    sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="${JDK_HOME}/jre/",' /etc/environment || \
-    echo 'JAVA_HOME="${JDK_HOME}/jre/"' | sudo tee -a /etc/environment
-      # source environ
-      source /etc/environment
+    sudo sed -i "s,^JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}/jre/," /etc/environment || \
+    echo "JAVA_HOME=${JDK_HOME}/jre/" | sudo tee -a /etc/environment
+  # source environ
+  source /etc/environment
 }
-
-# Switch to JDK 11
-openjdk11() {
-  export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-  sudo update-alternatives --set java ${JDK_HOME}/bin/java
-  sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
-  # replace JAVA_HOME with jdk 11 path if exist, else append
-  grep -q 'JAVA_HOME=' /etc/environment && \
-    sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="${JDK_HOME}",' /etc/environment || \
-    echo 'JAVA_HOME="${JDK_HOME}"' | sudo tee -a /etc/environment
-      # source environ
-    source /etc/environment
-}
-
-# Switch to JDK 13
-openjdk13() {
-  export JDK_HOME=/usr/lib/jvm/java-13-openjdk-amd64
-  sudo update-alternatives --set java ${JDK_HOME}/bin/java
-  sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
-  # replace JAVA_HOME with jdk 11 path if exist, else append
-  grep -q 'JAVA_HOME=' /etc/environment && \
-    sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="${JDK_HOME}",' /etc/environment || \
-    echo 'JAVA_HOME="${JDK_HOME}"' | sudo tee -a /etc/environment
-      # source environ
-      source /etc/environment
-}
+alias openjdk8="export JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64 && setjavahome"
+alias openjdk11="export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64 && setjavahome"
+alias openjdk13="export JDK_HOME=/usr/lib/jvm/java-13-openjdk-amd64 && setjavahome"
 
 # gtd shell script
 alias on='gtd -ts'

@@ -168,11 +168,9 @@ pip3 install pipenv
 # Ref:
 # https://www.itzgeek.com/post/how-to-install-java-on-ubuntu-20-04/
 # https://linuxize.com/post/install-java-on-ubuntu-20-04/
-## OpenJDK 8
+## OpenJDK 8, 11, 13
 sudo apt install openjdk-8-jdk openjdk-8-jre -y
-## OpenJDK 11
 sudo apt install openjdk-11-jdk openjdk-11-jre -y
-## OpenJDK 13
 sudo apt install openjdk-13-jdk openjdk-13-jre -y
 
 export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64
@@ -182,8 +180,8 @@ sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
 
 ## Copy the Java path excluding the 'bin/java' to environment if not exist
 grep -q 'JAVA_HOME=' /etc/environment && \
-  sudo sed -i 's/^JAVA_HOME=.*/JAVA_HOME="${JDK_HOME}"/' /etc/environment || \
-  echo "JAVA_HOME=${JDK_HOME}" | sudo tee -a /etc/environment
+  sudo sed -i "s,^JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}/jre/," /etc/environment || \
+  echo "JAVA_HOME=${JDK_HOME}/jre/" | sudo tee -a /etc/environment
 # source environ
 source /etc/environment
 
