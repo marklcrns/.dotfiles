@@ -308,23 +308,6 @@ git clone https://github.com/marklcrns/wiki ~/Docs/wiki && \
 #   ~/.emacs.d/bin/doom install
 
 
-#################### Desktop Apps ####################
-
-# Libre Office
-sudo apt install libreoffice -y
-
-# Flameshot
-sudo apt install flameshot -y
-
-# GIMP
-sudo apt install gimp -y
-
-# Peek
-sudo add-apt-repository ppa:peek-developers/stable -y
-sudo apt update -y
-sudo apt install peek -y
-
-
 #################### Utilities ####################
 
 cd ~/Downloads
@@ -530,6 +513,35 @@ pip3 install taskwarrior-time-tracking-hook && \
 # cp applications/* ~/.local/share/applications/
 # ln -sf ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
 
+
+#################### Desktop Apps ####################
+
+# Libre Office
+sudo apt install libreoffice -y
+
+# Flameshot
+sudo apt install flameshot -y
+
+# GIMP
+sudo apt install gimp -y
+
+# Peek
+sudo add-apt-repository ppa:peek-developers/stable -y
+sudo apt update -y
+sudo apt install peek -y
+
+# Wine
+## Installation
+sudo dpkg --add-architecture i386
+wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -
+sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main'
+sudo apt update -t
+sudo apt install --install-recommends winehq-stable -y
+# Setup
+winecfg
+
+# PlayOnLinux
+sudo apt install playonlinux -y
 
 #################### Dotfiles ####################
 
