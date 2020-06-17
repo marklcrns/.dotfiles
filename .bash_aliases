@@ -126,13 +126,13 @@ alias ypath='pwd | cs clipboard && clear; echo "Current path copied to clipboard
 alias cdypath='cd "`vs clipboard`" && clear'
 
 # Update dotfiles backup repository
-DOTFILES="$HOME/Projects/.dotfiles"
+DOTFILES="${HOME}/Projects/.dotfiles"
 
 dotfilesbackup() {
-  cd $HOME
-  DOTBACKUPDIR=$HOME/.`date -u +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
-  mkdir $DOTBACKUPDIR
-  mkdir -p $DOTBACKUPDIR.config/ranger $DOTBACKUPDIR.config/zathura $DOTBACKUPDIR.vim/session
+  cd ${HOME}
+  DOTBACKUPDIR=${HOME}/.`date -u +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
+  mkdir ${DOTBACKUPDIR}
+  mkdir -p ${DOTBACKUPDIR}/.config/ranger ${DOTBACKUPDIR}/.config/zathura ${DOTBACKUPDIR}/.vim/session
   cp -r \
     bin \
     .bashrc .bash_aliases .profile \
@@ -143,10 +143,10 @@ dotfilesbackup() {
     .ctags.d/ \
     .mutt/ \
     .scimrc \
-    $DOTBACKUPDIR
-  cp -r .vim/session $DOTBACKUPDIR.vim/session
-  cp .config/ranger/rc.conf $DOTBACKUPDIR/.config/ranger
-  cp .config/zathura/zathurarc $DOTBACKUPDIR/.config/zathura
+    ${DOTBACKUPDIR}
+  cp -r .vim/session ${DOTBACKUPDIR}.vim/session
+  cp .config/ranger/rc.conf ${DOTBACKUPDIR}/.config/ranger
+  cp .config/zathura/zathurarc ${DOTBACKUPDIR}/.config/zathura
 
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
     WIN_USERNAME=$(cmd.exe /c "echo %username%")
@@ -162,7 +162,7 @@ dotfilesdist() {
   # backup files first
   dotfilesbackup
   # distribute dotfiles
-  cd $DOTFILES
+  cd ${DOTFILES}
   cp -r \
     bin \
     .bashrc .bash_aliases .profile \
@@ -174,15 +174,15 @@ dotfilesdist() {
     .mutt/ \
     .vim/ \
     .scimrc \
-    $HOME
+    ${HOME}
   cp .config/ranger/rc.conf ~/.config/ranger/
   cp .config/zathura/zathurarc ~/.config/zathura/
 
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
     WIN_USERNAME=$(cmd.exe /c "echo %username%")
-    cp -r gtd /mnt/c/Users/${WIN_USERNAME}/Documents
+    cp -r .gtd /mnt/c/Users/${WIN_USERNAME}/Documents
   else
-    cp -r gtd/.* ${HOME}/.gtd/
+    cp -r .gtd ${HOME}
   fi
 
   cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
@@ -203,12 +203,16 @@ dotfilesupdate() {
 
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
     WIN_USERNAME=$(cmd.exe /c "echo %username%")
-    cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/gtd .
+    cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/.gtd .
   else
-    cp -r ${HOME}/.gtd/.* gtd
+    cp -r ~/.gtd .
   fi
 
   git add .; git status; echo 'dotfiles update complete'
+}
+
+rmdotfilesbak() {
+  rm -r .*dotfiles.bak
 }
 
 alias dotfiles="cd ${DOTFILES}"
