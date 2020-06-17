@@ -525,6 +525,7 @@ ln -sf ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
 # Backup dotfiles (creates ~/.YY-MM-DD_old.bak directory)
 cd ~
 DOTBACKUPDIR=$HOME/.`date +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
+WIN_USERNAME=$(cmd.exe /c "echo %username%")
 mkdir $DOTBACKUPDIR
 mkdir -p $DOTBACKUPDIR.config/ranger $DOTBACKUPDIR.config/zathura
 cp -r \
@@ -538,7 +539,7 @@ cp -r \
   .mutt/ \
   .vim/ \
   .scimrc \
-  /mnt/c/Users/MarkL/Documents/gtd \
+  /mnt/c/Users/${WIN_USERNAME}/Documents/.gtd \
   $DOTBACKUPDIR
 cp .config/ranger/rc.conf $DOTBACKUPDIR/.config/ranger
 cp .config/zathura/zathurarc $DOTBACKUPDIR/.config/zathura
@@ -560,7 +561,7 @@ cp -r \
   $HOME
 cp .config/ranger/rc.conf ~/.config/ranger/
 cp .config/zathura/zathurarc ~/.config/zathura/
-cp -r gtd /mnt/c/Users/MarkL/Documents
+cp -r .gtd /mnt/c/Users/${WIN_USERNAME}/Documents
 cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
 
 # source bashrc

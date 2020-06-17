@@ -562,7 +562,7 @@ cp -r \
   .mutt/ \
   .vim/ \
   .scimrc \
-  /mnt/c/Users/MarkL/Documents/gtd \
+  .gtd \
   $DOTBACKUPDIR
 cp .config/ranger/rc.conf $DOTBACKUPDIR/.config/ranger
 cp .config/zathura/zathurarc $DOTBACKUPDIR/.config/zathura
@@ -581,10 +581,10 @@ cp -r \
   .mutt/ \
   .vim/ \
   .scimrc \
+  .gtd \
   $HOME
 cp .config/ranger/rc.conf ~/.config/ranger/
 cp .config/zathura/zathurarc ~/.config/zathura/
-cp -r gtd /mnt/c/Users/MarkL/Documents
 cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
 
 # source bashrc
