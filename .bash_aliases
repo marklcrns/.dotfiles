@@ -239,6 +239,7 @@ pullrepo() {
   if [[ -n ${CHANGES} ]]; then
     echo "Changes detected in $(pwd). Skipping..."
   else
+    echo "No changes detected in $(pwd). Pulling from repo..."
     git pull
     # If Authentication failed, push until successful or interrupted
     while [[ ${?} -eq 128 ]]; do
@@ -268,8 +269,7 @@ pushrepo() {
   CHANGES=$(git diff-index --name-only HEAD --)
   # Add, commit and push if has changes
   if [[ -n ${CHANGES} ]]; then
-    echo "Changes detected in $(pwd). attempting to push in..."
-    echo "3..." && sleep 1
+    echo "Changes detected in $(pwd). Pushing changes in..."
     echo "2.." && sleep 1
     echo "1." && sleep 1
     git add . && git commit
