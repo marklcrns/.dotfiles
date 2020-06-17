@@ -147,7 +147,7 @@ dotfilesbackup() {
   cp -r .vim/session ${DOTBACKUPDIR}.vim/session
   cp .config/ranger/rc.conf ${DOTBACKUPDIR}/.config/ranger
   cp .config/zathura/zathurarc ${DOTBACKUPDIR}/.config/zathura
-
+  # Check if WSL
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
     # 2>/dev/null to suppress UNC paths are not supported error
     WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
@@ -178,7 +178,7 @@ dotfilesdist() {
     ${HOME}
   cp .config/ranger/rc.conf ~/.config/ranger/
   cp .config/zathura/zathurarc ~/.config/zathura/
-
+  # Check if WSL
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
     # 2>/dev/null to suppress UNC paths are not supported error
     WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
@@ -202,7 +202,7 @@ dotfilesupdate() {
   cp ~/.vim/session .vim/session
   cp ~/.config/ranger/rc.conf .config/ranger/
   cp ~/.config/zathura/zathurarc .config/zathura/
-
+  # Check if WSL
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
     # 2>/dev/null to suppress UNC paths are not supported error
     WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
@@ -239,14 +239,13 @@ alias commitall='git add . && git commit'
 pullrepo() {
   # Check if in git repo
   [[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && exit 1
-
   # Check for git repo changes
   CHANGES=$(git diff-index --name-only HEAD --)
   # Pull if no changes
   if [[ -n ${CHANGES} ]]; then
     echo "Changes detected in $(pwd). Skipping..."
   else
-    echo "No changes detected in $(pwd). Pulling from repo..."
+    echo "$(pwd). Pulling from repo..."
     git pull
     # If Authentication failed, push until successful or interrupted
     while [[ ${?} -eq 128 ]]; do
@@ -268,10 +267,42 @@ pullallrepo() {
 }
 alias pullall=pullallrepo
 
+forcepullrepo() {
+  # Check if in git repo
+  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && exit 1
+  # Check for git repo changes
+  CHANGES=$(git diff-index --name-only HEAD --)
+  # Pull if no changes
+  if [[ -n ${CHANGES} ]]; then
+    echo "Changes detected in $(pwd). Hard resetting repo..."
+    git reset --hard HEAD^
+    git pull
+  else
+    echo "$(pwd). Pulling from repo..."
+    git pull
+    # If Authentication failed, push until successful or interrupted
+    while [[ ${?} -eq 128 ]]; do
+      git push
+    done
+  fi
+}
+forcepullallrepo() {
+  CURRENT_DIR_SAVE=$(pwd)
+  cd ~/Docs/wiki && forcepullrepo
+  cd ~/Docs/wiki/wiki && forcepullrepo
+  cd ~/.config/nvim && forcepullrepo
+  cd ~/Projects/references && forcepullrepo
+  cd ~/.tmuxinator && forcepullrepo
+  cd $DOTFILES && forcepullrepo
+
+  echo 'All repo pull complete!'
+  cd ${CURRENT_DIR_SAVE}
+}
+alias fpullall=forcepullallrepo
+
 pushrepo() {
   # Check if in git repo
   [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && exit 1
-
   # Check for git repo changes
   CHANGES=$(git diff-index --name-only HEAD --)
   # Add, commit and push if has changes
