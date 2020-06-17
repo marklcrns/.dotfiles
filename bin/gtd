@@ -21,6 +21,7 @@ then
   WIN_USERNAME=$(cmd.exe /c echo %username%)
   SPEAK_CMD="${SPEAK_CMD:-"cd /mnt/c/Users/${WIN_USERNAME}/Documents/gtd/espeak; cmd.exe /c start"}"
 else
+  # TODO: Fix this
   SPEAK_CMD="${SPEAK_CMD:-"&>/dev/null aplay"}"
 fi
 

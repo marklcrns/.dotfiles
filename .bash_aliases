@@ -182,7 +182,7 @@ dotfilesdist() {
     WIN_USERNAME=$(cmd.exe /c "echo %username%")
     cp -r gtd /mnt/c/Users/${WIN_USERNAME}/Documents
   else
-    cp -r gtd ${HOME}
+    cp -r gtd/.* ${HOME}/.gtd/
   fi
 
   cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
@@ -205,7 +205,7 @@ dotfilesupdate() {
     WIN_USERNAME=$(cmd.exe /c "echo %username%")
     cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/gtd .
   else
-    cp -R ~/.gtd/.* gtd
+    cp -r ${HOME}/.gtd/.* gtd
   fi
 
   git add .; git status; echo 'dotfiles update complete'
