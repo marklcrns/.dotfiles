@@ -43,6 +43,7 @@ echo libssl-dev
 echo libxml2-dev
 echo libyaml-dev
 echo make
+echo mlocate
 echo mysql-client
 echo mysql-server
 echo mysql-workbench
@@ -312,7 +313,7 @@ git clone https://github.com/marklcrns/wiki ~/Docs/wiki && \
 
 cd ~/Downloads
 
-sudo apt install tree xclip xdg-utils fd-find -y
+sudo apt install tree xclip xdg-utils fd-find mlocate -y
 
 # Rclone
 curl https://rclone.org/install.sh | sudo bash && \
