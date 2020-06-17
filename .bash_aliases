@@ -239,10 +239,6 @@ pullrepo() {
   if [[ -n ${CHANGES} ]]; then
     echo "Changes detected in $(pwd). Skipping..."
   else
-    echo "No changes detected in $(pwd). attempting to pull in..."
-    echo "3..." && sleep 1
-    echo "2.." && sleep 1
-    echo "1." && sleep 1
     git pull
     # If Authentication failed, push until successful or interrupted
     while [[ ${?} -eq 128 ]]; do
