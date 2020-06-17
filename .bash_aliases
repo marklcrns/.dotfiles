@@ -225,8 +225,80 @@ alias gist='open https://gist.github.com; clear'
 alias insigcommit='git add  . && git commit -m "Insignificant commit" && git push'
 alias commit='git commit'
 alias commitall='git add . && git commit'
-alias pushallrepo="cd ~/Docs/wiki; git add .; git commit; git push; cd ~/.config/nvim; pwd; git add .; git commit; git push; cd ~/Projects/references; git add .; git commit; git push; dotupdate; dotfiles; git commit; git push; echo 'Update finished'"
-alias pullallrepo="cd ~/Docs/wiki; pwd; git pull; cd ~/.config/nvim; pwd; git pull; ~/Projects/references; pwd; git pull;  $DOTFILES; pwd; git pull; echo 'Syncing complete'"
+
+# Ref:
+# Check repo changes: https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes
+# Check if in git repo: https://stackoverflow.com/questions/2180270/check-if-current-directory-is-a-git-repository
+pullrepo() {
+  # Check if in git repo
+  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && exit 1
+
+  # Check for git repo changes
+  CHANGES=$(git diff-index --name-only HEAD --)
+  # Pull if no changes
+  if [[ -n ${CHANGES} ]]; then
+    echo "Changes detected in $(pwd). Skipping..."
+  else
+    echo "No changes detected in $(pwd). attempting to pull in..."
+    echo "3..." && sleep 1
+    echo "2.." && sleep 1
+    echo "1." && sleep 1
+    git pull --quite
+    # If Authentication failed, push until successful or interrupted
+    while [[ ${?} -eq 128 ]]; do
+      git push
+    done
+  fi
+}
+pullallrepo() {
+  CURRENT_DIR_SAVE=$(pwd)
+  cd ~/Docs/wiki && pullrepo
+  cd ~/Docs/wiki/wiki && pullrepo
+  cd ~/.config/nvim && pullrepo
+  cd ~/Projects/references && pullrepo
+  cd ~/.tmuxinator && pullrepo
+  cd $DOTFILES && pullrepo
+
+  echo 'All repo pull complete!'
+  cd ${CURRENT_DIR_SAVE}
+}
+alias pullall=pullallrepo
+
+pushrepo() {
+  # Check if in git repo
+  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && exit 1
+
+  # Check for git repo changes
+  CHANGES=$(git diff-index --name-only HEAD --)
+  # Add, commit and push if has changes
+  if [[ -n ${CHANGES} ]]; then
+    echo "Changes detected in $(pwd). attempting to push in..."
+    echo "3..." && sleep 1
+    echo "2.." && sleep 1
+    echo "1." && sleep 1
+    git add . && git commit
+    git push
+    # If Authentication failed, push until successful or interrupted
+    while [[ ${?} -eq 128 ]]; do
+      git push
+    done
+  else
+    echo "No changes detected in $(pwd). Skipping..."
+  fi
+}
+pushallrepo() {
+  CURRENT_DIR_SAVE=$(pwd)
+  cd ~/Docs/wiki && pushrepo
+  cd ~/Docs/wiki/wiki && pushrepo
+  cd ~/.config/nvim && pushrepo
+  cd ~/Projects/references && pushrepo
+  cd ~/.tmuxinator && pushrepo
+  cd $DOTFILES && pushrepo
+
+  echo 'All repo push complete!'
+  cd ${CURRENT_DIR_SAVE}
+}
+alias pushall=pushallrepo
 
 # Web Servers
 alias starta2='sudo service apache2 start'
