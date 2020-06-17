@@ -243,7 +243,7 @@ pullrepo() {
     echo "3..." && sleep 1
     echo "2.." && sleep 1
     echo "1." && sleep 1
-    git pull --quite
+    git pull
     # If Authentication failed, push until successful or interrupted
     while [[ ${?} -eq 128 ]]; do
       git push
