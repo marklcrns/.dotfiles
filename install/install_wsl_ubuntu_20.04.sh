@@ -525,7 +525,8 @@ ln -sf ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
 # Backup dotfiles (creates ~/.YY-MM-DD_old.bak directory)
 cd ~
 DOTBACKUPDIR=$HOME/.`date +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
-WIN_USERNAME=$(cmd.exe /c "echo %username%")
+# 2>/dev/null to suppress UNC paths are not supported error
+WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
 mkdir $DOTBACKUPDIR
 mkdir -p $DOTBACKUPDIR.config/ranger $DOTBACKUPDIR.config/zathura
 cp -r \
