@@ -253,6 +253,7 @@ pullrepo() {
     done
   fi
 }
+
 pullallrepo() {
   CURRENT_DIR_SAVE=$(pwd)
   cd ~/Docs/wiki && pullrepo
@@ -265,7 +266,6 @@ pullallrepo() {
   echo 'All repo pull complete!'
   cd ${CURRENT_DIR_SAVE}
 }
-alias pullall=pullallrepo
 
 forcepullrepo() {
   # Check if in git repo
@@ -286,6 +286,7 @@ forcepullrepo() {
     done
   fi
 }
+
 forcepullallrepo() {
   CURRENT_DIR_SAVE=$(pwd)
   cd ~/Docs/wiki && forcepullrepo
@@ -298,7 +299,6 @@ forcepullallrepo() {
   echo 'All repo pull complete!'
   cd ${CURRENT_DIR_SAVE}
 }
-alias fpullall=forcepullallrepo
 
 pushrepo() {
   # Check if in git repo
@@ -320,6 +320,7 @@ pushrepo() {
     echo "No changes detected in $(pwd). Skipping..."
   fi
 }
+
 pushallrepo() {
   CURRENT_DIR_SAVE=$(pwd)
   cd ~/Docs/wiki && pushrepo
@@ -332,7 +333,38 @@ pushallrepo() {
   echo 'All repo push complete!'
   cd ${CURRENT_DIR_SAVE}
 }
-alias pushall=pushallrepo
+
+statusrepo() {
+  # Check if in git repo
+  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && exit 1
+  # Check for git repo changes
+  CHANGES=$(git diff-index --name-only HEAD --)
+  # Git status if has changes
+  if [[ -n ${CHANGES} ]]; then
+    echo "Changes detected in $(pwd)."
+    git status
+  else
+    echo "No changes detected in $(pwd)."
+  fi
+}
+
+statusallrepo() {
+  CURRENT_DIR_SAVE=$(pwd)
+  cd ~/Docs/wiki && statusrepo
+  cd ~/Docs/wiki/wiki && statusrepo
+  cd ~/.config/nvim && statusrepo
+  cd ~/Projects/references && statusrepo
+  cd ~/.tmuxinator && statusrepo
+  cd $DOTFILES && statusrepo
+
+  echo 'All repo status complete!'
+  cd ${CURRENT_DIR_SAVE}
+}
+
+alias gpullall=pullallrepo
+alias gfpullall=forcepullallrepo
+alias gpushall=pushallrepo
+alias gstatusall=statusallrepo
 
 # Web Servers
 alias starta2='sudo service apache2 start'
