@@ -550,7 +550,7 @@ sudo apt install playonlinux -y
 cd ~
 DOTBACKUPDIR=$HOME/.`date +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
 mkdir $DOTBACKUPDIR
-mkdir -p $DOTBACKUPDIR.config/ranger $DOTBACKUPDIR.config/zathura
+mkdir -p $DOTBACKUPDIR/.config/ranger $DOTBACKUPDIR/.config/zathura $DOTBACKUPDIR/.vim
 cp -r \
   bin \
   .bashrc .bash_aliases .profile \
@@ -560,10 +560,10 @@ cp -r \
   .ctags \
   .ctags.d/ \
   .mutt/ \
-  .vim/ \
   .scimrc \
   .gtd \
   $DOTBACKUPDIR
+cp -r .vim/session $DOTBACKUPDIR/.vim
 cp .config/ranger/rc.conf $DOTBACKUPDIR/.config/ranger
 cp .config/zathura/zathurarc $DOTBACKUPDIR/.config/zathura
 cd -; printf '\nDOTFILES BACKUP COMPLETE...\n\n'
@@ -579,10 +579,10 @@ cp -r \
   .ctags \
   .ctags.d/ \
   .mutt/ \
-  .vim/ \
   .scimrc \
   .gtd \
   $HOME
+rm -r ~/.vim/session && cp -r .vim/session ~/.vim
 cp .config/ranger/rc.conf ~/.config/ranger/
 cp .config/zathura/zathurarc ~/.config/zathura/
 cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'

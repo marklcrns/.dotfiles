@@ -144,7 +144,7 @@ dotfilesbackup() {
     .mutt/ \
     .scimrc \
     ${DOTBACKUPDIR}
-  cp -r .vim/session ${DOTBACKUPDIR}.vim/session
+  cp -r .vim/session ${DOTBACKUPDIR}.vim
   cp .config/ranger/rc.conf ${DOTBACKUPDIR}/.config/ranger
   cp .config/zathura/zathurarc ${DOTBACKUPDIR}/.config/zathura
   # Check if WSL
@@ -173,9 +173,9 @@ dotfilesdist() {
     .ctags \
     .ctags.d/ \
     .mutt/ \
-    .vim/ \
     .scimrc \
     ${HOME}
+  rm -rf ~/.vim/session && cp -r .vim/session ~/.vim
   cp .config/ranger/rc.conf ~/.config/ranger/
   cp .config/zathura/zathurarc ~/.config/zathura/
   # Check if WSL
@@ -198,8 +198,9 @@ dotfilesupdate() {
     ~/.tmux.conf \
     ~/.gitconfig \
     ~/bin \
-    ~/.scimrc .
-  cp ~/.vim/session .vim/session
+    ~/.scimrc \
+    .
+  rm -rf .vim/session && cp -r ~/.vim/session .vim
   cp ~/.config/ranger/rc.conf .config/ranger/
   cp ~/.config/zathura/zathurarc .config/zathura/
   # Check if WSL
