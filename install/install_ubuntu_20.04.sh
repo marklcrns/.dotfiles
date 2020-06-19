@@ -309,6 +309,14 @@ git clone https://github.com/marklcrns/wiki ~/Docs/wiki && \
 #   ~/.emacs.d/bin/doom install
 
 
+#################### Fonts ####################
+
+cd $DOTFILES
+
+sudo cp "fonts/Haskplex-Nerd-Regular.ttf" /usr/local/share/fonts
+sudo cp "fonts/Sauce Code Pro Nerd Font Complete.ttf" /usr/local/share/fonts
+
+
 #################### Utilities ####################
 
 cd ~/Downloads
@@ -516,6 +524,8 @@ pip3 install taskwarrior-time-tracking-hook && \
 
 
 #################### Desktop Apps ####################
+
+cd ~/Downloads
 
 # Libre Office
 sudo apt install libreoffice -y
