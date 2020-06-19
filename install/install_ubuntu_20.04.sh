@@ -461,7 +461,7 @@ cd ~/Downloads
 sudo apt install sqlite3 libsqlite3-dev sqlitebrowser -y
 
 
-#################### Virtual Machine ####################
+#################### Virtual Machine/Containers ####################
 
 cd ~/Downloads
 
@@ -475,6 +475,9 @@ wget https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.deb && \
 sudo apt install virtualbox -y
 ## dependencies
 sudo apt install virtualbox-dkms linux-headers-generic linux-headers-$(uname -r) -y
+
+# Docker
+sudo apt install docker.io
 
 
 #################### Windows Manager ####################
