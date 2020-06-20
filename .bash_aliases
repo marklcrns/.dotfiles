@@ -1,3 +1,10 @@
+# String ANSI colors
+# Ref: https://stackoverflow.com/a/5947802/11850077
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
 # config files
 alias vimrc='nvim ~/.vim/.vimrc'
 alias tmuxconf='nvim ~/.tmux.conf'
@@ -156,7 +163,7 @@ dotfilesbackup() {
     cp -r ~/.gtd/ ${DOTBACKUPDIR}
   fi
 
-  cd -; printf '\nDOTFILES BACKUP COMPLETE...\n\n'
+  cd -; printf "\n${GREEN}DOTFILES BACKUP COMPLETE...${NC}\n\n"
 }
 
 dotfilesdist() {
@@ -186,8 +193,7 @@ dotfilesdist() {
   else
     cp -r .gtd ${HOME}
   fi
-
-  cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
+  cd -; printf "\n${GREEN}DOTFILES DISTRIBUTION COMPLETE...${NC}\n\n"
 }
 
 dotfilesupdate() {
@@ -212,7 +218,8 @@ dotfilesupdate() {
     cp -r ~/.gtd .
   fi
 
-  git add .; git status; echo 'dotfiles update complete'
+  git add .; git status
+  printf "${GREEN}Dotfiles update complete${NC}"
 }
 
 rmdotfilesbak() {
@@ -244,7 +251,7 @@ pullrepo() {
   CHANGES=$(git diff-index --name-only HEAD --)
   # Pull if no changes
   if [[ -n ${CHANGES} ]]; then
-    echo "Changes detected in $(pwd). Skipping..."
+    printf "${RED}Changes detected in $(pwd). Skipping...${NC}\n"
   else
     echo "$(pwd). Pulling from repo..."
     git pull
@@ -275,7 +282,7 @@ forcepullrepo() {
   CHANGES=$(git diff-index --name-only HEAD --)
   # Pull if no changes
   if [[ -n ${CHANGES} ]]; then
-    echo "Changes detected in $(pwd). Hard resetting repo..."
+    printf "${YELLOW}Changes detected in $(pwd). Hard resetting repo...${NC}\n"
     git reset --hard HEAD^
     git pull
   else
@@ -297,7 +304,7 @@ forcepullallrepo() {
   cd ~/.tmuxinator && forcepullrepo
   cd $DOTFILES && forcepullrepo
 
-  echo 'All repo pull complete!'
+  printf "${GREEN}All repo pull complete!${NC}\n"
   cd ${CURRENT_DIR_SAVE}
 }
 
@@ -308,7 +315,7 @@ pushrepo() {
   CHANGES=$(git diff-index --name-only HEAD --)
   # Add, commit and push if has changes
   if [[ -n ${CHANGES} ]]; then
-    echo "Changes detected in $(pwd). Pushing changes in..."
+    printf "${YELLOW}Changes detected in $(pwd). Pushing changes...${NC}\n"
     echo "2.." && sleep 1
     echo "1." && sleep 1
     git add . && git commit
@@ -331,7 +338,7 @@ pushallrepo() {
   cd ~/.tmuxinator && pushrepo
   cd $DOTFILES && pushrepo
 
-  echo 'All repo push complete!'
+  printf "${GREEN}All repo push complete!${NC}\n"
   cd ${CURRENT_DIR_SAVE}
 }
 
@@ -342,7 +349,7 @@ statusrepo() {
   CHANGES=$(git diff-index --name-only HEAD --)
   # Git status if has changes
   if [[ -n ${CHANGES} ]]; then
-    echo "Changes detected in $(pwd)."
+    printf "${YELLOW}Changes detected in $(pwd).${NC}\n"
     git status
   else
     echo "No changes detected in $(pwd)."
@@ -358,7 +365,7 @@ statusallrepo() {
   cd ~/.tmuxinator && statusrepo
   cd $DOTFILES && statusrepo
 
-  echo 'All repo status complete!'
+  printf "${GREEN}All repo status complete!${NC}\n"
   cd ${CURRENT_DIR_SAVE}
 }
 
