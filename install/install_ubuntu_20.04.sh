@@ -576,10 +576,10 @@ sudo apt install playonlinux -y
 #################### Dotfiles ####################
 
 # Backup dotfiles (creates ~/.YY-MM-DD_old.bak directory)
-cd ~
-DOTBACKUPDIR=$HOME/.`date +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
-mkdir $DOTBACKUPDIR
-mkdir -p $DOTBACKUPDIR/.vim
+cd ${HOME}
+DOTBACKUPDIR=${HOME}/.`date -u +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
+mkdir ${DOTBACKUPDIR}
+mkdir ${DOTBACKUPDIR}/.config ${DOTBACKUPDIR}/.vim
 cp -r \
   bin \
   .bashrc .bash_aliases .profile \
@@ -590,17 +590,26 @@ cp -r \
   .ctags.d/ \
   .mutt/ \
   .scimrc \
-  .gtd \
+  ${DOTBACKUPDIR}
+cp -r \
   ~/.config/ranger/ \
   ~/.config/zathura/ \
-  $DOTBACKUPDIR
-cp -r .vim/session $DOTBACKUPDIR/.vim
-cd -; printf '\nDOTFILES BACKUP COMPLETE...\n\n'
+  ${DOTBACKUPDIR}/.config
+cp -r .vim/session ${DOTBACKUPDIR}.vim
+# Check if WSL
+if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  # 2>/dev/null to suppress UNC paths are not supported error
+  WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
+  cp -r "/mnt/c/Users/${WIN_USERNAME}/Documents/.gtd/" ${DOTBACKUPDIR}
+  cp ~/.config/mimeapps.list ${DOTBACKUPDIR}/.config
+else
+  cp -r ~/.gtd/ ${DOTBACKUPDIR}
+fi
+cd -; printf "\n${GREEN}DOTFILES BACKUP COMPLETE...${NC}\n\n"
 
 # Distribute dotfiles
-cd $DOTFILES
+cd ${DOTFILES}
 cp -r \
-  bin \
   .bashrc .bash_aliases .profile \
   .zshenv .zshrc \
   .tmux.conf \
@@ -609,14 +618,23 @@ cp -r \
   .ctags.d/ \
   .mutt/ \
   .scimrc \
-  .gtd \
-  $HOME
-rm -r ~/.vim/session && cp -r .vim/session ~/.vim
-cp -r \
-  ~/.config/ranger/ \
-  ~/.config/zathura/ \
-  .config
-cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
+  ${HOME}
+rm -rf ~/.vim/session; cp -r .vim/session ~/.vim
+rm -rf ~/bin; cp -r bin ~/bin
+rm -rf ~/.config/{ranger,zathura}; cp -r \
+  .config/ranger/ \
+  .config/zathura/ \
+  ~/.config
+# Check if WSL
+if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  # 2>/dev/null to suppress UNC paths are not supported error
+  WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
+  cp -r .gtd /mnt/c/Users/${WIN_USERNAME}/Documents
+  cp .config/mimeapps.list ~/.config
+else
+  cp -r .gtd ${HOME}
+fi
+cd -; printf "\n${GREEN}DOTFILES DISTRIBUTION COMPLETE...${NC}\n\n"
 
 # source bashrc
 source ~/.bashrc
