@@ -229,7 +229,7 @@ dotfilesupdate() {
 }
 
 rmdotfilesbak() {
-  rm -r .*dotfiles.bak
+  rm -r ~/.*dotfiles.bak
 }
 
 alias dotfiles="cd ${DOTFILES}"
