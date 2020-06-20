@@ -81,9 +81,11 @@ echo screenfetch
 echo software-properties-common
 echo sqlite3
 echo sqlitebrowser
+echo synaptic
 echo taskwarrior
 echo texlive
 echo timewarrior
+echo tlp
 echo tmux
 echo tmuxinator
 echo tree
@@ -127,6 +129,9 @@ cd ~
 
 
 ################ Essentials #######################
+
+# Enable firewall
+sudo ufw enable
 
 sudo apt update && sudo apt upgrade -y
 sudo apt install build-essential libssl-dev libffi-dev -y
@@ -321,7 +326,10 @@ sudo cp "fonts/Sauce Code Pro Nerd Font Complete.ttf" /usr/local/share/fonts
 
 cd ~/Downloads
 
+# Command line utils
 sudo apt install tree xclip xdg-utils fd-find mlocate -y
+
+sudo apt install synaptic
 
 # Rclone
 curl https://rclone.org/install.sh | sudo bash && \
@@ -494,6 +502,9 @@ sudo apt install docker.io
 cd ~/Downloads
 
 sudo apt install screenfetch neofetch htop cmatrix -y
+
+# Battery saving tool
+sudo apt install tlp && sudo tlp start
 
 # Tldr
 mkdir -p ~/bin
