@@ -329,7 +329,7 @@ sudo apt install imagemagick -y
 
 cd ~/Downloads
 
-sudo apt install tree xclip xdg-utils fd-find -y
+sudo apt install tree xclip xdg-utils fd-find mlocate autojump k-y
 
 # Rclone
 curl https://rclone.org/install.sh | sudo bash && \
