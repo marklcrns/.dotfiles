@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Exit if WSL or not running KDE Plasma
+[[ "$(grep -i microsoft /proc/version)" ]] || [[ "$DESKTOP_SESSION" != "plasma" ]] \
+  && exit 1 || return 1 && echo "Script not applicable. Must be running KDE Plasma"
+
+killall plasmashell
+plasmashell &
