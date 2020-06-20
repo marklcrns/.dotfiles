@@ -1,2 +1,3 @@
-tags
-*.tags
+/tags
+/*.tags
+/.config/ranger/plugins/ranger_devicons/
