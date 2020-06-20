@@ -33,6 +33,7 @@ echo google-chrome-stable
 echo highlight
 echo htop
 echo inotify-tools
+echo kite
 echo libapache2-mod-php
 echo libffi-dev
 echo libjansson-dev
@@ -306,6 +307,9 @@ cd ~/Downloads
 [[ -d "${HOME}/Docs/wiki" ]] && rm -rf ~/Docs/wiki
 git clone https://github.com/marklcrns/wiki ~/Docs/wiki && \
   git clone https://github.com/marklcrns/wiki-wiki ~/Docs/wiki/wiki
+
+## Kite
+bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)"
 
 # # Emacs
 # sudo apt install emacs -y
