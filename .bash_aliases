@@ -53,12 +53,12 @@ alias rmdir='rmdir -v'
 mkcdir () {
   mkdir -pv -- "$1" &&
     cd -P -- "$1"
-  }
+}
 
 touched() {
   touch -- "$1" &&
     nvim -- "$1"
-  }
+}
 
 # Move junk files to ~/.Trash
 # Ref: https://stackoverflow.com/a/23659385/11850077
@@ -66,7 +66,7 @@ touched() {
 # closing brackets
 junk() {
   for item in "$@" ; do echo "Trashing: $item" ; mv "$item" ~/.Trash/; done;
-  }
+}
 
 # Resources
 # prompt: https://stackoverflow.com/a/1885534/11850077
@@ -82,7 +82,7 @@ clearjunk() {
   read -p "Proceed deleting all $JUNK_COUNTER files? (Y/y)" -n 1 -r
   echo
   if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    echo Aborting...
+    printf "${RED}Aborting...${NC}\n"
     [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
   fi
 
@@ -91,7 +91,7 @@ clearjunk() {
     rm -rf "$item"
   done
 
-  echo "All $JUNK_COUNTER false in ~/.Trash were permanently deleted"
+  echo "All $JUNK_COUNTER items in ~/.Trash were permanently deleted"
 }
 
 # Binaries
@@ -253,7 +253,7 @@ pullrepo() {
   if [[ -n ${CHANGES} ]]; then
     printf "${RED}Changes detected in $(pwd). Skipping...${NC}\n"
   else
-    echo "$(pwd). Pulling from repo..."
+    echo "$(pwd). Pulling from remote"
     git pull
     # If Authentication failed, push until successful or interrupted
     while [[ ${?} -eq 128 ]]; do
@@ -271,7 +271,7 @@ pullallrepo() {
   cd ~/.tmuxinator && pullrepo
   cd $DOTFILES && pullrepo
 
-  echo 'All repo pull complete!'
+  echo 'All remote pull complete!'
   cd ${CURRENT_DIR_SAVE}
 }
 
@@ -286,7 +286,7 @@ forcepullrepo() {
     git reset --hard HEAD^
     git pull
   else
-    echo "$(pwd). Pulling from repo..."
+    echo "$(pwd). Pulling from remote"
     git pull
     # If Authentication failed, push until successful or interrupted
     while [[ ${?} -eq 128 ]]; do
@@ -304,7 +304,7 @@ forcepullallrepo() {
   cd ~/.tmuxinator && forcepullrepo
   cd $DOTFILES && forcepullrepo
 
-  printf "${GREEN}All repo pull complete!${NC}\n"
+  printf "${GREEN}All remote pull complete!${NC}\n"
   cd ${CURRENT_DIR_SAVE}
 }
 
