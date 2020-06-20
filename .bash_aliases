@@ -14,7 +14,9 @@ alias nvimrc='cd ~/.config/nvim'
 alias myalias='nvim ~/.bash_aliases'
 
 # Completely remove apt package and its configuration
-alias aptremove='sudo apt purge --auto-remove'
+alias aptpurge='sudo apt purge --auto-remove'
+# Clean apt packages
+alias aptclean='sudo apt clean; sudo apt autoclean; sudo apt autoremove'
 
 # Update all packages
 alias updateall='sudo apt update && sudo apt upgrade -y'
