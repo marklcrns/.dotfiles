@@ -8,8 +8,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +19 school/md/summer-2020/ENG-205/index.md
-badd +26 school/md/summer-2020/ENG-205/readings/the-warehouse/index.md
-badd +13 school/md/summer-2020/ENG-205/readings/the-warehouse/notes/part-1.md
+badd +5 school/md/summer-2020/ENG-205/readings/the-warehouse/index.md
+badd +14 school/md/summer-2020/ENG-205/readings/the-warehouse/notes/part-1.md
 argglobal
 %argdel
 edit school/md/summer-2020/ENG-205/readings/the-warehouse/index.md
@@ -29,12 +29,12 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 5 - ((3 * winheight(0) + 10) / 20)
+let s:l = 14 - ((7 * winheight(0) + 10) / 20)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-5
-normal! 0
+14
+normal! 05|
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

@@ -157,7 +157,7 @@ dotfilesbackup() {
     ~/.config/ranger/ \
     ~/.config/zathura/ \
     ${DOTBACKUPDIR}/.config
-  cp -r .vim/session ${DOTBACKUPDIR}.vim
+  cp -r .vim/session ${DOTBACKUPDIR}/.vim
   # Check if WSL
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
     # 2>/dev/null to suppress UNC paths are not supported error
@@ -232,15 +232,17 @@ dotfilesupdate() {
 }
 
 rmdotfilesbak() {
-  rm -r ~/.*dotfiles.bak
+  rm -rf ~/.*dotfiles.bak
 }
 
 alias dotfiles="cd ${DOTFILES}"
 alias dotbackup=dotfilesbackup
 alias dotdist=dotfilesdist
 alias dotupdate=dotfilesupdate
-alias dotcommit="cd ${DOTFILES};git commit -m"
-alias dotpush="cd ${DOTFILES};git push"
+alias rmdotbak=rmdotfilesbak
+alias dotadd="cd ${DOTFILES} && git add ."
+alias dotcommit="cd ${DOTFILES} && git commit -m"
+alias dotpush="cd ${DOTFILES} && git add . && git commit && git push"
 
 # GitHub
 alias gh='open https://github.com; clear'

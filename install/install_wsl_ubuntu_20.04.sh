@@ -542,7 +542,7 @@ cp -r \
   ~/.config/ranger/ \
   ~/.config/zathura/ \
   ${DOTBACKUPDIR}/.config
-cp -r .vim/session ${DOTBACKUPDIR}.vim
+cp -r .vim/session ${DOTBACKUPDIR}/.vim
 # Check if WSL
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
   # 2>/dev/null to suppress UNC paths are not supported error
