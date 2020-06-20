@@ -264,7 +264,7 @@ pullrepo() {
   if [[ -n ${CHANGES} ]]; then
     printf "${RED}Changes detected in $(pwd). Skipping...${NC}\n"
   else
-    echo "$(pwd). Pulling from remote"
+    printf "${YELLOW}$(pwd). Pulling from remote${NC}\n"
     git pull
     # If Authentication failed, push until successful or interrupted
     while [[ ${?} -eq 128 ]]; do
