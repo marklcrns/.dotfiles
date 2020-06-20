@@ -222,6 +222,7 @@ if [[ -f ~/.fzf.bash ]]; then
   alias vimfzf='vim "$(fzf)"'
 fi
 
+. /usr/share/autojump/autojump.sh
 
 # Codi
 # Usage: codi [filetype] [filename]

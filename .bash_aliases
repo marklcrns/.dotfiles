@@ -141,7 +141,7 @@ dotfilesbackup() {
   cd ${HOME}
   DOTBACKUPDIR=${HOME}/.`date -u +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
   mkdir ${DOTBACKUPDIR}
-  mkdir -p ${DOTBACKUPDIR}/.config/ranger ${DOTBACKUPDIR}/.config/zathura ${DOTBACKUPDIR}/.vim/session
+  mkdir -p ${DOTBACKUPDIR}/.vim
   cp -r \
     bin \
     .bashrc .bash_aliases .profile \
@@ -152,10 +152,10 @@ dotfilesbackup() {
     .ctags.d/ \
     .mutt/ \
     .scimrc \
+    ~/.config/ranger/ \
+    ~/.config/zathura/ \
     ${DOTBACKUPDIR}
   cp -r .vim/session ${DOTBACKUPDIR}.vim
-  cp .config/ranger/rc.conf ${DOTBACKUPDIR}/.config/ranger
-  cp .config/zathura/zathurarc ${DOTBACKUPDIR}/.config/zathura
   # Check if WSL
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
     # 2>/dev/null to suppress UNC paths are not supported error
@@ -185,8 +185,10 @@ dotfilesdist() {
     .scimrc \
     ${HOME}
   rm -rf ~/.vim/session && cp -r .vim/session ~/.vim
-  cp .config/ranger/rc.conf ~/.config/ranger/
-  cp .config/zathura/zathurarc ~/.config/zathura/
+  cp -r \
+    .config/ranger/ \
+    .config/zathura/ \
+    ~/.config
   # Check if WSL
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
     # 2>/dev/null to suppress UNC paths are not supported error
@@ -209,8 +211,10 @@ dotfilesupdate() {
     ~/.scimrc \
     .
   rm -rf .vim/session && cp -r ~/.vim/session .vim
-  cp ~/.config/ranger/rc.conf .config/ranger/
-  cp ~/.config/zathura/zathurarc .config/zathura/
+  cp -r \
+    ~/.config/ranger/ \
+    ~/.config/zathura/ \
+    .config
   # Check if WSL
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
     # 2>/dev/null to suppress UNC paths are not supported error

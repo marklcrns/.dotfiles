@@ -278,6 +278,7 @@ if [[ -f ~/.fzf.zsh ]]; then
   alias vimfzf='vim "$(fzf)"'
 fi
 
+. /usr/share/autojump/autojump.zsh
 
 # Codi
 # Usage: codi [filetype] [filename]

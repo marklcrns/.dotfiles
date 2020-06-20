@@ -331,8 +331,9 @@ sudo cp "fonts/Sauce Code Pro Nerd Font Complete.ttf" /usr/local/share/fonts
 cd ~/Downloads
 
 # Command line utils
-sudo apt install tree xclip xdg-utils fd-find mlocate -y
+sudo apt install tree xclip xdg-utils fd-find mlocate autojump k-y
 
+# Synaptic
 sudo apt install synaptic
 
 # Rclone
@@ -578,7 +579,7 @@ sudo apt install playonlinux -y
 cd ~
 DOTBACKUPDIR=$HOME/.`date +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
 mkdir $DOTBACKUPDIR
-mkdir -p $DOTBACKUPDIR/.config/ranger $DOTBACKUPDIR/.config/zathura $DOTBACKUPDIR/.vim
+mkdir -p $DOTBACKUPDIR/.vim
 cp -r \
   bin \
   .bashrc .bash_aliases .profile \
@@ -590,10 +591,10 @@ cp -r \
   .mutt/ \
   .scimrc \
   .gtd \
+  ~/.config/ranger/ \
+  ~/.config/zathura/ \
   $DOTBACKUPDIR
 cp -r .vim/session $DOTBACKUPDIR/.vim
-cp .config/ranger/rc.conf $DOTBACKUPDIR/.config/ranger
-cp .config/zathura/zathurarc $DOTBACKUPDIR/.config/zathura
 cd -; printf '\nDOTFILES BACKUP COMPLETE...\n\n'
 
 # Distribute dotfiles
@@ -611,8 +612,10 @@ cp -r \
   .gtd \
   $HOME
 rm -r ~/.vim/session && cp -r .vim/session ~/.vim
-cp .config/ranger/rc.conf ~/.config/ranger/
-cp .config/zathura/zathurarc ~/.config/zathura/
+cp -r \
+  ~/.config/ranger/ \
+  ~/.config/zathura/ \
+  .config
 cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
 
 # source bashrc

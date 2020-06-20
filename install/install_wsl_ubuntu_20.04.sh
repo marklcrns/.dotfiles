@@ -539,11 +539,11 @@ cp -r \
   .ctags.d/ \
   .mutt/ \
   .scimrc \
+  ~/.config/ranger/ \
+  ~/.config/zathura/ \
   /mnt/c/Users/${WIN_USERNAME}/Documents/.gtd \
   $DOTBACKUPDIR
 cp -r .vim/session $DOTBACKUPDIR/.vim
-cp .config/ranger/rc.conf $DOTBACKUPDIR/.config/ranger
-cp .config/zathura/zathurarc $DOTBACKUPDIR/.config/zathura
 cd -; printf '\nDOTFILES BACKUP COMPLETE...\n\n'
 
 # Distribute dotfiles
@@ -560,8 +560,10 @@ cp -r \
   .scimrc \
   $HOME
 rm -r ~/.vim/session && cp -r .vim/session ~/.vim
-cp .config/ranger/rc.conf ~/.config/ranger/
-cp .config/zathura/zathurarc ~/.config/zathura/
+cp -r \
+  ~/.config/ranger/ \
+  ~/.config/zathura/ \
+  .config
 cp -r .gtd /mnt/c/Users/${WIN_USERNAME}/Documents
 cd -; printf '\nDOTFILES DISTRIBUTION COMPLETE...\n\n'
 
