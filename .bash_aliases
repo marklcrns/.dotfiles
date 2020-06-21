@@ -396,9 +396,6 @@ alias runms='sudo mysql -u root -p'
 alias runpg='sudo -u postgres psql'
 
 # Rclone
-alias rcopy='rclone copy -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2'
-alias rsync='rclone sync -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2'
-
 zdev() {
   zip -r ~/Projects/dev.zip ~/Projects/Dev
 }
@@ -411,11 +408,23 @@ uzdev() {
   [[ -d "${HOME}/Projects/Dev" ]] && mv ~/Projects/Dev ~/Projects/`date "+%Y-%m-%d"`.Dev.old
   unzip ~/Projects/dev.zip -d ~/Projects
 }
-
+alias rcopy='rclone copy -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2'
+alias rsync='rclone sync -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2'
 alias rclone-dev-gdrive="rclone copy ~/Projects/dev.zip GoogleDrive: --backup-dir GoogleDrive:$(date '+%Y-%m-%d').dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
 alias rclone-dev-dbox="rclone copy ~/Projects/dev.zip Dropbox: --backup-dir Dropbox:$(date '+%Y-%m-%d').dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
 alias rclone-gdrive-dev="rclone copy GoogleDrive:dev.zip ~/Projects --backup-dir $(date '+%Y-%m-%d').dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
 alias rclone-dbox-dev="rclone copy Dropbox:dev.zip ~/Projects --backup-dir $(date '+%Y-%m-%d').dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
+
+# Rclonesynv-V2
+PATH_1="GoogleDrive:Dev"
+PATH_2="~/Projects/Dev"
+# --rclone-args -L is an Rclone flag to follow symlinks
+alias rc-p1-p2="rclonesync.py --verbose --remove-empty-directories ${PATH_1} ${PATH_2} --rclone-args -L"
+alias rc-p1-p2-first="rclonesync.py --verbose --first-sync ${PATH_1} ${PATH_2} --rclone-args -L"
+alias rc-p1-p2-dry="rclonesync.py --verbose --remove-empty-directories --dry-run ${PATH_1} ${PATH_2} --rclone-args -L"
+alias rc-p2-p1="rclonesync.py --verbose --remove-empty-directories ${PATH_2} ${PATH_1} --rclone-args -L"
+alias rc-p2-p1-first="rclonesync.py --verbose --first-sync ${PATH_2} ${PATH_1} --rclone-args -L"
+alias rc-p2-p1-dry="rclonesync.py --verbose --remove-empty-directories --dry-run ${PATH_2} ${PATH_1} --rclone-args -L"
 
 
 # Switch JDK version

@@ -5,26 +5,29 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Personal bin dir
+export PATH=$PATH:~/bin
+
+
+# Environent PATHs
+export PATH=$PATH:~/.local/bin
+export PATH=$PATH:~/.emacs.d/bin # emacs bin
+# Rclonesync-V2 PATH
+export PATH=$PATH:~/bin/rclonesync-V2
+
+# Default editor
+export VISUAL="nvim"
+export EDITOR=$VISUAL
+
 # Tldr Config
 # Repo: https://github.com/raylee/tldr
-export PATH=$PATH:~/bin
 export TLDR_HEADER='magenta bold underline'
 export TLDR_QUOTE='italic'
 export TLDR_DESCRIPTION='green'
 export TLDR_CODE='red'
 export TLDR_PARAM='blue'
 
-# Environent PATHs
-export PATH=$PATH:~/.local/bin
-export PATH=$PATH:~/.emacs.d/bin # emacs bin
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
-# Default editor
-export VISUAL="nvim"
-export EDITOR=$VISUAL
-
-# WSL Configs
+# For WSL Configs ONLY
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
   # Browser PATHS
   export PATH="$PATH:/mnt/c/Program Files/Mozilla Firefox/"
