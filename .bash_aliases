@@ -151,6 +151,7 @@ dotfilesbackup() {
     .ctags \
     .ctags.d/ \
     .mutt/ \
+    .rclonesyncwd/ \
     .scimrc \
     ${DOTBACKUPDIR}
   cp -r \
@@ -183,6 +184,7 @@ dotfilesdist() {
     .ctags \
     .ctags.d/ \
     .mutt/ \
+    .rclonesyncwd/ \
     .scimrc \
     ${HOME}
   rm -rf ~/.vim/session; cp -r .vim/session ~/.vim
@@ -212,6 +214,7 @@ dotfilesupdate() {
     ~/.gitconfig \
     ~/.scimrc \
     .
+  mkdir -p .rclonesyncwd/ && cp ~/.rclonesyncwd/Filters .rclonesyncwd/
   rm -rf .vim/session; cp -r ~/.vim/session .vim
   rm -rf bin; cp -r ~/bin .
   rm -rf .config/{ranger,zathura}; cp -r \
@@ -416,15 +419,19 @@ alias rclone-gdrive-dev="rclone copy GoogleDrive:dev.zip ~/Projects --backup-dir
 alias rclone-dbox-dev="rclone copy Dropbox:dev.zip ~/Projects --backup-dir $(date '+%Y-%m-%d').dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
 
 # Rclonesynv-V2
-PATH_1="GoogleDrive:Dev"
-PATH_2="~/Projects/Dev"
 # --rclone-args -L is an Rclone flag to follow symlinks
-alias rc-p1-p2="rclonesync.py --verbose --remove-empty-directories ${PATH_1} ${PATH_2} --rclone-args -L"
-alias rc-p1-p2-first="rclonesync.py --verbose --first-sync ${PATH_1} ${PATH_2} --rclone-args -L"
-alias rc-p1-p2-dry="rclonesync.py --verbose --remove-empty-directories --dry-run ${PATH_1} ${PATH_2} --rclone-args -L"
-alias rc-p2-p1="rclonesync.py --verbose --remove-empty-directories ${PATH_2} ${PATH_1} --rclone-args -L"
-alias rc-p2-p1-first="rclonesync.py --verbose --first-sync ${PATH_2} ${PATH_1} --rclone-args -L"
-alias rc-p2-p1-dry="rclonesync.py --verbose --remove-empty-directories --dry-run ${PATH_2} ${PATH_1} --rclone-args -L"
+REMOTE="GoogleDrive:Dev"
+DEV="~/Projects/Dev"
+# DEV might overwrite REMOTE
+alias rc-dev-rmt="rclonesync.py --verbose --remove-empty-directories --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args -L"
+alias rc-dev-rmt-first="rclonesync.py --verbose --first-sync --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args -L"
+alias rc-dev-rmt-dry="rclonesync.py --verbose --remove-empty-directories --dry-run --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args -L"
+alias rc-dev-rmt-first-dry="rclonesync.py --verbose --dry-run --first-sync --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args -L"
+# REMOTE might overwrite DEV
+alias rc-rmt-dev="rclonesync.py --verbose --remove-empty-directories --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args -L"
+alias rc-rmt-dev-first="rclonesync.py --verbose --first-sync --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args -L"
+alias rc-rmt-dev-dry="rclonesync.py --verbose --remove-empty-directories --dry-run --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args -L"
+alias rc-rmt-dev-first-dry="rclonesync.py --verbose --first-sync --dry-run --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args -L"
 
 
 # Switch JDK version
