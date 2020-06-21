@@ -5,4 +5,4 @@
   && echo "E: Script not applicable. Must be running KDE Plasma" && exit 1 || return 1
 
 killall plasmashell
-plasmashell &
+kstart5 plasmashell &
