@@ -359,7 +359,7 @@ pushallrepo() {
 
 statusrepo() {
   # Check if in git repo
-  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && exit 1
+  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && return
   # Check for git repo changes
   CHANGES=$(git status --porcelain)
   # Git status if has changes
@@ -388,6 +388,41 @@ alias gpullall=pullallrepo
 alias gfpullall=forcepullallrepo
 alias gpushall=pushallrepo
 alias gstatusall=statusallrepo
+
+# Ref: https://stackoverflow.com/a/3278427
+checkremotechanges() {
+  UPSTREAM=${1:-'@{u}'}
+  LOCAL=$(git rev-parse @)
+  REMOTE=$(git rev-parse "$UPSTREAM")
+  BASE=$(git merge-base @ "$UPSTREAM")
+
+  if [[ $LOCAL = $REMOTE ]]; then
+    echo "$(pwd) Up-to-date"
+  elif [[ $LOCAL = $BASE ]]; then
+    echo "$(pwd) Repo need to pull"
+    pullrepo
+  elif [[ $REMOTE = $BASE ]]; then
+    echo "$(pwd) Repo need to push"
+    pushrepo
+  else
+    printf "${RED} $(pwd) Repo diverges${NC}\n"
+  fi
+}
+
+syncallrepo() {
+  CURRENT_DIR_SAVE=$(pwd)
+  cd ~/Docs/wiki && checkremotechanges
+  cd ~/Docs/wiki/wiki && checkremotechanges
+  cd ~/.config/nvim && checkremotechanges
+  cd ~/Projects/references && checkremotechanges
+  cd ~/.tmuxinator && checkremotechanges
+  cd $DOTFILES && \
+    CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
+    [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && dotdist
+
+  printf "${GREEN}All repo synced${NC}\n"
+  cd ${CURRENT_DIR_SAVE}
+}
 
 # Web Servers
 alias starta2='sudo service apache2 start'
@@ -509,18 +544,16 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   # cd to Windows path string arg
   # Resources:
   # https://stackoverflow.com/questions/7131670/make-a-bash-alias-that-takes-a-parameter
-  # TODO: Fix and return string instead of "cd-ing" to the output
   cdwinpath() {
     if [[ $# -eq 0 ]] ; then
       printf "%s" "Missing Windows path string arg"
-      exit 1 || return 1
+    else
+      regex1='s/\\/\//g'
+      regex2='s/\(\w\):/\/mnt\/\L\1/g'
+
+      output=$(printf "%s" "$1" | sed -e "$regex1" -e "$regex2")
+      cd "$output"
     fi
-
-    regex1='s/\\/\//g'
-    regex2='s/\(\w\):/\/mnt\/\L\1/g'
-
-    output=$(printf "%s" "$1" | sed -e "$regex1" -e "$regex2")
-    cd "$output"
   }
 
   # Nameserver workaround for WSL2
