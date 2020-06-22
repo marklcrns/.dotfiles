@@ -428,16 +428,17 @@ alias rc-dev-rmt-first="rclonesync.py --verbose --first-sync --filters-file ~/.r
 alias rc-dev-rmt-dry="rclonesync.py --verbose --remove-empty-directories --dry-run --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args -L"
 alias rc-dev-rmt-first-dry="rclonesync.py --verbose --dry-run --first-sync --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args -L"
 # REMOTE might overwrite DEV
-alias rc-rmt-dev="rclonesync.py --verbose --remove-empty-directories --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args -L"
-alias rc-rmt-dev-first="rclonesync.py --verbose --first-sync --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args -L"
-alias rc-rmt-dev-dry="rclonesync.py --verbose --remove-empty-directories --dry-run --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args -L"
-alias rc-rmt-dev-first-dry="rclonesync.py --verbose --first-sync --dry-run --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args -L"
+alias rcs-rmt-dev="rclonesync.py --verbose --remove-empty-directories --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args -L"
+alias rcs-rmt-dev-first="rclonesync.py --verbose --first-sync --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args -L"
+alias rcs-rmt-dev-dry="rclonesync.py --verbose --remove-empty-directories --dry-run --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args -L"
+alias rcs-rmt-dev-first-dry="rclonesync.py --verbose --first-sync --dry-run --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args -L"
+alias rcs="rclonesync.py --verbose --filters-file ~/.rclonesyncwd/Filters"
 
 
 # Switch JDK version
 setjavahome() {
-  sudo update-alternatives --set java ${JDK_HOME}/jre/bin/java
-  sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
+  sudo update-alternatives --set java "${JDK_HOME}/jre/bin/java"
+  sudo update-alternatives --set javac "${JDK_HOME}/bin/javac"
   # replace JAVA_HOME with $JDK_HOME path if exist, else append
   grep -q 'JAVA_HOME=' /etc/environment && \
     sudo sed -i "s,^JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}/jre/," /etc/environment || \
