@@ -256,16 +256,17 @@ alias commit='git commit'
 alias commitall='git add . && git commit'
 
 # Ref:
-# Check repo changes: https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes
+# Check repo existing files changes: https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes
+# Check repo for all repo changes: https://stackoverflow.com/a/24775215/11850077
 # Check if in git repo: https://stackoverflow.com/questions/2180270/check-if-current-directory-is-a-git-repository
 pullrepo() {
   # Check if in git repo
   [[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && exit 1
   # Check for git repo changes
-  CHANGES=$(git diff-index --name-only HEAD --)
+  CHANGES=$(git status --porcelain --untracked-files=no)
   # Pull if no changes
   if [[ -n ${CHANGES} ]]; then
-    printf "${RED}Changes detected in $(pwd). Skipping...${NC}\n"
+    printf "${RED}Changes detected in existing $(pwd) files. Skipping...${NC}\n"
   else
     echo "$(pwd). Pulling from remote"
     git pull
@@ -293,10 +294,10 @@ forcepullrepo() {
   # Check if in git repo
   [[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && exit 1
   # Check for git repo changes
-  CHANGES=$(git diff-index --name-only HEAD --)
+  CHANGES=$(git status --porcelain --untracked-files=no)
   # Pull if no changes
   if [[ -n ${CHANGES} ]]; then
-    printf "${YELLOW}Changes detected in $(pwd). Hard resetting repo...${NC}\n"
+    printf "${YELLOW}Changes detected in existing $(pwd) files. Hard resetting repo...${NC}\n"
     git reset --hard HEAD^
     git pull
   else
@@ -326,7 +327,7 @@ pushrepo() {
   # Check if in git repo
   [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && exit 1
   # Check for git repo changes
-  CHANGES=$(git diff-index --name-only HEAD --)
+  CHANGES=$(git status --porcelain)
   # Add, commit and push if has changes
   if [[ -n ${CHANGES} ]]; then
     printf "${YELLOW}Changes detected in $(pwd). Pushing changes...${NC}\n"
@@ -360,7 +361,7 @@ statusrepo() {
   # Check if in git repo
   [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && exit 1
   # Check for git repo changes
-  CHANGES=$(git diff-index --name-only HEAD --)
+  CHANGES=$(git status --porcelain)
   # Git status if has changes
   if [[ -n ${CHANGES} ]]; then
     printf "${YELLOW}Changes detected in $(pwd).${NC}\n"
