@@ -186,7 +186,7 @@ dotfilesdist() {
     .mutt/ \
     .scimrc \
     ${HOME}
-  cp ./rclonesyncwd/Filters ~/.rclonesyncwd
+  cp .rclonesyncwd/Filters ~/.rclonesyncwd
   rm -rf ~/.vim/session; cp -r .vim/session ~/.vim
   rm -rf ~/bin; cp -r bin ~/bin
   rm -rf ~/.config/{ranger,zathura}; cp -r \
