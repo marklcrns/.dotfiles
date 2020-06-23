@@ -231,7 +231,7 @@ dotfilesupdate() {
     cp -r ~/.gtd .
   fi
   git add .; git status
-  printf "${GREEN}Dotfiles update complete${NC}"
+  printf "${GREEN}Dotfiles update complete${NC}\n"
 }
 
 rmdotfilesbak() {
@@ -396,14 +396,12 @@ checkremotechanges() {
   REMOTE=$(git rev-parse "$UPSTREAM")
   BASE=$(git merge-base @ "$UPSTREAM")
 
-  if [[ $LOCAL = $REMOTE ]]; then
-    echo "$(pwd) Up-to-date"
+  if [[ $REMOTE = $BASE ]]; then
+    echo "$(pwd) Repo need to push"
   elif [[ $LOCAL = $BASE ]]; then
     echo "$(pwd) Repo need to pull"
-    pullrepo
-  elif [[ $REMOTE = $BASE ]]; then
-    echo "$(pwd) Repo need to push"
-    pushrepo
+  elif [[ $LOCAL = $REMOTE ]]; then
+    echo "$(pwd) Up-to-date"
   else
     printf "${RED} $(pwd) Repo diverges${NC}\n"
   fi
@@ -411,13 +409,31 @@ checkremotechanges() {
 
 syncallrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  cd ~/Docs/wiki && checkremotechanges
-  cd ~/Docs/wiki/wiki && checkremotechanges
-  cd ~/.config/nvim && checkremotechanges
-  cd ~/Projects/references && checkremotechanges
-  cd ~/.tmuxinator && checkremotechanges
-  cd $DOTFILES && \
+  cd ~/Docs/wiki && \
     CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
+    [[ "${CHANGE_STATUS}" == *"Repo need to push"* ]] && pushrepo || \
+    [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && pullrepo
+
+  cd ~/Docs/wiki/wiki && \
+    CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
+    [[ "${CHANGE_STATUS}" == *"Repo need to push"* ]] && pushrepo || \
+    [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && pullrepo
+  cd ~/.config/nvim && \
+    CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
+      [[ "${CHANGE_STATUS}" == *"Repo need to push"* ]] && pushrepo || \
+      [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && pullrepo
+  cd ~/Projects/references && \
+    CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
+      [[ "${CHANGE_STATUS}" == *"Repo need to push"* ]] && pushrepo || \
+      [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && pullrepo
+  cd ~/.tmuxinator && \
+    CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
+    [[ "${CHANGE_STATUS}" == *"Repo need to push"* ]] && pushrepo || \
+    [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && pullrepo
+
+  dotupdate && \
+    CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
+    [[ "${CHANGE_STATUS}" == *"Repo need to push"* ]] && pushrepo || \
     [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && dotdist
 
   printf "${GREEN}All repo synced${NC}\n"
@@ -462,10 +478,10 @@ DEV="~/Projects/Dev"
 RCLONE_ARGS="--copy-links --fast-list --transfers=40 --checkers=40 --tpslimit=10 --drive-chunk-size=1M"
 
 # DEV might overwrite REMOTE
-alias rc-dev-rmt="rclonesync.py --verbose --remove-empty-directories --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
-alias rc-dev-rmt-first="rclonesync.py --verbose --first-sync --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
-alias rc-dev-rmt-dry="rclonesync.py --verbose --remove-empty-directories --dry-run --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
-alias rc-dev-rmt-first-dry="rclonesync.py --verbose --dry-run --first-sync --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
+alias rcs-dev-rmt="rclonesync.py --verbose --remove-empty-directories --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
+alias rcs-dev-rmt-first="rclonesync.py --verbose --first-sync --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
+alias rcs-dev-rmt-dry="rclonesync.py --verbose --remove-empty-directories --dry-run --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
+alias rcs-dev-rmt-first-dry="rclonesync.py --verbose --dry-run --first-sync --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
 
 # REMOTE might overwrite DEV
 alias rcs-rmt-dev="rclonesync.py --verbose --remove-empty-directories --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args ${RCLONE_ARGS}"
