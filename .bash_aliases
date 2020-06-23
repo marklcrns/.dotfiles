@@ -398,8 +398,10 @@ checkremotechanges() {
 
   if [[ $REMOTE = $BASE ]]; then
     echo "$(pwd) Repo need to push"
+    pushrepo
   elif [[ $LOCAL = $BASE ]]; then
     echo "$(pwd) Repo need to pull"
+    pullrepo
   elif [[ $LOCAL = $REMOTE ]]; then
     echo "$(pwd) Up-to-date"
   else
@@ -409,31 +411,13 @@ checkremotechanges() {
 
 syncallrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  cd ~/Docs/wiki && \
-    CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
-    [[ "${CHANGE_STATUS}" == *"Repo need to push"* ]] && pushrepo || \
-    [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && pullrepo
-
-  cd ~/Docs/wiki/wiki && \
-    CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
-    [[ "${CHANGE_STATUS}" == *"Repo need to push"* ]] && pushrepo || \
-    [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && pullrepo
-  cd ~/.config/nvim && \
-    CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
-      [[ "${CHANGE_STATUS}" == *"Repo need to push"* ]] && pushrepo || \
-      [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && pullrepo
-  cd ~/Projects/references && \
-    CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
-      [[ "${CHANGE_STATUS}" == *"Repo need to push"* ]] && pushrepo || \
-      [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && pullrepo
-  cd ~/.tmuxinator && \
-    CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
-    [[ "${CHANGE_STATUS}" == *"Repo need to push"* ]] && pushrepo || \
-    [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && pullrepo
-
+  cd ~/Docs/wiki && checkremotechanges
+  cd ~/Docs/wiki/wiki && checkremotechanges
+  cd ~/.config/nvim && checkremotechanges
+  cd ~/Projects/references && checkremotechanges
+  cd ~/.tmuxinator && checkremotechanges
   dotupdate && \
     CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
-    [[ "${CHANGE_STATUS}" == *"Repo need to push"* ]] && pushrepo || \
     [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && dotdist
 
   printf "${GREEN}All repo synced${NC}\n"
