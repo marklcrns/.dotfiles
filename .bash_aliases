@@ -409,6 +409,7 @@ checkremotechanges() {
   fi
 }
 
+# TODO:
 syncallrepo() {
   CURRENT_DIR_SAVE=$(pwd)
   cd ~/Docs/wiki && checkremotechanges
@@ -491,10 +492,15 @@ alias openjdk11="export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64 && setjavaho
 alias openjdk13="export JDK_HOME=/usr/lib/jvm/java-13-openjdk-amd64 && setjavahome"
 
 # gtd shell script
-alias on='gtd -ts'
+alias on="gtd -ts"
 
 # tmuxinator
-alias mux='tmuxinator'
+alias mux="tmuxinator"
+
+# Remove zone modifiers and attributes
+alias rmzone='find . -name "*Zone.*" && find . -name "*Zone.*" -delete'
+alias rmdattrs='find . -name "*dropbox.attrs" && find . -name "*dropbox.attrs" -delete'
+alias rmallmodattr="rmzone && rmdattr"
 
 # WSL aliases
 if [[ "$(grep -i microsoft /proc/version)" ]]; then

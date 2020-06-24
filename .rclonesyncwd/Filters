@@ -16,3 +16,4 @@
 # My filters
 - node_modules/**
 - env/**
+- *Zone.Identifier

@@ -7,13 +7,14 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +14 school/md/summer-2020/ENG-205/index.md
-badd +14 school/md/summer-2020/ENG-205/readings/the-warehouse/index.md
-badd +64 school/md/summer-2020/ENG-205/readings/the-warehouse/notes/part-2.md
-badd +16 school/md/summer-2020/ENG-205/readings/the-warehouse/notes/part-3.md
+badd +1 school/md/summer-2020/ENG-205/index.md
+badd +13 school/md/summer-2020/ENG-205/readings/the-warehouse/index.md
+badd +65 school/md/summer-2020/ENG-205/readings/the-warehouse/notes/part-3.md
+badd +410 ~/.config/nvim/core/dein/plugins.yaml
+badd +92 ~/.config/nvim/layers/+tools/vimwiki/config.vim
 argglobal
 %argdel
-edit school/md/summer-2020/ENG-205/readings/the-warehouse/notes/part-3.md
+edit school/md/summer-2020/ENG-205/readings/the-warehouse/index.md
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -30,12 +31,12 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 15 - ((14 * winheight(0) + 23) / 47)
+let s:l = 13 - ((12 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-15
-normal! 063|
+13
+normal! 0
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

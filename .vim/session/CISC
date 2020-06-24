@@ -7,12 +7,15 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +7 school/md/summer-2020/CISC-191/index.md
-badd +13 school/md/summer-2020/CISC-191/modules/week-1.md
-badd +2 school/md/summer-2020/CISC-191/notes/w-1.md
+badd +25 school/md/summer-2020/CISC-191/index.md
+badd +4 school/md/summer-2020/CISC-191/modules/week-1.md
+badd +16 school/md/summer-2020/CISC-191/notes/w-1.md
+badd +11 school/md/summer-2020/CISC-191/modules/week-2.md
+badd +482 school/md/summer-2020/CISC-191/notes/w-2.md
+badd +73 ~/.config/nvim/core/mappings.vim
 argglobal
 %argdel
-edit school/md/summer-2020/CISC-191/notes/w-1.md
+edit school/md/summer-2020/CISC-191/notes/w-2.md
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -29,11 +32,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 43 - ((15 * winheight(0) + 9) / 19)
+let s:l = 484 - ((26 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-43
+484
 normal! 0
 lcd ~/Docs/wiki
 tabnext 1
