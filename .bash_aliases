@@ -259,6 +259,52 @@ alias commitall='git add . && git commit'
 # Check repo existing files changes: https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes
 # Check repo for all repo changes: https://stackoverflow.com/a/24775215/11850077
 # Check if in git repo: https://stackoverflow.com/questions/2180270/check-if-current-directory-is-a-git-repository
+export CONF_REPO_LIST="\
+  ${DOTFILES}
+  ${HOME}/Docs/wiki
+  ${HOME}/Docs/wiki/wiki
+  ${HOME}/Projects/references
+  ${HOME}/.config/nvim
+  ${HOME}/.tmuxinator
+"
+
+printallconfrepo() {
+  echo ${CONF_REPO_LIST}
+}
+
+pushrepo() {
+  # Check if in git repo
+  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && return 1
+  # Check for git repo changes
+  CHANGES=$(git status --porcelain)
+  # Add, commit and push if has changes
+  if [[ -n ${CHANGES} ]]; then
+    printf "${YELLOW}Changes detected in $(pwd). Pushing changes...${NC}\n"
+    echo "2.." && sleep 1
+    echo "1." && sleep 1
+    git add . && git commit
+    git push
+    # If Authentication failed, push until successful or interrupted
+    while [[ ${?} -eq 128 ]]; do
+      git push
+    done
+  else
+    echo "No changes detected in $(pwd). Skipping..."
+  fi
+}
+
+pushallrepo() {
+  CURRENT_DIR_SAVE=$(pwd)
+  # Loop over all repo list excluding empty new line
+  while read line && [[ -n $line ]]; do
+    cd $line && pushrepo
+  done <<< ${CONF_REPO_LIST}
+
+  printf "${GREEN}All repo push complete!${NC}\n"
+  cd ${CURRENT_DIR_SAVE}
+}
+
+
 pullrepo() {
   # Check if in git repo
   [[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && return 1
@@ -279,12 +325,10 @@ pullrepo() {
 
 pullallrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  cd ~/Docs/wiki && pullrepo
-  cd ~/Docs/wiki/wiki && pullrepo
-  cd ~/.config/nvim && pullrepo
-  cd ~/Projects/references && pullrepo
-  cd ~/.tmuxinator && pullrepo
-  cd $DOTFILES && pullrepo
+  # Loop over all repo list excluding empty new line
+  while read line && [[ -n $line ]]; do
+    cd $line && pullrepo
+  done <<< ${CONF_REPO_LIST}
 
   echo 'All remote pull complete!'
   cd ${CURRENT_DIR_SAVE}
@@ -312,48 +356,12 @@ forcepullrepo() {
 
 forcepullallrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  cd ~/Docs/wiki && forcepullrepo
-  cd ~/Docs/wiki/wiki && forcepullrepo
-  cd ~/.config/nvim && forcepullrepo
-  cd ~/Projects/references && forcepullrepo
-  cd ~/.tmuxinator && forcepullrepo
-  cd $DOTFILES && forcepullrepo
+  # Loop over all repo list excluding empty new line
+  while read line && [[ -n $line ]]; do
+    cd $line && forcepullrepo
+  done <<< ${CONF_REPO_LIST}
 
   printf "${GREEN}All remote pull complete!${NC}\n"
-  cd ${CURRENT_DIR_SAVE}
-}
-
-pushrepo() {
-  # Check if in git repo
-  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && return 1
-  # Check for git repo changes
-  CHANGES=$(git status --porcelain)
-  # Add, commit and push if has changes
-  if [[ -n ${CHANGES} ]]; then
-    printf "${YELLOW}Changes detected in $(pwd). Pushing changes...${NC}\n"
-    echo "2.." && sleep 1
-    echo "1." && sleep 1
-    git add . && git commit
-    git push
-    # If Authentication failed, push until successful or interrupted
-    while [[ ${?} -eq 128 ]]; do
-      git push
-    done
-  else
-    echo "No changes detected in $(pwd). Skipping..."
-  fi
-}
-
-pushallrepo() {
-  CURRENT_DIR_SAVE=$(pwd)
-  cd ~/Docs/wiki && pushrepo
-  cd ~/Docs/wiki/wiki && pushrepo
-  cd ~/.config/nvim && pushrepo
-  cd ~/Projects/references && pushrepo
-  cd ~/.tmuxinator && pushrepo
-  cd $DOTFILES && pushrepo
-
-  printf "${GREEN}All repo push complete!${NC}\n"
   cd ${CURRENT_DIR_SAVE}
 }
 
@@ -373,95 +381,76 @@ statusrepo() {
 
 statusallrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  cd ~/Docs/wiki && statusrepo
-  cd ~/Docs/wiki/wiki && statusrepo
-  cd ~/.config/nvim && statusrepo
-  cd ~/Projects/references && statusrepo
-  cd ~/.tmuxinator && statusrepo
-  cd $DOTFILES && statusrepo
+  while read line && [[ -n $line ]]; do
+    cd $line && statusrepo
+  done <<< ${CONF_REPO_LIST}
 
   printf "${GREEN}All repo status complete!${NC}\n"
   cd ${CURRENT_DIR_SAVE}
 }
 
+alias gprintconf=printallconfrepo
 alias gpullconf=pullallrepo
 alias gfpullconf=forcepullallrepo
 alias gpushconf=pushallrepo
 alias gstatusconf=statusallrepo
 
-roundalldevrepo() {
-  REPO_DIR=$HOME/Projects/Dev
-  OUTPUT_FILE=repos_path.txt
-  find ${REPO_DIR} -name ".git" > ${REPO_DIR}/${OUTPUT_FILE}
-
-  [[ -e ${REPO_DIR}/${OUTPUT_FILE} ]] && \
-    echo "Created ${REPO_DIR}/${OUTPUT_FILE}" && cat ${REPO_DIR}/${OUTPUT_FILE}
-}
+# Ref:
+# Find: https://stackoverflow.com/a/15736463
+# Loops: https://stackoverflow.com/questions/1521462/looping-through-the-content-of-a-file-in-bash
+# Loop over lines in a variable: https://superuser.com/a/284226
+# Wait: https://stackoverflow.com/questions/49823080/use-bash-wait-in-for-loop
+# PID: https://www.cyberciti.biz/faq/linux-find-process-name/
+REPO_DIR=$HOME/Projects/Dev
+DEV_REPO_LIST=$(find ${REPO_DIR} -name ".git" -not -path "*/forked-repos/*")
 
 printalldevrepo() {
-  REPO_DIR=$HOME/Projects/Dev
-  OUTPUT_FILE=repos_path.txt
-
-  [[ ! -e ${REPO_DIR}/${OUTPUT_FILE} ]] && \
-    echo "${REPO_DIR}/${OUTPUT_FILE} does not exist" && return 1
-
-  echo "Created ${REPO_DIR}/${OUTPUT_FILE}" && cat ${REPO_DIR}/${OUTPUT_FILE}
+  echo $DEV_REPO_LIST
 }
 
 pushalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  REPO_DIR=$HOME/Projects/Dev
-  OUTPUT_FILE=repos_path.txt
-
-  # roundalldevrepo
-  [[ ! -e ${REPO_DIR}/${OUTPUT_FILE} ]] && \
-    echo "${REPO_DIR}/${OUTPUT_FILE} does not exist" && return 1
-
-
-  cat ${REPO_DIR}/${OUTPUT_FILE} | while read line || [[ -n $line ]];
-  do
+  # return if no Dev repos
+  [[ -z ${DEV_REPO_LIST} ]] && \
+    echo "No Dev git repository in ${REPO_DIR}" && return 1
+  # Loop variation 1: Works well with `wait` command
+  # Wait until another git commit finish processing if exist
+  for line in $(echo ${DEV_REPO_LIST}); do
+    if [[ -n $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}') ]]; then
+      wait $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}')
+    fi
+    # Go to a Dev repo then push
     cd `echo $line | sed -r "s,(.*)/\.git,\1,"`
     pushrepo
   done
-
   cd ${CURRENT_DIR_SAVE}
 }
 
 pullalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  REPO_DIR=$HOME/Projects/Dev
-  OUTPUT_FILE=repos_path.txt
-
-  # roundalldevrepo
-  [[ ! -e ${REPO_DIR}/${OUTPUT_FILE} ]] && \
-    echo "${REPO_DIR}/${OUTPUT_FILE} does not exist" && return 1
-
-
-  cat ${REPO_DIR}/${OUTPUT_FILE} | while read line || [[ -n $line ]];
-  do
+  # return if no Dev repos
+  [[ -z ${DEV_REPO_LIST} ]] && \
+    echo "No Dev git repository in ${REPO_DIR}" && return 1
+  # Loop variation 2: Ensures no leadiing line
+  # Pull from all Dev git repo
+  while read line || [[ -n $line ]]; do
     cd `echo $line | sed -r "s,(.*)/\.git,\1,"`
     pullrepo
-  done
-
+  done <<< ${DEV_REPO_LIST}
   cd ${CURRENT_DIR_SAVE}
 }
 
 forcepullalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  REPO_DIR=$HOME/Projects/Dev
-  OUTPUT_FILE=repos_path.txt
-
-  # roundalldevrepo
+  # return if repo list does not exist
   [[ ! -e ${REPO_DIR}/${OUTPUT_FILE} ]] && \
     echo "${REPO_DIR}/${OUTPUT_FILE} does not exist" && return 1
-
-
-  cat ${REPO_DIR}/${OUTPUT_FILE} | while read line || [[ -n $line ]];
-  do
+  # Loop variation 2: Ensures no leadiing line
+  # Force pull from all Dev git repo
+  while read line || [[ -n $line ]]; do
     cd `echo $line | sed -r "s,(.*)/\.git,\1,"`
     fpullrepo
-  done
-
+  done <<< ${DEV_REPO_LIST}
   cd ${CURRENT_DIR_SAVE}
 }
 
@@ -469,7 +458,7 @@ alias gpushdev=pushalldevrepo
 alias gpulldev=pullalldevrepo
 alias gfpulldev=forcepullalldevrepo
 alias grounddev=roundalldevrepo
-alias gprintdev=printalldevrepok
+alias gprintdev=printalldevrepo
 
 # Ref: https://stackoverflow.com/a/3278427
 checkremotechanges() {
