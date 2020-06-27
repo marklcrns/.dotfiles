@@ -85,7 +85,7 @@ clearjunk() {
   echo
   if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     printf "${RED}Aborting...${NC}\n"
-    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
+    [[ "$0" = "$BASH_SOURCE" ]] && return 1
   fi
 
   for item in ~/.Trash/*
@@ -249,7 +249,7 @@ alias dotpush="cd ${DOTFILES} && git add . && git commit && git push"
 
 # GitHub
 alias gh='open https://github.com; clear'
-alias repo='open `git remote -v | grep fetch | awk "{print $2}" | sed "s/git@/http:\/\//" | sed "s/com:/com\//"`| head -n1'
+alias openrepo="open `git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//'`| head -n1"
 alias gist='open https://gist.github.com; clear'
 alias insigcommit='git add  . && git commit -m "Insignificant commit" && git push'
 alias commit='git commit'
@@ -261,7 +261,7 @@ alias commitall='git add . && git commit'
 # Check if in git repo: https://stackoverflow.com/questions/2180270/check-if-current-directory-is-a-git-repository
 pullrepo() {
   # Check if in git repo
-  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && exit 1
+  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && return 1
   # Check for git repo changes
   CHANGES=$(git status --porcelain --untracked-files=no)
   # Pull if no changes
@@ -292,7 +292,7 @@ pullallrepo() {
 
 forcepullrepo() {
   # Check if in git repo
-  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && exit 1
+  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && return 1
   # Check for git repo changes
   CHANGES=$(git status --porcelain --untracked-files=no)
   # Pull if no changes
@@ -325,7 +325,7 @@ forcepullallrepo() {
 
 pushrepo() {
   # Check if in git repo
-  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && exit 1
+  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && return 1
   # Check for git repo changes
   CHANGES=$(git status --porcelain)
   # Add, commit and push if has changes
@@ -384,10 +384,92 @@ statusallrepo() {
   cd ${CURRENT_DIR_SAVE}
 }
 
-alias gpullall=pullallrepo
-alias gfpullall=forcepullallrepo
-alias gpushall=pushallrepo
-alias gstatusall=statusallrepo
+alias gpullconf=pullallrepo
+alias gfpullconf=forcepullallrepo
+alias gpushconf=pushallrepo
+alias gstatusconf=statusallrepo
+
+roundalldevrepo() {
+  REPO_DIR=$HOME/Projects/Dev
+  OUTPUT_FILE=repos_path.txt
+  find ${REPO_DIR} -name ".git" > ${REPO_DIR}/${OUTPUT_FILE}
+
+  [[ -e ${REPO_DIR}/${OUTPUT_FILE} ]] && \
+    echo "Created ${REPO_DIR}/${OUTPUT_FILE}" && cat ${REPO_DIR}/${OUTPUT_FILE}
+}
+
+printalldevrepo() {
+  REPO_DIR=$HOME/Projects/Dev
+  OUTPUT_FILE=repos_path.txt
+
+  [[ ! -e ${REPO_DIR}/${OUTPUT_FILE} ]] && \
+    echo "${REPO_DIR}/${OUTPUT_FILE} does not exist" && return 1
+
+  echo "Created ${REPO_DIR}/${OUTPUT_FILE}" && cat ${REPO_DIR}/${OUTPUT_FILE}
+}
+
+pushalldevrepo() {
+  CURRENT_DIR_SAVE=$(pwd)
+  REPO_DIR=$HOME/Projects/Dev
+  OUTPUT_FILE=repos_path.txt
+
+  # roundalldevrepo
+  [[ ! -e ${REPO_DIR}/${OUTPUT_FILE} ]] && \
+    echo "${REPO_DIR}/${OUTPUT_FILE} does not exist" && return 1
+
+
+  cat ${REPO_DIR}/${OUTPUT_FILE} | while read line || [[ -n $line ]];
+  do
+    cd `echo $line | sed -r "s,(.*)/\.git,\1,"`
+    pushrepo
+  done
+
+  cd ${CURRENT_DIR_SAVE}
+}
+
+pullalldevrepo() {
+  CURRENT_DIR_SAVE=$(pwd)
+  REPO_DIR=$HOME/Projects/Dev
+  OUTPUT_FILE=repos_path.txt
+
+  # roundalldevrepo
+  [[ ! -e ${REPO_DIR}/${OUTPUT_FILE} ]] && \
+    echo "${REPO_DIR}/${OUTPUT_FILE} does not exist" && return 1
+
+
+  cat ${REPO_DIR}/${OUTPUT_FILE} | while read line || [[ -n $line ]];
+  do
+    cd `echo $line | sed -r "s,(.*)/\.git,\1,"`
+    pullrepo
+  done
+
+  cd ${CURRENT_DIR_SAVE}
+}
+
+forcepullalldevrepo() {
+  CURRENT_DIR_SAVE=$(pwd)
+  REPO_DIR=$HOME/Projects/Dev
+  OUTPUT_FILE=repos_path.txt
+
+  # roundalldevrepo
+  [[ ! -e ${REPO_DIR}/${OUTPUT_FILE} ]] && \
+    echo "${REPO_DIR}/${OUTPUT_FILE} does not exist" && return 1
+
+
+  cat ${REPO_DIR}/${OUTPUT_FILE} | while read line || [[ -n $line ]];
+  do
+    cd `echo $line | sed -r "s,(.*)/\.git,\1,"`
+    fpullrepo
+  done
+
+  cd ${CURRENT_DIR_SAVE}
+}
+
+alias gpushdev=pushalldevrepo
+alias gpulldev=pullalldevrepo
+alias gfpulldev=forcepullalldevrepo
+alias grounddev=roundalldevrepo
+alias gprintdev=printalldevrepok
 
 # Ref: https://stackoverflow.com/a/3278427
 checkremotechanges() {
