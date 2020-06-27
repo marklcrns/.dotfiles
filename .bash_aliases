@@ -404,21 +404,56 @@ alias gstatusconf=statusallrepo
 # Loop over lines in a variable: https://superuser.com/a/284226
 # Wait: https://stackoverflow.com/questions/49823080/use-bash-wait-in-for-loop
 # PID: https://www.cyberciti.biz/faq/linux-find-process-name/
-REPO_DIR=$HOME/Projects/Dev
-DEV_REPO_LIST=$(find ${REPO_DIR} -name ".git" -not -path "*/forked-repos/*")
+DEV_REPO_DIR="${HOME}/Projects/Dev"
+DEV_REPO_LIST_NAME="dev_repos_list.txt"
+DEV_REPO_LIST_PATH=${DOTFILES}/${DEV_REPO_LIST_NAME}
+
+createalldevrepolist() {
+  find ${DEV_REPO_DIR} -name ".git" -not -path "*/forked-repos/*" \
+    > ${DEV_REPO_LIST_PATH}
+
+  [[ -e ${DEV_REPO_LIST_PATH} ]] && \
+    echo "Created ${DEV_REPO_LIST_PATH}" && cat ${DEV_REPO_LIST_PATH}
+}
 
 printalldevrepo() {
-  echo $DEV_REPO_LIST
+  cat $DEV_REPO_LIST_PATH
+}
+
+clonedevrepos() {
+  CURRENT_DIR_SAVE=$(pwd)
+  GIT_PROFILE_LINK="https://github.com/marklcrns/"
+  if [[ ! -d  ${DEV_REPO_LIST_PATH} ]]; then
+    printf "${RED}${DEV_REPO_NAME} in ${DOTFILES} does not exist${NC}\n"
+    return 1
+  else if [[ -z $(cat ${DEV_REPO_LIST_PATH}) ]]
+    printf "${YELLOW}${DEV_REPO_NAME} in ${DOTFILES} is empty${NC}\n"
+    return 1
+  fi
+
+  echo "Validating Dev repos..."
+  while read line && [[ -n $line ]]; do
+    # Truncate .git from path
+    REPO_DIR=`echo $line | sed -r "s,(.*)/\.git,\1,"`
+    # Clone repo if not exist
+    if [[ ! -d ${REPO_DIR} ]]; then
+      mkdir -p ${REPO_DIR}
+      git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}`
+    fi
+  done < ${DEV_REPO_LIST_PATH}
+  cd ${CURRENT_DIR_SAVE}
 }
 
 pushalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
   # return if no Dev repos
-  [[ -z ${DEV_REPO_LIST} ]] && \
-    echo "No Dev git repository in ${REPO_DIR}" && return 1
+  [[ ! -d  ${DEV_REPO_LIST_PATH} ]] && [[ -z $(cat ${DEV_REPO_LIST_PATH}) ]] && \
+    echo "No Dev git repository in ${DEV_REPO_DIR}" && return 1
   # Loop variation 1: Works well with `wait` command
-  # Wait until another git commit finish processing if exist
-  for line in $(echo ${DEV_REPO_LIST}); do
+  for line in $(cat ${DEV_REPO_LIST_PATH}); do
+    # continue of line is empty String
+    [[ -z $line ]] && continue
+    # Wait until another git commit finish processing if exist
     if [[ -n $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}') ]]; then
       wait $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}')
     fi
@@ -432,28 +467,28 @@ pushalldevrepo() {
 pullalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
   # return if no Dev repos
-  [[ -z ${DEV_REPO_LIST} ]] && \
-    echo "No Dev git repository in ${REPO_DIR}" && return 1
+  [[ ! -d  ${DEV_REPO_LIST_PATH} ]] && [[ -z $(cat ${DEV_REPO_LIST_PATH}) ]] && \
+    echo "No Dev git repository in ${DEV_REPO_DIR}" && return 1
   # Loop variation 2: Ensures no leadiing line
-  # Pull from all Dev git repo
-  while read line || [[ -n $line ]]; do
+  while read line && [[ -n $line ]]; do
+    # cd into Dev repo and pull
     cd `echo $line | sed -r "s,(.*)/\.git,\1,"`
     pullrepo
-  done <<< ${DEV_REPO_LIST}
+  done < ${DEV_REPO_LIST_PATH}
   cd ${CURRENT_DIR_SAVE}
 }
 
 forcepullalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  # return if repo list does not exist
-  [[ ! -e ${REPO_DIR}/${OUTPUT_FILE} ]] && \
-    echo "${REPO_DIR}/${OUTPUT_FILE} does not exist" && return 1
+  # return if no Dev repos
+  [[ ! -d  ${DEV_REPO_LIST_PATH} ]] && [[ -z $(cat ${DEV_REPO_LIST_PATH}) ]] && \
+    echo "No Dev git repository in ${DEV_REPO_DIR}" && return 1
   # Loop variation 2: Ensures no leadiing line
-  # Force pull from all Dev git repo
-  while read line || [[ -n $line ]]; do
+  while read line && [[ -n $line ]]; do
+    # cd into Dev repo and force pull
     cd `echo $line | sed -r "s,(.*)/\.git,\1,"`
     fpullrepo
-  done <<< ${DEV_REPO_LIST}
+  done < ${DEV_REPO_LIST_PATH}
   cd ${CURRENT_DIR_SAVE}
 }
 
@@ -462,6 +497,7 @@ alias gpulldev=pullalldevrepo
 alias gfpulldev=forcepullalldevrepo
 alias grounddev=roundalldevrepo
 alias gprintdev=printalldevrepo
+alias gcreatedev=createalldevrepolist
 
 # Ref: https://stackoverflow.com/a/3278427
 checkremotechanges() {
