@@ -435,45 +435,30 @@ alias stoppg='sudo service postgresql stop'
 alias runms='sudo mysql -u root -p'
 alias runpg='sudo -u postgres psql'
 
-# Rclone
-zdev() {
-  zip -r ~/Projects/dev.zip ~/Projects/Dev
-}
-
-ezdev() {
-  zip -er ~/Projects/dev.zip ~/Projects/Dev
-}
-
-uzdev() {
-  [[ -d "${HOME}/Projects/Dev" ]] && mv ~/Projects/Dev ~/Projects/`date "+%Y-%m-%d"`.Dev.old
-  unzip ~/Projects/dev.zip -d ~/Projects
-}
-alias rcopy='rclone copy -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2'
-alias rsync='rclone sync -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2'
-alias rclone-dev-gdrive="rclone copy ~/Projects/dev.zip GoogleDrive: --backup-dir GoogleDrive:$(date '+%Y-%m-%d').dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
-alias rclone-dev-dbox="rclone copy ~/Projects/dev.zip Dropbox: --backup-dir Dropbox:$(date '+%Y-%m-%d').dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
-alias rclone-gdrive-dev="rclone copy GoogleDrive:dev.zip ~/Projects --backup-dir $(date '+%Y-%m-%d').dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
-alias rclone-dbox-dev="rclone copy Dropbox:dev.zip ~/Projects --backup-dir $(date '+%Y-%m-%d').dev.bak -vvP --fast-list --drive-chunk-size=32M --transfers=6 --checkers=6 --tpslimit=2"
-
 # Rclonesynv-V2
-# --rclone-args -L is an Rclone flag to follow symlinks
 REMOTE="GoogleDrive:Dev"
 DEV="~/Projects/Dev"
 # Ref: https://forum.rclone.org/t/how-to-speed-up-google-drive-sync/8444/9
 RCLONE_ARGS="--copy-links --fast-list --transfers=40 --checkers=40 --tpslimit=10 --drive-chunk-size=1M"
 
 # DEV might overwrite REMOTE
-alias rcs-dev-rmt="rclonesync.py --verbose --remove-empty-directories --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
-alias rcs-dev-rmt-first="rclonesync.py --verbose --first-sync --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
-alias rcs-dev-rmt-dry="rclonesync.py --verbose --remove-empty-directories --dry-run --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
-alias rcs-dev-rmt-first-dry="rclonesync.py --verbose --dry-run --first-sync --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
+alias rcsrmtdev="rclonesync.py --verbose --remove-empty-directories --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
+alias rcsrmtdev-first="rclonesync.py --verbose --first-sync --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
+alias rcsrmtdev-dry="rclonesync.py --verbose --remove-empty-directories --dry-run --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
+alias rcsrmtdev-first-dry="rclonesync.py --verbose --dry-run --first-sync --filters-file ~/.rclonesyncwd/Filters ${REMOTE} ${DEV} --rclone-args ${RCLONE_ARGS}"
 
 # REMOTE might overwrite DEV
-alias rcs-rmt-dev="rclonesync.py --verbose --remove-empty-directories --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args ${RCLONE_ARGS}"
-alias rcs-rmt-dev-first="rclonesync.py --verbose --first-sync --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args ${RCLONE_ARGS}"
-alias rcs-rmt-dev-dry="rclonesync.py --verbose --remove-empty-directories --dry-run --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args ${RCLONE_ARGS}"
-alias rcs-rmt-dev-first-dry="rclonesync.py --verbose --first-sync --dry-run --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args ${RCLONE_ARGS}"
+alias rcsdevrmt="rclonesync.py --verbose --remove-empty-directories --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args ${RCLONE_ARGS}"
+alias rcsdevrmt-first="rclonesync.py --verbose --first-sync --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args ${RCLONE_ARGS}"
+alias rcsdevrmt-dry="rclonesync.py --verbose --remove-empty-directories --dry-run --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args ${RCLONE_ARGS}"
+alias rcsdevrmt-first-dry="rclonesync.py --verbose --first-sync --dry-run --filters-file ~/.rclonesyncwd/Filters ${DEV} ${REMOTE} --rclone-args ${RCLONE_ARGS}"
 alias rcs="rclonesync.py --verbose --filters-file ~/.rclonesyncwd/Filters"
+
+# Rclone
+alias rcopy="rclone copy -vvP ${RCLONE_ARGS}"
+alias rsync="rclone sync -vvP ${RCLONE_ARGS}"
+alias rcdevrmt="rclone sync ~/Projects/Dev GoogleDrive:Dev --backup-dir GoogleDrive:$(date '+%Y-%m-%d').Dev.bak -vvP ${RCLONE_ARGS}"
+alias rcrmtdev="rclone sync GoogleDrive:Dev ~/Projects/Dev --backup-dir $(date '+%Y-%m-%d').Dev.bak -vvP ${RCLONE_ARGS}"
 
 
 # Switch JDK version
