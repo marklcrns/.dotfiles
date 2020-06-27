@@ -412,7 +412,7 @@ createalldevrepolist() {
   find ${DEV_REPO_DIR} -name ".git" -not -path "*/forked-repos/*" \
     > ${DEV_REPO_LIST_PATH}
 
-  [[ -e ${DEV_REPO_LIST_PATH} ]] && \
+  [[ -f ${DEV_REPO_LIST_PATH} ]] && \
     echo "Created ${DEV_REPO_LIST_PATH}" && cat ${DEV_REPO_LIST_PATH}
 }
 
@@ -423,11 +423,11 @@ printalldevrepo() {
 clonedevrepos() {
   CURRENT_DIR_SAVE=$(pwd)
   GIT_PROFILE_LINK="https://github.com/marklcrns/"
-  if [[ ! -d  ${DEV_REPO_LIST_PATH} ]]; then
-    printf "${RED}${DEV_REPO_NAME} in ${DOTFILES} does not exist${NC}\n"
+  if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
+    printf "${RED}${DEV_REPO_LIST_NAME} in ${DOTFILES} does not exist${NC}\n"
     return 1
-  else if [[ -z $(cat ${DEV_REPO_LIST_PATH}) ]]
-    printf "${YELLOW}${DEV_REPO_NAME} in ${DOTFILES} is empty${NC}\n"
+  elif [[ ! -s "${DEV_REPO_LIST_PATH}" ]]; then
+    printf "${YELLOW}${DEV_REPO_LIST_NAME} in ${DOTFILES} is empty${NC}\n"
     return 1
   fi
 
@@ -435,12 +435,14 @@ clonedevrepos() {
   while read line && [[ -n $line ]]; do
     # Truncate .git from path
     REPO_DIR=`echo $line | sed -r "s,(.*)/\.git,\1,"`
-    # Clone repo if not exist
-    if [[ ! -d ${REPO_DIR} ]]; then
+    # Clone repo if repo dir and .git not exist
+    if [[ ! -d ${REPO_DIR} ]] && [[ -e $line ]]; then
       mkdir -p ${REPO_DIR}
-      git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}`
+      git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}` ${REPO_DIR}
     fi
   done < ${DEV_REPO_LIST_PATH}
+
+  printf "${GREEN}Dev repo cloning complete!${NC}\n"
   cd ${CURRENT_DIR_SAVE}
 }
 
