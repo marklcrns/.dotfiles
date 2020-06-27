@@ -23,10 +23,13 @@ alias updateall='sudo apt update && sudo apt upgrade -y'
 
 # Directory Aliases
 alias down='cd ~/Downloads'
-alias docs='cd ~/Docs; clear'
-alias proj='cd ~/Projects; clear'
-alias dev='cd ~/Projects/Dev; clear'
-alias ref='cd ~/Projects/references; clear'
+alias docs='cd ~/Docs'
+alias drop='cd ~/Dropbox'
+alias proj='cd ~/Projects'
+alias dev='cd ~/Projects/Dev'
+alias ddev='cd ~/Dropbox/Dev'
+alias drop='cd ~/Dropbox'
+alias ref='cd ~/Projects/references'
 
 # live browser server
 # alias live='http-server'
@@ -120,9 +123,9 @@ alias tw='task'
 alias twl='task list'
 
 # Vimwiki
-alias wiki='cd ~/Docs/wiki; nvim -c VimwikiUISelect; clear'
-alias diary='cd ~/Docs/wiki; nvim -c VimwikiDiaryIndex; clear'
-alias dtoday='cd ~/Docs/wiki; nvim -c "set laststatus=0 showtabline=0 colorcolumn=0|VimwikiMakeDiaryNote"; clear'
+alias wiki='cd ~/Docs/wiki; nvim -c VimwikiUISelect'
+alias diary='cd ~/Docs/wiki; nvim -c VimwikiDiaryIndex'
+alias dtoday='cd ~/Docs/wiki; nvim -c "set laststatus=0 showtabline=0 colorcolumn=0|VimwikiMakeDiaryNote"'
 alias wikidocs='cd ~/Docs/wiki'
 
 # Remove debug.log files recursively (will also list all debug files before removal)
@@ -248,9 +251,9 @@ alias dotcommit="cd ${DOTFILES} && git commit -m"
 alias dotpush="cd ${DOTFILES} && git add . && git commit && git push"
 
 # GitHub
-alias gh='open https://github.com; clear'
+alias gh='open https://github.com'
 alias openrepo="open `git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//'`| head -n1"
-alias gist='open https://gist.github.com; clear'
+alias gist='open https://gist.github.com'
 alias insigcommit='git add  . && git commit -m "Insignificant commit" && git push'
 alias commit='git commit'
 alias commitall='git add . && git commit'
@@ -563,20 +566,20 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   # 2>/dev/null to suppress UNC paths are not supported error
   WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
   # Directory Aliases
-  alias winhome="cd /mnt/c/Users/${WIN_USERNAME}; clear"
-  alias windocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents; clear"
-  alias wintrade="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive/Trading/Stocks; clear"
-  alias windown="cd /mnt/c/Users/${WIN_USERNAME}/Downloads; clear"
-  alias winbin="cd /mnt/c/bin; clear"
+  alias winhome="cd /mnt/c/Users/${WIN_USERNAME}"
+  alias windocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents"
+  alias wintrade="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive/Trading/Stocks"
+  alias windown="cd /mnt/c/Users/${WIN_USERNAME}/Downloads"
+  alias winbin="cd /mnt/c/bin"
 
   # Secure files Aliases
-  alias secenter="cd /mnt/c/Users/${WIN_USERNAME}; cmd.exe /C Secure.bat; cd ./Secure; clear"
-  alias seclock="cd /mnt/c/Users/${WIN_USERNAME}; cmd.exe /c Secure.bat; clear"
-  alias sec="cd /mnt/c/Users/${WIN_USERNAME}/Secure/; clear"
-  alias secfiles="cd /mnt/c/Users/${WIN_USERNAME}/Secure; clear"
-  alias secdocs="cd /mnt/c/Users/${WIN_USERNAME}/Secure/e-Files; clear"
-  alias secpersonal="cd /mnt/c/Users/${WIN_USERNAME}/Secure/Personal; clear"
-  alias secbrowse="cd /mnt/c/Users/${WIN_USERNAME}/Secure; explorer.exe .; cd -; clear"
+  alias secenter="cd /mnt/c/Users/${WIN_USERNAME}; cmd.exe /C Secure.bat; cd ./Secure"
+  alias seclock="cd /mnt/c/Users/${WIN_USERNAME}; cmd.exe /c Secure.bat"
+  alias sec="cd /mnt/c/Users/${WIN_USERNAME}/Secure"
+  alias secfiles="cd /mnt/c/Users/${WIN_USERNAME}/Secure"
+  alias secdocs="cd /mnt/c/Users/${WIN_USERNAME}/Secure/e-Files"
+  alias secpersonal="cd /mnt/c/Users/${WIN_USERNAME}/Secure/Personal"
+  alias secbrowse="cd /mnt/c/Users/${WIN_USERNAME}/Secure; explorer.exe .; cd -"
 
   # Running Windows executable
   alias cmd='cmd.exe /C'
