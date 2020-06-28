@@ -300,12 +300,20 @@ pushrepo() {
   fi
 }
 
-pushallrepo() {
+pushallconfrepo() {
   CURRENT_DIR_SAVE=$(pwd)
+
   # Loop over all repo list excluding empty new line
-  while read line && [[ -n $line ]]; do
+  for line in $(echo ${CONF_REPO_LIST}); do
+    # continue of line is empty String
+    [[ -z $line ]] && continue
+    # Wait until another git commit finish processing if exist
+    if [[ -n $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}') ]]; then
+      wait $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}')
+    fi
+    # Go to a repo repo then push
     cd $line && pushrepo
-  done <<< ${CONF_REPO_LIST}
+  done
 
   printf "${GREEN}All repo push complete!${NC}\n"
   cd ${CURRENT_DIR_SAVE}
@@ -330,7 +338,7 @@ pullrepo() {
   fi
 }
 
-pullallrepo() {
+pullallconfrepo() {
   CURRENT_DIR_SAVE=$(pwd)
   # Loop over all repo list excluding empty new line
   while read line && [[ -n $line ]]; do
@@ -361,7 +369,7 @@ forcepullrepo() {
   fi
 }
 
-forcepullallrepo() {
+forcepullallconfrepo() {
   CURRENT_DIR_SAVE=$(pwd)
   # Loop over all repo list excluding empty new line
   while read line && [[ -n $line ]]; do
@@ -386,7 +394,7 @@ statusrepo() {
   fi
 }
 
-statusallrepo() {
+statusallconfrepo() {
   CURRENT_DIR_SAVE=$(pwd)
   while read line && [[ -n $line ]]; do
     cd $line && statusrepo
@@ -397,10 +405,10 @@ statusallrepo() {
 }
 
 alias gprintconf=printallconfrepo
-alias gpullconf=pullallrepo
-alias gfpullconf=forcepullallrepo
-alias gpushconf=pushallrepo
-alias gstatusconf=statusallrepo
+alias gpullconf=pullallconfrepo
+alias gfpullconf=forcepullallconfrepo
+alias gpushconf=pushallconfrepo
+alias gstatusconf=statusallconfrepo
 
 # Ref:
 # Find: https://stackoverflow.com/a/15736463
@@ -501,9 +509,25 @@ forcepullalldevrepo() {
   cd ${CURRENT_DIR_SAVE}
 }
 
+statusalldevrepo() {
+  CURRENT_DIR_SAVE=$(pwd)
+  # return if no Dev repos
+  [[ ! -d  ${DEV_REPO_LIST_PATH} ]] && [[ -z $(cat ${DEV_REPO_LIST_PATH}) ]] && \
+    echo "No Dev git repository in ${DEV_REPO_DIR}" && return 1
+  # Loop variation 2: Ensures no leadiing line
+  while read line && [[ -n $line ]]; do
+    # cd into Dev repo and pull
+    cd `echo $line | sed -r "s,(.*)/\.git,\1,"`
+    statusrepo
+  done < ${DEV_REPO_LIST_PATH}
+  cd ${CURRENT_DIR_SAVE}
+}
+
+
 alias gpushdev=pushalldevrepo
 alias gpulldev=pullalldevrepo
 alias gfpulldev=forcepullalldevrepo
+alias gstatusdev=statusalldevrepo
 alias grounddev=roundalldevrepo
 alias gprintdev=printalldevrepo
 alias gcreatedev=createalldevrepolist
