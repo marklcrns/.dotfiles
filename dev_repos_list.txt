@@ -1,4 +1,4 @@
-/home/markl/Projects/Dev/github-projects/javascript-template-codes/.git
-/home/markl/Projects/Dev/github-projects/web-dev-projects/surprise/.git
-/home/markl/Projects/Dev/github-projects/web-dev-projects/100-Days-Webpage-Challenge/.git
-/home/markl/Projects/Dev/eclipse-workspace/GoG-FinalProject/.git
+~/Projects/Dev/eclipse-workspace/java-game-of-generals/.git
+~/Projects/Dev/github-projects/web-dev-projects/100-Days-Webpage-Challenge/.git
+~/Projects/Dev/github-projects/web-dev-projects/surprise/.git
+~/Projects/Dev/github-projects/javascript-template-codes/.git

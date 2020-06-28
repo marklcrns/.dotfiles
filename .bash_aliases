@@ -421,18 +421,35 @@ DEV_REPO_LIST_NAME="dev_repos_list.txt"
 DEV_REPO_LIST_PATH=${DOTFILES}/${DEV_REPO_LIST_NAME}
 
 createalldevrepolist() {
-  find ${DEV_REPO_DIR} -name ".git" -not -path "*/forked-repos/*" \
-    > ${DEV_REPO_LIST_PATH}
+  CURRENT_DIR_SAVE=$(pwd)
+  # Get all dev repo and store in $DEV_REPO_LIST_PATH
+  # Convert home path to ~
+  regex1="s,.*(/Projects/.*$),~\1,"
+  find ${DEV_REPO_DIR} -name ".git" -not -path "*/forked-repos/*" | \
+    sed -r "${regex1}" > ${DEV_REPO_LIST_PATH}
 
   [[ -f ${DEV_REPO_LIST_PATH} ]] && \
     echo "Created ${DEV_REPO_LIST_PATH}" && cat ${DEV_REPO_LIST_PATH}
+
+  cd ${CURRENT_DIR_SAVE}
 }
 
 printalldevrepo() {
   cat $DEV_REPO_LIST_PATH
 }
 
-clonedevrepos() {
+# Convert dev repo list line to path absolute path
+convertdevlinetopath() {
+  local arg1=$1
+  # Truncate .git from path
+  regex1="s,(.*)/\.git,\1,"
+  # Replace ~ with absolute $HOME path
+  regex2="s,~(.*),${HOME}\1,"
+  # Get repo directory
+  retval=`echo $arg1 | sed -r "${regex1};${regex2}"`
+}
+
+clonealldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
   GIT_PROFILE_LINK="https://github.com/marklcrns/"
   if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
@@ -445,15 +462,24 @@ clonedevrepos() {
 
   echo "Validating Dev repos..."
   while read line && [[ -n $line ]]; do
-    # Truncate .git from path
-    REPO_DIR=`echo $line | sed -r "s,(.*)/\.git,\1,"`
+    # Convert line to abs PATH
+    convertdevlinetopath $line
+    REPO_DIR=${retval}
     # Clone repo if repo dir and .git not exist
     if [[ ! -d ${REPO_DIR} ]]; then
       mkdir -p ${REPO_DIR}
       git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}` ${REPO_DIR}
-    elif [[ ! -d $line ]]; then
+      # If Authentication failed, clone until successful or interrupted
+      while [[ ${?} -eq 128 ]]; do
+        git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}` ${REPO_DIR}
+      done
+    elif [[ ! -d "${REPO_DIR}/.git" ]]; then
       rm -rf ${REPO_DIR} && \
-      git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}` ${REPO_DIR}
+        git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}` ${REPO_DIR}
+      # If Authentication failed, clone until successful or interrupted
+      while [[ ${?} -eq 128 ]]; do
+        git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}` ${REPO_DIR}
+      done
     fi
   done < ${DEV_REPO_LIST_PATH}
 
@@ -474,8 +500,11 @@ pushalldevrepo() {
     if [[ -n $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}') ]]; then
       wait $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}')
     fi
+    # Convert line to abs PATH
+    convertdevlinetopath $line
+    REPO_DIR=${retval}
     # Go to a Dev repo then push
-    cd `echo $line | sed -r "s,(.*)/\.git,\1,"`
+    cd ${REPO_DIR}
     pushrepo
   done
   cd ${CURRENT_DIR_SAVE}
@@ -488,8 +517,11 @@ pullalldevrepo() {
     echo "No Dev git repository in ${DEV_REPO_DIR}" && return 1
   # Loop variation 2: Ensures no leadiing line
   while read line && [[ -n $line ]]; do
+    # Convert line to abs PATH
+    convertdevlinetopath $line
+    REPO_DIR=${retval}
     # cd into Dev repo and pull
-    cd `echo $line | sed -r "s,(.*)/\.git,\1,"`
+    cd ${REPO_DIR}
     pullrepo
   done < ${DEV_REPO_LIST_PATH}
   cd ${CURRENT_DIR_SAVE}
@@ -497,14 +529,18 @@ pullalldevrepo() {
 
 forcepullalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
+  cd ~
   # return if no Dev repos
   [[ ! -d  ${DEV_REPO_LIST_PATH} ]] && [[ -z $(cat ${DEV_REPO_LIST_PATH}) ]] && \
     echo "No Dev git repository in ${DEV_REPO_DIR}" && return 1
   # Loop variation 2: Ensures no leadiing line
   while read line && [[ -n $line ]]; do
+    # Convert line to abs PATH
+    convertdevlinetopath $line
+    REPO_DIR=${retval}
     # cd into Dev repo and force pull
-    cd `echo $line | sed -r "s,(.*)/\.git,\1,"`
-    fpullrepo
+    cd ${REPO_DIR}
+    forcepullrepo
   done < ${DEV_REPO_LIST_PATH}
   cd ${CURRENT_DIR_SAVE}
 }
@@ -516,8 +552,11 @@ statusalldevrepo() {
     echo "No Dev git repository in ${DEV_REPO_DIR}" && return 1
   # Loop variation 2: Ensures no leadiing line
   while read line && [[ -n $line ]]; do
+    # Convert line to abs PATH
+    convertdevlinetopath $line
+    REPO_DIR=${retval}
     # cd into Dev repo and pull
-    cd `echo $line | sed -r "s,(.*)/\.git,\1,"`
+    cd ${REPO_DIR}
     statusrepo
   done < ${DEV_REPO_LIST_PATH}
   cd ${CURRENT_DIR_SAVE}
@@ -530,6 +569,7 @@ alias gstatusdev=statusalldevrepo
 alias grounddev=roundalldevrepo
 alias gprintdev=printalldevrepo
 alias gcreatedev=createalldevrepolist
+alias gclonedev=clonealldevrepo
 
 # Ref: https://stackoverflow.com/a/3278427
 checkremotechanges() {
