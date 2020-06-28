@@ -27,9 +27,12 @@ alias docs='cd ~/Docs'
 alias drop='cd ~/Dropbox'
 alias proj='cd ~/Projects'
 alias dev='cd ~/Projects/Dev'
-alias ddev='cd ~/Dropbox/Dev'
-alias drop='cd ~/Dropbox'
 alias ref='cd ~/Projects/references'
+# non-WSL aliases
+if [[ -z "$(grep -i microsoft /proc/version)" ]]; then
+  alias ddev='cd ~/Dropbox/Dev'
+  alias drop='cd ~/Dropbox'
+fi
 
 # live browser server
 # alias live='http-server'
