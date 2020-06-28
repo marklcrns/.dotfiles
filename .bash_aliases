@@ -252,11 +252,15 @@ alias dotpush="cd ${DOTFILES} && git add . && git commit && git push"
 
 # GitHub
 alias gh='open https://github.com'
-alias openrepo="open `git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//'`| head -n1"
 alias gist='open https://gist.github.com'
 alias insigcommit='git add  . && git commit -m "Insignificant commit" && git push'
 alias commit='git commit'
 alias commitall='git add . && git commit'
+
+browsegithubrepo() {
+  open `git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//'`| head -n 1
+}
+alias openrepo=browsegithubrepo
 
 # Ref:
 # Check repo existing files changes: https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes
@@ -436,8 +440,11 @@ clonedevrepos() {
     # Truncate .git from path
     REPO_DIR=`echo $line | sed -r "s,(.*)/\.git,\1,"`
     # Clone repo if repo dir and .git not exist
-    if [[ ! -d ${REPO_DIR} ]] && [[ -e $line ]]; then
+    if [[ ! -d ${REPO_DIR} ]]; then
       mkdir -p ${REPO_DIR}
+      git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}` ${REPO_DIR}
+    elif [[ ! -d $line ]]; then
+      rm -rf ${REPO_DIR} && \
       git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}` ${REPO_DIR}
     fi
   done < ${DEV_REPO_LIST_PATH}
