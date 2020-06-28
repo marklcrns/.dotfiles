@@ -523,7 +523,6 @@ statusalldevrepo() {
   cd ${CURRENT_DIR_SAVE}
 }
 
-
 alias gpushdev=pushalldevrepo
 alias gpulldev=pullalldevrepo
 alias gfpulldev=forcepullalldevrepo
@@ -639,6 +638,8 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   alias windocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents"
   alias wintrade="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive/Trading/Stocks"
   alias windown="cd /mnt/c/Users/${WIN_USERNAME}/Downloads"
+  alias windrop="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox"
+  alias windev="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox/Dev"
   alias winbin="cd /mnt/c/bin"
 
   # Secure files Aliases
