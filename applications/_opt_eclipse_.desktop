@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Eclipse IDE
+Exec=/opt/eclipse/eclipse %u
+NoDisplay=true
+Type=Application

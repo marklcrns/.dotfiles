@@ -16,10 +16,9 @@ CUSTOM_CMD="${CUSTOM_CMD:-"clear"}"
 MPD_CMD_BREAK="${MPD_CMD_BREAK:-"spotifycli --pause"}"
 MPD_CMD_WORK="${MPD_CMD_WORK:-"spotifycli --play"}"
 NOTIFY_CMD="${NOTIFY_CMD:-"notify-send"}"
-
 if [[ $(grep -i microsoft /proc/version) ]]
 then
-  WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
+  WIN_USERNAME=$(cmd.exe /c echo %username%)
   SPEAK_CMD="${SPEAK_CMD:-"cd /mnt/c/Users/${WIN_USERNAME}/Documents/gtd/espeak; cmd.exe /c start"}"
 else
   # TODO: Fix this

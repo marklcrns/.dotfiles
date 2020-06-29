@@ -147,7 +147,7 @@ dotfilesbackup() {
   cd ${HOME}
   DOTBACKUPDIR=${HOME}/.`date -u +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
   mkdir ${DOTBACKUPDIR}
-  mkdir ${DOTBACKUPDIR}/.config ${DOTBACKUPDIR}/.vim
+  mkdir ${DOTBACKUPDIR}/.config ${DOTBACKUPDIR}/.vim ${DOTBACKUPDIR}/applications
   cp -r \
     bin \
     .bashrc .bash_aliases .profile \
@@ -171,6 +171,7 @@ dotfilesbackup() {
     WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
     cp -r "/mnt/c/Users/${WIN_USERNAME}/Documents/.gtd/" ${DOTBACKUPDIR}
     cp ~/.config/mimeapps.list ${DOTBACKUPDIR}/.config
+    cp -r ~/.local/share/applications ${DOTBACKUPDIR}/applications
   else
     cp -r ~/.gtd/ ${DOTBACKUPDIR}
   fi
@@ -205,6 +206,7 @@ dotfilesdist() {
     WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
     cp -r .gtd /mnt/c/Users/${WIN_USERNAME}/Documents
     cp .config/mimeapps.list ~/.config
+    rm -rf ~/.local/share/applications/*.desktop && cp applications/* ~/.local/share/applications
   else
     cp -r .gtd ${HOME}
   fi
@@ -233,6 +235,7 @@ dotfilesupdate() {
     WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
     cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/.gtd .
     cp ~/.config/mimeapps.list .config
+    rm -rf applications/* && cp -r ~/.local/share/applications/*.desktop applications
   else
     cp -r ~/.gtd .
   fi
@@ -662,7 +665,7 @@ alias openjdk11="export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64 && setjavaho
 alias openjdk13="export JDK_HOME=/usr/lib/jvm/java-13-openjdk-amd64 && setjavahome"
 
 # gtd shell script
-alias on="gtd -mst"
+alias on="gtd -ts"
 
 # tmuxinator
 alias mux="tmuxinator"
@@ -739,8 +742,5 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   alias setns='echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf'
   alias restorens='cat ~/nameserver.txt | sudo tee /etc/resolv.conf'
   alias printns='cat /etc/resolv.conf'
-
-  # gtd shell script
-  alias on="gtd -st"
 fi
 
