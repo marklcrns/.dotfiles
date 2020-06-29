@@ -235,7 +235,7 @@ dotfilesupdate() {
     WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
     cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/.gtd .
     cp ~/.config/mimeapps.list .config
-    rm -rf applications/* && cp -r ~/.local/share/applications/*.desktop applications
+    rm -rf applications/*.desktop && cp -r ~/.local/share/applications/*.desktop applications
   else
     cp -r ~/.gtd .
   fi
@@ -244,7 +244,7 @@ dotfilesupdate() {
 }
 
 rmdotfilesbak() {
-  rm -rf ~/.*dotfiles.bak
+  rm -rf ~/.*old_dotfiles*
 }
 
 alias dotfiles="cd ${DOTFILES}"
