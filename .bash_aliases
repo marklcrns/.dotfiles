@@ -145,7 +145,7 @@ DOTFILES="${HOME}/Projects/.dotfiles"
 
 dotfilesbackup() {
   cd ${HOME}
-  DOTBACKUPDIR=${HOME}/.`date -u +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
+  DOTBACKUPDIR=${HOME}/.dotfiles.bak/`date -u +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
   mkdir ${DOTBACKUPDIR}
   mkdir ${DOTBACKUPDIR}/.config ${DOTBACKUPDIR}/.vim ${DOTBACKUPDIR}/applications
   cp -r \
@@ -243,15 +243,16 @@ dotfilesupdate() {
   printf "${GREEN}Dotfiles update complete${NC}\n"
 }
 
-rmdotfilesbak() {
-  rm -rf ~/.*old_dotfiles*
+cleardotfilesbak() {
+  rm -rf ~/.dotfiles.bak/*old_dotfiles.bak
+  printf "${GREEN}Dotfiles backups cleared!${NC}\n"
 }
 
 alias dotfiles="cd ${DOTFILES}"
 alias dotbackup=dotfilesbackup
 alias dotdist=dotfilesdist
 alias dotupdate=dotfilesupdate
-alias rmdotbak=rmdotfilesbak
+alias dotclearbak=cleardotfilesbak
 alias dotadd="cd ${DOTFILES} && git add ."
 alias dotcommit="cd ${DOTFILES} && git commit -m"
 alias dotpush="cd ${DOTFILES} && git add . && git commit && git push"
