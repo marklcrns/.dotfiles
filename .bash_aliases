@@ -24,7 +24,6 @@ alias updateall='sudo apt update && sudo apt upgrade -y'
 # Directory Aliases
 alias down='cd ~/Downloads'
 alias docs='cd ~/Docs'
-alias drop='cd ~/Dropbox'
 alias proj='cd ~/Projects'
 alias dev='cd ~/Projects/Dev'
 alias ref='cd ~/Projects/references'

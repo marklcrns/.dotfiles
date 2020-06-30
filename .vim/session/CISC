@@ -9,8 +9,7 @@ endif
 set shortmess=aoO
 badd +13 school/md/summer-2020/CISC-191/index.md
 badd +13 school/md/summer-2020/CISC-191/modules/week-3.md
-badd +1 school/md/summer-2020/CISC-191/notes/w-3.md
-badd +14 school/md/summer-2020/CISC-191/modules/week-2.md
+badd +56 school/md/summer-2020/CISC-191/notes/w-3.md
 argglobal
 %argdel
 edit school/md/summer-2020/CISC-191/notes/w-3.md
@@ -30,11 +29,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 21 - ((15 * winheight(0) + 18) / 36)
+let s:l = 72 - ((15 * winheight(0) + 15) / 30)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-21
+72
 normal! 0
 lcd ~/Docs/wiki
 tabnext 1

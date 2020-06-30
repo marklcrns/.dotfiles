@@ -8,11 +8,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +29 school/md/summer-2020/ENGL-205/index.md
-badd +41 school/md/summer-2020/ENGL-205/readings/the-warehouse/index.md
-badd +1 school/md/summer-2020/ENGL-205/readings/the-warehouse/essay.md
+badd +21 school/md/summer-2020/ENGL-205/readings/the-unite-states-of-paranoia/index.md
+badd +14 school/md/summer-2020/ENGL-205/readings/the-unite-states-of-paranoia/notes/part-1/ch-1.md
 argglobal
 %argdel
-edit school/md/summer-2020/ENGL-205/readings/the-warehouse/essay.md
+edit school/md/summer-2020/ENGL-205/index.md
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -29,11 +29,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 8 - ((7 * winheight(0) + 18) / 36)
+let s:l = 29 - ((28 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-8
+29
 normal! 0
 lcd ~/Docs/wiki
 tabnext 1
