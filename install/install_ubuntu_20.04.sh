@@ -139,7 +139,7 @@ sudo apt install build-essential libssl-dev libffi-dev -y
 sudo apt install software-properties-common -y
 sudo apt-add-repository universe -y
 sudo apt install curl wget zip unzip git vim -y
-sudo apt install gnupg2
+sudo apt install gnupg2 net-tools -y
 
 
 #################### Languages ####################

@@ -267,7 +267,7 @@ alias commitall='git add . && git commit'
 browsegithubrepo() {
   open `git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//'`| head -n 1
 }
-alias openrepo=browsegithubrepo
+alias openrepo=browsegithubrepo &
 
 # Ref:
 # Check repo existing files changes: https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes
