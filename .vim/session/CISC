@@ -7,12 +7,13 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +21 school/md/summer-2020/CISC-191/index.md
-badd +10 school/md/summer-2020/CISC-191/modules/week-2.md
-badd +1139 school/md/summer-2020/CISC-191/notes/w-2.md
+badd +13 school/md/summer-2020/CISC-191/index.md
+badd +13 school/md/summer-2020/CISC-191/modules/week-3.md
+badd +1 school/md/summer-2020/CISC-191/notes/w-3.md
+badd +14 school/md/summer-2020/CISC-191/modules/week-2.md
 argglobal
 %argdel
-edit school/md/summer-2020/CISC-191/index.md
+edit school/md/summer-2020/CISC-191/notes/w-3.md
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -29,7 +30,7 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 21 - ((20 * winheight(0) + 26) / 53)
+let s:l = 21 - ((15 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
