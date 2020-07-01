@@ -32,3 +32,9 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$PATH:$HOME/.rvm/bin"
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+# Export Windows username if in WSL
+if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  # 2>/dev/null to suppress UNC paths are not supported error
+  export WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
+fi
