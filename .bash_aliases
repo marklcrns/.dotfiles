@@ -143,6 +143,7 @@ alias cdypath='cd "`vs clipboard`" && clear'
 DOTFILES="${HOME}/Projects/.dotfiles"
 
 dotfilesbackup() {
+  CURRENT_DIR_SAVE=$(pwd)
   cd ${HOME}
   DOTBACKUPDIR=${HOME}/.dotfiles.bak/`date -u +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
   mkdir ${DOTBACKUPDIR}
@@ -172,10 +173,12 @@ dotfilesbackup() {
   else
     cp -r ~/.gtd/ ${DOTBACKUPDIR}
   fi
-  cd -; printf "\n${GREEN}DOTFILES BACKUP COMPLETE...${NC}\n\n"
+  printf "\n${GREEN}DOTFILES BACKUP COMPLETE...${NC}\n\n"
+  cd ${CURRENT_DIR_SAVE}
 }
 
 dotfilesdist() {
+  CURRENT_DIR_SAVE=$(pwd)
   # backup files first
   dotfilesbackup
   # distribute dotfiles
@@ -207,10 +210,12 @@ dotfilesdist() {
   else
     cp -r .gtd ${HOME}
   fi
-  cd -; printf "\n${GREEN}DOTFILES DISTRIBUTION COMPLETE...${NC}\n\n"
+  printf "\n${GREEN}DOTFILES DISTRIBUTION COMPLETE...${NC}\n\n"
+  cd ${CURRENT_DIR_SAVE}
 }
 
 dotfilesupdate() {
+  CURRENT_DIR_SAVE=$(pwd)
   cd ${DOTFILES}
   cp -r \
     ~/.bashrc ~/.bash_aliases ~/.profile \
@@ -238,6 +243,7 @@ dotfilesupdate() {
   fi
   git add .; git status
   printf "${GREEN}Dotfiles update complete${NC}\n"
+  cd ${CURRENT_DIR_SAVE}
 }
 
 cleardotfilesbak() {
@@ -691,7 +697,7 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   alias seclock="cd /mnt/c/Users/${WIN_USERNAME}; cmd.exe /c Secure.bat"
   alias sec="cd /mnt/c/Users/${WIN_USERNAME}/Secure"
   alias secfiles="cd /mnt/c/Users/${WIN_USERNAME}/Secure"
-  alias secdocs="cd /mnt/c/Users/${WIN_USERNAME}/Secure/e-Files"
+  alias secdocs="cd /mnt/c/Users/${WIN_USERNAME}/Secure/EDocs"
   alias secpersonal="cd /mnt/c/Users/${WIN_USERNAME}/Secure/Personal"
   alias secbrowse="cd /mnt/c/Users/${WIN_USERNAME}/Secure; explorer.exe .; cd -"
 
