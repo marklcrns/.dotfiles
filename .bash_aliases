@@ -316,7 +316,7 @@ pushrepo() {
     while [[ ${?} -eq 128 ]]; do
       git push
     done
-  elif [[ ${REMOTE} != ${BASE} ]]; then
+  elif [[ ${REMOTE} = ${BASE} ]]; then
     git push
   else
     echo "No changes detected in $(pwd). Skipping..."
@@ -596,19 +596,22 @@ alias gclonedev=clonealldevrepo
 
 # Ref: https://stackoverflow.com/a/3278427
 checkremotechanges() {
+  CHANGES=$(git status --porcelain)
   UPSTREAM=${1:-'@{u}'}
   LOCAL=$(git rev-parse @)
   REMOTE=$(git rev-parse "$UPSTREAM")
   BASE=$(git merge-base @ "$UPSTREAM")
 
-  if [[ $REMOTE != $BASE ]]; then
-    echo "$(pwd) Repo need to push"
-    pushrepo
-  elif [[ $LOCAL = $BASE ]]; then
-    echo "$(pwd) Repo need to pull"
-    pullrepo
+  if [[ -n ${CHANGES} ]]; then
+    echo "$(pwd) Repo need to commit"
   elif [[ $LOCAL = $REMOTE ]]; then
     echo "$(pwd) Up-to-date"
+  elif [[ $LOCAL = $BASE ]]; then
+    echo "$(pwd) Repo need to pull"
+    # pullrepo
+  elif [[ $REMOTE = $BASE ]]; then
+    echo "$(pwd) Repo need to push"
+    # pushrepo
   else
     printf "${RED} $(pwd) Repo diverges${NC}\n"
   fi
