@@ -7,8 +7,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +13 school/md/summer-2020/CISC-191/index.md
-badd +13 school/md/summer-2020/CISC-191/modules/week-3.md
+badd +9 school/md/summer-2020/CISC-191/index.md
+badd +14 school/md/summer-2020/CISC-191/modules/week-3.md
 argglobal
 %argdel
 edit school/md/summer-2020/CISC-191/modules/week-3.md
@@ -28,12 +28,12 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 13 - ((12 * winheight(0) + 17) / 35)
+let s:l = 12 - ((10 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-13
-normal! 03|
+12
+normal! 0
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

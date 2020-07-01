@@ -25,7 +25,7 @@ CUSTOM_CMD="${CUSTOM_CMD:-"clear"}"
 MPD_CMD_BREAK="${MPD_CMD_BREAK:-"spotifycli --pause"}"
 MPD_CMD_WORK="${MPD_CMD_WORK:-"spotifycli --play"}"
 NOTIFY_CMD="${NOTIFY_CMD:-"notify-send"}"
-POPUP_CMD="${POPUP_CMD_WORK:-"xcowsay --font 'mono 30'"}"
+POPUP_CMD="${POPUP_CMD_WORK:-"xcowsay --font 'mono 50' -t 3"}"
 
 # Setting configuration
 DEFAULT_WORK_LENGTH="${DEFAULT_WORK_LENGTH:-"15"}"
