@@ -8,7 +8,6 @@ fi
 # Personal bin dir
 export PATH=$PATH:~/bin
 
-
 # Environent PATHs
 export PATH=$PATH:~/.local/bin
 export PATH=$PATH:~/.emacs.d/bin # emacs bin
@@ -281,7 +280,8 @@ if [[ -f ~/.fzf.zsh ]]; then
   alias vimfzf='vim "$(fzf)"'
 fi
 
-. /usr/share/autojump/autojump.zsh
+[[ ! -f /usr/share/autojump/autojump.zsh ]] || \
+  . /usr/share/autojump/autojump.zsh
 
 # Codi
 # Usage: codi [filetype] [filename]

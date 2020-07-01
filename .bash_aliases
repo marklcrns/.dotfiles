@@ -166,8 +166,6 @@ dotfilesbackup() {
   cp -r .vim/session ${DOTBACKUPDIR}/.vim
   # Check if WSL
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
-    # 2>/dev/null to suppress UNC paths are not supported error
-    WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
     cp -r "/mnt/c/Users/${WIN_USERNAME}/Documents/.gtd/" ${DOTBACKUPDIR}
     cp ~/.config/mimeapps.list ${DOTBACKUPDIR}/.config
     cp -r ~/.local/share/applications ${DOTBACKUPDIR}/applications
