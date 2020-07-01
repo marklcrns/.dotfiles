@@ -11,106 +11,8 @@
 # https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html
 # TODO: More checks
 
-echo "The following packages are about to be installed:"
-echo apache2
-echo atool
-echo autoconf
-echo automake
-echo build-essential
-echo caca-utils
-echo cmatrix
-echo curl
-echo dbus-x11
-echo default-jdk
-echo default-jre
-echo emacs
-echo fd-find
-echo gawk
-echo gcc
-echo git
-echo git-lfs
-echo gnupg2
-echo google-chrome-stable
-echo highlight
-echo htop
-echo imagemagick
-echo inotify-tools
-echo libapache2-mod-php
-echo libffi-dev
-echo libjansson-dev
-echo libreoffice
-echo libseccomp-dev
-echo libsqlite3-dev
-echo libssl-dev
-echo libxml2-dev
-echo libyaml-dev
-echo make
-echo mysql-client
-echo mysql-server
-echo mysql-workbench
-echo neofetch
-echo neovim
-echo oracle-java11-set-default-local
-echo pandoc
-echo pandoc-data
-echo php
-echo php-bcmath
-echo php-cli
-echo php-curl
-echo php-fpm
-echo php-gd
-echo php-json
-echo php-mbstring
-echo php-mysql
-echo php-pdo
-echo php-pear
-echo php-xml
-echo php-zip
-echo phpmyadmin
-echo pkg-config
-echo python-dev
-echo python-pip
-echo python3-dev
-echo python3-docutils
-echo python3-neovim
-echo python3-pip
-echo python3-venv
-echo r-base
-echo ranger
-echo rclone-browser
-echo ripgrep
-echo screenfetch
-echo software-properties-common
-echo sqlite3
-echo sqlitebrowser
-echo taskwarrior
-echo texlive
-echo timewarrior
-echo tmux
-echo tmuxinator
-echo tree
-echo unzip
-echo urlview
-echo vagrant
-echo virtualbox
-echo w3m
-echo w3m-img
-echo wget
-echo xclip
-echo xdg-utils
-echo xdotool
-echo xfce4
-echo xubuntu-desktop
-echo yad
-echo yarn
-echo zathura
-echo zenity
-echo zip
-echo zsh
-echo
-
 # Ref: https://stackoverflow.com/a/1885534/11850077
-read -p "Proceed installing? (Y/y)" -n 1 -r
+read -p "Proceed installing for WSL2 Ubunutu 20.04 Focal Fossa? (Y/y)" -n 1 -r
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
@@ -484,7 +386,11 @@ wget https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.deb && \
 
 cd ~/Downloads
 
-sudo apt install screenfetch neofetch htop cmatrix -y
+sudo apt install screenfetch neofetch htop -y
+
+# Crazy terminal outputs
+# Ref: https://linoxide.com/linux-how-to/linux-fun-terminal-crazy-output/
+sudo apt install cmatrix cowsay xcowsay figlet lolcat fortune sl -y
 
 # Tldr
 mkdir -p ~/bin

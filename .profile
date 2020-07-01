@@ -38,3 +38,11 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   # 2>/dev/null to suppress UNC paths are not supported error
   export WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
 fi
+
+# Ref: https://stackoverflow.com/a/677212
+type neofetch >/dev/null && neofetch
+hash fortune 2>/dev/null 2>&1 && \
+  hash figlet 2>/dev/null 2>&1 && \
+  hash lolcat 2>/dev/null 2>&1 && \
+  fortune | figlet | lolcat
+
