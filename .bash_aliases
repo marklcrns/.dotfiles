@@ -677,7 +677,7 @@ alias openjdk11="export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64 && setjavaho
 alias openjdk13="export JDK_HOME=/usr/lib/jvm/java-13-openjdk-amd64 && setjavahome"
 
 # gtd shell script
-alias on="gtd -ts"
+alias on="gtd -mnspt"
 
 # tmuxinator
 alias mux="tmuxinator"
@@ -754,5 +754,8 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   alias setns='echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf'
   alias restorens='cat ~/nameserver.txt | sudo tee /etc/resolv.conf'
   alias printns='cat /etc/resolv.conf'
+
+  # gtd shell script for WSL
+  alias on="gtd -pts"
 fi
 
