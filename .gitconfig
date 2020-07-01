@@ -7,4 +7,4 @@
 	email = marklcrns@gmail.com
 	name = Mark Lucernas
 [credential]
-	helper = cache --timeout=7200
+	helper = cache --timeout=28800
