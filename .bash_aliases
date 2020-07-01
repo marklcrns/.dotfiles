@@ -265,7 +265,7 @@ alias dotdist=dotfilesdist
 alias dotupdate=dotfilesupdate
 alias dotclearbak=cleardotfilesbak
 alias dotaddall="cd ${DOTFILES} && git add ."
-alias dotcommit="cd ${DOTFILES} && git commit -m"
+alias dotcommit="cd ${DOTFILES} && git commit"
 alias dotpush=dotfilespush
 
 # GitHub
@@ -302,6 +302,9 @@ pushrepo() {
   [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && return 1
   # Check for git repo changes
   CHANGES=$(git status --porcelain)
+  UPSTREAM=${1:-'@{u}'}
+  REMOTE=$(git rev-parse "$UPSTREAM")
+  BASE=$(git merge-base @ "$UPSTREAM")
   # Add, commit and push if has changes
   if [[ -n ${CHANGES} ]]; then
     printf "${YELLOW}Changes detected in $(pwd). Pushing changes...${NC}\n"
@@ -313,6 +316,8 @@ pushrepo() {
     while [[ ${?} -eq 128 ]]; do
       git push
     done
+  elif [[ ${REMOTE} != ${BASE} ]]; then
+    git push
   else
     echo "No changes detected in $(pwd). Skipping..."
   fi
@@ -596,7 +601,7 @@ checkremotechanges() {
   REMOTE=$(git rev-parse "$UPSTREAM")
   BASE=$(git merge-base @ "$UPSTREAM")
 
-  if [[ $REMOTE = $BASE ]]; then
+  if [[ $REMOTE != $BASE ]]; then
     echo "$(pwd) Repo need to push"
     pushrepo
   elif [[ $LOCAL = $BASE ]]; then
