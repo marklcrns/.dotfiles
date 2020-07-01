@@ -246,6 +246,14 @@ dotfilesupdate() {
   cd ${CURRENT_DIR_SAVE}
 }
 
+dotfilespush() {
+  CURRENT_DIR_SAVE=$(pwd)
+  cd ${DOTFILES}
+  git add . && git commit
+  git push
+  cd ${CURRENT_DIR_SAVE}
+}
+
 cleardotfilesbak() {
   rm -rf ~/.dotfiles.bak/*old_dotfiles.bak
   printf "${GREEN}Dotfiles backups cleared!${NC}\n"
@@ -256,9 +264,9 @@ alias dotbackup=dotfilesbackup
 alias dotdist=dotfilesdist
 alias dotupdate=dotfilesupdate
 alias dotclearbak=cleardotfilesbak
-alias dotadd="cd ${DOTFILES} && git add ."
+alias dotaddall="cd ${DOTFILES} && git add ."
 alias dotcommit="cd ${DOTFILES} && git commit -m"
-alias dotpush="cd ${DOTFILES} && git add . && git commit && git push"
+alias dotpush=dotfilespush
 
 # GitHub
 alias gh='open https://github.com'
