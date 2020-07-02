@@ -316,7 +316,7 @@ pushrepo() {
     while [[ ${?} -eq 128 ]]; do
       git push
     done
-  elif [[ ${REMOTE} = ${BASE} ]]; then
+  elif [[ ${REMOTE} != ${BASE} ]]; then
     git push
   else
     echo "No changes detected in $(pwd). Skipping..."
