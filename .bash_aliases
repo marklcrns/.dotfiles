@@ -302,9 +302,8 @@ pushrepo() {
   [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && return 1
   # Check for git repo changes
   CHANGES=$(git status --porcelain)
-  UPSTREAM=${1:-'@{u}'}
-  REMOTE=$(git rev-parse "$UPSTREAM")
-  BASE=$(git merge-base @ "$UPSTREAM")
+  BRANCH_NAME=$(git symbolic-ref --short -q HEAD)
+  REMOTE_HEAD=$(git log --decorate --oneline | grep "origin/${BRANCH_NAME}")
   # Add, commit and push if has changes
   if [[ -n ${CHANGES} ]]; then
     printf "${YELLOW}Changes detected in $(pwd). Pushing changes...${NC}\n"
@@ -316,12 +315,18 @@ pushrepo() {
     while [[ ${?} -eq 128 ]]; do
       git push
     done
-  elif [[ ${REMOTE} != ${BASE} ]]; then
+  elif [[ ! "${REMOTE_HEAD}" == *"HEAD ->"* ]]; then
+    # if HEAD ahead of remote or has something to push. push repo.
     git push
+    while [[ ${?} -eq 128 ]]; do
+      git push
+    done
   else
     echo "No changes detected in $(pwd). Skipping..."
   fi
 }
+
+
 
 pushallconfrepo() {
   CURRENT_DIR_SAVE=$(pwd)
