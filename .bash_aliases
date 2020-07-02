@@ -600,6 +600,7 @@ alias gcreatedev=createalldevrepolist
 alias gclonedev=clonealldevrepo
 
 # Ref: https://stackoverflow.com/a/3278427
+# NOTE: Needs to run `git fetch` or `git remote update` first before running.
 checkremotechanges() {
   CHANGES=$(git status --porcelain)
   UPSTREAM=${1:-'@{u}'}
@@ -607,18 +608,20 @@ checkremotechanges() {
   REMOTE=$(git rev-parse "$UPSTREAM")
   BASE=$(git merge-base @ "$UPSTREAM")
 
-  if [[ -n ${CHANGES} ]]; then
-    echo "$(pwd) Repo need to commit"
-  elif [[ $LOCAL = $REMOTE ]]; then
+  if [[ $LOCAL = $REMOTE ]]; then   # Check if no changes
     echo "$(pwd) Up-to-date"
-  elif [[ $LOCAL = $BASE ]]; then
+  elif [[ $LOCAL = $BASE ]]; then   # Check if needs to pull
     echo "$(pwd) Repo need to pull"
     # pullrepo
-  elif [[ $REMOTE = $BASE ]]; then
+  elif [[ $REMOTE = $BASE ]]; then  # Check if need to push
     echo "$(pwd) Repo need to push"
     # pushrepo
-  else
-    printf "${RED} $(pwd) Repo diverges${NC}\n"
+  else                              # Repo diverted. Need to merge
+    printf "${RED} $(pwd) Repo diverged${NC}\n"
+  fi
+
+  if [[ -n ${CHANGES} ]]; then      # Check for uncommited changes
+    echo "$(pwd) Repo need to commit"
   fi
 }
 
@@ -709,6 +712,8 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   alias windocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents"
   alias wintrade="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive/Trading/Stocks"
   alias windown="cd /mnt/c/Users/${WIN_USERNAME}/Downloads"
+  alias wingdrv="cd /mnt/c/Users/${WIN_USERNAME}/Google Drive"
+  alias winodrv="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive"
   alias windrop="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox"
   alias windev="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox/Dev"
   alias winbin="cd /mnt/c/bin"
