@@ -291,6 +291,8 @@ export CONF_REPO_LIST="\
   ${HOME}/Projects/references
   ${HOME}/.config/nvim
   ${HOME}/.tmuxinator
+  ${HOME}/.timewarrior
+  ${HOME}/.task
 "
 
 printallconfrepo() {
