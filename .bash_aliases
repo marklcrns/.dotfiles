@@ -701,22 +701,14 @@ setjavaopenjdkhome() {
 }
 
 setjavaoraclejdkhome() {
-  if [[ "$(echo $JDK_HOME | grep "jdk1.8.0")" ]]; then
-    # For jdk 8
-    sudo update-alternatives --set java "${JDK_HOME}/bin/java"
-  else
-    # For jdk 11 and higher
-    sudo update-alternatives --set java "${JDK_HOME}/bin/javac"
-    sudo update-alternatives --set java "${JDK_HOME}/bin/javac"
-  fi
-
+  sudo update-alternatives --set java "${JDK_HOME}/bin/java"
+  sudo update-alternatives --set javac "${JDK_HOME}/bin/javac"
   # replace JAVA_HOME with $JDK_HOME path if exist, else append
   grep -q 'JAVA_HOME=' /etc/environment && \
     sudo sed -i "s,^JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}," /etc/environment || \
     echo "JAVA_HOME=${JDK_HOME}" | sudo tee -a /etc/environment
       # source environ
       source /etc/environment
-
   # replace JRE_HOME with $JDK_HOME/jre path if exist, else append
   grep -q 'JRE_HOME=' /etc/environment && \
     sudo sed -i "s,^JRE_HOME=.*,JRE_HOME=${JDK_HOME}/jre," /etc/environment || \
@@ -728,9 +720,9 @@ setjavaoraclejdkhome() {
 alias openjdk8="export JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64 && setjavaopenjdkhome"
 alias openjdk11="export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64 && setjavaopenjdkhome"
 alias openjdk13="export JDK_HOME=/usr/lib/jvm/java-13-openjdk-amd64 && setjavaopenjdkhome"
-alias oraclejdk8="export JDK_HOME=/opt/jdk/jdk1.8.0_251 && set && setjavaoraclejdkhome"
-alias oraclejdk11="export JDK_HOME=/usr/lib/jvm/jdk-11.0.7 && set && setjavaoraclejdkhome"
-alias oraclejdk14="export JDK_HOME=/usr/lib/jvm/jdk-14.0.1 && set && setjavaoraclejdkhome"
+alias oraclejdk8="export JDK_HOME=/opt/jdk/jdk1.8.0_251 && setjavaoraclejdkhome"
+alias oraclejdk11="export JDK_HOME=/usr/lib/jvm/jdk-11.0.7 && setjavaoraclejdkhome"
+alias oraclejdk14="export JDK_HOME=/usr/lib/jvm/jdk-14.0.1 && setjavaoraclejdkhome"
 
 # gtd shell script
 alias on="gtd -mnspt"
