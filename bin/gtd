@@ -19,7 +19,7 @@ if [[ $(grep -i microsoft /proc/version) ]]; then
   SPEAK_CMD="${SPEAK_CMD:-"cd ${GTD_HOME}/espeak; cmd.exe /c start"}"
 else
   GTD_HOME="${GTD_HOME:-"$HOME/.gtd"}"
-  SPEAK_CMD="${SPEAK_CMD:-"&>/dev/null aplay"}"
+  SPEAK_CMD="${SPEAK_CMD:-"cd ${GTD_HOME}/espeak; &>/dev/null aplay"}"
 fi
 CUSTOM_CMD="${CUSTOM_CMD:-"clear"}"
 MPD_CMD_BREAK="${MPD_CMD_BREAK:-"spotifycli --pause"}"
