@@ -9,6 +9,7 @@ application/xhtml+xml=google-chrome-windows.desktop;firefox-windows.desktop;fire
 text/markdown=google-chrome-windows.desktop;firefox-windows.desktop;firefox.desktop
 text/xml=google-chrome-windows.desktop;firefox-windows.desktop;firefox.desktop
 text/html=firefox-windows.desktop;firefox.desktop
+x-scheme-handler/eclipse+command x-scheme-handler/eclipse+mpc=_opt_eclipse_.desktop
 
 [Added Associations]
 text/x-java=nvim.desktop;

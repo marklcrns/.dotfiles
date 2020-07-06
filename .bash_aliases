@@ -75,6 +75,11 @@ junk() {
   for item in "$@" ; do echo "Trashing: $item" ; mv "$item" ~/.Trash/; done;
 }
 
+# With sudo permission
+sudojunk() {
+  for item in "$@" ; do echo "Trashing: $item" ; sudo mv "$item" ~/.Trash/; done;
+}
+
 # Resources
 # prompt: https://stackoverflow.com/a/1885534/11850077
 # params: https://stackoverflow.com/a/23659385/11850077
@@ -100,6 +105,13 @@ clearjunk() {
 
   echo "All $JUNK_COUNTER items in ~/.Trash were permanently deleted"
 }
+
+# Used junk instead of rm
+alias rm="junk"
+alias rmdir="junk"
+alias srm="sudojunk"
+alias srmdir="sudojunk"
+alias trash="cd ~/.Trash"
 
 # Binaries
 alias open='xdg-open'
@@ -202,8 +214,6 @@ dotfilesdist() {
     ~/.config
   # Check if WSL
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
-    # 2>/dev/null to suppress UNC paths are not supported error
-    WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
     cp -r .gtd /mnt/c/Users/${WIN_USERNAME}/Documents
     cp .config/mimeapps.list ~/.config
     rm -rf ~/.local/share/applications/*.desktop && cp applications/* ~/.local/share/applications
@@ -233,8 +243,6 @@ dotfilesupdate() {
     .config
   # Check if WSL
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
-    # 2>/dev/null to suppress UNC paths are not supported error
-    WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
     cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/.gtd .
     cp ~/.config/mimeapps.list .config
     rm -rf applications/*.desktop && cp -r ~/.local/share/applications/*.desktop applications
@@ -293,6 +301,7 @@ export CONF_REPO_LIST="\
   ${HOME}/.tmuxinator
   ${HOME}/.timewarrior
   ${HOME}/.task
+  ${HOME}/.pandoc
 "
 
 printallconfrepo() {
@@ -707,8 +716,6 @@ alias rmallmodattr="rmzone && rmdattr"
 
 # WSL aliases
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
-  # 2>/dev/null to suppress UNC paths are not supported error
-  WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
   # Directory Aliases
   alias winhome="cd /mnt/c/Users/${WIN_USERNAME}"
   alias windocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents"

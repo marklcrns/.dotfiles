@@ -7,14 +7,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +8 school/md/summer-2020/CISC-191/notes/w-3.md
-badd +34 school/md/index.md
-badd +32 school/md/summer-2020/CISC-191/index.md
-badd +21 school/md/summer-2020/CISC-191/final-project/formulas.md
-badd +99 school/html/summer-2020/CISC-191/final-project/formulas.html
+badd +52 school/md/summer-2020/CISC-191/modules/week-3/notes/index.md
 argglobal
 %argdel
-edit school/html/summer-2020/CISC-191/final-project/formulas.html
+edit school/md/summer-2020/CISC-191/modules/week-3/notes/index.md
 set splitbelow splitright
 set nosplitright
 wincmd t
@@ -23,19 +19,19 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-setlocal fdm=syntax
-setlocal fde=0
+setlocal fdm=expr
+setlocal fde=Foldexpr_markdown(v:lnum)
 setlocal fmr={{{,}}}
 setlocal fdi=#
 setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 316 - ((22 * winheight(0) + 15) / 30)
+let s:l = 51 - ((16 * winheight(0) + 15) / 30)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-316
+51
 normal! 0
 lcd ~/Docs/wiki
 tabnext 1
