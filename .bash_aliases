@@ -687,10 +687,15 @@ alias rsync="rclone sync -vvP ${RCLONE_ARGS}"
 alias rcdevrmt="rclone sync ~/Projects/Dev GoogleDrive:Dev --backup-dir GoogleDrive:$(date '+%Y-%m-%d').Dev.bak -vvP ${RCLONE_ARGS}"
 alias rcrmtdev="rclone sync GoogleDrive:Dev ~/Projects/Dev --backup-dir $(date '+%Y-%m-%d').Dev.bak -vvP ${RCLONE_ARGS}"
 
-
 # Switch JDK version
 setjavahome() {
-  sudo update-alternatives --set java "${JDK_HOME}/jre/bin/java"
+  if [[ "$(echo $JDK_HOME | grep "java-8")" ]]; then
+    # For jdk 8
+    sudo update-alternatives --set java "${JDK_HOME}/jre/bin/java"
+  else
+    # For jdk 11 and higher
+    sudo update-alternatives --set java "${JDK_HOME}/bin/java"
+  fi
   sudo update-alternatives --set javac "${JDK_HOME}/bin/javac"
   # replace JAVA_HOME with $JDK_HOME path if exist, else append
   grep -q 'JAVA_HOME=' /etc/environment && \
@@ -699,6 +704,7 @@ setjavahome() {
   # source environ
   source /etc/environment
 }
+
 alias openjdk8="export JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64 && setjavahome"
 alias openjdk11="export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64 && setjavahome"
 alias openjdk13="export JDK_HOME=/usr/lib/jvm/java-13-openjdk-amd64 && setjavahome"
