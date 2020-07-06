@@ -106,11 +106,6 @@ clearjunk() {
   echo "All $JUNK_COUNTER items in ~/.Trash were permanently deleted"
 }
 
-# Used junk instead of rm
-alias rm="junk"
-alias rmdir="junk"
-alias srm="sudojunk"
-alias srmdir="sudojunk"
 alias trash="cd ~/.Trash"
 
 # Binaries
@@ -688,7 +683,7 @@ alias rcdevrmt="rclone sync ~/Projects/Dev GoogleDrive:Dev --backup-dir GoogleDr
 alias rcrmtdev="rclone sync GoogleDrive:Dev ~/Projects/Dev --backup-dir $(date '+%Y-%m-%d').Dev.bak -vvP ${RCLONE_ARGS}"
 
 # Switch JDK version
-setjavahome() {
+setjavaopenjdkhome() {
   if [[ "$(echo $JDK_HOME | grep "java-8")" ]]; then
     # For jdk 8
     sudo update-alternatives --set java "${JDK_HOME}/jre/bin/java"
@@ -705,9 +700,37 @@ setjavahome() {
   source /etc/environment
 }
 
-alias openjdk8="export JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64 && setjavahome"
-alias openjdk11="export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64 && setjavahome"
-alias openjdk13="export JDK_HOME=/usr/lib/jvm/java-13-openjdk-amd64 && setjavahome"
+setjavaoraclejdkhome() {
+  if [[ "$(echo $JDK_HOME | grep "jdk1.8.0")" ]]; then
+    # For jdk 8
+    sudo update-alternatives --set java "${JDK_HOME}/bin/java"
+  else
+    # For jdk 11 and higher
+    sudo update-alternatives --set java "${JDK_HOME}/bin/javac"
+    sudo update-alternatives --set java "${JDK_HOME}/bin/javac"
+  fi
+
+  # replace JAVA_HOME with $JDK_HOME path if exist, else append
+  grep -q 'JAVA_HOME=' /etc/environment && \
+    sudo sed -i "s,^JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}," /etc/environment || \
+    echo "JAVA_HOME=${JDK_HOME}" | sudo tee -a /etc/environment
+      # source environ
+      source /etc/environment
+
+  # replace JRE_HOME with $JDK_HOME/jre path if exist, else append
+  grep -q 'JRE_HOME=' /etc/environment && \
+    sudo sed -i "s,^JRE_HOME=.*,JRE_HOME=${JDK_HOME}/jre," /etc/environment || \
+    echo "JRE_HOME=${JDK_HOME}/jre" | sudo tee -a /etc/environment
+      # source environ
+      source /etc/environment
+}
+
+alias openjdk8="export JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64 && setjavaopenjdkhome"
+alias openjdk11="export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64 && setjavaopenjdkhome"
+alias openjdk13="export JDK_HOME=/usr/lib/jvm/java-13-openjdk-amd64 && setjavaopenjdkhome"
+alias oraclejdk8="export JDK_HOME=/opt/jdk/jdk1.8.0_251 && set && setjavaoraclejdkhome"
+alias oraclejdk11="export JDK_HOME=/usr/lib/jvm/jdk-11.0.7 && set && setjavaoraclejdkhome"
+alias oraclejdk14="export JDK_HOME=/usr/lib/jvm/jdk-14.0.1 && set && setjavaoraclejdkhome"
 
 # gtd shell script
 alias on="gtd -mnspt"
