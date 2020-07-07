@@ -264,6 +264,8 @@ dotfilespush() {
 
 # Limits to only 10 dotfiles backup at a time
 # Appending to arrays: https://unix.stackexchange.com/a/395103
+# Appending to integer and string: https://stackoverflow.com/a/18041780
+# Looping through arrays: https://stackoverflow.com/a/8880633
 limitdotfilesbak() {
   LIMIT=${1}
   REMOVED_COUNT=0
