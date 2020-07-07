@@ -9,8 +9,8 @@
 # 2020-06-12: Added WSL support. .wav files needs to be stored in
 #             /mnt/c/Users/${WIN_USERNAME}/Documents/gtd/espeak
 # 2020-07-01: Added xcowsay popup. Usage, add `-p` flag.
-# 2020-07-06: Disown do_options commands to independently run without waiting
-#             for prior command to finish first.
+# 2020-07-06: Disown some do_options commands to independently run without
+#             waiting for prior command to finish first.
 
 set -e
 
@@ -206,9 +206,9 @@ do_options() {
 
    if [[ -n "$DO_POPUP" ]]; then
       if [[ -n "$in_break" ]]; then
-         eval "$POPUP_CMD $POPUP_BREAK" &
+         eval "$POPUP_CMD $POPUP_BREAK"
       else
-         eval "$POPUP_CMD $POPUP_WORK" &
+         eval "$POPUP_CMD $POPUP_WORK"
       fi
    fi
 
