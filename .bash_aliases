@@ -316,8 +316,8 @@ pushrepo() {
   # Add, commit and push if has changes
   if [[ -n ${CHANGES} ]]; then
     printf "${YELLOW}Changes detected in $(pwd). Pushing changes...${NC}\n"
-    echo "2.." && sleep 1
-    echo "1." && sleep 1
+    echo "2.." && sleep .5
+    echo "1." && sleep .5
     git add . && git commit
     git push
     # If Authentication failed, push until successful or interrupted
