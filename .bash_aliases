@@ -160,6 +160,7 @@ dotfilesbackup() {
     .bashrc .bash_aliases .profile \
     .zshenv .zshrc \
     .tmux.conf \
+    .tmux/wsl_tmux_statusline.sh \
     .gitconfig \
     .ctags \
     .ctags.d/ \
@@ -209,6 +210,7 @@ dotfilesdist() {
     ~/.config
   # Check if WSL
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
+    cp wsl_tmux_statusline.sh ~/.tmux/
     cp -r .gtd /mnt/c/Users/${WIN_USERNAME}/Documents
     cp .config/mimeapps.list ~/.config
     rm -rf ~/.local/share/applications/*.desktop && cp applications/* ~/.local/share/applications
@@ -226,6 +228,7 @@ dotfilesupdate() {
     ~/.bashrc ~/.bash_aliases ~/.profile \
     ~/.zshenv ~/.zshrc \
     ~/.tmux.conf \
+    ~/.tmux/wsl_tmux_statusline.sh \
     ~/.gitconfig \
     ~/.scimrc \
     .
