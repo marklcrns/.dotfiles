@@ -153,8 +153,8 @@ dotfilesbackup() {
   CURRENT_DIR_SAVE=$(pwd)
   cd ${HOME}
   DOTBACKUPDIR=${HOME}/.dotfiles.bak/`date -u +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
-  mkdir ${DOTBACKUPDIR}
-  mkdir ${DOTBACKUPDIR}/.config ${DOTBACKUPDIR}/.vim ${DOTBACKUPDIR}/applications
+  mkdir -p ${DOTBACKUPDIR}
+  mkdir -p ${DOTBACKUPDIR}/.config ${DOTBACKUPDIR}/.vim ${DOTBACKUPDIR}/applications
   cp -r \
     bin \
     .bashrc .bash_aliases .profile \
@@ -217,6 +217,8 @@ dotfilesdist() {
   else
     cp -r .gtd ${HOME}
   fi
+  # Limit all backups to 10 at a time
+  limitdotfilesbak 10
   printf "\n${GREEN}DOTFILES DISTRIBUTION COMPLETE...${NC}\n\n"
   cd ${CURRENT_DIR_SAVE}
 }
@@ -260,8 +262,37 @@ dotfilespush() {
   cd ${CURRENT_DIR_SAVE}
 }
 
+# Limits to only 10 dotfiles backup at a time
+# Appending to arrays: https://unix.stackexchange.com/a/395103
+limitdotfilesbak() {
+  LIMIT=${1}
+  REMOVED_COUNT=0
+  REMOVED_LIST=()
+  # If limit == 0, Delete all. Else, delete dotbackups until equals limit
+  while [[ "$(ls ~/.dotfiles.bak | wc -l)" -gt ${LIMIT} ]]; do
+    TO_REMOVE=$(ls ~/.dotfiles.bak | tail -1)
+    # Delete dotfiles backup overflow
+    rm -rf ~/.dotfiles.bak/${TO_REMOVE}
+    # Append to array and increment count
+    REMOVED_LIST+=("${TO_REMOVE[@]} deleted\n")
+    let REMOVED_COUNT+=1
+  done
+  if [[ ${REMOVED_COUNT} -eq 0 ]]; then
+    # If still below limit
+    printf "${GREEN}Nothing to delete. Skipping...${NC}\n"
+  else
+    # Print all removed dotfiles backup in red font color
+    printf "${RED}\n"
+    for i in ${REMOVED_LIST[@]}; do
+      printf "${i}"
+    done
+    printf "${NC}"
+    echo "Total Removed: ${REMOVED_COUNT}"
+  fi
+}
+
 cleardotfilesbak() {
-  rm -rf ~/.dotfiles.bak/*old_dotfiles.bak
+  limitdotfilesbak 0
   printf "${GREEN}Dotfiles backups cleared!${NC}\n"
 }
 
