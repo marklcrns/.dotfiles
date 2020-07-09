@@ -744,6 +744,10 @@ setjavaoraclejdkhome() {
   grep -q 'JAVA_HOME=' /etc/environment && \
     sudo sed -i "s,^JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}," /etc/environment || \
     echo "JAVA_HOME=${JDK_HOME}" | sudo tee -a /etc/environment
+  # replace JRE_HOME with $JDK_HOME/jre path if exist, else append
+  grep -q 'JRE_HOME=' /etc/environment && \
+    sudo sed -i "s,^JRE_HOME=.*,JRE_HOME=${JDK_HOME}/jre," /etc/environment || \
+    echo "JRE_HOME=${JDK_HOME}/jre" | sudo tee -a /etc/environment
 
   # source environ
   source /etc/environment
