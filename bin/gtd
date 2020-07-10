@@ -196,19 +196,19 @@ do_options() {
       fi
    fi
 
-   if [[ -n "$DO_MPD" ]]; then
-      if [[ -n "$in_break" ]]; then
-          sleep 1 && eval "$MPD_CMD_BREAK" &
-      else
-          sleep 1 && eval "$MPD_CMD_WORK" &
-      fi
-   fi
-
    if [[ -n "$DO_POPUP" ]]; then
       if [[ -n "$in_break" ]]; then
          eval "$POPUP_CMD $POPUP_BREAK"
       else
          eval "$POPUP_CMD $POPUP_WORK"
+      fi
+   fi
+
+   if [[ -n "$DO_MPD" ]]; then
+      if [[ -n "$in_break" ]]; then
+          sleep 1 && eval "$MPD_CMD_BREAK"
+      else
+          sleep 1 && eval "$MPD_CMD_WORK"
       fi
    fi
 
