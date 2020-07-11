@@ -761,7 +761,7 @@ alias oraclejdk11="export JDK_HOME=/usr/lib/jvm/jdk-11.0.7 && setjavaoraclejdkho
 alias oraclejdk14="export JDK_HOME=/usr/lib/jvm/jdk-14.0.1 && setjavaoraclejdkhome"
 
 # gtd shell script
-alias on="gtd -mnspt"
+alias on="gtd -lmspt"
 
 # tmuxinator
 alias mux="tmuxinator"
