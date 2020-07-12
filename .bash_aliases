@@ -778,10 +778,11 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   alias windocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents"
   alias wintrade="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive/Trading/Stocks"
   alias windown="cd /mnt/c/Users/${WIN_USERNAME}/Downloads"
-  alias wingdrv="cd /mnt/c/Users/${WIN_USERNAME}/Google Drive"
-  alias winodrv="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive"
-  alias windrop="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox"
-  alias windev="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox/Dev"
+  alias gdrv="cd /mnt/c/Users/${WIN_USERNAME}/Google Drive"
+  alias odrv="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive"
+  alias drop="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox"
+  alias dropdev="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox/Dev"
+  alias windev="cd /mnt/c/Users/${WIN_USERNAME}/Projects/Dev"
   alias winbin="cd /mnt/c/bin"
 
   # Secure files Aliases
