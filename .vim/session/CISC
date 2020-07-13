@@ -7,8 +7,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +420 school/md/summer-2020/CISC-191/modules/week-4/notes/generics-and-collections/index.md
-badd +13 school/md/summer-2020/CISC-191/modules/week-4/index.md
+badd +669 school/md/summer-2020/CISC-191/modules/week-4/notes/generics-and-collections/index.md
 argglobal
 %argdel
 edit school/md/summer-2020/CISC-191/modules/week-4/notes/generics-and-collections/index.md
@@ -27,11 +26,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 265 - ((21 * winheight(0) + 17) / 34)
+let s:l = 669 - ((3 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-265
+669
 normal! 0
 lcd ~/Docs/wiki
 tabnext 1
