@@ -532,13 +532,18 @@ printdevrepolist() {
 }
 
 printalldevrepo() {
-  find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*"
+  ALL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*")"
+  # Truncate .git from output
+  regex1="s,(.*)/.git$,\1,"
+  ALL_DEV_REPO="$(echo ${ALL_DEV_REPO} | sed -r ${regex1})"
+  echo ${ALL_DEV_REPO}
 }
 
 # Resources:
 # Loop over delimited string: https://stackoverflow.com/a/27704337
 # Zsh prompt: https://superuser.com/a/556006
 # Bash prompt: https://stackoverflow.com/a/1885534
+# Delete lines with forward slashes in file: https://stackoverflow.com/a/25173311
 checkdevrepos() {
   # Find all dev repos and strip .git and home path substring and append ~/
   regex1="s,.*(/Projects/.*)/.git$,~\1,"
@@ -554,7 +559,8 @@ checkdevrepos() {
     if [[ ! ${DEV_LIST} == *"${repo}"* ]]; then
       printf "    ${RED}${repo} Untracked from dev list${NC}\n"
       # Prompt for action
-      echo "Do you want to add ${repo} in ${DEV_REPO_LIST_NAME}? (Y/y/delete)"
+      echo "Do you want to add ${repo} in ${DEV_REPO_LIST_NAME}? (Y/y)"
+      echo "or type (delete) to permanently delete repo..."
       read REPLY
       if [[ "$REPLY" =~ ^[Yy]$ ]]; then
         # Get absolute path and cd in
@@ -588,14 +594,15 @@ checkdevrepos() {
     if [[ ! ${ALL_DEV_REPO} == *"${REPO_PATH}"* ]]; then
       printf "    ${YELLOW}${REPO_PATH} Missing${NC}\n"
       # Prompt for action
-      echo "Do you want to clone ${GIT_LINK}? (Y/y/delete)"
+      echo "Do you want to clone ${GIT_LINK}? (Y/y)"
+      echo "or type (remove) to remove repo from dev list..."
       read REPLY
       if [[ "$REPLY" =~ ^[Yy]$ ]]; then
         mkdir -p ${ABS_REPO_PATH}
         git clone ${GIT_LINK} ${ABS_REPO_PATH} && \
           printf "${GREEN}${GIT_LINK} Cloned${NC}\n\n"
-      elif [[ "$REPLY" =~ ^(Delete|delete|DELETE) ]]; then
-        sed "/^${REPO_PATH}.*/d" ${DEV_REPO_LIST_PATH}
+      elif [[ "$REPLY" =~ ^(Remove|remove|REMOVE) ]]; then
+        sed -i "\|${line}|d" ${DEV_REPO_LIST_PATH}
         printf "${RED}${REPO_PATH} Removed from dev list${NC}\n\n"
       fi
     else
@@ -778,6 +785,8 @@ alias gfpulldev=forcepullalldevrepo
 alias gstatusdev=statusalldevrepo
 alias grounddev=roundalldevrepo
 alias gprintdevlist=printdevrepolist
+alias gprintdev=printalldevrepo
+alias gcheckdev=checkalldevrepok
 alias gcreatedevlist=createalldevrepolist
 alias gclonedev=clonealldevrepo
 alias grmdev=removealldevrepo

@@ -3,4 +3,4 @@
 ~/Projects/Dev/github-projects/web-dev-projects/surprise;https://github.com/marklcrns/surprise
 ~/Projects/Dev/github-projects/javascript-template-codes;https://github.com/marklcrns/javascript-template-codes
 ~/Projects/Dev/eclipse-workspace/guitarhero;https://github.com/marklcrns/java-guitarhero.git
-~/Projects/Dev/forked-repos/CISC191-SUM20-A;https://github.com/MiramarCISC/CISC191-SUM20-A
+~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A;https://github.com/MiramarCISC/CISC191-SUM20-A
