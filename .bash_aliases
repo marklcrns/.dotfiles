@@ -137,7 +137,7 @@ alias twl='task list'
 # Vimwiki
 alias wiki='cd ~/Docs/wiki; nvim -c VimwikiUISelect'
 alias diary='cd ~/Docs/wiki; nvim -c VimwikiDiaryIndex'
-alias dtoday='cd ~/Docs/wiki; nvim -c "set laststatus=0 showtabline=0 colorcolumn=0|VimwikiMakeDiaryNote"'
+alias dtoday='cd ~/Docs/wiki; nvim -c "call DToday()"'
 alias wikidocs='cd ~/Docs/wiki'
 
 # Remove debug.log files recursively (will also list all debug files before removal)
