@@ -11,11 +11,9 @@
 # https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html
 # TODO: More checks
 
-# Ref: https://stackoverflow.com/a/1885534/11850077
-read -p "Proceed installing for WSL2 Ubunutu 20.04 Focal Fossa? (Y/y)" -n 1 -r
-echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
+echo "Proceed installing for Ubunutu 20.04 Focal Fossa? (Y/y)"
+read REPLY
+if [[ "$REPLY" =~ ^[Yy]$ ]]; then
   echo Aborting...
   [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
 fi

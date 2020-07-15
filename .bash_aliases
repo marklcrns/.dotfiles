@@ -1,5 +1,5 @@
 # String ANSI colors
-# Ref: https://stackoverflow.com/a/5947802/11850077
+# Resources: https://stackoverflow.com/a/5947802/11850077
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -56,44 +56,47 @@ alias cp='cp -v'
 alias mkdir='mkdir -v'
 alias rmdir='rmdir -v'
 
-# Ref: https://unix.stackexchange.com/a/125386
+# Resources: https://unix.stackexchange.com/a/125386
 mkcdir () {
   mkdir -pv -- "$1" &&
     cd -P -- "$1"
-}
+  }
 
 touched() {
   touch -- "$1" &&
     nvim -- "$1"
-}
+  }
 
 # Move junk files to ~/.Trash
-# Ref: https://stackoverflow.com/a/23659385/11850077
+# Resources: https://stackoverflow.com/a/23659385/11850077
 # When iterating through commands, DON'T for get the semi-colon before the
 # closing brackets
 junk() {
   for item in "$@" ; do echo "Trashing: $item" ; mv "$item" ~/.Trash/; done;
-}
+  }
 
 # With sudo permission
 sudojunk() {
   for item in "$@" ; do echo "Trashing: $item" ; sudo mv "$item" ~/.Trash/; done;
-}
+  }
 
 # Resources
 # prompt: https://stackoverflow.com/a/1885534/11850077
 # params: https://stackoverflow.com/a/23659385/11850077
 clearjunk() {
   JUNK_COUNTER=0
+  [[ $(ls -a ~/.Trash | wc -l) -eq 0 ]] && \
+    echo "Trash empty!" && return 1
+
   for item in ~/.Trash/*
   do
     echo "$item"
     JUNK_COUNTER=$((JUNK_COUNTER + 1))
   done
 
-  read -p "Proceed deleting all $JUNK_COUNTER files? (Y/y)" -n 1 -r
-  echo
-  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+  echo "Proceed deleting all $JUNK_COUNTER files? (Y/y)"
+  read REPLY
+  if [[ "$REPLY" =~ ^[Yy]$ ]]; then
     printf "${RED}Aborting...${NC}\n"
     [[ "$0" = "$BASH_SOURCE" ]] && return 1
   fi
@@ -168,99 +171,99 @@ dotfilesbackup() {
     .rclonesyncwd/ \
     .scimrc \
     ${DOTBACKUPDIR}
-  cp -r \
-    ~/.config/ranger/ \
-    ~/.config/zathura/ \
-    ${DOTBACKUPDIR}/.config
-  cp -r .vim/session ${DOTBACKUPDIR}/.vim
-  # Check if WSL
-  if [[ "$(grep -i microsoft /proc/version)" ]]; then
-    cp -r "/mnt/c/Users/${WIN_USERNAME}/Documents/.gtd/" ${DOTBACKUPDIR}
-    cp ~/.config/mimeapps.list ${DOTBACKUPDIR}/.config
-    cp -r ~/.local/share/applications ${DOTBACKUPDIR}/applications
-  else
-    cp -r ~/.gtd/ ${DOTBACKUPDIR}
-  fi
-  printf "\n${GREEN}DOTFILES BACKUP COMPLETE...${NC}\n\n"
-  cd ${CURRENT_DIR_SAVE}
-}
+      cp -r \
+        ~/.config/ranger/ \
+        ~/.config/zathura/ \
+        ${DOTBACKUPDIR}/.config
+              cp -r .vim/session ${DOTBACKUPDIR}/.vim
+              # Check if WSL
+              if [[ "$(grep -i microsoft /proc/version)" ]]; then
+                cp -r "/mnt/c/Users/${WIN_USERNAME}/Documents/.gtd/" ${DOTBACKUPDIR}
+                cp ~/.config/mimeapps.list ${DOTBACKUPDIR}/.config
+                cp -r ~/.local/share/applications ${DOTBACKUPDIR}/applications
+              else
+                cp -r ~/.gtd/ ${DOTBACKUPDIR}
+              fi
+              printf "\n${GREEN}DOTFILES BACKUP COMPLETE...${NC}\n\n"
+              cd ${CURRENT_DIR_SAVE}
+            }
 
-dotfilesdist() {
-  CURRENT_DIR_SAVE=$(pwd)
-  # backup files first
-  dotfilesbackup
-  # distribute dotfiles
-  cd ${DOTFILES}
-  cp -r \
-    .bashrc .bash_aliases .profile \
-    .zshenv .zshrc \
-    .tmux.conf \
-    .gitconfig \
-    .ctags \
-    .ctags.d/ \
-    .mutt/ \
-    .scimrc \
-    ${HOME}
-  cp .rclonesyncwd/Filters ~/.rclonesyncwd
-  rm -rf ~/.vim/session; cp -r .vim/session ~/.vim
-  rm -rf ~/bin; cp -r bin ~/bin
-  rm -rf ~/.config/{ranger,zathura}; cp -r \
-    .config/ranger/ \
-    .config/zathura/ \
-    ~/.config
-  # Check if WSL
-  if [[ "$(grep -i microsoft /proc/version)" ]]; then
-    cp wsl_tmux_statusline.sh ~/.tmux/
-    cp -r .gtd /mnt/c/Users/${WIN_USERNAME}/Documents
-    cp .config/mimeapps.list ~/.config
-    rm -rf ~/.local/share/applications/*.desktop && cp applications/* ~/.local/share/applications
-  else
-    cp -r .gtd ${HOME}
-  fi
-  # Limit all backups to 10 at a time
-  limitdotfilesbak 10
-  printf "\n${GREEN}DOTFILES DISTRIBUTION COMPLETE...${NC}\n\n"
-  cd ${CURRENT_DIR_SAVE}
-}
+          dotfilesdist() {
+            CURRENT_DIR_SAVE=$(pwd)
+            # backup files first
+            dotfilesbackup
+            # distribute dotfiles
+            cd ${DOTFILES}
+            cp -r \
+              .bashrc .bash_aliases .profile \
+              .zshenv .zshrc \
+              .tmux.conf \
+              .gitconfig \
+              .ctags \
+              .ctags.d/ \
+              .mutt/ \
+              .scimrc \
+              ${HOME}
+                          cp .rclonesyncwd/Filters ~/.rclonesyncwd
+                          rm -rf ~/.vim/session; cp -r .vim/session ~/.vim
+                          rm -rf ~/bin; cp -r bin ~/bin
+                          rm -rf ~/.config/{ranger,zathura}; cp -r \
+                            .config/ranger/ \
+                            .config/zathura/ \
+                            ~/.config
+                                                      # Check if WSL
+                                                      if [[ "$(grep -i microsoft /proc/version)" ]]; then
+                                                        cp wsl_tmux_statusline.sh ~/.tmux/
+                                                        cp -r .gtd /mnt/c/Users/${WIN_USERNAME}/Documents
+                                                        cp .config/mimeapps.list ~/.config
+                                                        rm -rf ~/.local/share/applications/*.desktop && cp applications/* ~/.local/share/applications
+                                                      else
+                                                        cp -r .gtd ${HOME}
+                                                      fi
+                                                      # Limit all backups to 10 at a time
+                                                      limitdotfilesbak 10
+                                                      printf "\n${GREEN}DOTFILES DISTRIBUTION COMPLETE...${NC}\n\n"
+                                                      cd ${CURRENT_DIR_SAVE}
+                                                    }
 
-dotfilesupdate() {
-  CURRENT_DIR_SAVE=$(pwd)
-  cd ${DOTFILES}
-  cp -r \
-    ~/.bashrc ~/.bash_aliases ~/.profile \
-    ~/.zshenv ~/.zshrc \
-    ~/.tmux.conf \
-    ~/.tmux/wsl_tmux_statusline.sh \
-    ~/.gitconfig \
-    ~/.scimrc \
-    .
-  mkdir -p .rclonesyncwd/ && cp ~/.rclonesyncwd/Filters .rclonesyncwd/
-  rm -rf .vim/session; cp -r ~/.vim/session .vim
-  rm -rf bin; cp -r ~/bin .
-  rm -rf .config/{ranger,zathura}; cp -r \
-    ~/.config/ranger/ \
-    ~/.config/zathura/ \
-    .config
-  # Check if WSL
-  if [[ "$(grep -i microsoft /proc/version)" ]]; then
-    cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/.gtd .
-    cp ~/.config/mimeapps.list .config
-    rm -rf applications/*.desktop && cp -r ~/.local/share/applications/*.desktop applications
-  else
-    cp -r ~/.gtd .
-  fi
-  git add .; git status
-  printf "${GREEN}Dotfiles update complete${NC}\n"
-  cd ${CURRENT_DIR_SAVE}
-}
+                                                  dotfilesupdate() {
+                                                    CURRENT_DIR_SAVE=$(pwd)
+                                                    cd ${DOTFILES}
+                                                    cp -r \
+                                                      ~/.bashrc ~/.bash_aliases ~/.profile \
+                                                      ~/.zshenv ~/.zshrc \
+                                                      ~/.tmux.conf \
+                                                      ~/.tmux/wsl_tmux_statusline.sh \
+                                                      ~/.gitconfig \
+                                                      ~/.scimrc \
+                                                      .
+                                                                                                          mkdir -p .rclonesyncwd/ && cp ~/.rclonesyncwd/Filters .rclonesyncwd/
+                                                                                                          rm -rf .vim/session; cp -r ~/.vim/session .vim
+                                                                                                          rm -rf bin; cp -r ~/bin .
+                                                                                                          rm -rf .config/{ranger,zathura}; cp -r \
+                                                                                                            ~/.config/ranger/ \
+                                                                                                            ~/.config/zathura/ \
+                                                                                                            .config
+                                                                                                                                                                                                                      # Check if WSL
+                                                                                                                                                                                                                      if [[ "$(grep -i microsoft /proc/version)" ]]; then
+                                                                                                                                                                                                                        cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/.gtd .
+                                                                                                                                                                                                                        cp ~/.config/mimeapps.list .config
+                                                                                                                                                                                                                        rm -rf applications/*.desktop && cp -r ~/.local/share/applications/*.desktop applications
+                                                                                                                                                                                                                      else
+                                                                                                                                                                                                                        cp -r ~/.gtd .
+                                                                                                                                                                                                                      fi
+                                                                                                                                                                                                                      git add .; git status
+                                                                                                                                                                                                                      printf "${GREEN}Dotfiles update complete${NC}\n"
+                                                                                                                                                                                                                      cd ${CURRENT_DIR_SAVE}
+                                                                                                                                                                                                                    }
 
-dotfilespush() {
-  CURRENT_DIR_SAVE=$(pwd)
-  cd ${DOTFILES}
-  git add . && git commit
-  git push
-  cd ${CURRENT_DIR_SAVE}
-}
+                                                                                                                                                                                                                  dotfilespush() {
+                                                                                                                                                                                                                    CURRENT_DIR_SAVE=$(pwd)
+                                                                                                                                                                                                                    cd ${DOTFILES}
+                                                                                                                                                                                                                    git add . && git commit
+                                                                                                                                                                                                                    git push
+                                                                                                                                                                                                                    cd ${CURRENT_DIR_SAVE}
+                                                                                                                                                                                                                  }
 
 # Limits to only 10 dotfiles backup at a time
 # Appending to arrays: https://unix.stackexchange.com/a/395103
@@ -319,7 +322,7 @@ browsegithubrepo() {
 }
 alias openrepo=browsegithubrepo
 
-# Ref:
+# Resources:
 # Check repo existing files changes: https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes
 # Check repo for all repo changes: https://stackoverflow.com/a/24775215/11850077
 # Check if in git repo: https://stackoverflow.com/questions/2180270/check-if-current-directory-is-a-git-repository
@@ -333,11 +336,11 @@ export CONF_REPO_LIST="\
   ${HOME}/.timewarrior
   ${HOME}/.task
   ${HOME}/.pandoc
-"
+  "
 
-printallconfrepo() {
-  echo ${CONF_REPO_LIST}
-}
+  printallconfrepo() {
+    echo ${CONF_REPO_LIST}
+  }
 
 pushrepo() {
   # Check if in git repo
@@ -480,7 +483,7 @@ alias gfpullconf=forcepullallconfrepo
 alias gpushconf=pushallconfrepo
 alias gstatusconf=statusallconfrepo
 
-# Ref:
+# Resources:
 # Find: https://stackoverflow.com/a/15736463
 # Loops: https://stackoverflow.com/questions/1521462/looping-through-the-content-of-a-file-in-bash
 # Loop over lines in a variable: https://superuser.com/a/284226
@@ -524,8 +527,69 @@ createalldevrepolist() {
   cd ${CURRENT_DIR_SAVE}
 }
 
-printalldevrepo() {
+printdevrepolist() {
   cat $DEV_REPO_LIST_PATH
+}
+
+printalldevrepo() {
+  find ${DEV_REPO_DIR} -name ".git" -not -path "*/forked-repos/*"
+}
+
+# Resources:
+# Loop over delimited string: https://stackoverflow.com/a/27704337
+# Zsh prompt: https://superuser.com/a/556006
+# Bash prompt: https://stackoverflow.com/a/1885534
+checkdevrepos() {
+  # Find all dev repos and strip .git and home path substring and append ~/
+  regex1="s,.*(/Projects/.*)/.git$,~\1,"
+  ALL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/forked-repos/*" | sed -r "${regex1}")"
+  DEV_LIST="$(cat ${DEV_REPO_LIST_PATH})"
+
+
+  echo "Checking untracked repo all dev repo..."
+  for repo in $(echo ${ALL_DEV_REPO} | sed "s/\n/ /g")
+  do
+    # check if repo in dev list
+    if [[ ! ${DEV_LIST} == *"${repo}"* ]]; then
+      printf "    ${RED}${repo} Untracked from dev list${NC}\n"
+      echo "Do you want to add ${repo} in ${DEV_REPO_LIST_NAME}? (Y/y)"
+      read REPLY
+      if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+        # Get absolute path and cd in
+        ABS_PATH=`echo ${repo} | sed -r "s,~,${HOME},"`
+        cd ${ABS_PATH}
+        # Get repo github link
+        GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
+        # Append repo absolute path and link in dev_repo_list.txt
+        echo "${repo};${GIT_REPO_LINK}" >> ${DEV_REPO_LIST_PATH}
+      fi
+    else
+      echo "${repo}"
+    fi
+  done
+
+  echo
+
+  echo "Checking uncloned repo from dev list..."
+  for line in $(echo ${DEV_LIST} | sed "s/\n/ /g")
+  do
+    # Get repo path from line
+    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+    GIT_LINK="$(cut -d';' -f2 <<< "$line" )"
+    # Check if repo path in dev repos
+    if [[ ! ${ALL_DEV_REPO} == *"${REPO_PATH}"* ]]; then
+      printf "    ${YELLOW}${REPO_PATH} Missing${NC}\n"
+      echo "Do you want to clone ${GIT_LINK}? (Y/y)"
+      read REPLY
+      if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+        mkdir -p ${ABS_REPO_PATH}
+        git clone ${GIT_LINK} ${ABS_REPO_PATH}
+      fi
+    else
+      echo "${REPO_PATH}"
+    fi
+  done
 }
 
 clonealldevrepo() {
@@ -553,13 +617,14 @@ clonealldevrepo() {
       while [[ ${?} -eq 128 ]]; do
         git clone ${GIT_LINK} ${ABS_REPO_PATH}
       done
-    # Remove directory if repo exists but not .git repo, then clone repo
+      # Remove directory if repo exists but not .git repo, then clone repo
     elif [[ ! -d "${ABS_REPO_PATH}/.git" ]]; then
       printf "${ABS_REPO_PATH}/.git does not exist.\n"
       printf "${RED}Removing ${ABS_REPO_PATH}...\n"
       rm -rf ${ABS_REPO_PATH} && \
         printf "${YELLOW}Cloning ${GIT_LINK}...${NC}\n" && \
         git clone ${GIT_LINK} ${ABS_REPO_PATH}
+
       # If Authentication failed, clone until successful or interrupted
       while [[ ${?} -eq 128 ]]; do
         printf "${YELLOW}Cloning ${GIT_LINK}...${NC}\n"
@@ -700,12 +765,12 @@ alias gpulldev=pullalldevrepo
 alias gfpulldev=forcepullalldevrepo
 alias gstatusdev=statusalldevrepo
 alias grounddev=roundalldevrepo
-alias gprintdev=printalldevrepo
+alias gprintdevlist=printdevrepolist
 alias gcreatedevlist=createalldevrepolist
 alias gclonedev=clonealldevrepo
 alias grmdev=removealldevrepo
 
-# Ref: https://stackoverflow.com/a/3278427
+# Resources: https://stackoverflow.com/a/3278427
 # NOTE: Needs to run `git fetch` or `git remote update` first before running.
 checkremotechanges() {
   CHANGES=$(git status --porcelain)
@@ -760,7 +825,7 @@ alias runpg='sudo -u postgres psql'
 # Rclonesynv-V2
 REMOTE="GoogleDrive:Dev"
 DEV="~/Projects/Dev"
-# Ref: https://forum.rclone.org/t/how-to-speed-up-google-drive-sync/8444/9
+# Resources: https://forum.rclone.org/t/how-to-speed-up-google-drive-sync/8444/9
 RCLONE_ARGS="--copy-links --fast-list --transfers=40 --checkers=40 --tpslimit=10 --drive-chunk-size=1M"
 
 # DEV might overwrite REMOTE
@@ -808,10 +873,10 @@ setjavaoraclejdkhome() {
   grep -q 'JAVA_HOME=' /etc/environment && \
     sudo sed -i "s,^JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}," /etc/environment || \
     echo "JAVA_HOME=${JDK_HOME}" | sudo tee -a /etc/environment
-  # replace JRE_HOME with $JDK_HOME/jre path if exist, else append
-  grep -q 'JRE_HOME=' /etc/environment && \
-    sudo sed -i "s,^JRE_HOME=.*,JRE_HOME=${JDK_HOME}/jre," /etc/environment || \
-    echo "JRE_HOME=${JDK_HOME}/jre" | sudo tee -a /etc/environment
+      # replace JRE_HOME with $JDK_HOME/jre path if exist, else append
+      grep -q 'JRE_HOME=' /etc/environment && \
+        sudo sed -i "s,^JRE_HOME=.*,JRE_HOME=${JDK_HOME}/jre," /etc/environment || \
+        echo "JRE_HOME=${JDK_HOME}/jre" | sudo tee -a /etc/environment
 
   # source environ
   source /etc/environment
@@ -881,7 +946,7 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
     output=$(pwd | sed -e "$regex1" -e "$regex2" -e "$regex3" -re "$regex4")
     printf "%s" "$output"
   }
-  alias winypath="winpath | xclip -selection clipboard && printf '%s\n...win path copied' '$output'"
+alias winypath="winpath | xclip -selection clipboard && printf '%s\n...win path copied' '$output'"
 
   # cd to Windows path string arg
   # Resources:
