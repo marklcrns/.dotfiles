@@ -1,4 +1,0 @@
-~/Projects/Dev/eclipse-workspace/java-game-of-generals/.git
-~/Projects/Dev/github-projects/web-dev-projects/100-Days-Webpage-Challenge/.git
-~/Projects/Dev/github-projects/web-dev-projects/surprise/.git
-~/Projects/Dev/github-projects/javascript-template-codes/.git

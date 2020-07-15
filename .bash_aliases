@@ -487,16 +487,36 @@ alias gstatusconf=statusallconfrepo
 # Wait: https://stackoverflow.com/questions/49823080/use-bash-wait-in-for-loop
 # PID: https://www.cyberciti.biz/faq/linux-find-process-name/
 DEV_REPO_DIR="${HOME}/Projects/Dev"
-DEV_REPO_LIST_NAME="dev_repos_list.txt"
+DEV_REPO_LIST_NAME="devrepolist.txt"
 DEV_REPO_LIST_PATH=${DOTFILES}/${DEV_REPO_LIST_NAME}
+
+# # Convert dev repo list line to path absolute path
+# convertdevlinetopath() {
+#   local arg1=$1
+#   # Replace ~ with absolute $HOME path
+#   regex2="s,~(.*),${HOME}\1,"
+#   # Get repo directory
+#   retval=`echo $arg1 | sed -r "${regex1};${regex2}"`
+# }
 
 createalldevrepolist() {
   CURRENT_DIR_SAVE=$(pwd)
   # Get all dev repo and store in $DEV_REPO_LIST_PATH
-  # Convert home path to ~
-  regex1="s,.*(/Projects/.*$),~\1,"
+  # Convert home path to ~ and truncate .git
+  regex1="s,.*(/Projects/.*)/.git$,~\1,"
   find ${DEV_REPO_DIR} -name ".git" -not -path "*/forked-repos/*" | \
     sed -r "${regex1}" > ${DEV_REPO_LIST_PATH}
+
+  for line in $(cat ${DEV_REPO_LIST_PATH}); do
+    GIT_REPO_PATH=$line
+    # cd into repo
+    ABS_PATH=`echo ${GIT_REPO_PATH} | sed -r "s,~,${HOME},"`
+    cd ${ABS_PATH}
+    # Get repo github link
+    GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
+    # Append repo absolute path its github link in dev_repo_list.txt
+    sed -i "s|${GIT_REPO_PATH}|${GIT_REPO_PATH};${GIT_REPO_LINK}|" ${DEV_REPO_LIST_PATH}
+  done
 
   [[ -f ${DEV_REPO_LIST_PATH} ]] && \
     echo "Created ${DEV_REPO_LIST_PATH}" && cat ${DEV_REPO_LIST_PATH}
@@ -508,20 +528,8 @@ printalldevrepo() {
   cat $DEV_REPO_LIST_PATH
 }
 
-# Convert dev repo list line to path absolute path
-convertdevlinetopath() {
-  local arg1=$1
-  # Truncate .git from path
-  regex1="s,(.*)/\.git,\1,"
-  # Replace ~ with absolute $HOME path
-  regex2="s,~(.*),${HOME}\1,"
-  # Get repo directory
-  retval=`echo $arg1 | sed -r "${regex1};${regex2}"`
-}
-
 clonealldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  GIT_PROFILE_LINK="https://github.com/marklcrns/"
   if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
     printf "${RED}${DEV_REPO_LIST_NAME} in ${DOTFILES} does not exist${NC}\n"
     return 1
@@ -530,25 +538,32 @@ clonealldevrepo() {
     return 1
   fi
 
-  echo "Validating Dev repos..."
   while read line && [[ -n $line ]]; do
-    # Convert line to abs PATH
-    convertdevlinetopath $line
-    REPO_DIR=${retval}
-    # Clone repo if repo dir and .git not exist
-    if [[ ! -d ${REPO_DIR} ]]; then
-      mkdir -p ${REPO_DIR}
-      git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}` ${REPO_DIR}
+    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+    GIT_LINK="$(cut -d';' -f2 <<< "$line" )"
+
+    # Clone repo if repo dir exist
+    if [[ ! -d ${ABS_REPO_PATH} ]]; then
+      mkdir -p ${ABS_REPO_PATH}
+      printf "${ABS_REPO_PATH} does not exist.\n"
+      printf "${YELLOW}Cloning ${GIT_LINK}...${NC}\n"
+      git clone ${GIT_LINK} ${ABS_REPO_PATH}
       # If Authentication failed, clone until successful or interrupted
       while [[ ${?} -eq 128 ]]; do
-        git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}` ${REPO_DIR}
+        git clone ${GIT_LINK} ${ABS_REPO_PATH}
       done
-    elif [[ ! -d "${REPO_DIR}/.git" ]]; then
-      rm -rf ${REPO_DIR} && \
-        git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}` ${REPO_DIR}
+    # Remove directory if repo exists but not .git repo, then clone repo
+    elif [[ ! -d "${ABS_REPO_PATH}/.git" ]]; then
+      printf "${ABS_REPO_PATH}/.git does not exist.\n"
+      printf "${RED}Removing ${ABS_REPO_PATH}...\n"
+      rm -rf ${ABS_REPO_PATH} && \
+        printf "${YELLOW}Cloning ${GIT_LINK}...${NC}\n" && \
+        git clone ${GIT_LINK} ${ABS_REPO_PATH}
       # If Authentication failed, clone until successful or interrupted
       while [[ ${?} -eq 128 ]]; do
-        git clone ${GIT_PROFILE_LINK}/`basename ${REPO_DIR}` ${REPO_DIR}
+        printf "${YELLOW}Cloning ${GIT_LINK}...${NC}\n"
+        git clone ${GIT_LINK} ${ABS_REPO_PATH}
       done
     fi
   done < ${DEV_REPO_LIST_PATH}
@@ -557,11 +572,45 @@ clonealldevrepo() {
   cd ${CURRENT_DIR_SAVE}
 }
 
+removealldevrepo() {
+  CURRENT_DIR_SAVE=$(pwd)
+  if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
+    printf "${RED}${DEV_REPO_LIST_NAME} in ${DOTFILES} does not exist${NC}\n"
+    return 1
+  elif [[ ! -s "${DEV_REPO_LIST_PATH}" ]]; then
+    printf "${YELLOW}${DEV_REPO_LIST_NAME} in ${DOTFILES} is empty${NC}\n"
+    return 1
+  fi
+
+  while read line && [[ -n $line ]]; do
+    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+    GIT_LINK="$(cut -d';' -f2 <<< "$line" )"
+
+    # Remove directory if repo exists but not .git repo
+    if [[ ! -d "${ABS_REPO_PATH}/.git" ]]; then
+      printf "${RED}${ABS_REPO_PATH}/.git does not exist.\n"
+      printf "\tSkipping ${ABS_REPO_PATH}...${NC}\n"
+    elif [[ -d "${ABS_REPO_PATH}" ]]; then
+      printf "${RED}Removing ${ABS_REPO_PATH}...${NC}\n"
+      rm -rf ${ABS_REPO_PATH}
+    fi
+  done < ${DEV_REPO_LIST_PATH}
+
+  printf "${GREEN}Dev repo removal complete!${NC}\n"
+  cd ${CURRENT_DIR_SAVE}
+}
+
 pushalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  # return if no Dev repos
-  [[ ! -d  ${DEV_REPO_LIST_PATH} ]] && [[ -z $(cat ${DEV_REPO_LIST_PATH}) ]] && \
-    echo "No Dev git repository in ${DEV_REPO_DIR}" && return 1
+  if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
+    printf "${RED}${DEV_REPO_LIST_NAME} in ${DOTFILES} does not exist${NC}\n"
+    return 1
+  elif [[ ! -s "${DEV_REPO_LIST_PATH}" ]]; then
+    printf "${YELLOW}${DEV_REPO_LIST_NAME} in ${DOTFILES} is empty${NC}\n"
+    return 1
+  fi
+
   # Loop variation 1: Works well with `wait` command
   for line in $(cat ${DEV_REPO_LIST_PATH}); do
     # continue of line is empty String
@@ -571,10 +620,10 @@ pushalldevrepo() {
       wait $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}')
     fi
     # Convert line to abs PATH
-    convertdevlinetopath $line
-    REPO_DIR=${retval}
+    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
     # Go to a Dev repo then push
-    cd ${REPO_DIR}
+    cd ${ABS_REPO_PATH}
     pushrepo
   done
   cd ${CURRENT_DIR_SAVE}
@@ -582,16 +631,21 @@ pushalldevrepo() {
 
 pullalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  # return if no Dev repos
-  [[ ! -d  ${DEV_REPO_LIST_PATH} ]] && [[ -z $(cat ${DEV_REPO_LIST_PATH}) ]] && \
-    echo "No Dev git repository in ${DEV_REPO_DIR}" && return 1
+  if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
+    printf "${RED}${DEV_REPO_LIST_NAME} in ${DOTFILES} does not exist${NC}\n"
+    return 1
+  elif [[ ! -s "${DEV_REPO_LIST_PATH}" ]]; then
+    printf "${YELLOW}${DEV_REPO_LIST_NAME} in ${DOTFILES} is empty${NC}\n"
+    return 1
+  fi
+
   # Loop variation 2: Ensures no leadiing line
   while read line && [[ -n $line ]]; do
     # Convert line to abs PATH
-    convertdevlinetopath $line
-    REPO_DIR=${retval}
-    # cd into Dev repo and pull
-    cd ${REPO_DIR}
+    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+    # Go to a Dev repo then pull
+    cd ${ABS_REPO_PATH}
     pullrepo
   done < ${DEV_REPO_LIST_PATH}
   cd ${CURRENT_DIR_SAVE}
@@ -599,17 +653,21 @@ pullalldevrepo() {
 
 forcepullalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  cd ~
-  # return if no Dev repos
-  [[ ! -d  ${DEV_REPO_LIST_PATH} ]] && [[ -z $(cat ${DEV_REPO_LIST_PATH}) ]] && \
-    echo "No Dev git repository in ${DEV_REPO_DIR}" && return 1
+  if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
+    printf "${RED}${DEV_REPO_LIST_NAME} in ${DOTFILES} does not exist${NC}\n"
+    return 1
+  elif [[ ! -s "${DEV_REPO_LIST_PATH}" ]]; then
+    printf "${YELLOW}${DEV_REPO_LIST_NAME} in ${DOTFILES} is empty${NC}\n"
+    return 1
+  fi
+
   # Loop variation 2: Ensures no leadiing line
   while read line && [[ -n $line ]]; do
     # Convert line to abs PATH
-    convertdevlinetopath $line
-    REPO_DIR=${retval}
-    # cd into Dev repo and force pull
-    cd ${REPO_DIR}
+    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+    # Go to a Dev repo then force pull
+    cd ${ABS_REPO_PATH}
     forcepullrepo
   done < ${DEV_REPO_LIST_PATH}
   cd ${CURRENT_DIR_SAVE}
@@ -617,16 +675,21 @@ forcepullalldevrepo() {
 
 statusalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  # return if no Dev repos
-  [[ ! -d  ${DEV_REPO_LIST_PATH} ]] && [[ -z $(cat ${DEV_REPO_LIST_PATH}) ]] && \
-    echo "No Dev git repository in ${DEV_REPO_DIR}" && return 1
+  if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
+    printf "${RED}${DEV_REPO_LIST_NAME} in ${DOTFILES} does not exist${NC}\n"
+    return 1
+  elif [[ ! -s "${DEV_REPO_LIST_PATH}" ]]; then
+    printf "${YELLOW}${DEV_REPO_LIST_NAME} in ${DOTFILES} is empty${NC}\n"
+    return 1
+  fi
+
   # Loop variation 2: Ensures no leadiing line
   while read line && [[ -n $line ]]; do
     # Convert line to abs PATH
-    convertdevlinetopath $line
-    REPO_DIR=${retval}
-    # cd into Dev repo and pull
-    cd ${REPO_DIR}
+    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+    # Go to a Dev repo then git status
+    cd ${ABS_REPO_PATH}
     statusrepo
   done < ${DEV_REPO_LIST_PATH}
   cd ${CURRENT_DIR_SAVE}
@@ -638,8 +701,9 @@ alias gfpulldev=forcepullalldevrepo
 alias gstatusdev=statusalldevrepo
 alias grounddev=roundalldevrepo
 alias gprintdev=printalldevrepo
-alias gcreatedev=createalldevrepolist
+alias gcreatedevlist=createalldevrepolist
 alias gclonedev=clonealldevrepo
+alias grmdev=removealldevrepo
 
 # Ref: https://stackoverflow.com/a/3278427
 # NOTE: Needs to run `git fetch` or `git remote update` first before running.
