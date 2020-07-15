@@ -507,7 +507,7 @@ createalldevrepolist() {
   # Get all dev repo and store in $DEV_REPO_LIST_PATH
   # Convert home path to ~ and truncate .git
   regex1="s,.*(/Projects/.*)/.git$,~\1,"
-  find ${DEV_REPO_DIR} -name ".git" -not -path "*/forked-repos/*" | \
+  find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*" | \
     sed -r "${regex1}" > ${DEV_REPO_LIST_PATH}
 
   for line in $(cat ${DEV_REPO_LIST_PATH}); do
@@ -532,7 +532,7 @@ printdevrepolist() {
 }
 
 printalldevrepo() {
-  find ${DEV_REPO_DIR} -name ".git" -not -path "*/forked-repos/*"
+  find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*"
 }
 
 # Resources:
@@ -542,32 +542,39 @@ printalldevrepo() {
 checkdevrepos() {
   # Find all dev repos and strip .git and home path substring and append ~/
   regex1="s,.*(/Projects/.*)/.git$,~\1,"
-  ALL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/forked-repos/*" | sed -r "${regex1}")"
+  ALL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*" | sed -r "${regex1}")"
   DEV_LIST="$(cat ${DEV_REPO_LIST_PATH})"
 
 
   echo "Checking untracked repo all dev repo..."
   for repo in $(echo ${ALL_DEV_REPO} | sed "s/\n/ /g")
   do
+    ABS_REPO_PATH=`echo ${repo} | sed -r "s,~,${HOME},"`
     # check if repo in dev list
     if [[ ! ${DEV_LIST} == *"${repo}"* ]]; then
       printf "    ${RED}${repo} Untracked from dev list${NC}\n"
-      echo "Do you want to add ${repo} in ${DEV_REPO_LIST_NAME}? (Y/y)"
+      # Prompt for action
+      echo "Do you want to add ${repo} in ${DEV_REPO_LIST_NAME}? (Y/y/delete)"
       read REPLY
       if [[ "$REPLY" =~ ^[Yy]$ ]]; then
         # Get absolute path and cd in
-        ABS_PATH=`echo ${repo} | sed -r "s,~,${HOME},"`
-        cd ${ABS_PATH}
+        cd ${ABS_REPO_PATH}
         # Get repo github link
         GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
         # Append repo absolute path and link in dev_repo_list.txt
         echo "${repo};${GIT_REPO_LINK}" >> ${DEV_REPO_LIST_PATH}
+        printf "${GREEN}${ABS_REPO_PATH} Added${NC}\n\n"
+      elif [[ "$REPLY" =~ ^(Delete|delete|DELETE) ]]; then
+        rm -rf ${ABS_REPO_PATH}
+        printf "${RED}${ABS_REPO_PATH} Deleted${NC}\n\n"
       fi
     else
       echo "${repo}"
     fi
   done
 
+  # Re-cat dev list for changes
+  DEV_LIST="$(cat ${DEV_REPO_LIST_PATH})"
   echo
 
   echo "Checking uncloned repo from dev list..."
@@ -580,11 +587,16 @@ checkdevrepos() {
     # Check if repo path in dev repos
     if [[ ! ${ALL_DEV_REPO} == *"${REPO_PATH}"* ]]; then
       printf "    ${YELLOW}${REPO_PATH} Missing${NC}\n"
-      echo "Do you want to clone ${GIT_LINK}? (Y/y)"
+      # Prompt for action
+      echo "Do you want to clone ${GIT_LINK}? (Y/y/delete)"
       read REPLY
       if [[ "$REPLY" =~ ^[Yy]$ ]]; then
         mkdir -p ${ABS_REPO_PATH}
-        git clone ${GIT_LINK} ${ABS_REPO_PATH}
+        git clone ${GIT_LINK} ${ABS_REPO_PATH} && \
+          printf "${GREEN}${GIT_LINK} Cloned${NC}\n\n"
+      elif [[ "$REPLY" =~ ^(Delete|delete|DELETE) ]]; then
+        sed "/^${REPO_PATH}.*/d" ${DEV_REPO_LIST_PATH}
+        printf "${RED}${REPO_PATH} Removed from dev list${NC}\n\n"
       fi
     else
       echo "${REPO_PATH}"

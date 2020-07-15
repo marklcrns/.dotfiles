@@ -1,9 +1,6 @@
 ~/Projects/Dev/eclipse-workspace/java-game-of-generals;https://github.com/marklcrns/java-game-of-generals
-~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A;https://github.com/MiramarCISC/CISC191-SUM20-A
 ~/Projects/Dev/github-projects/web-dev-projects/100-Days-Webpage-Challenge;https://github.com/marklcrns/100-Days-Webpage-Challenge
 ~/Projects/Dev/github-projects/web-dev-projects/surprise;https://github.com/marklcrns/surprise
 ~/Projects/Dev/github-projects/javascript-template-codes;https://github.com/marklcrns/javascript-template-codes
-~/Projects/Dev/eclipse-workspace/WizardGame2.0;https://github.com/GrimesGolden/WizardGame2.0
-~/Projects/Dev/eclipse-workspace/WizardGame;https://github.com/GrimesGolden/WizardGame
 ~/Projects/Dev/eclipse-workspace/guitarhero;https://github.com/marklcrns/java-guitarhero.git
-~/Projects/Dev/eclipse-workspace/Guitar-Hero-Sample;https://github.com/feritzcan/Guitar-Hero
+~/Projects/Dev/forked-repos/CISC191-SUM20-A;https://github.com/MiramarCISC/CISC191-SUM20-A
