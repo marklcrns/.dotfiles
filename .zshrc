@@ -14,6 +14,9 @@ export PATH=$PATH:~/.emacs.d/bin # emacs bin
 # Rclonesync-V2 PATH
 export PATH=$PATH:~/bin/rclonesync-V2
 
+# Ripgrep global flags
+export RIPGREP_CONFIG_PATH=~/.ripgreprc
+
 # Default editor
 export VISUAL="nvim"
 export EDITOR=$VISUAL

@@ -169,6 +169,7 @@ dotfilesbackup() {
     .ctags.d/ \
     .mutt/ \
     .rclonesyncwd/ \
+    .ripgreprc/ \
     .scimrc \
     ${DOTBACKUPDIR}
 
@@ -204,6 +205,7 @@ dotfilesdist() {
     .ctags \
     .ctags.d/ \
     .mutt/ \
+    .ripgreprc/ \
     .scimrc \
     ${HOME}
 
@@ -239,6 +241,7 @@ dotfilesupdate() {
     ~/.tmux.conf \
     ~/.tmux/wsl_tmux_statusline.sh \
     ~/.gitconfig \
+    ~/.ripgreprc \
     ~/.scimrc \
     .
 

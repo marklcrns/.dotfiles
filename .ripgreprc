@@ -1,0 +1,6 @@
+--ignore
+--hidden
+--smart-case
+--follow
+--glob=!.git/*
+--glob=!*.class
