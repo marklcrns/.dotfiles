@@ -2,34 +2,24 @@ let SessionLoad = 1
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
-cd ~/Projects/Dev/eclipse-workspace/guitarhero
+cd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +19 project_structure.md
-badd +27 src/main/java/com/marklcrns/guitarhero/engine/linepath/Line.java
-badd +15 src/main/java/com/marklcrns/guitarhero/engine/linepath/Block.java
-badd +21 src/main/java/com/marklcrns/guitarhero/engine/linepath/Catcher.java
-badd +23 src/main/java/com/marklcrns/guitarhero/App.java
-badd +16 src/main/java/com/marklcrns/guitarhero/engine/GameStage.java
-badd +8 src/main/java/com/marklcrns/guitarhero/gui/Gameplay.java
+badd +10 src/main/java/com/groupA/GraphicsSplash.java
+badd +30 src/main/java/com/groupA/SplashScreen.java
+badd +13 src/main/java/com/groupA/BufferedImageLoader.java
+badd +37 src/main/java/com/groupA/Animation.java
 argglobal
 %argdel
-edit src/main/java/com/marklcrns/guitarhero/engine/linepath/Block.java
+edit src/main/java/com/groupA/GraphicsSplash.java
 set splitbelow splitright
-wincmd _ | wincmd |
-split
-1wincmd k
-wincmd w
-set nosplitright
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 16 + 18) / 37)
-exe '2resize ' . ((&lines * 16 + 18) / 37)
 argglobal
 setlocal fdm=syntax
 setlocal fde=0
@@ -39,34 +29,15 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 15 - ((7 * winheight(0) + 8) / 16)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-15
-normal! 0
-wincmd w
-argglobal
-if bufexists("src/main/java/com/marklcrns/guitarhero/App.java") | buffer src/main/java/com/marklcrns/guitarhero/App.java | else | edit src/main/java/com/marklcrns/guitarhero/App.java | endif
-setlocal fdm=syntax
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=99
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-16
+18
 normal! zo
-let s:l = 23 - ((3 * winheight(0) + 8) / 16)
+let s:l = 10 - ((9 * winheight(0) + 12) / 25)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-23
-normal! 017|
-wincmd w
-exe '1resize ' . ((&lines * 16 + 18) / 37)
-exe '2resize ' . ((&lines * 16 + 18) / 37)
+10
+normal! 0
+lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
