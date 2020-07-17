@@ -43,7 +43,7 @@
 [color]
   ui = auto
 [include]
-  path = gitalias.txt
+  path = ~/.gitalias.txt
 
 # Ref:
 # .gitconfig: https://github.com/connermcd/dotfiles/blob/master/.gitconfig
