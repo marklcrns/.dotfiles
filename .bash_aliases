@@ -165,6 +165,7 @@ dotfilesbackup() {
     .tmux.conf \
     .tmux/wsl_tmux_statusline.sh \
     .gitconfig \
+    .gitalias.txt \
     .ctags \
     .ctags.d/ \
     .mutt/ \
@@ -202,6 +203,7 @@ dotfilesdist() {
     .zshenv .zshrc \
     .tmux.conf \
     .gitconfig \
+    .gitalias.txt \
     .ctags \
     .ctags.d/ \
     .mutt/ \
@@ -241,6 +243,7 @@ dotfilesupdate() {
     ~/.tmux.conf \
     ~/.tmux/wsl_tmux_statusline.sh \
     ~/.gitconfig \
+    ~/.gitalias.txt \
     ~/.ripgreprc \
     ~/.scimrc \
     .
