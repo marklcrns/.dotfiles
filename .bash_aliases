@@ -134,6 +134,70 @@ alias enw='emacs -nw'
 alias tw='task'
 alias twl='task list'
 
+# Find and replace recursively (ignores .git folder)
+# Ref: https://stackoverflow.com/a/1583282
+findandreplace() {
+  DIR=$1
+  SEARCH=$2
+  REPLACE=$3
+  FILTER=$4
+
+  if [[ $# -lt 3 ]] || [[ $# -gt 4 ]]; then
+    echo "[ERROR] Invalid arguements."
+    echo
+    echo "USAGE: <required> [optional]"
+    echo "${0} <search pattern> <replace> [filter]"
+    echo
+    return
+  fi
+
+  if [[ ! -d ${DIR} ]]; then
+    echo "[ERROR] No such \"${DIR}\" directory exist."
+    return
+  fi
+
+  # Print all files to be changed before replacing
+  echo "Possible affected files..."
+  echo
+  if [[ -n ${FILTER} ]]; then
+    find ${DIR} \( -type d -name .git -prune \) -o -type f -name ${FILTER}
+  else
+    find ${DIR} \( -type d -name .git -prune \) -o -type f
+  fi
+
+  # Confirmation
+  echo
+  echo "Do you wish to continue? (Y/y)"
+  echo
+  echo "ARGS"
+  echo "  - Target Directory  = '${DIR}'"
+  echo "  - Search Pattern    = '${SEARCH}'"
+  echo "  - Replace With      = '${REPLACE}'"
+  echo "  - Filter (optional) = '${FILTER}'"
+  read REPLY
+  echo
+  if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+  else
+    echo "Aborted."
+    return
+  fi
+
+  # Execute
+  if [[ -n ${FILTER} ]]; then
+    find ${DIR} \( -type d -name .git -prune \) -o -type f -name ${FILTER} -print0 | xargs -0 sed -i "s|${SEARCH}|${REPLACE}|g"
+    # Prints result
+    rg "${REPLACE}" --glob "!.git*" -g ${FILTER}
+  else
+    find ${DIR} \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i "s|${SEARCH}|${REPLACE}|g"
+    # Prints result
+    rg "${REPLACE}" --glob "!.git*"
+  fi && \
+    echo && \
+    echo "Done! All '${SEARCH}' has been replaced with '${REPLACE}' within '${DIR}' directory"
+}
+
+alias fnr=findandreplace
+
 # Vimwiki
 alias wiki='cd ~/Docs/wiki; nvim -c VimwikiUISelect'
 alias diary='cd ~/Docs/wiki; nvim -c VimwikiDiaryIndex'
@@ -165,7 +229,6 @@ dotfilesbackup() {
     .tmux.conf \
     .tmux/wsl_tmux_statusline.sh \
     .gitconfig \
-    .gitalias.txt \
     .ctags \
     .ctags.d/ \
     .mutt/ \
@@ -203,7 +266,6 @@ dotfilesdist() {
     .zshenv .zshrc \
     .tmux.conf \
     .gitconfig \
-    .gitalias.txt \
     .ctags \
     .ctags.d/ \
     .mutt/ \
@@ -243,7 +305,6 @@ dotfilesupdate() {
     ~/.tmux.conf \
     ~/.tmux/wsl_tmux_statusline.sh \
     ~/.gitconfig \
-    ~/.gitalias.txt \
     ~/.ripgreprc \
     ~/.scimrc \
     .
@@ -561,7 +622,6 @@ checkdevrepos() {
   regex1="s,.*(/Projects/.*)/.git$,~\1,"
   ALL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*" | sed -r "${regex1}")"
   DEV_LIST="$(cat ${DEV_REPO_LIST_PATH})"
-
 
   echo "Checking untracked repo all dev repo..."
   for repo in $(echo ${ALL_DEV_REPO} | sed "s/\n/ /g")
@@ -934,7 +994,6 @@ alias mux="tmuxinator"
 alias rmzone='find . -name "*Zone.*" && find . -name "*Zone.*" -delete'
 alias rmdattrs='find . -name "*dropbox.attrs" && find . -name "*dropbox.attrs" -delete'
 alias rmallmodattr="rmzone && rmdattr"
-alias rmlock="find . -name '.~lock.*' && find . -name '.~lock.*' -delete"
 
 # WSL aliases
 if [[ "$(grep -i microsoft /proc/version)" ]]; then

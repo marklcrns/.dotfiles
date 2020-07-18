@@ -40,27 +40,33 @@
   prompt = false
 [difftool "nvimdiff"]
   cmd = nvim -d \"$LOCAL\" \"$REMOTE\"
+
 [color]
   ui = auto
-[include]
-  path = ~/.gitalias.txt
 
 # Ref:
 # .gitconfig: https://github.com/connermcd/dotfiles/blob/master/.gitconfig
 # Show merge conflicts: https://stackoverflow.com/a/10874862
 [alias]
+  st = status -sb
+  ci = commit
+  co = checkout
+  cb = checkout -b
+  d = diff
+  dc = diff --cached
+  ds = diff --stat=160,120
   dh1 = diff HEAD~1
-  dh2 = diff HEAD~2
-  dh3 = diff HEAD~3
   # list all merge conflict files
   dmc = diff --name-only --diff-filter=U
   # List all merge conflict leftover markers
   dmm = diff --check
-  mf = merge --ff-only
-  mnf = merge --no-ff
+  aa = add --all
+  ff = merge --ff-only
+  pullff = pull --ff-only
+  noff = merge --no-ff
+  p = push
   pom = push origin master
+  b = branch
   bva = branch -va
-  l = log --simplify-merges --graph --topo-order --date=short --abbrev-commit --decorate --all --boundary --pretty="tformat:%C(yellow)%h%Creset\\ %Cgreen(%ar)%Creset\\ %C(blue)<%an>%Creset\\ %C(red)%d%Creset\\ %s"
-  lo = log origin/master --simplify-merges --graph --topo-order --date=short --abbrev-commit --decorate --all --boundary --pretty="tformat:%C(yellow)%h%Creset\\ %Cgreen(%ar)%Creset\\ %C(blue)<%an>%Creset\\ %C(red)%d%Creset\\ %s"
-  lom = log origin/master ^master --simplify-merges --graph --topo-order --date=short --abbrev-commit --decorate --all --boundary --pretty="tformat:%C(yellow)%h%Creset\\ %Cgreen(%ar)%Creset\\ %C(blue)<%an>%Creset\\ %C(red)%d%Creset\\ %s"
-
+  l = log --simplify-merges --graph --pretty="tformat:%C(yellow)%h%Creset\\ %Cgreen(%ar)%Creset\\ %C(blue)<%an>%Creset\\ %C(red)%d%Creset\\ %s"
+  lf = log origin/master ^master
