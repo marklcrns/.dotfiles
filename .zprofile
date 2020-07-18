@@ -11,7 +11,12 @@ function add_to_path() {
 
 # Ref:
 # https://superuser.com/a/187673
-emulate sh
-. ~/.profile
-emulate zsh
+# TODO: Does not work well with tmuxinator in WSL. Sourcing prevents mux from
+# executing commands.
 
+# Workaround to only run when not in WSL
+if [[ ! "$(grep -i microsoft /proc/version)" ]]; then
+  emulate sh
+  source ~/.profile
+  emulate zsh
+fi
