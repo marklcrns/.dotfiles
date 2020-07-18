@@ -5,53 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Personal bin dir
-export PATH=$PATH:~/bin
-
-# Environent PATHs
-export PATH=$PATH:~/.local/bin
-export PATH=$PATH:~/.emacs.d/bin # emacs bin
-# Rclonesync-V2 PATH
-export PATH=$PATH:~/bin/rclonesync-V2
-
-# Ripgrep global flags
-export RIPGREP_CONFIG_PATH=~/.ripgreprc
-
-# Default editor
-export VISUAL="nvim"
-export EDITOR=$VISUAL
-
-# Tldr Config
-# Repo: https://github.com/raylee/tldr
-export TLDR_HEADER='magenta bold underline'
-export TLDR_QUOTE='italic'
-export TLDR_DESCRIPTION='green'
-export TLDR_CODE='red'
-export TLDR_PARAM='blue'
-
-# For WSL Configs ONLY
-if [[ "$(grep -i microsoft /proc/version)" ]]; then
-  # Browser PATHS
-  export PATH="$PATH:/mnt/c/Program Files/Mozilla Firefox/"
-  export PATH="$PATH:/mnt/c/Program Files (x86)/Google/Chrome/Application"
-
-  export BROWSER="/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
-
-  # NetBeans
-  export PATH=$PATH:/opt/netbeans/bin/
-
-  # Enable Vagrant access outisde of WSL.
-  export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
-  export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/mnt/c/vagrant"
-  # VirtualBox Windows path
-  export PATH="$PATH:/mnt/c/Program Files/Oracle/VirtualBox"
-
-  # Workaround for WSL 2 X Server not working
-  # export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
-  export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
-  export LIBGL_ALWAYS_INDIRECT=1
-fi
-
 # truncate command line prompt user
 DEFAULT_USER=`whoami`
 
@@ -150,25 +103,25 @@ bindkey '^z' autosuggest-toggle
 # https://www.youtube.com/watch?v=eLEo4OQ-cuQ&t=37s
 
 # # Change cursor shape for different vi modes.
-# function zle-keymap-select {
-#   if [[ ${KEYMAP} == vicmd ]] ||
-#      [[ $1 = 'block' ]]; then
-#     echo -ne '\e[1 q'
-#   elif [[ ${KEYMAP} == main ]] ||
-#        [[ ${KEYMAP} == viins ]] ||
-#        [[ ${KEYMAP} = '' ]] ||
-#        [[ $1 = 'beam' ]]; then
-#     echo -ne '\e[5 q'
-#   fi
-# }
-# zle -N zle-keymap-select
-# zle-line-init() {
-#     zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
-#     echo -ne "\e[5 q"
-# }
-# zle -N zle-line-init
-# echo -ne '\e[5 q' # Use beam shape cursor on startup.
-# preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] ||
+     [[ $1 = 'block' ]]; then
+    echo -ne '\e[1 q'
+  elif [[ ${KEYMAP} == main ]] ||
+       [[ ${KEYMAP} == viins ]] ||
+       [[ ${KEYMAP} = '' ]] ||
+       [[ $1 = 'beam' ]]; then
+    echo -ne '\e[5 q'
+  fi
+}
+zle -N zle-keymap-select
+zle-line-init() {
+    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+    echo -ne "\e[5 q"
+}
+zle -N zle-line-init
+echo -ne '\e[5 q' # Use beam shape cursor on startup.
+preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 # Use vim keys in tab complete menu:
 bindkey -M menuselect 'h' vi-backward-char
@@ -213,7 +166,7 @@ alias zshrc='nvim ~/.zshrc'
 
 # Aliases moved to ~/.bash_aliases
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+  . ~/.bash_aliases
 fi
 
 # Fuzzy file finder configurations
@@ -263,8 +216,8 @@ if [[ -f ~/.fzf.zsh ]]; then
     highlight -O ansi -l {} 2> /dev/null ||
     cat {} ||
     tree -c {}) 2> /dev/null | head -200'
-    --preview-window='bottom:55%:wrap:hidden'
-    --bind='ctrl-z:toggle-preview-wrap,?:toggle-preview,ctrl-l:cancel,ctrl-d:preview-page-down,ctrl-u:preview-page-up,ctrl-a:select-all,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(wsl-open {})'"
+      --preview-window='bottom:55%:wrap:hidden'
+      --bind='ctrl-z:toggle-preview-wrap,?:toggle-preview,ctrl-l:cancel,ctrl-d:preview-page-down,ctrl-u:preview-page-up,ctrl-a:select-all,ctrl-y:execute(echo {} | xclip -selection clipboard || echo {} | xclip),ctrl-e:execute(wsl-open {})'"
 
   # ctrl-t options
   export FZF_CTRL_T_OPTS="--ansi --preview '(bat --color=always --decorations=always --style=numbers,grid --line-range :300 {} 2> /dev/null || cat {} || tree -c {}) 2> /dev/null | head -200'"

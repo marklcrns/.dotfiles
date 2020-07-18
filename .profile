@@ -8,41 +8,106 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-# if running bash
-if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
-    fi
-fi
+# ==================== PATH VARIABLES ==================== #
 
-# set PATH so it includes user's private bin if it exists
+# Personal bin and its subdirectories
 if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
+  # Excludes plugins directory in ~/bin
+  for d in $(find ${HOME}/bin \( -type d -name "plugins" -prune \) -o -type d); do
+    add_to_path 'PATH' "$d"
+  done
 fi
 
-# set PATH so it includes user's private bin if it exists
+# Personal local bin dir
 if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
+  add_to_path 'PATH' "$HOME/.local/bin"
 fi
 
-export PATH="$HOME/.cargo/bin:$PATH"
-
+# Cargo bin
+add_to_path 'PATH' "$HOME/.cargo/bin"
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+add_to_path 'PATH' "$HOME/.rvm/bin"
+# Rclonesync-V2 PATH
+add_to_path 'PATH' "$HOME/bin/plugins/rclonesync-V2"
+# Emacs bin
+add_to_path 'PATH' "$HOME/emacs.d/bin"
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-
-# Export Windows username if in WSL
+# WSL profile
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  # $PATHS
+  add_to_path 'PATH' "/mnt/c/Program Files/Mozilla Firefox/"
+  add_to_path 'PATH' "/mnt/c/Program Files (x86)/Google/Chrome/Application"
+  # NetBeans
+  add_to_path 'PATH' "/opt/netbeans/bin/"
+  # VirtualBox Windows path
+  add_to_path 'PATH' "/mnt/c/Program Files/Oracle/VirtualBox"
+fi
+
+# Remove duplicates in $PATH
+# Ref: https://unix.stackexchange.com/a/40973
+if [ -n "$PATH" ]; then
+  old_PATH=$PATH:; PATH=
+  while [ -n "$old_PATH" ]; do
+    x=${old_PATH%%:*}       # the first remaining entry
+    case $PATH: in
+      *:"$x":*) ;;          # already there
+      *) PATH=$PATH:$x;;    # not there yet
+    esac
+    old_PATH=${old_PATH#*:}
+  done
+  PATH=${PATH#:}
+  unset old_PATH x
+fi
+
+# ==================== OTHER GLOBAL VARIABLES ==================== #
+
+# Ripgrep global flags
+export RIPGREP_CONFIG_PATH=~/.ripgreprc
+
+# Default editor
+export VISUAL="nvim"
+export EDITOR=$VISUAL
+
+# Tldr Config
+# Repo: https://github.com/raylee/tldr
+export TLDR_HEADER='magenta bold underline'
+export TLDR_QUOTE='italic'
+export TLDR_DESCRIPTION='green'
+export TLDR_CODE='red'
+export TLDR_PARAM='blue'
+
+# For WSL Configs ONLY
+if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  export BROWSER="/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
+
+  # Enable Vagrant access outisde of WSL.
+  export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
+  export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/mnt/c/vagrant"
+
+  # Workaround for WSL 2 X Server not working
+  # export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+  export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
+  export LIBGL_ALWAYS_INDIRECT=1
+
+  # Export Windows username if in WSL
   # 2>/dev/null to suppress UNC paths are not supported error
   export WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
 fi
 
-# Ref: https://stackoverflow.com/a/677212
-type neofetch >/dev/null && neofetch
-hash fortune 2>/dev/null 2>&1 && \
-  hash figlet 2>/dev/null 2>&1 && \
-  hash lolcat 2>/dev/null 2>&1 && \
-  fortune | figlet | lolcat
+# ==================== SOURCING FILES ==================== #
+
+# Load RVM into a shell session *as a function*
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+# ==================== MISC ==================== #
+
+# if running bash, display custom graphics
+if [ -n "$BASH_VERSION" ]; then
+  # Ref: https://stackoverflow.com/a/677212
+  type neofetch >/dev/null && neofetch
+  hash fortune 2>/dev/null 2>&1 && \
+    hash figlet 2>/dev/null 2>&1 && \
+    hash lolcat 2>/dev/null 2>&1 && \
+    fortune | figlet | lolcat
+fi
 

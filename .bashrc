@@ -2,51 +2,6 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-# Personal bin dir
-export PATH=$PATH:~/bin
-
-
-# Environent PATHs
-export PATH=$PATH:~/.local/bin
-export PATH=$PATH:~/.emacs.d/bin # emacs bin
-# Rclonesync-V2 PATH
-export PATH=$PATH:~/bin/rclonesync-V2
-
-# Default editor
-export VISUAL="nvim"
-export EDITOR=$VISUAL
-
-# Tldr Config
-# Repo: https://github.com/raylee/tldr
-export TLDR_HEADER='magenta bold underline'
-export TLDR_QUOTE='italic'
-export TLDR_DESCRIPTION='green'
-export TLDR_CODE='red'
-export TLDR_PARAM='blue'
-
-# For WSL Configs ONLY
-if [[ "$(grep -i microsoft /proc/version)" ]]; then
-  # Browser PATHS
-  export PATH="$PATH:/mnt/c/Program Files/Mozilla Firefox/"
-  export PATH="$PATH:/mnt/c/Program Files (x86)/Google/Chrome/Application"
-
-  export BROWSER="/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
-
-  # NetBeans
-  export PATH=$PATH:/opt/netbeans/bin/
-
-  # Enable Vagrant access outisde of WSL.
-  export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
-  export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/mnt/c/vagrant"
-  # VirtualBox Windows path
-  export PATH="$PATH:/mnt/c/Program Files/Oracle/VirtualBox"
-
-  # Workaround for WSL 2 X Server not working
-  # export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
-  export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
-  export LIBGL_ALWAYS_INDIRECT=1
-fi
-
 # If not running interactively, don't do anything
 case $- in
   *i*) ;;
