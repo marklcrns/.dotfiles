@@ -940,10 +940,11 @@ alias on="gtd -lmspt"
 # tmuxinator
 alias mux="tmuxinator"
 
-# Remove zone modifiers and attributes
+# Remove zone modifiers, attributes and .~lock files
 alias rmzone='find . -name "*Zone.*" && find . -name "*Zone.*" -delete'
 alias rmdattrs='find . -name "*dropbox.attrs" && find . -name "*dropbox.attrs" -delete'
 alias rmallmodattr="rmzone && rmdattr"
+alias rmlock='find . -name ".~lock.*" && find . -name ".~lock.*" -delete'
 
 # WSL aliases
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
