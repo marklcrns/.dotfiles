@@ -76,6 +76,9 @@ export TLDR_DESCRIPTION='green'
 export TLDR_CODE='red'
 export TLDR_PARAM='blue'
 
+export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_251
+export JRE_HOME=/usr/lib/jvm/jdk1.8.0_251/jre
+
 # For WSL Configs ONLY
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
   export BROWSER="/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
@@ -102,7 +105,7 @@ fi
 # ==================== MISC ==================== #
 
 # if running bash, display custom graphics
-if [ -n "$BASH_VERSION" ]; then
+if [[ -n "$BASH_VERSION" ]]; then
   # Ref: https://stackoverflow.com/a/677212
   type neofetch >/dev/null && neofetch
   hash fortune 2>/dev/null 2>&1 && \
