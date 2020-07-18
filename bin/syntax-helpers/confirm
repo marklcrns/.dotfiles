@@ -2,7 +2,7 @@
 
 # Prompt confirmation for bash and zsh.
 # Will run with bash shell by default as specified by the script shebang
-# Resources:
+# Ref:
 # Zsh prompt   = https://superuser.com/a/556006
 # Bash prompt  = https://stackoverflow.com/a/1885534
 # Detect shell = https://stackoverflow.com/a/9911082
