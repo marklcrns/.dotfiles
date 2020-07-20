@@ -877,7 +877,7 @@ statusdevpushrepo() {
   if [[ ! -f  ${DEV_PUSH_LIST_PATH} ]]; then
     printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
     return 1
-  elif [[ ! -s "${DEV_PUSH_LIST_FILE}" ]]; then
+  elif [[ ! -s "${DEV_PUSH_LIST_PATH}" ]]; then
     printf "${YELLOW}${DEV_PUSH_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
     return 1
   fi
@@ -889,6 +889,7 @@ statusdevpushrepo() {
     ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
     # Go to a Dev repo then git status
     cd ${ABS_REPO_PATH}
+    git remote update
     checkremotechanges
   done < ${DEV_PUSH_LIST_PATH}
   cd ${CURRENT_DIR_SAVE}
