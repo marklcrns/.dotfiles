@@ -507,6 +507,10 @@ alias gstatusconf=statusallconfrepo
 DEV_REPO_DIR="${HOME}/Projects/Dev"
 DEV_REPO_LIST_NAME="devrepolist.txt"
 DEV_REPO_LIST_PATH=${DOTFILES}/${DEV_REPO_LIST_NAME}
+DEV_PULL_LIST_FILE="devpulllist.txt"
+DEV_PUSH_LIST_FILE="devpushlist.txt"
+DEV_PULL_LIST_PATH=${DOTFILES}/${DEV_PULL_LIST_FILE}
+DEV_PUSH_LIST_PATH=${DOTFILES}/${DEV_PUSH_LIST_FILE}
 
 # # Convert dev repo list line to path absolute path
 # convertdevlinetopath() {
@@ -517,15 +521,22 @@ DEV_REPO_LIST_PATH=${DOTFILES}/${DEV_REPO_LIST_NAME}
 #   retval=`echo $arg1 | sed -r "${regex1};${regex2}"`
 # }
 
-createalldevrepolist() {
+createalldevrepolists() {
   CURRENT_DIR_SAVE=$(pwd)
   # Get all dev repo and store in $DEV_REPO_LIST_PATH
   # Convert home path to ~ and truncate .git
   regex1="s,.*(/Projects/.*)/.git$,~\1,"
-  find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*" | \
-    sed -r "${regex1}" > ${DEV_REPO_LIST_PATH}
 
-  for line in $(cat ${DEV_REPO_LIST_PATH}); do
+  # Create devpulllist.txt
+  find ${DEV_REPO_DIR} -name ".git" | \
+    sed -r "${regex1}" > ${DEV_PULL_LIST_PATH}
+
+  # Create devpushlist.txt
+  find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*" | \
+    sed -r "${regex1}" > ${DEV_PUSH_LIST_PATH}
+
+  # Append repo links in pull list
+  for line in $(cat ${DEV_PULL_LIST_PATH}); do
     GIT_REPO_PATH=$line
     # cd into repo
     ABS_PATH=`echo ${GIT_REPO_PATH} | sed -r "s,~,${HOME},"`
@@ -533,25 +544,52 @@ createalldevrepolist() {
     # Get repo github link
     GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
     # Append repo absolute path its github link in dev_repo_list.txt
-    sed -i "s|${GIT_REPO_PATH}|${GIT_REPO_PATH};${GIT_REPO_LINK}|" ${DEV_REPO_LIST_PATH}
+    sed -i "s|${GIT_REPO_PATH}|${GIT_REPO_PATH};${GIT_REPO_LINK}|" ${DEV_PULL_LIST_PATH}
   done
 
-  [[ -f ${DEV_REPO_LIST_PATH} ]] && \
-    echo "Created ${DEV_REPO_LIST_PATH}" && cat ${DEV_REPO_LIST_PATH}
+  # Append repo links in push list
+  for line in $(cat ${DEV_PUSH_LIST_PATH}); do
+    GIT_REPO_PATH=$line
+    # cd into repo
+    ABS_PATH=`echo ${GIT_REPO_PATH} | sed -r "s,~,${HOME},"`
+    cd ${ABS_PATH}
+    # Get repo github link
+    GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
+    # Append repo absolute path its github link in dev_repo_list.txt
+    sed -i "s|${GIT_REPO_PATH}|${GIT_REPO_PATH};${GIT_REPO_LINK}|" ${DEV_PUSH_LIST_PATH}
+  done
+
+  [[ -f ${DEV_PULL_LIST_PATH} ]] && \
+    echo "Created ${DEV_REPO_LIST_PATH}" && cat ${DEV_PULL_LIST_PATH}
+
+  [[ -f ${DEV_PUSH_LIST_PATH} ]] && \
+    echo "Created ${DEV_REPO_LIST_PATH}" && cat ${DEV_PUSH_LIST_PATH}
 
   cd ${CURRENT_DIR_SAVE}
 }
 
-printdevrepolist() {
-  cat $DEV_REPO_LIST_PATH
+printdevrepolists() {
+  echo $DEV_PULL_LIST_PATH
+  cat $DEV_PULL_LIST_PATH
+  echo
+  echo $DEV_PUSH_LIST_PATH
+  cat $DEV_PUSH_LIST_PATH
 }
 
 printalldevrepo() {
-  ALL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*")"
+  # Print all current dev pull repos
+  PULL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git")"
   # Truncate .git from output
   regex1="s,(.*)/.git$,\1,"
-  ALL_DEV_REPO="$(echo ${ALL_DEV_REPO} | sed -r ${regex1})"
-  echo ${ALL_DEV_REPO}
+  PULL_DEV_REPO="$(echo ${PULL_DEV_REPO} | sed -r ${regex1})"
+  echo ${PULL_DEV_REPO}
+
+  # Print all current dev push repos
+  PUSH_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*")"
+  # Truncate .git from output
+  regex1="s,(.*)/.git$,\1,"
+  PUSH_DEV_REPO="$(echo ${PUSH_DEV_REPO} | sed -r ${regex1})"
+  echo ${PUSH_DEV_REPO}
 }
 
 # Resources:
@@ -559,21 +597,25 @@ printalldevrepo() {
 # Zsh prompt: https://superuser.com/a/556006
 # Bash prompt: https://stackoverflow.com/a/1885534
 # Delete lines with forward slashes in file: https://stackoverflow.com/a/25173311
-checkdevrepos() {
+# TODO: un-DRY code
+checkalldevrepos() {
+  # Cat dev repo lists content into a variable
+  PULL_DEV_LIST="$(cat ${DEV_PULL_LIST_PATH})" || return 1
+  PUSH_DEV_LIST="$(cat ${DEV_PUSH_LIST_PATH})" || return 1
   # Find all dev repos and strip .git and home path substring and append ~/
   regex1="s,.*(/Projects/.*)/.git$,~\1,"
-  ALL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*" | sed -r "${regex1}")"
-  DEV_LIST="$(cat ${DEV_REPO_LIST_PATH})"
+  PULL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" | sed -r "${regex1}")"
+  PUSH_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*" | sed -r "${regex1}")"
 
-  echo "Checking untracked repo all dev repo..."
-  for repo in $(echo ${ALL_DEV_REPO} | sed "s/\n/ /g")
+  echo "Checking untracked dev PULL repos..."
+  for repo in $(echo ${PULL_DEV_REPO} | sed "s/\n/ /g")
   do
     ABS_REPO_PATH=`echo ${repo} | sed -r "s,~,${HOME},"`
     # check if repo in dev list
-    if [[ ! ${DEV_LIST} == *"${repo}"* ]]; then
+    if [[ ! ${PULL_DEV_LIST} == *"${repo}"* ]]; then
       printf "    ${RED}${repo} Untracked from dev list${NC}\n"
       # Prompt for action
-      echo "Do you want to add ${repo} in ${DEV_REPO_LIST_NAME}? (Y/y)"
+      echo "Do you want to add ${repo} in ${DEV_PULL_LIST_FILE}? (Y/y)"
       echo "or type (delete) to permanently delete repo..."
       read REPLY
       if [[ "$REPLY" =~ ^[Yy]$ ]]; then
@@ -581,8 +623,8 @@ checkdevrepos() {
         cd ${ABS_REPO_PATH}
         # Get repo github link
         GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
-        # Append repo absolute path and link in dev_repo_list.txt
-        echo "${repo};${GIT_REPO_LINK}" >> ${DEV_REPO_LIST_PATH}
+        # Append repo absolute path and link in devpushlist.txt
+        echo "${repo};${GIT_REPO_LINK}" >> ${DEV_PULL_LIST_PATH}
         printf "${GREEN}${ABS_REPO_PATH} Added${NC}\n\n"
       elif [[ "$REPLY" =~ ^(Delete|delete|DELETE) ]]; then
         rm -rf ${ABS_REPO_PATH}
@@ -593,19 +635,49 @@ checkdevrepos() {
     fi
   done
 
-  # Re-cat dev list for changes
-  DEV_LIST="$(cat ${DEV_REPO_LIST_PATH})"
-  echo
+  echo "Checking untracked dev PUSH repos..."
+  for repo in $(echo ${PUSH_DEV_REPO} | sed "s/\n/ /g")
+  do
+    ABS_REPO_PATH=`echo ${repo} | sed -r "s,~,${HOME},"`
+    # check if repo in dev list
+    if [[ ! ${PUSH_DEV_LIST} == *"${repo}"* ]]; then
+      printf "    ${RED}${repo} Untracked from dev list${NC}\n"
+      # Prompt for action
+      echo "Do you want to add ${repo} in ${DEV_PUSH_LIST_FILE}? (Y/y)"
+      echo "or type (delete) to permanently delete repo..."
+      read REPLY
+      if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+        # Get absolute path and cd in
+        cd ${ABS_REPO_PATH}
+        # Get repo github link
+        GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
+        # Append repo absolute path and link in devpushlist.txt
+        echo "${repo};${GIT_REPO_LINK}" >> ${DEV_PUSH_LIST_PATH}
+        printf "${GREEN}${ABS_REPO_PATH} Added${NC}\n\n"
+      elif [[ "$REPLY" =~ ^(Delete|delete|DELETE) ]]; then
+        rm -rf ${ABS_REPO_PATH}
+        printf "${RED}${ABS_REPO_PATH} Deleted${NC}\n\n"
+      fi
+    else
+      echo "${repo}"
+    fi
+  done
 
-  echo "Checking uncloned repo from dev list..."
-  for line in $(echo ${DEV_LIST} | sed "s/\n/ /g")
+  echo
+  # Re-cat dev pull list for changes
+  PULL_DEV_LIST="$(cat ${DEV_PUSH_LIST_PATH})"
+  # Re-cat dev push list for changes
+  PUSH_DEV_LIST="$(cat ${DEV_PUSH_LIST_PATH})"
+
+  echo "Checking uncloned repo from dev PULL list..."
+  for line in $(echo ${PULL_DEV_LIST} | sed "s/\n/ /g")
   do
     # Get repo path from line
     REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
     ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
     GIT_LINK="$(cut -d';' -f2 <<< "$line" )"
     # Check if repo path in dev repos
-    if [[ ! ${ALL_DEV_REPO} == *"${REPO_PATH}"* ]]; then
+    if [[ ! ${PULL_DEV_REPO} == *"${REPO_PATH}"* ]]; then
       printf "    ${YELLOW}${REPO_PATH} Missing${NC}\n"
       # Prompt for action
       echo "Do you want to clone ${GIT_LINK}? (Y/y)"
@@ -617,7 +689,35 @@ checkdevrepos() {
           printf "${GREEN}${GIT_LINK} Cloned${NC}\n\n"
 
       elif [[ "$REPLY" =~ ^(Remove|remove|REMOVE) ]]; then
-        sed -i "\|${line}|d" ${DEV_REPO_LIST_PATH}
+        sed -i "\|${line}|d" ${DEV_PULL_LIST_PATH}
+        printf "${RED}${REPO_PATH} Removed from dev list${NC}\n\n"
+      fi
+    else
+      echo "${REPO_PATH}"
+    fi
+  done
+
+  echo "Checking uncloned repo from dev PUSH list..."
+  for line in $(echo ${PUSH_DEV_LIST} | sed "s/\n/ /g")
+  do
+    # Get repo path from line
+    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+    GIT_LINK="$(cut -d';' -f2 <<< "$line" )"
+    # Check if repo path in dev repos
+    if [[ ! ${PUSH_DEV_REPO} == *"${REPO_PATH}"* ]]; then
+      printf "    ${YELLOW}${REPO_PATH} Missing${NC}\n"
+      # Prompt for action
+      echo "Do you want to clone ${GIT_LINK}? (Y/y)"
+      echo "or type (remove) to remove repo from dev list..."
+      read REPLY
+      if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+        mkdir -p ${ABS_REPO_PATH}
+        git clone ${GIT_LINK} ${ABS_REPO_PATH} && \
+          printf "${GREEN}${GIT_LINK} Cloned${NC}\n\n"
+
+      elif [[ "$REPLY" =~ ^(Remove|remove|REMOVE) ]]; then
+        sed -i "\|${line}|d" ${DEV_PUSH_LIST_PATH}
         printf "${RED}${REPO_PATH} Removed from dev list${NC}\n\n"
       fi
     else
@@ -628,11 +728,11 @@ checkdevrepos() {
 
 clonealldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
-    printf "${RED}${DEV_REPO_LIST_NAME} in ${DOTFILES} does not exist${NC}\n"
+  if [[ ! -f  ${DEV_PULL_LIST_PATH} ]]; then
+    printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
     return 1
-  elif [[ ! -s "${DEV_REPO_LIST_PATH}" ]]; then
-    printf "${YELLOW}${DEV_REPO_LIST_NAME} in ${DOTFILES} is empty${NC}\n"
+  elif [[ ! -s "${DEV_PULL_LIST_PATH}" ]]; then
+    printf "${YELLOW}${DEV_PULL_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
     return 1
   fi
 
@@ -665,7 +765,7 @@ clonealldevrepo() {
         git clone ${GIT_LINK} ${ABS_REPO_PATH}
       done
     fi
-  done < ${DEV_REPO_LIST_PATH}
+  done < ${DEV_PULL_LIST_PATH}
 
   printf "${GREEN}Dev repo cloning complete!${NC}\n"
   cd ${CURRENT_DIR_SAVE}
@@ -673,11 +773,11 @@ clonealldevrepo() {
 
 removealldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
-    printf "${RED}${DEV_REPO_LIST_NAME} in ${DOTFILES} does not exist${NC}\n"
+  if [[ ! -f  ${DEV_PULL_LIST_PATH} ]]; then
+    printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
     return 1
-  elif [[ ! -s "${DEV_REPO_LIST_PATH}" ]]; then
-    printf "${YELLOW}${DEV_REPO_LIST_NAME} in ${DOTFILES} is empty${NC}\n"
+  elif [[ ! -s "${DEV_PULL_LIST_PATH}" ]]; then
+    printf "${YELLOW}${DEV_PULL_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
     return 1
   fi
 
@@ -694,7 +794,7 @@ removealldevrepo() {
       printf "${RED}Removing ${ABS_REPO_PATH}...${NC}\n"
       rm -rf ${ABS_REPO_PATH}
     fi
-  done < ${DEV_REPO_LIST_PATH}
+  done < ${DEV_PULL_LIST_PATH}
 
   printf "${GREEN}Dev repo removal complete!${NC}\n"
   cd ${CURRENT_DIR_SAVE}
@@ -702,16 +802,16 @@ removealldevrepo() {
 
 pushalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
-    printf "${RED}${DEV_REPO_LIST_NAME} in ${DOTFILES} does not exist${NC}\n"
+  if [[ ! -f  ${DEV_PUSH_LIST_PATH} ]]; then
+    printf "${RED}${DEV_PUSH_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
     return 1
-  elif [[ ! -s "${DEV_REPO_LIST_PATH}" ]]; then
-    printf "${YELLOW}${DEV_REPO_LIST_NAME} in ${DOTFILES} is empty${NC}\n"
+  elif [[ ! -s "${DEV_PUSH_LIST_PATH}" ]]; then
+    printf "${YELLOW}${DEV_PUSH_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
     return 1
   fi
 
   # Loop variation 1: Works well with `wait` command
-  for line in $(cat ${DEV_REPO_LIST_PATH}); do
+  for line in $(cat ${DEV_PUSH_LIST_PATH}); do
     # continue of line is empty String
     [[ -z $line ]] && continue
     # Wait until another git commit finish processing if exist
@@ -730,11 +830,11 @@ pushalldevrepo() {
 
 pullalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
-    printf "${RED}${DEV_REPO_LIST_NAME} in ${DOTFILES} does not exist${NC}\n"
+  if [[ ! -f  ${DEV_PULL_LIST_PATH} ]]; then
+    printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
     return 1
-  elif [[ ! -s "${DEV_REPO_LIST_PATH}" ]]; then
-    printf "${YELLOW}${DEV_REPO_LIST_NAME} in ${DOTFILES} is empty${NC}\n"
+  elif [[ ! -s "${DEV_PULL_LIST_PATH}" ]]; then
+    printf "${YELLOW}${DEV_PULL_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
     return 1
   fi
 
@@ -746,17 +846,17 @@ pullalldevrepo() {
     # Go to a Dev repo then pull
     cd ${ABS_REPO_PATH}
     pullrepo
-  done < ${DEV_REPO_LIST_PATH}
+  done < ${DEV_PULL_LIST_PATH}
   cd ${CURRENT_DIR_SAVE}
 }
 
 forcepullalldevrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
-    printf "${RED}${DEV_REPO_LIST_NAME} in ${DOTFILES} does not exist${NC}\n"
+  if [[ ! -f  ${DEV_PULL_LIST_PATH} ]]; then
+    printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
     return 1
-  elif [[ ! -s "${DEV_REPO_LIST_PATH}" ]]; then
-    printf "${YELLOW}${DEV_REPO_LIST_NAME} in ${DOTFILES} is empty${NC}\n"
+  elif [[ ! -s "${DEV_PULL_LIST_PATH}" ]]; then
+    printf "${YELLOW}${DEV_PULL_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
     return 1
   fi
 
@@ -768,17 +868,17 @@ forcepullalldevrepo() {
     # Go to a Dev repo then force pull
     cd ${ABS_REPO_PATH}
     forcepullrepo
-  done < ${DEV_REPO_LIST_PATH}
+  done < ${DEV_PULL_LIST_PATH}
   cd ${CURRENT_DIR_SAVE}
 }
 
-statusalldevrepo() {
+statusdevpushrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  if [[ ! -f  ${DEV_REPO_LIST_PATH} ]]; then
-    printf "${RED}${DEV_REPO_LIST_NAME} in ${DOTFILES} does not exist${NC}\n"
+  if [[ ! -f  ${DEV_PUSH_LIST_PATH} ]]; then
+    printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
     return 1
-  elif [[ ! -s "${DEV_REPO_LIST_PATH}" ]]; then
-    printf "${YELLOW}${DEV_REPO_LIST_NAME} in ${DOTFILES} is empty${NC}\n"
+  elif [[ ! -s "${DEV_PUSH_LIST_FILE}" ]]; then
+    printf "${YELLOW}${DEV_PUSH_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
     return 1
   fi
 
@@ -790,19 +890,19 @@ statusalldevrepo() {
     # Go to a Dev repo then git status
     cd ${ABS_REPO_PATH}
     checkremotechanges
-  done < ${DEV_REPO_LIST_PATH}
+  done < ${DEV_PUSH_LIST_PATH}
   cd ${CURRENT_DIR_SAVE}
 }
 
 alias gpushdev=pushalldevrepo
 alias gpulldev=pullalldevrepo
 alias gfpulldev=forcepullalldevrepo
-alias gstatusdev=statusalldevrepo
+alias gstatusdev=statusdevpushrepo
 alias grounddev=roundalldevrepo
-alias gprintdevlist=printdevrepolist
+alias gprintdevlists=printdevrepolists
 alias gprintdev=printalldevrepo
-alias gcheckdev=checkdevrepos
-alias gcreatedevlist=createalldevrepolist
+alias gcheckdev=checkalldevrepos
+alias gcreatedevlists=createalldevrepolists
 alias gclonedev=clonealldevrepo
 alias grmdev=removealldevrepo
 
