@@ -20,6 +20,9 @@ alias aptclean='sudo apt clean; sudo apt autoclean; sudo apt autoremove'
 # Nuke package clean on failed installation
 alias aptnuke='sudo dpkg --remove --force-remove-reinstreq'
 
+# Shows current ip address
+alias myip='ip addr show eth0 | grep inet | awk "{ print $2; }" | sed "s/\/.*$//"'
+
 # Update all packages
 alias updateall='sudo apt update && sudo apt upgrade -y'
 

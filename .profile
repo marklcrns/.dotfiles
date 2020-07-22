@@ -10,48 +10,37 @@
 
 # ==================== PATH VARIABLES ==================== #
 
-# Utility function to add a path into $PATH
-# Ref: https://unix.stackexchange.com/q/334382
-function add_to_path() {
-  for path in ${2//:/ }; do
-    if ! [[ "${!1}" =~ "${path%/}" ]]; then # ignore last /
-      new_path="$path:${!1#:}"
-      export "$1"="${new_path%:}" # remove trailing :
-    fi
-  done
-}
-
 # Personal bin and its subdirectories
 if [ -d "$HOME/bin" ] ; then
   # Excludes plugins directory in ~/bin
   for d in $(find ${HOME}/bin \( -type d -name "plugins" -prune \) -o -type d); do
-    add_to_path 'PATH' "$d"
+    export PATH="$d":$PATH
   done
 fi
 
 # Personal local bin dir
 if [ -d "$HOME/.local/bin" ] ; then
-  add_to_path 'PATH' "$HOME/.local/bin"
+  export PATH="$HOME/.local/bin":$PATH
 fi
 
 # Cargo bin
-add_to_path 'PATH' "$HOME/.cargo/bin"
+export PATH=$PATH:$HOME/.cargo/bin
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-add_to_path 'PATH' "$HOME/.rvm/bin"
+export PATH=$PATH:$HOME/.rvm/bin
 # Rclonesync-V2 PATH
-add_to_path 'PATH' "$HOME/bin/plugins/rclonesync-V2"
+export PATH=$PATH:$HOME/bin/plugins/rclonesync-V2
 # Emacs bin
-add_to_path 'PATH' "$HOME/emacs.d/bin"
+export PATH=$PATH:$HOME/emacs.d/bin
 
 # WSL profile
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
   # $PATHS
-  add_to_path 'PATH' "/mnt/c/Program Files/Mozilla Firefox/"
-  add_to_path 'PATH' "/mnt/c/Program Files (x86)/Google/Chrome/Application"
+  export PATH=$PATH:"/mnt/c/Program Files/Mozilla Firefox/"
+  export PATH=$PATH:"/mnt/c/Program Files (x86)/Google/Chrome/Application"
   # NetBeans
-  add_to_path 'PATH' "/opt/netbeans/bin/"
+  export PATH=$PATH:/opt/netbeans/bin/
   # VirtualBox Windows path
-  add_to_path 'PATH' "/mnt/c/Program Files/Oracle/VirtualBox"
+  export PATH=$PATH:"/mnt/c/Program Files/Oracle/VirtualBox"
 fi
 
 # Remove duplicates in $PATH

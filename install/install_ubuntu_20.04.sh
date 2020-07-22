@@ -318,8 +318,9 @@ sudo apt install apache2 apache2-utils -y
 ## create backup of apache2.conf and copy www dir to ~/Projects/www
 sudo cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.bak
 # Append only if not already
-sudo grep -qF '<Directory ~/Projects/www>' /etc/apache2/apache2.conf || \
-  sudo sed -i '$i<Directory ~/Projects/www>\n\tOptions Indexes FollowSymLinks\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n' /etc/apache2/apache2.conf
+# Ref: https://superuser.com/a/1314183
+sudo grep -q "<Directory /home/$(id -un)/Projects/www>" /etc/apache2/apache2.conf || \
+  sudo sed -i "\$i<Directory /home/$(id -un)/Projects/www>\n\tOptions Indexes FollowSymLinks\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n" /etc/apache2/apache2.conf
 # resolve "forbidden You don't have permission to access / on this server" issue
 # Solution: https://askubuntu.com/a/738527
 # Resources:
@@ -334,7 +335,7 @@ mkdir -p ~/Projects/www/default
 # replace DocumentRoot in /etc/apache2/sites-enabled/000-default.conf
 # Modify only if not already
 sudo grep -qF "# DocumentRoot /var/www/html" /etc/apache2/sites-enabled/000-default.conf || \
-  sudo sed -i 's,DocumentRoot /var/www/html,# DocumentRoot /var/www/html\n\tDocumentRoot ~/Projects/www/default,' \
+  sudo sed -i "s,DocumentRoot /var/www/html,# DocumentRoot /var/www/html\n\tDocumentRoot /home/$(id -un)/Projects/www/default," \
   /etc/apache2/sites-enabled/000-default.conf
 echo "<h1>This is Apache2 default site</h1>" > ~/Projects/www/default/index.html
 sudo service apache2 restart
