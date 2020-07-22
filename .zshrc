@@ -5,6 +5,17 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Utility function to add path into $PATH
+# Ref: https://unix.stackexchange.com/q/334382
+function add_to_path() {
+  for p in ${(s.:.)2}; do
+    if [[ ! "${(P)1}" =~ "${p%/}" ]]; then
+      new_path="$p:${(P)1#:}"
+      export "$1"="${new_path%:}"
+    fi
+  done
+}
+
 # truncate command line prompt user
 DEFAULT_USER=`whoami`
 
