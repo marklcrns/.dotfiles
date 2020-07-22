@@ -17,6 +17,8 @@ alias myalias='nvim ~/.bash_aliases'
 alias aptpurge='sudo apt purge --auto-remove'
 # Clean apt packages
 alias aptclean='sudo apt clean; sudo apt autoclean; sudo apt autoremove'
+# Nuke package clean on failed installation
+alias aptnuke='sudo dpkg --remove --force-remove-reinstreq'
 
 # Update all packages
 alias updateall='sudo apt update && sudo apt upgrade -y'
