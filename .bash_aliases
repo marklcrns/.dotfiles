@@ -17,11 +17,6 @@ alias myalias='nvim ~/.bash_aliases'
 alias aptpurge='sudo apt purge --auto-remove'
 # Clean apt packages
 alias aptclean='sudo apt clean; sudo apt autoclean; sudo apt autoremove'
-# Nuke package clean on failed installation
-alias aptnuke='sudo dpkg --remove --force-remove-reinstreq'
-
-# Shows current ip address
-alias myip='ip addr show eth0 | grep inet | awk "{ print $2; }" | sed "s/\/.*$//"'
 
 # Update all packages
 alias updateall='sudo apt update && sudo apt upgrade -y'
@@ -143,9 +138,9 @@ alias twl='task list'
 alias fnr=find_and_replace
 
 # Vimwiki
-alias wiki='cd ~/Docs/wiki; nvim -c VimwikiUISelect'
-alias diary='cd ~/Docs/wiki; nvim -c VimwikiDiaryIndex'
-alias dtoday='cd ~/Docs/wiki; nvim -c "call DToday()"'
+alias wiki='nvim -c VimwikiUISelect'
+alias diary='nvim -c VimwikiDiaryIndex'
+alias dtoday='nvim -c "call DToday()"'
 alias wikidocs='cd ~/Docs/wiki'
 
 # Remove debug.log files recursively (will also list all debug files before removal)
