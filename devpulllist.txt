@@ -1,7 +1,9 @@
-~/Projects/Dev/eclipse-workspace/java-game-of-generals;https://github.com/marklcrns/java-game-of-generals
+~/Projects/Dev/github-projects/javascript-template-codes;https://github.com/marklcrns/javascript-template-codes.git
+~/Projects/Dev/github-projects/web-dev-projects/surprise;https://github.com/marklcrns//surprise
+~/Projects/Dev/github-projects/web-dev-projects/100-Days-Webpage-Challenge;https://github.com/marklcrns//100-Days-Webpage-Challenge
 ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A;https://github.com/MiramarCISC/CISC191-SUM20-A
+~/Projects/Dev/eclipse-workspace/java-game-of-generals;https://github.com/marklcrns/java-game-of-generals.git
 ~/Projects/Dev/eclipse-workspace/guitarhero;https://github.com/marklcrns/java-guitarhero.git
-~/Projects/Dev/github-projects/web-dev-projects/100-Days-Webpage-Challenge;https://github.com/marklcrns/100-Days-Webpage-Challenge
-~/Projects/Dev/github-projects/web-dev-projects/surprise;https://github.com/marklcrns/surprise
-~/Projects/Dev/github-projects/javascript-template-codes;https://github.com/marklcrns/javascript-template-codes
 ~/Projects/Dev/cloned-repos/CISC191;https://github.com/MiramarCISC/CISC191.git
+~/Projects/Dev/cloned-repos/Guitar-Hero-Sample;https://github.com/feritzcan/Guitar-Hero
+~/Projects/Dev/cloned-repos/BlackWidow-Chess;https://github.com/amir650/BlackWidow-Chess
