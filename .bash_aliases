@@ -415,7 +415,7 @@ pullrepo() {
   CHANGES=$(git status --porcelain --untracked-files=no)
   # Pull if no changes
   if [[ -n ${CHANGES} ]]; then
-    printf "${RED}Changes detected in existing $(pwd) files. Skipping...${NC}\n"
+    printf "${RED}Changes detected in $(pwd) files. Skipping...${NC}\n"
   else
     echo "$(pwd). Pulling from remote"
     git pull
@@ -444,7 +444,7 @@ forcepullrepo() {
   CHANGES=$(git status --porcelain --untracked-files=no)
   # Pull if no changes
   if [[ -n ${CHANGES} ]]; then
-    printf "${YELLOW}Changes detected in existing $(pwd) files. Hard resetting repo...${NC}\n"
+    printf "${YELLOW}Changes detected in $(pwd) files. Hard resetting repo...${NC}\n"
     git reset --hard HEAD^
     git pull
   else
