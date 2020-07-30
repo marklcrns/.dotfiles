@@ -8,3 +8,5 @@
 ~/Projects/Dev/cloned-repos/CISC191;https://github.com/MiramarCISC/CISC191.git
 ~/Projects/Dev/cloned-repos/Guitar-Hero-Sample;https://github.com/feritzcan/Guitar-Hero
 ~/Projects/Dev/cloned-repos/BlackWidow-Chess;https://github.com/amir650/BlackWidow-Chess
+~/Projects/Dev/cloned-repos/CISC191-SUM20-A;https://github.com/MiramarCISC/CISC191-SUM20-A
+~/Projects/Dev/cloned-repos/freecol;https://github.com/FreeCol/freecol
