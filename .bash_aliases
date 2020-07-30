@@ -599,6 +599,7 @@ printalldevrepo() {
 # Delete lines with forward slashes in file: https://stackoverflow.com/a/25173311
 # TODO: un-DRY code
 checkalldevrepos() {
+  CURRENT_DIR_SAVE=$(pwd)
   # Cat dev repo lists content into a variable
   PULL_DEV_LIST="$(cat ${DEV_PULL_LIST_PATH})" || return 1
   PUSH_DEV_LIST="$(cat ${DEV_PUSH_LIST_PATH})" || return 1
@@ -724,6 +725,8 @@ checkalldevrepos() {
       echo "${REPO_PATH}"
     fi
   done
+  # Go back to initial directory
+  cd ${CURRENT_DIR_SAVE}
 }
 
 clonealldevrepo() {

@@ -15,7 +15,7 @@ badd +39 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Handler.java
 badd +81 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Bullet.java
 badd +62 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Minion.java
 badd +40 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Wizard.java
-badd +225 src/test/java/edu/sdccd/cisc191/wizardGame/objects/WizardTest.java
+badd +67 src/test/java/edu/sdccd/cisc191/wizardGame/objects/WizardTest.java
 badd +17 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Crate.java
 badd +49 src/main/java/edu/sdccd/cisc191/wizardGame/Game.java
 badd +7 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/levels/Level.java
@@ -54,7 +54,7 @@ setlocal fdi=#
 setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
-setlocal fen
+setlocal nofen
 silent! normal! zE
 41,48fold
 51,62fold
@@ -73,13 +73,41 @@ silent! normal! zE
 27,253fold
 27
 normal! zo
+41
+normal! zc
+51
+normal! zc
+65
+normal! zo
+69
+normal! zc
+88
+normal! zc
+137
+normal! zc
+65
+normal! zc
 160
 normal! zo
-let s:l = 233 - ((31 * winheight(0) + 24) / 48)
+167
+normal! zc
+181
+normal! zc
+190
+normal! zc
+201
+normal! zc
+225
+normal! zc
+243
+normal! zc
+249
+normal! zc
+let s:l = 68 - ((24 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-233
+68
 normal! 0
 lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
 wincmd w
