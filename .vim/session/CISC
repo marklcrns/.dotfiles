@@ -7,11 +7,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +1 school/md/summer-2020/CISC-191/modules/index.md
-badd +940 school/md/summer-2020/CISC-191/modules/week-7/notes/index.md
+badd +16 school/md/summer-2020/CISC-191/modules/index.md
+badd +23 school/md/summer-2020/CISC-191/modules/week-7/notes/index.md
+badd +14 school/md/summer-2020/CISC-191/modules/week-7/notes/lambda_stream.md
 argglobal
 %argdel
-edit school/md/summer-2020/CISC-191/modules/week-7/notes/index.md
+edit school/md/summer-2020/CISC-191/modules/week-7/notes/lambda_stream.md
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -27,11 +28,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 21 - ((3 * winheight(0) + 17) / 34)
+let s:l = 19 - ((18 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-21
+19
 normal! 0
 lcd ~/Docs/wiki
 tabnext 1

@@ -7,20 +7,84 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +10 src/main/java/com/groupA/GraphicsSplash.java
-badd +30 src/main/java/com/groupA/SplashScreen.java
-badd +13 src/main/java/com/groupA/BufferedImageLoader.java
-badd +37 src/main/java/com/groupA/Animation.java
+badd +49 src/test/java/edu/sdccd/cisc191/wizardGame/objects/BulletTest.java
+badd +20 src/main/java/edu/sdccd/cisc191/wizardGame/objects/GameObject.java
+badd +28 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Block.java
+badd +247 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/levels/AbstractLevel.java
+badd +39 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Handler.java
+badd +81 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Bullet.java
+badd +62 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Minion.java
+badd +40 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Wizard.java
+badd +225 src/test/java/edu/sdccd/cisc191/wizardGame/objects/WizardTest.java
+badd +17 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Crate.java
+badd +49 src/main/java/edu/sdccd/cisc191/wizardGame/Game.java
+badd +7 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/levels/Level.java
+badd +38 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Totem.java
+badd +81 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/GamePanel.java
+badd +69 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/GeneralPanel.java
+badd +8 src/main/java/edu/sdccd/cisc191/wizardGame/gui/anim/Animation.java
 argglobal
 %argdel
-edit src/main/java/com/groupA/GraphicsSplash.java
+$argadd src/test/java/edu/sdccd/cisc191/wizardGame/objects/BulletTest.java
+edit src/test/java/edu/sdccd/cisc191/wizardGame/objects/WizardTest.java
 set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+wincmd _ | wincmd |
+split
+1wincmd k
+wincmd w
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
+exe 'vert 1resize ' . ((&columns * 102 + 102) / 204)
+exe '2resize ' . ((&lines * 24 + 26) / 52)
+exe 'vert 2resize ' . ((&columns * 101 + 102) / 204)
+exe '3resize ' . ((&lines * 23 + 26) / 52)
+exe 'vert 3resize ' . ((&columns * 101 + 102) / 204)
 argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=99
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+41,48fold
+51,62fold
+69,84fold
+88,109fold
+137,156fold
+65,157fold
+167,177fold
+181,186fold
+190,197fold
+201,220fold
+160,221fold
+225,239fold
+243,245fold
+249,252fold
+27,253fold
+27
+normal! zo
+160
+normal! zo
+let s:l = 233 - ((31 * winheight(0) + 24) / 48)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+233
+normal! 0
+lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
+wincmd w
+argglobal
+if bufexists("~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/objects/Wizard.java") | buffer ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/objects/Wizard.java | else | edit ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/objects/Wizard.java | endif
 setlocal fdm=syntax
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -29,15 +93,43 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-18
+13
 normal! zo
-let s:l = 10 - ((9 * winheight(0) + 12) / 25)
+42
+normal! zo
+let s:l = 72 - ((20 * winheight(0) + 12) / 24)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-10
+72
+normal! 09|
+lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
+wincmd w
+argglobal
+if bufexists("~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/objects/Bullet.java") | buffer ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/objects/Bullet.java | else | edit ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/objects/Bullet.java | endif
+setlocal fdm=syntax
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=99
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+19
+normal! zo
+let s:l = 5 - ((3 * winheight(0) + 11) / 23)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+5
 normal! 0
 lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
+wincmd w
+exe 'vert 1resize ' . ((&columns * 102 + 102) / 204)
+exe '2resize ' . ((&lines * 24 + 26) / 52)
+exe 'vert 2resize ' . ((&columns * 101 + 102) / 204)
+exe '3resize ' . ((&lines * 23 + 26) / 52)
+exe 'vert 3resize ' . ((&columns * 101 + 102) / 204)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
