@@ -7,26 +7,30 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +49 src/test/java/edu/sdccd/cisc191/wizardGame/objects/BulletTest.java
-badd +20 src/main/java/edu/sdccd/cisc191/wizardGame/objects/GameObject.java
+badd +66 src/test/java/edu/sdccd/cisc191/wizardGame/objects/BulletTest.java
+badd +42 src/main/java/edu/sdccd/cisc191/wizardGame/objects/GameObject.java
 badd +28 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Block.java
 badd +247 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/levels/AbstractLevel.java
-badd +39 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Handler.java
-badd +81 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Bullet.java
+badd +14 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Handler.java
+badd +5 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Bullet.java
 badd +62 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Minion.java
-badd +40 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Wizard.java
-badd +67 src/test/java/edu/sdccd/cisc191/wizardGame/objects/WizardTest.java
+badd +68 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Wizard.java
+badd +214 src/test/java/edu/sdccd/cisc191/wizardGame/objects/WizardTest.java
 badd +17 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Crate.java
 badd +49 src/main/java/edu/sdccd/cisc191/wizardGame/Game.java
 badd +7 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/levels/Level.java
 badd +38 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Totem.java
 badd +81 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/GamePanel.java
 badd +69 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/GeneralPanel.java
-badd +8 src/main/java/edu/sdccd/cisc191/wizardGame/gui/anim/Animation.java
+badd +55 src/main/java/edu/sdccd/cisc191/wizardGame/gui/anim/Animation.java
+badd +65 src/test/java/edu/sdccd/cisc191/wizardGame/objects/HandlerTest.java
+badd +14 src/main/java/edu/sdccd/cisc191/wizardGame/gui/anim/Camera.java
+badd +23 src/test/java/edu/sdccd/cisc191/wizardGame/gui/anim/CameraTest.java
+badd +43 src/test/java/edu/sdccd/cisc191/wizardGame/gui/anim/AnimationTest.java
 argglobal
 %argdel
 $argadd src/test/java/edu/sdccd/cisc191/wizardGame/objects/BulletTest.java
-edit src/test/java/edu/sdccd/cisc191/wizardGame/objects/WizardTest.java
+edit src/test/java/edu/sdccd/cisc191/wizardGame/gui/anim/AnimationTest.java
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
@@ -42,77 +46,31 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 exe 'vert 1resize ' . ((&columns * 102 + 102) / 204)
-exe '2resize ' . ((&lines * 24 + 26) / 52)
+exe '2resize ' . ((&lines * 32 + 26) / 52)
 exe 'vert 2resize ' . ((&columns * 101 + 102) / 204)
-exe '3resize ' . ((&lines * 23 + 26) / 52)
+exe '3resize ' . ((&lines * 15 + 26) / 52)
 exe 'vert 3resize ' . ((&columns * 101 + 102) / 204)
 argglobal
-setlocal fdm=manual
+setlocal fdm=syntax
 setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
 setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
-setlocal nofen
-silent! normal! zE
-41,48fold
-51,62fold
-69,84fold
-88,109fold
-137,156fold
-65,157fold
-167,177fold
-181,186fold
-190,197fold
-201,220fold
-160,221fold
-225,239fold
-243,245fold
-249,252fold
-27,253fold
-27
+setlocal fen
+17
 normal! zo
-41
-normal! zc
-51
-normal! zc
-65
-normal! zo
-69
-normal! zc
-88
-normal! zc
-137
-normal! zc
-65
-normal! zc
-160
-normal! zo
-167
-normal! zc
-181
-normal! zc
-190
-normal! zc
-201
-normal! zc
-225
-normal! zc
-243
-normal! zc
-249
-normal! zc
-let s:l = 68 - ((24 * winheight(0) + 24) / 48)
+let s:l = 42 - ((35 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-68
+42
 normal! 0
 lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
 wincmd w
 argglobal
-if bufexists("~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/objects/Wizard.java") | buffer ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/objects/Wizard.java | else | edit ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/objects/Wizard.java | endif
+if bufexists("~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/gui/anim/Animation.java") | buffer ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/gui/anim/Animation.java | else | edit ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/gui/anim/Animation.java | endif
 setlocal fdm=syntax
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -123,18 +81,16 @@ setlocal fdn=20
 setlocal fen
 13
 normal! zo
-42
-normal! zo
-let s:l = 72 - ((20 * winheight(0) + 12) / 24)
+let s:l = 18 - ((8 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-72
-normal! 09|
+18
+normal! 0
 lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
 wincmd w
 argglobal
-if bufexists("~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/objects/Bullet.java") | buffer ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/objects/Bullet.java | else | edit ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/objects/Bullet.java | endif
+if bufexists("~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/test/java/edu/sdccd/cisc191/wizardGame/objects/BulletTest.java") | buffer ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/test/java/edu/sdccd/cisc191/wizardGame/objects/BulletTest.java | else | edit ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/test/java/edu/sdccd/cisc191/wizardGame/objects/BulletTest.java | endif
 setlocal fdm=syntax
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -143,20 +99,20 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-19
+16
 normal! zo
-let s:l = 5 - ((3 * winheight(0) + 11) / 23)
+let s:l = 76 - ((7 * winheight(0) + 7) / 15)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-5
-normal! 0
+76
+normal! 05|
 lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
 wincmd w
 exe 'vert 1resize ' . ((&columns * 102 + 102) / 204)
-exe '2resize ' . ((&lines * 24 + 26) / 52)
+exe '2resize ' . ((&lines * 32 + 26) / 52)
 exe 'vert 2resize ' . ((&columns * 101 + 102) / 204)
-exe '3resize ' . ((&lines * 23 + 26) / 52)
+exe '3resize ' . ((&lines * 15 + 26) / 52)
 exe 'vert 3resize ' . ((&columns * 101 + 102) / 204)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
