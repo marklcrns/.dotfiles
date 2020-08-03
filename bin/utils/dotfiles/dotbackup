@@ -1,0 +1,99 @@
+#!/bin/bash
+
+cd ${HOME}
+
+DOTFILES_REPO="~/Projects/.dotfiles"
+DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
+DOTFILES_LIST=()
+
+# Source rc file if exist
+if [[ -e ${DOTFILESRC} ]]; then
+  source ${DOTFILESRC}
+fi
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+ok() {
+  message=$1
+  if [[ -n ${message} ]]; then
+    printf "${GREEN}${message}${NC}\n"
+  fi
+}
+
+warning() {
+  message=$1
+  if [[ -n ${message} ]]; then
+    printf "${YELLOW}${message}${NC}\n"
+  fi
+}
+
+error() {
+  message=$1
+  exit_code=$2
+  if [[ -n ${message} ]]; then
+    printf "${RED}${message}${NC}\n"
+    # Exit with exit code else exit 1
+    [[ ${exit_code} ]] && exit ${exit_code} || exit 1
+  fi
+}
+
+
+BACKUP_DIR_NAME="`date +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak"
+
+echo "Backing up following files in '${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}'..."
+for dotfile in ${DOTFILES_LIST[@]};
+do
+  echo ${dotfile}
+done
+
+echo
+
+# Create backup directory
+mkdir -p "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}"
+
+# Backup all dotfiles
+for dotfile in ${DOTFILES_LIST[@]};
+do
+  # Strip home directory from path
+  dotfile_stripped=$(echo $dotfile | sed "s,${HOME}/,,")
+  subdir=${dotfile_stripped}
+
+  # Strip basename for non-directory or last subdirectory
+  subdir=$(echo ${dotfile_stripped} | sed "s,$(basename $dotfile).*,,")
+
+  # Strip trailing '/' if directory path
+  subdir=$(echo ${subdir} | sed -r "s,(.*)/$,\1,")
+  dotfile_stripped=$(echo ${dotfile_stripped} | sed -r "s,(.*)/$,\1,")
+
+  full_backup_dir="${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}"
+
+  # Append subdir to full path
+  if [[ -n ${subdir} ]]; then
+    full_backup_dir="${full_backup_dir}/${subdir}"
+    # Create subdirectories
+    mkdir -p ${full_backup_dir}
+  fi
+
+  # Copy dotfile into backup directory
+  cp -r ${dotfile_stripped} ${full_backup_dir}
+  echo "COMMAND: cp -r ${dotfile_stripped} ${full_backup_dir}"
+done
+
+# Final check
+for dotfile in ${DOTFILES_LIST[@]};
+do
+  # Strip home directory from path
+  dotfile_stripped=$(echo $dotfile | sed "s,${HOME}/,,")
+  full_backup_dir="${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}"
+
+  if [[ ! -e "${full_backup_dir}/${dotfile_stripped}" ]]; then
+    error "'${dotfile_stripped}' is missing from '${full_backup_dir}'"
+  fi
+done
+
+ok "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME} backup created!"
+

@@ -158,7 +158,7 @@ DOTFILES="${HOME}/Projects/.dotfiles"
 dotfilesbackup() {
   CURRENT_DIR_SAVE=$(pwd)
   cd ${HOME}
-  DOTBACKUPDIR=${HOME}/.dotfiles.bak/`date -u +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
+  DOTBACKUPDIR=${HOME}/.dotfiles.bak/`date +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
   mkdir -p ${DOTBACKUPDIR}
   mkdir -p ${DOTBACKUPDIR}/.config ${DOTBACKUPDIR}/.vim ${DOTBACKUPDIR}/applications
   cp -r \
@@ -173,7 +173,7 @@ dotfilesbackup() {
     .ctags.d/ \
     .mutt/ \
     .rclonesyncwd/ \
-    .ripgreprc/ \
+    .ripgreprc \
     .scimrc \
     ${DOTBACKUPDIR}
 
@@ -210,7 +210,7 @@ dotfilesdist() {
     .ctags \
     .ctags.d/ \
     .mutt/ \
-    .ripgreprc/ \
+    .ripgreprc \
     .scimrc \
     ${HOME}
 

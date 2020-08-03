@@ -59,6 +59,10 @@ if [ -n "$PATH" ]; then
   unset old_PATH x
 fi
 
+# ==================== RC FILES GLOBAL VARIABLES ==================== #
+
+export DOTFILESRC="${HOME}/.dotfilesrc"
+
 # ==================== OTHER GLOBAL VARIABLES ==================== #
 
 # Ripgrep global flags
