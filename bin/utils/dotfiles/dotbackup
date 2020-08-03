@@ -1,17 +1,89 @@
 #!/bin/bash
 
-cd ${HOME}
+# Backs up all specified dotfiles from $DOTFILES_LIST into $DOTFILES_BACKUP_DIR
+# within a current timestamp named directory.
+#
+# The $DOTFILESRC specifies the location of .dotfilesrc file to override default
+# script variables.
+#
+# DOTFILES_BACKUP_DIR = Specifieces the location of backup files.
+# DOTFILES_LIST       = Bash array list of config (dot) files or directory to
+#                       backup.
+# BACKUP_DIR_NAME     = Backup directory name. Defaults to current timestamp.
+# LOG_FILE_DIR        = Log file directory.
+# LOG_FILE            = Log file name. Only logs on `-d` flag or debug mode.
+#                       Defaults to current timestamp.
+#
+# Author : Mark Lucernas -- https://github.com/marklcrns
+# Date   : 2020-08-02
 
-DOTFILES_REPO="~/Projects/.dotfiles"
+
+# Default script variables
 DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
 DOTFILES_LIST=()
+BACKUP_DIR_NAME="$(date +"%Y-%m-%dT%H:%M:%S")_old_dotfiles.bak"
+LOG_FILE_DIR="${HOME}/log"
+LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
 
 # Source rc file if exist
-if [[ -e ${DOTFILESRC} ]]; then
-  source ${DOTFILESRC}
+if [[ -e "${DOTFILESRC}" ]]; then
+  source "${DOTFILESRC}"
 fi
 
-# Colors
+# Display help
+usage() {
+cat << EOF
+USAGE:
+
+Backs up all specified dotfiles from \$DOTFILES_LIST into \$DOTFILES_BACKUP_DIR
+within a current timestamp named directory.
+
+  dotbackup [ -dvy ]
+
+OPTIONS:
+
+   -d : debug mode (redirect output in log file)
+   -v : verbose
+   -y : skip confirmation
+   -h : help
+
+EOF
+}
+
+
+# Set flag options
+while getopts "dvyh" opt; do
+  case "$opt" in
+    d) [[ -n "$DEBUG"        ]] && unset DEBUG        || DEBUG=true;;
+    v) [[ -n "$IS_VERBOSE"   ]] && unset IS_VERBOSE   || IS_VERBOSE=true;;
+    y) [[ -n "$SKIP_CONFIRM" ]] && unset SKIP_CONFIRM || SKIP_CONFIRM=true;;
+    h) usage && exit 0;;
+    *) error "Invalid flag.";;
+  esac
+done 2>/dev/null
+shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
+
+
+SCRIPT_PATH="$(realpath -s "${0}")"
+
+# Log stdout and stderr to $LOG_FILE in $LOG_FILE_DIR
+if [[ -n "${DEBUG}" ]]; then
+
+  # Strip trailing '/' in LOG_FILE_DIR path and append "/$LOG_FILE"
+  LOG_FILE_PATH="$(echo ${LOG_FILE_DIR} | sed -r "s,(.*)/$,\1,")/${LOG_FILE}"
+
+  # Create log directory if not existing
+  if [[ ! -d "${LOG_FILE_DIR}" ]]; then
+    mkdir -p "${LOG_FILE_DIR}"
+  fi
+
+  # Initialize log file
+  echo -e "${SCRIPT_PATH} log outputs\n" > ${LOG_FILE_PATH}
+
+fi
+
+
+# STDOUT and STDERR colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -19,38 +91,75 @@ NC='\033[0m' # No Color
 
 ok() {
   message=$1
-  if [[ -n ${message} ]]; then
-    printf "${GREEN}${message}${NC}\n"
+  if [[ -n "${message}" ]]; then
+    echo -e "${GREEN}${message}${NC}"
   fi
 }
 
 warning() {
   message=$1
-  if [[ -n ${message} ]]; then
-    printf "${YELLOW}${message}${NC}\n"
+  if [[ -n "${message}" ]]; then
+    echo -e "${YELLOW}${message}${NC}"
   fi
 }
 
 error() {
   message=$1
-  exit_code=$2
-  if [[ -n ${message} ]]; then
-    printf "${RED}${message}${NC}\n"
-    # Exit with exit code else exit 1
-    [[ ${exit_code} ]] && exit ${exit_code} || exit 1
+  exitcode=$2
+  if [[ -n "${message}" ]]; then
+    echo -e "${RED}${message}${NC}"
+    # Exit with specified exit code, else exit 1
+    [[ ${exit_code} -ge 0 ]] && exit ${exit_code} || exit 1
   fi
 }
 
+log() {
+  message=$1
+  # Log message on debug mode
+  if [[ -n "${message}" ]] && [[ -n "${DEBUG}" ]]; then
+    echo -e "${message}\n" >> "${LOG_FILE_PATH}"
+  fi
+}
 
-BACKUP_DIR_NAME="`date +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak"
+echolog(){
+  message=$1
+  if [[ -n "${message}" ]]; then
 
-echo "Backing up following files in '${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}'..."
+    # echo if verbose
+    if [[ -n ${IS_VERBOSE} ]]; then
+      echo -e "${message}"
+    fi
+
+    # Log message on debug mode
+    if [[ -n "${DEBUG}" ]]; then
+      echo -e "${message}" >> "${LOG_FILE_PATH}"
+    fi
+
+  fi
+}
+
+echolog "Backing up the following files in '${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}'..."
 for dotfile in ${DOTFILES_LIST[@]};
 do
-  echo ${dotfile}
+  echolog ${dotfile}
 done
 
-echo
+# Confirmation
+# see /bin/syntax-helpers/confirm
+if [[ -z "${SKIP_CONFIRM}" ]]; then
+
+  confirm "Do you wish to continue? (Y/y) "
+  if [[ "${?}" -eq 1 ]]; then
+    error "Backup aborted." 0
+  elif [[ "${?}" -eq 2 ]]; then
+    error "Unsupported shell"
+  fi
+
+fi
+
+
+cd ${HOME}
+echolog "\nBacking up..."
 
 # Create backup directory
 mkdir -p "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}"
@@ -65,25 +174,25 @@ do
   # Strip basename for non-directory or last subdirectory
   subdir=$(echo ${dotfile_stripped} | sed "s,$(basename $dotfile).*,,")
 
-  # Strip trailing '/' if directory path
+  # Strip trailing '/' in directory path
   subdir=$(echo ${subdir} | sed -r "s,(.*)/$,\1,")
   dotfile_stripped=$(echo ${dotfile_stripped} | sed -r "s,(.*)/$,\1,")
 
   full_backup_dir="${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}"
 
   # Append subdir to full path
-  if [[ -n ${subdir} ]]; then
+  if [[ -n "${subdir}" ]]; then
     full_backup_dir="${full_backup_dir}/${subdir}"
     # Create subdirectories
     mkdir -p ${full_backup_dir}
   fi
 
   # Copy dotfile into backup directory
+  echolog "[COMMAND] cp -r ${dotfile_stripped} ${full_backup_dir}"
   cp -r ${dotfile_stripped} ${full_backup_dir}
-  echo "COMMAND: cp -r ${dotfile_stripped} ${full_backup_dir}"
 done
 
-# Final check
+# Final check if all files and directories are copied
 for dotfile in ${DOTFILES_LIST[@]};
 do
   # Strip home directory from path
@@ -92,8 +201,10 @@ do
 
   if [[ ! -e "${full_backup_dir}/${dotfile_stripped}" ]]; then
     error "'${dotfile_stripped}' is missing from '${full_backup_dir}'"
+    log "'${dotfile_stripped}' is missing from '${full_backup_dir}'"
   fi
 done
 
 ok "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME} backup created!"
+log "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME} backup created!"
 

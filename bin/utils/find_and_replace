@@ -9,7 +9,6 @@ REPLACE=$3
 FILTER=$4
 
 usage() {
-  echo "[ERROR] Invalid arguements."
   echo ${0}
   echo
   echo "USAGE: <required> [optional]"
@@ -29,6 +28,7 @@ error() {
 }
 
 if [[ $# -lt 3 ]] || [[ $# -gt 4 ]]; then
+  echo "[ERROR] Invalid arguements."
   usage && exit 1
 fi
 
@@ -58,11 +58,11 @@ echo "  - Filter (optional) = '${FILTER}'"
 # Confirmation
 confirm "Do you wish to continue? (Y/y) "
 if [[ "${?}" -eq 1 ]]; then
-  echo "Executing..."
-else
   error "Aborted."
 elif [[ "${?}" -eq 2 ]]; then
   error "Unsupported shell"
+else
+  echo "Executing..."
 fi
 
 # Execute then print changes with rg

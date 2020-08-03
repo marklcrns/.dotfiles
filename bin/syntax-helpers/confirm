@@ -17,7 +17,7 @@ reply() {
   if [[ "$REPLY" =~ ^[Yy]$ ]]; then
     exit 0
   else
-    echo "Aborted." && exit 1
+    exit 1
   fi
 }
 
