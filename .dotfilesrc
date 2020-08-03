@@ -1,0 +1,26 @@
+#!/bin/bash
+
+export DOTFILES_REPO="${HOME}/Projects/.dotfiles"
+export DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
+
+export DOTFILES_LIST=(
+"${HOME}/.profile"
+"${HOME}/.bash_profile"
+"${HOME}/.bashrc"
+"${HOME}/.bash_aliases"
+"${HOME}/.zprofile"
+"${HOME}/.zshenv"
+"${HOME}/.zshrc"
+"${HOME}/.tmux.conf"
+"${HOME}/.tmux/wsl_tmux_statusline.sh"
+"${HOME}/.gitconfig"
+"${HOME}/.ctags"
+"${HOME}/.ctags.d/"
+"${HOME}/.mutt/"
+"${HOME}/.rclonesyncwd/"
+"${HOME}/.ripgreprc"
+"${HOME}/.scimrc"
+"${HOME}/.config/ranger/"
+"${HOME}/.config/zathura/"
+"${HOME}/bin/"
+)

@@ -163,6 +163,7 @@ dotfilesbackup() {
   mkdir -p ${DOTBACKUPDIR}/.config ${DOTBACKUPDIR}/.vim ${DOTBACKUPDIR}/applications
   cp -r \
     bin \
+    .dotfilesrc \
     .profile \
     .bash_profile .bashrc .bash_aliases \
     .zprofile .zshenv .zshrc \
@@ -202,6 +203,7 @@ dotfilesdist() {
   # distribute dotfiles
   cd ${DOTFILES}
   cp -r \
+    .dotfilesrc \
     .profile \
     .bash_profile .bashrc .bash_aliases \
     .zprofile .zshenv .zshrc \
@@ -241,6 +243,7 @@ dotfilesupdate() {
   CURRENT_DIR_SAVE=$(pwd)
   cd ${DOTFILES}
   cp -r \
+    ~/.dotfilesrc \
     ~/.profile \
     ~/.bash_profile ~/.bashrc ~/.bash_aliases \
     ~/.zprofile ~/.zshenv ~/.zshrc \
