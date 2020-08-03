@@ -108,9 +108,9 @@ error() {
   exitcode=$2
   if [[ -n "${message}" ]]; then
     echo -e "${RED}${message}${NC}"
-    # Exit with specified exit code, else exit 1
-    [[ ${exit_code} -ge 0 ]] && exit ${exit_code} || exit 1
   fi
+  # Exit with specified exit code, else exit 1
+  [[ ${exit_code} -ge 0 ]] && exit ${exit_code} || exit 1
 }
 
 log() {
