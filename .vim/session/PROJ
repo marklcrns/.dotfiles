@@ -7,49 +7,24 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +66 src/test/java/edu/sdccd/cisc191/wizardGame/objects/BulletTest.java
-badd +42 src/main/java/edu/sdccd/cisc191/wizardGame/objects/GameObject.java
-badd +28 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Block.java
-badd +247 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/levels/AbstractLevel.java
-badd +14 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Handler.java
-badd +5 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Bullet.java
-badd +62 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Minion.java
-badd +68 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Wizard.java
-badd +214 src/test/java/edu/sdccd/cisc191/wizardGame/objects/WizardTest.java
-badd +17 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Crate.java
-badd +49 src/main/java/edu/sdccd/cisc191/wizardGame/Game.java
-badd +7 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/levels/Level.java
-badd +38 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Totem.java
-badd +81 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/GamePanel.java
-badd +69 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/GeneralPanel.java
-badd +55 src/main/java/edu/sdccd/cisc191/wizardGame/gui/anim/Animation.java
-badd +65 src/test/java/edu/sdccd/cisc191/wizardGame/objects/HandlerTest.java
-badd +14 src/main/java/edu/sdccd/cisc191/wizardGame/gui/anim/Camera.java
-badd +23 src/test/java/edu/sdccd/cisc191/wizardGame/gui/anim/CameraTest.java
-badd +43 src/test/java/edu/sdccd/cisc191/wizardGame/gui/anim/AnimationTest.java
+badd +72 src/main/java/edu/sdccd/cisc191/wizardGame/Game.java
+badd +3 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/GamePanel.java
+badd +151 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/Window.java
+badd +47 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/LoadPanel.java
+badd +39 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/PausePanel.java
+badd +113 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/levels/AbstractLevel.java
+badd +33 src/main/java/edu/sdccd/cisc191/wizardGame/objects/Wizard.java
+badd +86 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/GeneralPanel.java
+badd +62 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/HelpPanel.java
 argglobal
 %argdel
-$argadd src/test/java/edu/sdccd/cisc191/wizardGame/objects/BulletTest.java
-edit src/test/java/edu/sdccd/cisc191/wizardGame/gui/anim/AnimationTest.java
+edit src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/LoadPanel.java
 set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
-wincmd _ | wincmd |
-split
-1wincmd k
-wincmd w
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 102 + 102) / 204)
-exe '2resize ' . ((&lines * 32 + 26) / 52)
-exe 'vert 2resize ' . ((&columns * 101 + 102) / 204)
-exe '3resize ' . ((&lines * 15 + 26) / 52)
-exe 'vert 3resize ' . ((&columns * 101 + 102) / 204)
 argglobal
 setlocal fdm=syntax
 setlocal fde=0
@@ -59,61 +34,15 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-17
+26
 normal! zo
-let s:l = 42 - ((35 * winheight(0) + 24) / 48)
+let s:l = 60 - ((32 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-42
+60
 normal! 0
 lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
-wincmd w
-argglobal
-if bufexists("~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/gui/anim/Animation.java") | buffer ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/gui/anim/Animation.java | else | edit ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/gui/anim/Animation.java | endif
-setlocal fdm=syntax
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=99
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-13
-normal! zo
-let s:l = 18 - ((8 * winheight(0) + 16) / 32)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-18
-normal! 0
-lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
-wincmd w
-argglobal
-if bufexists("~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/test/java/edu/sdccd/cisc191/wizardGame/objects/BulletTest.java") | buffer ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/test/java/edu/sdccd/cisc191/wizardGame/objects/BulletTest.java | else | edit ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/test/java/edu/sdccd/cisc191/wizardGame/objects/BulletTest.java | endif
-setlocal fdm=syntax
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=99
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-16
-normal! zo
-let s:l = 76 - ((7 * winheight(0) + 7) / 15)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-76
-normal! 05|
-lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
-wincmd w
-exe 'vert 1resize ' . ((&columns * 102 + 102) / 204)
-exe '2resize ' . ((&lines * 32 + 26) / 52)
-exe 'vert 2resize ' . ((&columns * 101 + 102) / 204)
-exe '3resize ' . ((&lines * 15 + 26) / 52)
-exe 'vert 3resize ' . ((&columns * 101 + 102) / 204)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
