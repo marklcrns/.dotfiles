@@ -6,7 +6,7 @@
 # The $DOTFILESRC specifies the location of .dotfilesrc file to override default
 # script variables.
 #
-# DOTFILES_BACKUP_DIR = Specifieces the location of backup files.
+# DOTFILES_BACKUP_DIR = Specifies the location of backup files.
 # DOTFILES_LIST       = Bash array list of config (dot) files or directory to
 #                       backup.
 # BACKUP_DIR_NAME     = Backup directory name. Defaults to current timestamp.
@@ -16,7 +16,6 @@
 #
 # Author : Mark Lucernas -- https://github.com/marklcrns
 # Date   : 2020-08-02
-
 
 # Default script variables
 DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
@@ -89,72 +88,100 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-ok() {
-  message=$1
-  if [[ -n "${message}" ]]; then
-    echo -e "${GREEN}${message}${NC}"
-  fi
-}
-
-warning() {
-  message=$1
-  if [[ -n "${message}" ]]; then
-    echo -e "${YELLOW}${message}${NC}"
-  fi
-}
-
-error() {
-  message=$1
-  exitcode=$2
-  if [[ -n "${message}" ]]; then
-    echo -e "${RED}${message}${NC}"
-  fi
-  # Exit with specified exit code, else exit 1
-  [[ ${exit_code} -ge 0 ]] && exit ${exit_code} || exit 1
-}
-
 log() {
-  message=$1
-  # Log message on debug mode
-  if [[ -n "${message}" ]] && [[ -n "${DEBUG}" ]]; then
-    echo -e "${message}\n" >> "${LOG_FILE_PATH}"
+  # Stores message into $IN if string argument is passed in,
+  # else read from stdin and store it in $IN (used with pipe '|').
+  # Only log message on debug mode. Echoes $IN if used with pipe.
+  if [[ -n "$1" ]]; then
+    IN="$1"
+    [[ -n "${DEBUG}" ]] && echo -e "${IN}" >> "${LOG_FILE_PATH}"
+  else
+    read IN
+    if [[ -n ${IN} ]]; then
+      [[ -n "${DEBUG}" ]] && echo -e "${IN}" | tee -a "${LOG_FILE_PATH}"
+    fi
   fi
+
 }
 
 echolog(){
   message=$1
   if [[ -n "${message}" ]]; then
-
     # echo if verbose
-    if [[ -n ${IS_VERBOSE} ]]; then
-      echo -e "${message}"
-    fi
-
+    [[ -n ${IS_VERBOSE} ]] && echo -e "${message}"
     # Log message on debug mode
-    if [[ -n "${DEBUG}" ]]; then
-      echo -e "${message}" >> "${LOG_FILE_PATH}"
-    fi
-
+    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
 }
 
+ok() {
+  message="$1"
+  if [[ -n "${message}" ]]; then
+    echo -e "${GREEN}${message}${NC}"
+    # Log message on debug mode
+    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+  fi
+}
+
+warning() {
+  message="$1"
+  if [[ -n "${message}" ]]; then
+    echo -e "${YELLOW}${message}${NC}"
+    # Log message on debug mode
+    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+  fi
+}
+
+abort() {
+  message="$1"
+  if [[ -n "${message}" ]]; then
+    echo -e "${YELLOW}${message}${NC}"
+    # Log message on debug mode
+    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+  fi
+  exit 0
+}
+
+error() {
+  message="$1"
+  exitcode="$2"
+  if [[ -n "${message}" ]]; then
+    echo -e "${RED}${message}${NC}"
+    # Log message on debug mode
+    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+  fi
+  # Exit with specified exit code. Do not exit if no exit code
+  if [[ -n ${exitcode} ]]; then
+    [[ ${exitcode} -ge 0 ]] && exit ${exitcode}
+  fi
+}
+
+
+dotfiles_count=0
 echolog "Backing up the following files in '${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}'..."
 for dotfile in ${DOTFILES_LIST[@]};
 do
   echolog ${dotfile}
+  let "dotfiles_count++"
 done
+
+# Abort if no dotfiles detected
+if [[ ${dotfiles_count} -eq 0 ]]; then
+  abort "\nAborting... No dotfiles to backup."
+fi
+
+echolog "\nTotal filepaths in DOTFILES_LIST: ${dotfiles_count}"
 
 # Confirmation
 # see /bin/syntax-helpers/confirm
 if [[ -z "${SKIP_CONFIRM}" ]]; then
-
+  log "Do you wish to continue? (Y/y)"
   confirm "Do you wish to continue? (Y/y) "
   if [[ "${?}" -eq 1 ]]; then
-    error "Backup aborted." 0
+    abort "Backup aborted."
   elif [[ "${?}" -eq 2 ]]; then
     error "Unsupported shell"
   fi
-
 fi
 
 
@@ -188,8 +215,8 @@ do
   fi
 
   # Copy dotfile into backup directory
-  echolog "[COMMAND] cp -r ${dotfile_stripped} ${full_backup_dir}"
-  cp -r ${dotfile_stripped} ${full_backup_dir}
+  echolog "[COMMAND] cp -rL ${dotfile_stripped} ${full_backup_dir}"
+  cp -rL ${dotfile_stripped} ${full_backup_dir} 2>&1 | log
 done
 
 # Final check if all files and directories are copied
@@ -201,10 +228,8 @@ do
 
   if [[ ! -e "${full_backup_dir}/${dotfile_stripped}" ]]; then
     error "'${dotfile_stripped}' is missing from '${full_backup_dir}'"
-    log "'${dotfile_stripped}' is missing from '${full_backup_dir}'"
   fi
 done
 
-ok "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME} backup created!"
-log "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME} backup created!"
+ok "\n${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME} backup created!"
 
