@@ -13,6 +13,7 @@ export DOTFILES_LIST=(
 "${HOME}/.ctags.d/"
 "${HOME}/.dotfilesrc"
 "${HOME}/.gitconfig"
+"${HOME}/.gtd/"
 "${HOME}/.mutt/"
 "${HOME}/.profile"
 "${HOME}/.rclonesyncwd/"
@@ -25,3 +26,34 @@ export DOTFILES_LIST=(
 "${HOME}/.zshrc"
 "${HOME}/bin/"
 )
+
+# WSL specific configs
+if [[ "$(grep -i microsoft /proc/version)" ]]; then
+
+  export DOTFILES_LIST=(
+  "${HOME}/.bash_aliases"
+  "${HOME}/.bash_profile"
+  "${HOME}/.bashrc"
+  "${HOME}/.config/mimeapps.list"
+  "${HOME}/.config/ranger/"
+  "${HOME}/.config/zathura/"
+  "${HOME}/.ctags"
+  "${HOME}/.ctags.d/"
+  "${HOME}/.dotfilesrc"
+  "${HOME}/.gitconfig"
+  "${HOME}/.gtd/"
+  "${HOME}/.local/share/applications"
+  "${HOME}/.mutt/"
+  "${HOME}/.profile"
+  "${HOME}/.rclonesyncwd/"
+  "${HOME}/.ripgreprc"
+  "${HOME}/.scimrc"
+  "${HOME}/.tmux.conf"
+  "${HOME}/.tmux/wsl_tmux_statusline.sh"
+  "${HOME}/.zprofile"
+  "${HOME}/.zshenv"
+  "${HOME}/.zshrc"
+  "${HOME}/bin/"
+  )
+  # cp -r "/mnt/c/Users/${WIN_USERNAME}/Documents/.gtd/" ${DOTBACKUPDIR}
+fi
