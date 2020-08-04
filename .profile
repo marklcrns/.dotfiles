@@ -103,8 +103,7 @@ fi
 
 # ==================== SOURCING FILES ==================== #
 
-# Load RVM into a shell session *as a function*
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+# SOURCING FILES NEEDS TO GO IN BASHRC OR ZSHRC TO PREVENT SOME ISSUES
 
 # ==================== MISC ==================== #
 
