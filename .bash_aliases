@@ -547,7 +547,7 @@ createalldevrepolists() {
     # Get repo github link
     GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
     # Append repo absolute path its github link in dev_repo_list.txt
-    sed -ir "s|^${GIT_REPO_PATH}$|${GIT_REPO_PATH};${GIT_REPO_LINK}|" ${DEV_PULL_LIST_PATH}
+    sed -i "s|^${GIT_REPO_PATH}$|${GIT_REPO_PATH};${GIT_REPO_LINK}|" ${DEV_PULL_LIST_PATH}
   done
 
   # Append repo links in push list
@@ -559,7 +559,7 @@ createalldevrepolists() {
     # Get repo github link
     GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
     # Append repo absolute path its github link in dev_repo_list.txt
-    sed -ir "s|^${GIT_REPO_PATH}$|${GIT_REPO_PATH};${GIT_REPO_LINK}|" ${DEV_PUSH_LIST_PATH}
+    sed -i "s|^${GIT_REPO_PATH}$|${GIT_REPO_PATH};${GIT_REPO_LINK}|" ${DEV_PUSH_LIST_PATH}
   done
 
   [[ -f ${DEV_PULL_LIST_PATH} ]] && \
