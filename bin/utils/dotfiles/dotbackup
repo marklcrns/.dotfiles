@@ -6,6 +6,8 @@
 # The $DOTFILESRC specifies the location of .dotfilesrc file to override default
 # script variables.
 #
+# ############################## Script Variables ##############################
+#
 # DOTFILES_BACKUP_DIR = Specifies the location of backup files.
 # DOTFILES_LIST       = Bash array list of config (dot) files or directory to
 #                       backup.
@@ -14,8 +16,11 @@
 # LOG_FILE            = Log file name. Only logs on `-d` flag or debug mode.
 #                       Defaults to current timestamp.
 #
+# ##############################################################################
+#
 # Author : Mark Lucernas -- https://github.com/marklcrns
 # Date   : 2020-08-02
+
 
 # Default script variables
 DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
@@ -64,21 +69,20 @@ shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
 
 
 SCRIPT_PATH="$(realpath -s "${0}")"
+# Strip trailing '/' in DIR path variables
+DOTFILES_BACKUP_DIR=$(echo ${DOTFILES_BACKUP_DIR} | sed -r "s,(.*)/$,\1,")
+LOG_FILE_DIR=$(echo ${LOG_FILE_DIR} | sed -r "s,(.*)/$,\1,")
 
 # Log stdout and stderr to $LOG_FILE in $LOG_FILE_DIR
 if [[ -n "${DEBUG}" ]]; then
-
   # Strip trailing '/' in LOG_FILE_DIR path and append "/$LOG_FILE"
-  LOG_FILE_PATH="$(echo ${LOG_FILE_DIR} | sed -r "s,(.*)/$,\1,")/${LOG_FILE}"
-
+  LOG_FILE_PATH="${LOG_FILE_DIR}/${LOG_FILE}"
   # Create log directory if not existing
   if [[ ! -d "${LOG_FILE_DIR}" ]]; then
     mkdir -p "${LOG_FILE_DIR}"
   fi
-
   # Initialize log file
   echo -e "${SCRIPT_PATH} log outputs\n" > ${LOG_FILE_PATH}
-
 fi
 
 
@@ -195,15 +199,13 @@ mkdir -p "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}"
 for dotfile in ${DOTFILES_LIST[@]};
 do
   # Strip home directory from path
-  dotfile_stripped=$(echo $dotfile | sed "s,${HOME}/,,")
-  subdir=${dotfile_stripped}
-
+  home_stripped=$(echo $dotfile | sed "s,${HOME}/,,")
   # Strip basename for non-directory or last subdirectory
-  subdir=$(echo ${dotfile_stripped} | sed "s,$(basename $dotfile).*,,")
+  subdir=$(echo ${home_stripped} | sed "s,$(basename $dotfile).*,,")
 
   # Strip trailing '/' in directory path
   subdir=$(echo ${subdir} | sed -r "s,(.*)/$,\1,")
-  dotfile_stripped=$(echo ${dotfile_stripped} | sed -r "s,(.*)/$,\1,")
+  home_stripped=$(echo ${home_stripped} | sed -r "s,(.*)/$,\1,")
 
   full_backup_dir="${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}"
 
@@ -215,19 +217,19 @@ do
   fi
 
   # Copy dotfile into backup directory
-  echolog "[COMMAND] cp -rL ${dotfile_stripped} ${full_backup_dir}"
-  cp -rL ${dotfile_stripped} ${full_backup_dir} 2>&1 | log
+  echolog "[COMMAND] cp -rL ${home_stripped} ${full_backup_dir}"
+  cp -rL ${home_stripped} ${full_backup_dir} 2>&1 | log
 done
 
 # Final check if all files and directories are copied
 for dotfile in ${DOTFILES_LIST[@]};
 do
   # Strip home directory from path
-  dotfile_stripped=$(echo $dotfile | sed "s,${HOME}/,,")
+  home_stripped=$(echo $dotfile | sed "s,${HOME}/,,")
   full_backup_dir="${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}"
 
-  if [[ ! -e "${full_backup_dir}/${dotfile_stripped}" ]]; then
-    error "'${dotfile_stripped}' is missing from '${full_backup_dir}'"
+  if [[ ! -e "${full_backup_dir}/${home_stripped}" ]]; then
+    error "'${home_stripped}' is missing from '${full_backup_dir}'"
   fi
 done
 
