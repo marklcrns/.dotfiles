@@ -563,10 +563,10 @@ createalldevrepolists() {
   done
 
   [[ -f ${DEV_PULL_LIST_PATH} ]] && \
-    echo "Created ${DEV_REPO_LIST_PATH}" && cat ${DEV_PULL_LIST_PATH}
+    echo "Created ${DEV_PULL_LIST_PATH}" && cat ${DEV_PULL_LIST_PATH}
 
   [[ -f ${DEV_PUSH_LIST_PATH} ]] && \
-    echo "Created ${DEV_REPO_LIST_PATH}" && cat ${DEV_PUSH_LIST_PATH}
+    echo "Created ${DEV_PUSH_LIST_PATH}" && cat ${DEV_PUSH_LIST_PATH}
 
   cd ${CURRENT_DIR_SAVE}
 }
@@ -669,7 +669,7 @@ checkalldevrepos() {
 
   echo
   # Re-cat dev pull list for changes
-  PULL_DEV_LIST="$(cat ${DEV_PUSH_LIST_PATH})"
+  PULL_DEV_LIST="$(cat ${DEV_PULL_LIST_PATH})"
   # Re-cat dev push list for changes
   PUSH_DEV_LIST="$(cat ${DEV_PUSH_LIST_PATH})"
 

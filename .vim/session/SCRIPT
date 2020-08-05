@@ -8,7 +8,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +3 dotupdate
-badd +135 dotbackup
+badd +19 dotbackup
 badd +194 ~/.bash_aliases
 badd +25 ~/.dotfilesrc
 badd +1 ~/bin/task/gtd
@@ -37,7 +37,7 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 143 - ((26 * winheight(0) + 20) / 40)
+let s:l = 143 - ((23 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -55,7 +55,7 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 10 - ((9 * winheight(0) + 20) / 40)
+let s:l = 10 - ((8 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
