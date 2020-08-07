@@ -7,28 +7,26 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +111 dotbackup
-badd +161 dotupdate
-badd +271 ~/.config/nvim/layers/+thinkvim/config.vim
+badd +237 dotbackup
+badd +133 dotupdate
 argglobal
 %argdel
 $argadd dotbackup
 $argadd dotupdate
-edit dotupdate
+edit dotbackup
 set splitbelow splitright
 wincmd _ | wincmd |
-vsplit
-1wincmd h
+split
+1wincmd k
 wincmd w
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 91 + 91) / 182)
-exe 'vert 2resize ' . ((&columns * 90 + 91) / 182)
+exe '1resize ' . ((&lines * 32 + 25) / 51)
+exe '2resize ' . ((&lines * 14 + 25) / 51)
 argglobal
-if bufexists("dotupdate") | buffer dotupdate | else | edit dotupdate | endif
 setlocal fdm=syntax
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -37,13 +35,13 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 168 - ((26 * winheight(0) + 20) / 40)
+let s:l = 225 - ((19 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-168
+225
 normal! 0
-lcd ~/bin/utils/dotfiles
+lcd ~/bin
 wincmd w
 argglobal
 if bufexists("~/bin/utils/dotfiles/dotbackup") | buffer ~/bin/utils/dotfiles/dotbackup | else | edit ~/bin/utils/dotfiles/dotbackup | endif
@@ -55,22 +53,22 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 1 - ((0 * winheight(0) + 20) / 40)
+let s:l = 63 - ((8 * winheight(0) + 7) / 14)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
-normal! 0
+63
+normal! 03|
 lcd ~/bin/utils/dotfiles
 wincmd w
-exe 'vert 1resize ' . ((&columns * 91 + 91) / 182)
-exe 'vert 2resize ' . ((&columns * 90 + 91) / 182)
+exe '1resize ' . ((&lines * 32 + 25) / 51)
+exe '2resize ' . ((&lines * 14 + 25) / 51)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
 unlet! s:wipebuf
-set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=aFcI
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=aFc
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if file_readable(s:sx)
   exe "source " . fnameescape(s:sx)

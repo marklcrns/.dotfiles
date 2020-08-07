@@ -149,7 +149,7 @@ error() {
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
   # Exit with specified exit code. Do not exit if no exit code
-  if [[ -n ${exitcode} ]]; then
+  if [[ -n ${exitcode} ]]; then exist
     [[ ${exitcode} -ge 0 ]] && exit ${exitcode}
   fi
 }
@@ -160,30 +160,38 @@ echolog "Changes detected in..."
 for dotfile in ${DOTFILES_LIST[@]};
 do
   # Strip home directory from path
-  home_stripped=$(echo $dotfile | sed "s,${HOME}/,,")
+  home_stripped=$(echo "$dotfile" | sed "s,${HOME}/,,")
   # Strip trailing '/' in directory path
-  home_stripped=$(echo ${home_stripped} | sed -r "s,(.*)/$,\1,")
+  home_stripped=$(echo "${home_stripped}" | sed -r "s,(.*)/$,\1,")
 
   if [[ -d "${dotfile}" ]]; then
-    for file in $(find "${dotfile}" -not -path "*/.git/*" -type f); do
+    find "${dotfile}" -not -path "*/.git/*" -type f -print0 | while IFS= read -r -d '' file; do
+    # for file in $(find "${dotfile}" -not -path "*/.git/*" -type f); do
       # Strip home directory from path
       home_stripped=$(echo "${file}" | sed "s,${HOME}/,,")
       # Suppress details of differences
       # diff -rq "${file}" "${DOTFILES_DEST_DIR}/${home_stripped}"/${file##*/}
       if [[ $(cmp "${file}" "${DOTFILES_DEST_DIR}/${home_stripped}") ]]; then
         echolog "${dotfile}"
+      else
+        echo "${file}"
+        let "dotfiles_changes_count++" # Count changes
+        # echo "source: ${file}"
+        # echo "dest:   ${DOTFILES_DEST_DIR}/${home_stripped}"
+        # echo
       fi
-      echo "${file}"
-      echo "${DOTFILES_DEST_DIR}/${home_stripped}"
     done
   else
     if [[ $(cmp "${dotfile}" "${DOTFILES_DEST_DIR}/${home_stripped}") ]]; then
       echolog "${dotfile}"
+    else
+      echo "${dotfile}"
+      let "dotfiles_changes_count++" # Count changes
+      # echo "source: ${dotfile}"
+      # echo "dest:   ${DOTFILES_DEST_DIR}/${home_stripped}"
+      # echo
     fi
   fi
-
-  # Count changes
-  let "dotfiles_changes_count++"
 done
 
 # Abort if no dotfiles detected

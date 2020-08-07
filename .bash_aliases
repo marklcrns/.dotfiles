@@ -160,7 +160,7 @@ dotfilesbackup() {
   cd ${HOME}
   DOTBACKUPDIR=${HOME}/.dotfiles.bak/`date +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
   mkdir -p ${DOTBACKUPDIR}
-  mkdir -p ${DOTBACKUPDIR}/.config ${DOTBACKUPDIR}/.vim ${DOTBACKUPDIR}/applications
+  mkdir -p ${DOTBACKUPDIR}/.config ${DOTBACKUPDIR}/.vim ${DOTBACKUPDIR}/.local/share/applications
   cp -r \
     bin \
     .dotfilesrc \
@@ -188,7 +188,7 @@ dotfilesbackup() {
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
     cp -r "/mnt/c/Users/${WIN_USERNAME}/Documents/.gtd/" ${DOTBACKUPDIR}
     cp ~/.config/mimeapps.list ${DOTBACKUPDIR}/.config
-    cp -r ~/.local/share/applications ${DOTBACKUPDIR}/applications
+    cp -r ~/.local/share/applications ${DOTBACKUPDIR}/.local/share/applications
   else
     cp -r ~/.gtd/ ${DOTBACKUPDIR}
   fi
@@ -212,6 +212,7 @@ dotfilesdist() {
     .ctags \
     .ctags.d/ \
     .mutt/ \
+    .rclonesyncwd/ \
     .ripgreprc \
     .scimrc \
     ${HOME}
@@ -229,7 +230,7 @@ dotfilesdist() {
     cp wsl_tmux_statusline.sh ~/.tmux/
     cp -r .gtd /mnt/c/Users/${WIN_USERNAME}/Documents
     cp .config/mimeapps.list ~/.config
-    rm -rf ~/.local/share/applications/*.desktop && cp applications/* ~/.local/share/applications
+    rm -rf ~/.local/share/applications/*.desktop; cp .local/share/applications/* ~/.local/share/applications
   else
     cp -r .gtd ${HOME}
   fi
@@ -254,7 +255,8 @@ dotfilesupdate() {
     ~/.scimrc \
     .
 
-  mkdir -p .rclonesyncwd/ && cp ~/.rclonesyncwd/Filters .rclonesyncwd/
+  mkdir -p .tmux/ ; cp ~/.tmux/wsl_tmux_statusline.sh .tmux/
+  mkdir -p .rclonesyncwd/ ; cp ~/.rclonesyncwd/Filters .rclonesyncwd/
   rm -rf .vim/session; cp -r ~/.vim/session .vim
   rm -rf bin; cp -r ~/bin .
   rm -rf .config/{ranger,zathura}; cp -r \
@@ -266,7 +268,10 @@ dotfilesupdate() {
   if [[ "$(grep -i microsoft /proc/version)" ]]; then
     cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/.gtd .
     cp ~/.config/mimeapps.list .config
-    rm -rf applications/*.desktop && cp -r ~/.local/share/applications/*.desktop applications
+    rm -rf .local/share/applications/*.desktop
+
+    [[ ! -d ".local/share/applications" ]] && mkdir -p .local/share/applications
+    cp -r ~/.local/share/applications/*.desktop .local/share/applications
   else
     cp -r ~/.gtd .
   fi
