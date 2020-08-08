@@ -46,10 +46,7 @@ OPTIONS:
    -h : help
 
 EOF
-}
-
-
-# Set flag options
+}; # Set flag options
 while getopts "dvyh" opt; do
   case "$opt" in
     d) [[ -n "$DEBUG"        ]] && unset DEBUG        || DEBUG=true;;

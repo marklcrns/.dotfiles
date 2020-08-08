@@ -68,8 +68,5 @@
   pom = push origin master
   b = branch
   bva = branch -va
-  # Log current branch only
   l = log --simplify-merges --graph --pretty="tformat:%C(yellow)%h%Creset\\ %Cgreen(%ar)%Creset\\ %C(blue)<%an>%Creset\\ %C(red)%d%Creset\\ %s"
-  # Log all branches
-  la = log --branches --remotes --tags --graph --notes --pretty="tformat:%C(yellow)%h%Creset\\ %Cgreen(%ar)%Creset\\ %C(blue)<%an>%Creset\\ %C(red)%d%Creset\\ %s"
   lf = log origin/master ^master

@@ -170,6 +170,7 @@ dotfilesbackup() {
     .tmux.conf \
     .tmux/wsl_tmux_statusline.sh \
     .gitconfig \
+    .gitalias.txt \
     .ctags \
     .ctags.d/ \
     .mutt/ \
@@ -209,6 +210,7 @@ dotfilesdist() {
     .zprofile .zshenv .zshrc \
     .tmux.conf \
     .gitconfig \
+    .gitalias.txt \
     .ctags \
     .ctags.d/ \
     .mutt/ \
@@ -251,6 +253,7 @@ dotfilesupdate() {
     ~/.tmux.conf \
     ~/.tmux/wsl_tmux_statusline.sh \
     ~/.gitconfig \
+    ~/.gitalias.txt \
     ~/.ripgreprc \
     ~/.scimrc \
     .
@@ -284,7 +287,7 @@ dotfilespush() {
   CURRENT_DIR_SAVE=$(pwd)
   cd ${DOTFILES}
   git add . && git commit
-  git push
+  git push --all
   cd ${CURRENT_DIR_SAVE}
 }
 
@@ -336,7 +339,7 @@ alias dotpush=dotfilespush
 # GitHub
 alias gh='open https://github.com'
 alias gist='open https://gist.github.com'
-alias insigcommit='git add  . && git commit -m "Insignificant commit" && git push'
+alias insigcommit='git add . && git commit -m "Insignificant commit" && git push'
 alias commit='git commit'
 alias commitall='git add . && git commit'
 
@@ -378,22 +381,21 @@ pushrepo() {
     echo "2.." && sleep .5
     echo "1." && sleep .5
     git add . && git commit
-    git push
+    git push --all
     # If Authentication failed, push until successful or interrupted
     while [[ ${?} -eq 128 ]]; do
-      git push
+      git push --all
     done
   elif [[ ! "${REMOTE_HEAD}" == *"HEAD ->"* ]]; then
     # if HEAD ahead of remote or has something to push. push repo.
-    git push
+    git push --all
     while [[ ${?} -eq 128 ]]; do
-      git push
+      git push --all
     done
   else
     echo "No changes detected in $(pwd). Skipping..."
   fi
 }
-
 
 
 pushallconfrepo() {
@@ -426,10 +428,10 @@ pullrepo() {
     printf "${RED}Changes detected in $(pwd) files. Skipping...${NC}\n"
   else
     echo "$(pwd). Pulling from remote"
-    git pull
+    git pull --all
     # If Authentication failed, push until successful or interrupted
     while [[ ${?} -eq 128 ]]; do
-      git push
+      git push --all
     done
   fi
 }
@@ -454,13 +456,13 @@ forcepullrepo() {
   if [[ -n ${CHANGES} ]]; then
     printf "${YELLOW}Changes detected in $(pwd) files. Hard resetting repo...${NC}\n"
     git reset --hard HEAD^
-    git pull
+    git pull --all
   else
     echo "$(pwd). Pulling from remote"
-    git pull
+    git pull --all
     # If Authentication failed, push until successful or interrupted
     while [[ ${?} -eq 128 ]]; do
-      git push
+      git push --all
     done
   fi
 }

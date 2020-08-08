@@ -23,8 +23,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 91 + 91) / 182)
-exe 'vert 2resize ' . ((&columns * 90 + 91) / 182)
+exe 'vert 1resize ' . ((&columns * 106 + 106) / 213)
+exe 'vert 2resize ' . ((&columns * 106 + 106) / 213)
 argglobal
 setlocal fdm=syntax
 setlocal fde=0
@@ -34,16 +34,12 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-23
-normal! zo
-123
-normal! zo
-let s:l = 71 - ((16 * winheight(0) + 17) / 35)
+let s:l = 67 - ((12 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-71
-normal! 09|
+67
+normal! 0
 lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
 wincmd w
 argglobal
@@ -58,7 +54,7 @@ setlocal fdn=20
 setlocal fen
 23
 normal! zo
-let s:l = 22 - ((4 * winheight(0) + 17) / 35)
+let s:l = 22 - ((5 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
@@ -66,8 +62,8 @@ normal! zt
 normal! 02|
 lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
 wincmd w
-exe 'vert 1resize ' . ((&columns * 91 + 91) / 182)
-exe 'vert 2resize ' . ((&columns * 90 + 91) / 182)
+exe 'vert 1resize ' . ((&columns * 106 + 106) / 213)
+exe 'vert 2resize ' . ((&columns * 106 + 106) / 213)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
