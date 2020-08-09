@@ -181,6 +181,7 @@ dotfilesbackup() {
 
   cp -r \
     ~/.config/ranger/ \
+    ~/.config/UltiSnips/ \
     ~/.config/zathura/ \
     ${DOTBACKUPDIR}/.config
 
@@ -222,8 +223,9 @@ dotfilesdist() {
   cp .rclonesyncwd/Filters ~/.rclonesyncwd
   rm -rf ~/.vim/session; cp -r .vim/session ~/.vim
   rm -rf ~/bin; cp -r bin ~/bin
-  rm -rf ~/.config/{ranger,zathura}; cp -r \
+  rm -rf ~/.config/{ranger,zathura,UltiSnips}; cp -r \
     .config/ranger/ \
+    .config/UltiSnips/ \
     .config/zathura/ \
     ~/.config
 
@@ -262,8 +264,9 @@ dotfilesupdate() {
   mkdir -p .rclonesyncwd/ ; cp ~/.rclonesyncwd/Filters .rclonesyncwd/
   rm -rf .vim/session; cp -r ~/.vim/session .vim
   rm -rf bin; cp -r ~/bin .
-  rm -rf .config/{ranger,zathura}; cp -r \
+  rm -rf .config/{ranger,zathura,Ultisnips}; cp -r \
     ~/.config/ranger/ \
+    ~/.config/UltiSnips/ \
     ~/.config/zathura/ \
     .config
 
