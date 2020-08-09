@@ -7,32 +7,19 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-<<<<<<< Updated upstream
-badd +237 dotbackup
-badd +133 dotupdate
-=======
-badd +3 dotupdate
-badd +19 dotbackup
-badd +194 ~/.bash_aliases
+badd +19 dotupdate
+badd +169 ~/.bash_aliases
 badd +25 ~/.dotfilesrc
-badd +1 ~/bin/task/gtd
->>>>>>> Stashed changes
 argglobal
 %argdel
 $argadd dotupdate
-edit dotbackup
+edit dotupdate
 set splitbelow splitright
-wincmd _ | wincmd |
-split
-1wincmd k
-wincmd w
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 32 + 25) / 51)
-exe '2resize ' . ((&lines * 14 + 25) / 51)
 argglobal
 setlocal fdm=syntax
 setlocal fde=0
@@ -42,52 +29,13 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-<<<<<<< Updated upstream
-let s:l = 225 - ((19 * winheight(0) + 16) / 32)
+let s:l = 14 - ((13 * winheight(0) + 24) / 48)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-225
-=======
-let s:l = 143 - ((23 * winheight(0) + 17) / 35)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-143
->>>>>>> Stashed changes
+14
 normal! 0
 lcd ~/bin
-wincmd w
-argglobal
-if bufexists("~/bin/task/gtd") | buffer ~/bin/task/gtd | else | edit ~/bin/task/gtd | endif
-setlocal fdm=syntax
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=99
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-<<<<<<< Updated upstream
-let s:l = 63 - ((8 * winheight(0) + 7) / 14)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-63
-normal! 03|
-lcd ~/bin/utils/dotfiles
-=======
-let s:l = 10 - ((8 * winheight(0) + 17) / 35)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-10
-normal! 0
-lcd ~/bin/task
->>>>>>> Stashed changes
-wincmd w
-exe '1resize ' . ((&lines * 32 + 25) / 51)
-exe '2resize ' . ((&lines * 14 + 25) / 51)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
