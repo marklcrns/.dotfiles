@@ -38,12 +38,14 @@ USAGE:
 
 Updates all specified dotfiles from \$DOTFILES_LIST into specified location.
 
-  dotupdate [ -dvy ]
+  dotupdate [ -dsvVy ]
 
 OPTIONS:
 
    -d : debug mode (redirect output in log file)
+   -s : silent
    -v : verbose
+   -V : very verbose
    -y : skip confirmation
    -h : help
 
@@ -51,9 +53,10 @@ EOF
 }
 
 # Set flag options
-while getopts "dvVyh" opt; do
+while getopts "dsvVyh" opt; do
   case "$opt" in
     d) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
+    s) [[ -n "$IS_SILENT"       ]] && unset IS_SILENT                  || IS_SILENT=true;;
     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
     y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;
@@ -117,7 +120,9 @@ log() {
 echolog(){
   message=$1
   if [[ -n "${message}" ]]; then
-    [[ -n ${IS_VERBOSE} ]] && echo -e "${message}"
+    # echo if verbose
+    [[ -n ${IS_VERBOSE} ]] && [[ -z ${IS_SILENT} ]] && echo -e "${message}"
+    # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   else # Print newline if no message
     [[ -n ${IS_VERBOSE} ]] && echo -e ""
@@ -128,16 +133,17 @@ echolog(){
 ok() {
   message="$1"
   if [[ -n "${message}" ]]; then
-    echo -e "${GREEN}${message}${NC}"
+    [[ -z ${IS_SILENT} ]] && echo -e "${GREEN}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
+  exit 0
 }
 
 warning() {
   message="$1"
   if [[ -n "${message}" ]]; then
-    echo -e "${YELLOW}${message}${NC}"
+    [[ -z ${IS_SILENT} ]] && echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
@@ -146,23 +152,23 @@ warning() {
 abort() {
   message="$1"
   if [[ -n "${message}" ]]; then
-    echo -e "${YELLOW}${message}${NC}"
+    [[ -z ${IS_SILENT} ]] && echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
-  exit 0
+  exit 1
 }
 
 error() {
   message="$1"
   exitcode="$2"
   if [[ -n "${message}" ]]; then
-    echo -e "${RED}${message}${NC}"
+    [[ -z ${IS_SILENT} ]] && echo -e "${RED}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
   # Exit with specified exit code. Do not exit if no exit code
-  if [[ -n ${exitcode} ]]; then exist
+  if [[ -n ${exitcode} ]]; then
     [[ ${exitcode} -ge 0 ]] && exit ${exitcode}
   fi
 }

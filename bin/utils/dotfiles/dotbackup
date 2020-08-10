@@ -37,11 +37,12 @@ USAGE:
 Backs up all specified dotfiles from \$DOTFILES_LIST into \$DOTFILES_BACKUP_DIR
 within a current timestamp named directory.
 
-  dotbackup [ -dvy ]
+  dotbackup [ -dsvy ]
 
 OPTIONS:
 
    -d : debug mode (redirect output in log file)
+   -s : silent
    -v : verbose
    -y : skip confirmation
    -h : help
@@ -51,9 +52,10 @@ EOF
 
 
 # Set flag options
-while getopts "dvyh" opt; do
+while getopts "dsvyh" opt; do
   case "$opt" in
     d) [[ -n "$DEBUG"        ]] && unset DEBUG        || DEBUG=true;;
+    s) [[ -n "$IS_SILENT"    ]] && unset IS_SILENT    || IS_SILENT=true;;
     v) [[ -n "$IS_VERBOSE"   ]] && unset IS_VERBOSE   || IS_VERBOSE=true;;
     y) [[ -n "$SKIP_CONFIRM" ]] && unset SKIP_CONFIRM || SKIP_CONFIRM=true;;
     h) usage && exit 0;;
@@ -118,25 +120,29 @@ echolog(){
   message=$1
   if [[ -n "${message}" ]]; then
     # echo if verbose
-    [[ -n ${IS_VERBOSE} ]] && echo -e "${message}"
+    [[ -n ${IS_VERBOSE} ]] && [[ -z ${IS_SILENT} ]] && echo -e "${message}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+  else # Print newline if no message
+    [[ -n ${IS_VERBOSE} ]] && echo -e ""
+    [[ -n "${DEBUG}" ]] && echo -e "" >> "${LOG_FILE_PATH}"
   fi
 }
 
 ok() {
   message="$1"
   if [[ -n "${message}" ]]; then
-    echo -e "${GREEN}${message}${NC}"
+    [[ -z ${IS_SILENT} ]] && echo -e "${GREEN}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
+  exit 0
 }
 
 warning() {
   message="$1"
   if [[ -n "${message}" ]]; then
-    echo -e "${YELLOW}${message}${NC}"
+    [[ -z ${IS_SILENT} ]] && echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
@@ -145,18 +151,18 @@ warning() {
 abort() {
   message="$1"
   if [[ -n "${message}" ]]; then
-    echo -e "${YELLOW}${message}${NC}"
+    [[ -z ${IS_SILENT} ]] && echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
-  exit 0
+  exit 1
 }
 
 error() {
   message="$1"
   exitcode="$2"
   if [[ -n "${message}" ]]; then
-    echo -e "${RED}${message}${NC}"
+    [[ -z ${IS_SILENT} ]] && echo -e "${RED}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
@@ -237,7 +243,7 @@ do
   full_backup_dir="${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}"
 
   if [[ ! -e "${full_backup_dir}/${dotfile_stripped}" ]]; then
-    error "'${dotfile_stripped}' is missing from '${full_backup_dir}'"
+    error "'${dotfile_stripped}' is missing from '${full_backup_dir}'" 2
   fi
 done
 
