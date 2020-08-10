@@ -22,13 +22,11 @@ reply() {
 }
 
 if [ -n "`$SHELL -c 'echo $ZSH_VERSION'`" ]; then # Zsh prompt
-  echo
   printf "${MESSAGE}"
   read REPLY
   echo
   reply
 elif [ -n "`$SHELL -c 'echo $BASH_VERSION'`" ]; then # Bash prompt
-  echo
   read -p ${MESSAGE} -n 1 -r
   echo
   reply

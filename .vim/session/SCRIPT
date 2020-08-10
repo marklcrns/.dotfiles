@@ -7,27 +7,25 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +161 dotbackup
-badd +3 dotupdate
-badd +194 ~/.bash_aliases
+badd +218 dotbackup
+badd +331 ~/.bash_aliases
 badd +25 ~/.dotfilesrc
-badd +1 ~/bin/task/gtd
+badd +10 ~/bin/task/gtd
 argglobal
 %argdel
-$argadd dotupdate
-edit dotbackup
+edit ~/.bash_aliases
 set splitbelow splitright
 wincmd _ | wincmd |
-split
-1wincmd k
+vsplit
+1wincmd h
 wincmd w
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 24 + 20) / 40)
-exe '2resize ' . ((&lines * 11 + 20) / 40)
+exe 'vert 1resize ' . ((&columns * 161 + 91) / 182)
+exe 'vert 2resize ' . ((&columns * 20 + 91) / 182)
 argglobal
 setlocal fdm=syntax
 setlocal fde=0
@@ -37,34 +35,29 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 165 - ((20 * winheight(0) + 12) / 24)
+let s:l = 319 - ((5 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-165
-normal! 0
+319
+normal! 03|
+lcd ~/
+wincmd w
+argglobal
+enew
+file ~/bin/vim-minimap
+setlocal fdm=syntax
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=99
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
 lcd ~/bin
 wincmd w
-argglobal
-if bufexists("~/bin/task/gtd") | buffer ~/bin/task/gtd | else | edit ~/bin/task/gtd | endif
-setlocal fdm=syntax
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=99
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-let s:l = 10 - ((3 * winheight(0) + 5) / 11)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-10
-normal! 0
-lcd ~/bin/task
-wincmd w
-exe '1resize ' . ((&lines * 24 + 20) / 40)
-exe '2resize ' . ((&lines * 11 + 20) / 40)
+exe 'vert 1resize ' . ((&columns * 161 + 91) / 182)
+exe 'vert 2resize ' . ((&columns * 20 + 91) / 182)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
