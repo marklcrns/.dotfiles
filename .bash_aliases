@@ -330,6 +330,7 @@ cleardotfilesbak() {
   printf "${GREEN}Dotfiles backups cleared!${NC}\n"
 }
 
+
 alias dotfiles="cd ${DOTFILES}"
 alias dotbackup=dotfilesbackup
 alias dotdist=dotfilesdist

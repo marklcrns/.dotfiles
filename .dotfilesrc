@@ -44,7 +44,7 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   "${HOME}/.dotfilesrc"
   "${HOME}/.gitconfig"
   "${HOME}/.gtd/"
-  "${HOME}/.local/share/applications"
+  "${HOME}/.local/share/applications/*.desktop"
   "${HOME}/.mutt/"
   "${HOME}/.profile"
   "${HOME}/.rclonesyncwd/Filters"

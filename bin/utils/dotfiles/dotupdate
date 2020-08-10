@@ -46,12 +46,15 @@ OPTIONS:
    -h : help
 
 EOF
-}; # Set flag options
-while getopts "dvyh" opt; do
+}
+
+# Set flag options
+while getopts "dvVyh" opt; do
   case "$opt" in
-    d) [[ -n "$DEBUG"        ]] && unset DEBUG        || DEBUG=true;;
-    v) [[ -n "$IS_VERBOSE"   ]] && unset IS_VERBOSE   || IS_VERBOSE=true;;
-    y) [[ -n "$SKIP_CONFIRM" ]] && unset SKIP_CONFIRM || SKIP_CONFIRM=true;;
+    d) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
+    v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
+    V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
+    y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;
     h) usage && exit 0;;
     *) error "Invalid flag.";;
   esac
@@ -102,10 +105,11 @@ log() {
 echolog(){
   message=$1
   if [[ -n "${message}" ]]; then
-    # echo if verbose
     [[ -n ${IS_VERBOSE} ]] && echo -e "${message}"
-    # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+  else # Print newline if no message
+    [[ -n ${IS_VERBOSE} ]] && echo -e ""
+    [[ -n "${DEBUG}" ]] && echo -e "" >> "${LOG_FILE_PATH}"
   fi
 }
 
@@ -151,52 +155,146 @@ error() {
   fi
 }
 
-# TODO: Fix
-dotfiles_changes_count=0
+# Compares two file path (would compare recursively if dir).
+# Requires at least 3 arguments or args $1, $2, and $3 to execute.
+#
+# ARGS:
+# $1 = Source file path
+# $2 = Target file path
+# $3 = List of detected changes, including source and target separated by ';',
+#      and delimited by '\n'.
+# $4 = Detected changes count
+# $5 = Total files compared
+#
+# Returns $3, $4, $5 variable args with new values from execution.
+cmp_files() {
+  local __source=$1
+  local __target=$2
+  local __changes_list=$3
+  local __changes_count=$4
+  local __total_files_count=$5
+  local IS_SILENT=$6
+
+  # Check args count
+  [[ $# -lt 3 ]] && echolog "${RED}${FUNCNAME[0]}: Invalid number of arguments${NC}" && return 1
+  # Exit if invalid path
+  [[ ! -e "${__source}" ]] && \
+    echolog "${RED}${FUNCNAME[0]}: Invalid source path \'${__source}\'${NC}" && return 2
+  [[ ! -e "${__target}" ]] && \
+    echolog "${RED}${FUNCNAME[0]}: Invalid source path \'${__target}\'${NC}" && return 2
+
+  local __tmp_changes_list
+  local __tmp_changes_count
+  local __tmp_total_files_count
+
+  if [[ -d "${__source}" ]]; then # Directory dotfile
+    # Recursively compare
+    while IFS= read -r -d '' __source_file; do
+
+      # Get relative path
+      __rel_path_file=$(echo "${__source_file}" | sed "s,${__source},,")
+      __target_file="${__target}/${__rel_path_file}"
+
+      # Compare dotfiles in destination dir with local copy in home dir
+      if cmp -s "${__source_file}" "${__target_file}"; then
+        [[ ${IS_SILENT} -ne 1 ]] && echolog "No changes detected in ${__source_file}"
+      else
+        if [[ ${IS_SILENT} -ne 1 ]]; then
+          echolog "Changes detected:"
+          echolog "${YELLOW}SOURCE ${__source_file}${NC}"
+          echolog "${YELLOW}TARGET ${__target_file}${NC}"
+        fi
+        # Record changes
+        __tmp_changes_count=$(expr ${__tmp_changes_count} + 1)
+        if [[ -z ${__tmp_changes_list} ]]; then
+          __tmp_changes_list="${__source_file};${__target_file}"
+        else
+          __tmp_changes_list="${__tmp_changes_list}\n${__source_file};${__target_file}"
+        fi
+      fi
+      # Increment total files compared
+      __tmp_total_files_count=$(expr ${__tmp_total_files_count} + 1)
+    done < <(find "${__source}" -not -path "*/.git/*" -type f -print0)
+  else # Non-directory dotfile
+    # Compare dotfiles in destination dir with local copy in home dir
+    if cmp -s "${__source}" "${__target}"; then
+      [[ ${IS_SILENT} -ne 1 ]] && echolog "No Changes detected in ${__source}"
+    else
+      if [[ ${IS_SILENT} -ne 1 ]]; then
+        echolog "Changes detected:"
+        echolog "${YELLOW}SOURCE ${__source}${NC}"
+        echolog "${YELLOW}TARGET ${__target}${NC}"
+      fi
+      # Record changes
+      __tmp_changes_count=$(expr ${__tmp_changes_count} + 1)
+      if [[ -z ${__tmp_changes_list} ]]; then
+        __tmp_changes_list="${__source};${__target}"
+      else
+        __tmp_changes_list="${__tmp_changes_list}\n${__source};${__target}"
+      fi
+    fi
+    # Increment total files compared
+    __tmp_total_files_count=$(expr ${__tmp_total_files_count} + 1)
+  fi
+
+  # Return variables
+  [[ -n "${__changes_list}" ]]       && eval $__changes_list="'$__tmp_changes_list'"
+  [[ -n "${__changes_count}" ]]     && eval $__changes_count=$__tmp_changes_count
+  [[ -n "${__total_files_count}" ]] && eval $__total_files_count=$__tmp_total_files_count
+}
+
+changes_list=""
+total_changes=0
+total_files_count=0
+
 echolog "Changes detected in..."
-for dotfile in ${DOTFILES_LIST[@]};
-do
+for dotfile in ${DOTFILES_LIST[@]}; do
   # Strip home directory from path
   home_stripped=$(echo "$dotfile" | sed "s,${HOME}/,,")
   # Strip trailing '/' in directory path
   home_stripped=$(echo "${home_stripped}" | sed -r "s,(.*)/$,\1,")
 
-  if [[ -d "${dotfile}" ]]; then
-    find "${dotfile}" -not -path "*/.git/*" -type f -print0 | while IFS= read -r -d '' file; do
-    # for file in $(find "${dotfile}" -not -path "*/.git/*" -type f); do
-      # Strip home directory from path
-      home_stripped=$(echo "${file}" | sed "s,${HOME}/,,")
-      # Suppress details of differences
-      # diff -rq "${file}" "${DOTFILES_DEST_DIR}/${home_stripped}"/${file##*/}
-      if [[ $(cmp "${file}" "${DOTFILES_DEST_DIR}/${home_stripped}") ]]; then
-        echolog "${dotfile}"
-      else
-        echo "${file}"
-        let "dotfiles_changes_count++" # Count changes
-        # echo "source: ${file}"
-        # echo "dest:   ${DOTFILES_DEST_DIR}/${home_stripped}"
-        # echo
-      fi
-    done
-  else
-    if [[ $(cmp "${dotfile}" "${DOTFILES_DEST_DIR}/${home_stripped}") ]]; then
-      echolog "${dotfile}"
+  cmp_files "${dotfile}" "${DOTFILES_DEST_DIR}/${home_stripped}" list changes_count files_count
+
+  # Update changes list
+  if [[ -n "${list}" ]]; then
+    if [[ -z ${changes_list} ]]; then
+      changes_list="${list}"
     else
-      echo "${dotfile}"
-      let "dotfiles_changes_count++" # Count changes
-      # echo "source: ${dotfile}"
-      # echo "dest:   ${DOTFILES_DEST_DIR}/${home_stripped}"
-      # echo
+      changes_list="${changes_list}\n${list}"
     fi
   fi
+  # Increment counters
+  [[ -z "${changes_count}" ]] && changes_count=0
+  [[ -z "${files_count}" ]] && files_count=0
+  total_changes=$(expr ${total_changes} + ${changes_count})
+  total_files_count=$(expr ${total_files_count} + ${files_count})
 done
 
 # Abort if no dotfiles detected
-if [[ ${dotfiles_changes_count} -eq 0 ]]; then
-  abort "\nAborting... No dotfiles to backup."
-fi
+[[ ${total_changes} -eq 0 ]] && abort "\nAborting... No dotfiles to backup."
 
-echolog "\nTotal changes in DOTFILES_LIST path: ${dotfiles_changes_count}"
+# Loop over changes list and diff if IS_VERY_VERBOSE, else echolog source file
+for file_tuple in "${changes_list}"; do
+  IFS=';' read -r -a file_arr <<< "$file_tuple"
+  source_file="${file_arr[0]}"; target_file="${file_arr[1]}"
+  if [[ -n "${IS_VERY_VERBOSE}" ]]; then
+    # Diff source and target file
+    if command -v colordiff &> /dev/null; then
+      diff -c "${source_file}" "${target_file}" | colordiff
+    else
+      diff -c "${source_file}" "${target_file}" --color
+    fi
+  else
+    # Echolog source file
+    echolog "${YELLOW}${source_file}${NC}"
+  fi
+done
+
+echolog
+echolog "Total dotfiles: \t\t${total_files_count}"
+echolog "${YELLOW}Total files with changes: \t${total_changes}${NC}"
+
 
 # Confirmation
 # see /bin/syntax-helpers/confirm
@@ -209,3 +307,25 @@ if [[ -z "${SKIP_CONFIRM}" ]]; then
     error "Unsupported shell"
   fi
 fi
+
+for file_tuple in "${changes_list}"; do
+  IFS=';' read -r -a file_arr <<< "$file_tuple"
+  source_file="${file_arr[0]}"; target_file="${file_arr[1]}"
+
+  cp -rL ${source_file} ${target_file} | log
+done
+
+# Final check
+for dotfile in ${DOTFILES_LIST[@]}; do
+  # Strip home directory from path
+  home_stripped=$(echo "$dotfile" | sed "s,${HOME}/,,")
+  # Strip trailing '/' in directory path
+  home_stripped=$(echo "${home_stripped}" | sed -r "s,(.*)/$,\1,")
+
+  cmp_files "${dotfile}" "${DOTFILES_DEST_DIR}/${home_stripped}" list changes_count files_count 1
+
+  [[ ${changes_count} -gt 0 ]] && error "Dotupdate failed. Changes persists" 1
+done
+
+ok "${GREEN}Dotfiles update successful!${NC}"
+
