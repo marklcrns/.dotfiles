@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Updates all specified dotfiles from $DOTFILES_LIST into specified location.
+# Uses `cmp` to compare files and `diff -c` to display changes when `-V` flag is
+# given.
 #
 # The $DOTFILESRC specifies the location of .dotfilesrc file to override default
 # script variables.
@@ -314,9 +316,9 @@ echo -e "${changes_list}" | while IFS= read -r file_tuple; do
   # Diff source and target file
   if [[ -n "${IS_VERY_VERBOSE}" ]]; then
     if command -v colordiff &> /dev/null; then
-      diff -c "${source_file}" "${target_file}" | colordiff
+      diff -c "${target_file}" "${source_file}" | colordiff
     else
-      diff -c "${source_file}" "${target_file}" --color
+      diff -c "${target_file}" "${source_file}" --color
     fi
   else
     # echolog source file if not very verbose
