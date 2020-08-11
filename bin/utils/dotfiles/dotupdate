@@ -177,14 +177,15 @@ fi
 
 # TODO: Make bidirectional
 #       Make diffing changes detect the most recent file
-# Compares two file path (would compare recursively if files are directories).
+# Compares two file path (would compare recursively if files are directories)
+# and returns all files with discrepancies.
 # Require at least 3 arguments or args $1, $2, and $3 to execute.
 #
 # ARGS:
 # $1 = Source file path
 # $2 = Target file path
-# $3 = List of detected changes, including source and target separated by ';',
-#      and delimited by '\n'.
+# $3 = List of detected changes, including source and target file path separated
+#      by ';', and delimited by '\n'.
 # $4 = Detected changes count
 # $5 = Total files compared
 # $6 = Pass in integer '1' to turn on IS_SILENT
@@ -285,15 +286,14 @@ detect_changes() {
   [[ -n "${__total_files_count}" ]] && eval $__total_files_count=$__tmp_total_files_count
 }
 
-# TODO:
-# Compares two file path (would compare recursively if files are directories).
+# Compares two file path (would compare recursively if files are directories)
+# and returns all files that does not exists in the target file or directory.
 # Require at least 3 arguments or args $1, $2, and $3 to execute.
 #
 # ARGS:
 # $1 = Source file path
 # $2 = Target file path
-# $3 = List of detected changes, including source and target separated by ';',
-#      and delimited by '\n'.
+# $3 = List of source files that does not exist in the target file path.
 # $4 = Detected changes count
 # $5 = Total files compared
 # $6 = Pass in integer '1' to turn on IS_SILENT
