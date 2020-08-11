@@ -466,13 +466,13 @@ while IFS= read -r file_tuple; do
 done < <(echo -e "${changes_list}") # Process substitution for outside variables
 
 echolog
-echolog "Total dotfiles to updated: \t${total_files_count}"
+echolog "Total files to updated: \t${total_files_count}"
 [[ ${modified_files_count} -gt 0 ]] &&
-  echolog "${YELLOW}Total changed files: \t${modified_files_count}${NC}"
+  echolog "${YELLOW}Total changed files: \t\t${modified_files_count}${NC}"
 [[ ${new_files_count} -gt 0 ]] &&
-  echolog "${GREEN}Total new files: \t${new_files_count}${NC}"
+  echolog "${GREEN}Total new files: \t\t${new_files_count}${NC}"
 [[ ${total_deleted_count} -gt 0 ]] &&
-  echolog "${RED}Total delete files: \t${total_deleted_count}${NC}"
+  echolog "${RED}Total delete files: \t\t${total_deleted_count}${NC}"
 echolog
 
 

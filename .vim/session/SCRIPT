@@ -7,25 +7,18 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +218 dotbackup
-badd +331 ~/.bash_aliases
-badd +25 ~/.dotfilesrc
-badd +10 ~/bin/task/gtd
+badd +168 dotbackup
+badd +338 dotupdate
+badd +100 dotdist
 argglobal
 %argdel
-edit ~/.bash_aliases
+edit dotupdate
 set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 161 + 91) / 182)
-exe 'vert 2resize ' . ((&columns * 20 + 91) / 182)
 argglobal
 setlocal fdm=syntax
 setlocal fde=0
@@ -35,29 +28,13 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 319 - ((5 * winheight(0) + 17) / 35)
+let s:l = 342 - ((19 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-319
-normal! 03|
-lcd ~/
-wincmd w
-argglobal
-enew
-file ~/bin/vim-minimap
-setlocal fdm=syntax
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=99
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
+342
+normal! 0
 lcd ~/bin
-wincmd w
-exe 'vert 1resize ' . ((&columns * 161 + 91) / 182)
-exe 'vert 2resize ' . ((&columns * 20 + 91) / 182)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
