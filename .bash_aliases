@@ -336,7 +336,7 @@ alias dotbackup=dotfilesbackup
 alias dotdist=dotfilesdist
 alias dotupdate=dotfilesupdate
 alias dotclearbak=cleardotfilesbak
-alias dotaddall="cd ${DOTFILES} && git add ."
+alias dotadd="cd ${DOTFILES} && git add ."
 alias dotcommit="cd ${DOTFILES} && git commit"
 alias dotpush=dotfilespush
 

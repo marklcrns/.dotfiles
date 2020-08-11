@@ -394,6 +394,8 @@ detect_delete() {
 
 # TODO: Implement more elegant dotfiles backup
 if [[ -n "${IS_BACKUP}" ]]; then
+  echolog "Backing up dotfiles..."
+  echolog
   ./dotbackup -sy
 fi
 
