@@ -15,7 +15,7 @@
 # ##############################################################################
 #
 # Author : Mark Lucernas -- https://github.com/marklcrns
-# Date   : 2020-08-05
+# Date   : 2020-08-10
 
 
 # Default script variables
@@ -36,12 +36,14 @@ USAGE:
 
 Updates all specified dotfiles from \$DOTFILES_LIST into specified location.
 
-  dotupdate [ -dvy ]
+  dotupdate [ -dsvVy ]
 
 OPTIONS:
 
    -d : debug mode (redirect output in log file)
+   -s : silent
    -v : verbose
+   -V : very verbose
    -y : skip confirmation
    -h : help
 
@@ -49,9 +51,10 @@ EOF
 }
 
 # Set flag options
-while getopts "dvVyh" opt; do
+while getopts "dsvVyh" opt; do
   case "$opt" in
     d) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
+    s) [[ -n "$IS_SILENT"       ]] && unset IS_SILENT                  || IS_SILENT=true;;
     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
     y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;
@@ -79,13 +82,12 @@ if [[ -n "${DEBUG}" ]]; then
   echo -e "${SCRIPT_PATH} log outputs\n" > ${LOG_FILE_PATH}
 fi
 
-
 # Ansi color code variables
 # Ref: https://techstop.github.io/bash-script-colors/
 RED="\e[0;91m"
 BLUE="\e[0;94m"
 GREEN="\e[0;92m"
-YELLOW='\033[1;33m'
+YELLOW="\033[1;33m"
 WHITE="\e[0;97m"
 EXPAND_BG="\e[K"
 RED_BG="\e[0;101m${expand_bg}"
@@ -96,10 +98,10 @@ BOLD="\e[1m"
 ULINE="\e[4m"
 NC="\e[0m" # No/reset color
 
+# Stores message into $IN if string argument is passed in, else read from stdin
+# and store it in $IN (used with pipe '|').  Only log message on debug mode.
+# Echoes $IN if used with pipe.
 log() {
-  # Stores message into $IN if string argument is passed in,
-  # else read from stdin and store it in $IN (used with pipe '|').
-  # Only log message on debug mode. Echoes $IN if used with pipe.
   if [[ -n "$1" ]]; then
     IN="$1"
     [[ -n "${DEBUG}" ]] && echo -e "${IN}" >> "${LOG_FILE_PATH}"
@@ -109,16 +111,17 @@ log() {
       [[ -n "${DEBUG}" ]] && echo -e "${IN}" | tee -a "${LOG_FILE_PATH}"
     fi
   fi
-
 }
 
 echolog(){
   message=$1
   if [[ -n "${message}" ]]; then
-    [[ -n ${IS_VERBOSE} ]] && echo -e "${message}"
+    # echo if verbose
+    [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && echo -e "${message}"
+    # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   else # Print newline if no message
-    [[ -n ${IS_VERBOSE} ]] && echo -e ""
+    [[ -n "${IS_VERBOSE}" ]] && echo -e ""
     [[ -n "${DEBUG}" ]] && echo -e "" >> "${LOG_FILE_PATH}"
   fi
 }
@@ -126,16 +129,17 @@ echolog(){
 ok() {
   message="$1"
   if [[ -n "${message}" ]]; then
-    echo -e "${GREEN}${message}${NC}"
+    [[ -z "${IS_SILENT}" ]] && echo -e "${GREEN}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
+  exit 0
 }
 
 warning() {
   message="$1"
   if [[ -n "${message}" ]]; then
-    echo -e "${YELLOW}${message}${NC}"
+    [[ -z "${IS_SILENT}" ]] && echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
@@ -144,23 +148,23 @@ warning() {
 abort() {
   message="$1"
   if [[ -n "${message}" ]]; then
-    echo -e "${YELLOW}${message}${NC}"
+    [[ -z "${IS_SILENT}" ]] && echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
-  exit 0
+  exit 1
 }
 
 error() {
   message="$1"
   exitcode="$2"
   if [[ -n "${message}" ]]; then
-    echo -e "${RED}${message}${NC}"
+    [[ -z "${IS_SILENT}" ]] && echo -e "${RED}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
   # Exit with specified exit code. Do not exit if no exit code
-  if [[ -n ${exitcode} ]]; then exist
+  if [[ -n ${exitcode} ]]; then
     [[ ${exitcode} -ge 0 ]] && exit ${exitcode}
   fi
 }

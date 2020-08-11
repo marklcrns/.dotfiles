@@ -1,0 +1,90 @@
+#!/bin/bash
+
+# Prints message and exit with 0 exit code
+#
+# ############################## Script Variables ##############################
+#
+# COLOR         = Default message color if `-c` or `-C` flag is given.
+# LOG_FILE_DIR  = Log file directory.
+# LOG_FILE      = Log file name. Only logs on `-d` flag or debug mode. Defaults
+#                 to current timestamp.
+#
+# ##############################################################################
+#
+# Author : Mark Lucernas -- https://github.com/marklcrns
+# Date   : 2020-08-10
+
+set -e
+
+# Default script variables
+LOG_FILE_DIR="${HOME}/log"
+LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
+
+# Default green message color
+COLOR="\e[0;92m"
+
+# Display help
+usage() {
+cat << EOF
+USAGE:
+
+Prints message and exit with 0 exit code
+
+  ok [ -cds ] [ -l log-file-path ] [ message ]
+
+OPTIONS:
+
+   -c : green-colored message (color code '\\e[0;92m')
+   -d : debug mode (redirect output in log file)
+   -l : specifies log file path (activates debug mode)
+   -s : silent
+   -h : help
+
+EOF
+}
+
+# Set flag options
+while getopts "cdl:sh" opt; do
+  case "$opt" in
+    c) [[ -n "$IS_COLORED" ]] && unset IS_COLORED || IS_COLORED=true;;
+    d) [[ -n "$DEBUG"      ]] && unset DEBUG      || DEBUG=true;;
+    s) [[ -n "$IS_SILENT"  ]] && unset IS_SILENT  || IS_SILENT=true;;
+    l) [[ -n "$DEBUG"      ]] && unset DEBUG      || DEBUG=true; LOG_FILE_PATH="${OPTARG}";;
+    h) usage && exit 0;;
+    *) error "Invalid flag.";;
+  esac
+done 2>/dev/null
+shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
+
+SCRIPTPATH="$( cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
+
+MESSAGE=$1
+
+# if not IS_COLORED, remove COLOR definition
+[[ -z "${IS_COLORED}" ]] && unset COLOR
+
+# Set default log file path if not given
+if [[ -z "${LOG_FILE_PATH}" ]]; then
+  LOG_FILE_PATH="${LOG_FILE_DIR}/${LOG_FILE}"
+else # Check for log file path validity
+  LOG_DIR_NAME="$(dirname ${LOG_FILE_PATH})"
+  if [[ -d "${LOG_DIR_NAME}" ]]; then # check if LOG_FILE_PATH's `dirname` is valid
+    if [[ -d "${LOG_FILE_PATH}" ]]; then # Assign default name if directory is given
+      LOG_FILE_PATH="${LOG_FILE_PATH}/${LOG_FILE}"
+    elif [[ ${LOG_FILE_PATH} =~ ^.*/$ ]]; then # Exit if ending with '/' but directory invalid
+      echo "${SRIPTPATH}: Directory file path does not exist" && exit 1
+    fi
+  else
+    echo "${SRIPTPATH}: Invalid log file path" && exit 1
+  fi
+fi
+
+if [[ -n "${MESSAGE}" ]]; then
+  # Log message on debug mode
+  [[ -n "${DEBUG}" ]] && echo -e "${MESSAGE}" >> "${LOG_FILE_PATH}"
+  # Prints message if not IS_SILENT
+  [[ -z "${IS_SILENT}" ]] && echo -e "${COLOR}${MESSAGE}${NC}"
+fi
+
+exit 0
+

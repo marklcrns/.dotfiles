@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# Logs a message argument and write or append into $LOG_FILE_DIR. Can also read
+# from stdout or with '|' pipeline operator.
+#
+# ############################## Script Variables ##############################
+#
+# LOG_FILE_DIR  = Log file directory.
+# LOG_FILE      = Log file name. Only logs on `-d` flag or debug mode.
+#                       Defaults to current timestamp.
+#
+# ##############################################################################
+#
+# Author : Mark Lucernas -- https://github.com/marklcrns
+# Date   : 2020-08-10
+
+set -e
+
+# Default script variables
+LOG_FILE_DIR="${HOME}/log"
+LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
+
+# Display help
+usage() {
+cat << EOF
+USAGE:
+
+Logs a message argument and write or append into \$LOG_FILE_DIR. Can also read
+from stdout or with '|' pipeline operator.
+
+  logmsg [ -v ] [ -l log-file-path ] [ message ]
+
+OPTIONS:
+
+   -l : specifies log file path
+   -v : verbose
+   -h : help
+
+EOF
+}
+
+# Set flag options
+while getopts "el:vh" opt; do
+  case "$opt" in
+    e) [[ -n "$IS_ECHO"    ]] && unset IS_ECHO    || IS_ECHO=true;;
+    v) [[ -n "$IS_VERBOSE" ]] && unset IS_VERBOSE || IS_VERBOSE=true;;
+    l) LOG_FILE_PATH="${OPTARG}";;
+    h) usage && exit 0;;
+    *) error "Invalid flag.";;
+  esac
+done 2>/dev/null
+shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
+
+SCRIPTPATH="$( cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
+
+MESSAGE=$1
+
+# Set default log file path if not given
+if [[ -z "${LOG_FILE_PATH}" ]]; then
+  LOG_FILE_PATH="${LOG_FILE_DIR}/${LOG_FILE}"
+else # Check for log file path validity
+  LOG_DIR_NAME="$(dirname ${LOG_FILE_PATH})"
+  if [[ -d "${LOG_DIR_NAME}" ]]; then # check if LOG_FILE_PATH's `dirname` is valid
+    if [[ -d "${LOG_FILE_PATH}" ]]; then # Assign default name if directory is given
+      LOG_FILE_PATH="${LOG_FILE_PATH}/${LOG_FILE}"
+    elif [[ ${LOG_FILE_PATH} =~ ^.*/$ ]]; then # Exit if ending with '/' but directory invalid
+      echo "${SCRIPTPATH}: Directory file path does not exist" && exit 1
+    fi
+  else
+    echo "${SCRIPTPATH}: Invalid log file path" && exit 1
+  fi
+fi
+
+# Log message from argument, else read from stdout or pipeline
+if [[ -n "${MESSAGE}" ]]; then
+  echo -e "${MESSAGE}" >> "${LOG_FILE_PATH}"
+else
+  read IN
+  if [[ -n ${IN} ]]; then
+    MESSAGE="${IN}"
+    echo -e "${MESSAGE}" >> "${LOG_FILE_PATH}"
+  fi
+fi
+
+# Echo message if IS_ECHO
+[[ -n "${IS_ECHO}" ]] && echo -e "${MESSAGE}"
+# Echo message with log file path if IS_VERBOSE
+[[ -n "${IS_VERBOSE}" ]] && echo -e "${MESSAGE} >> '${LOG_FILE_PATH}'"
+
+exit 0
+
