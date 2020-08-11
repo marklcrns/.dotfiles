@@ -21,8 +21,8 @@
 
 
 # Default script variables
-DOTFILES_DEST_DIR="${HOME}/Projects/.dotfiles"
 DOTFILES_LIST=()
+DOTFILES_DEST_DIR="${HOME}/Projects/.dotfiles"
 LOG_FILE_DIR="${HOME}/log"
 LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
 
@@ -465,6 +465,7 @@ while IFS= read -r file_tuple; do
   fi
 done < <(echo -e "${changes_list}") # Process substitution for outside variables
 
+# Changes and deletes tally
 echolog
 echolog "Total files to updated: \t${total_files_count}"
 [[ ${modified_files_count} -gt 0 ]] &&

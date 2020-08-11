@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export DOTFILES_REPO="${HOME}/Projects/.dotfiles"
+export DOTFILES_DEST_DIR="${HOME}/Projects/.dotfiles"
 export DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
 
 export DOTFILES_LIST=(
@@ -31,7 +31,6 @@ export DOTFILES_LIST=(
 
 # WSL specific configs
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
-
   export DOTFILES_LIST=(
   "${HOME}/.bash_aliases"
   "${HOME}/.bash_profile"
@@ -59,5 +58,4 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   "${HOME}/.zshrc"
   "${HOME}/bin/"
   )
-  # cp -r "/mnt/c/Users/${WIN_USERNAME}/Documents/.gtd/" ${DOTBACKUPDIR}
 fi

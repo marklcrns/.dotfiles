@@ -19,8 +19,8 @@
 
 
 # Default script variables
-DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
 DOTFILES_LIST=()
+DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
 BACKUP_DIR_NAME="$(date +"%Y-%m-%dT%H:%M:%S")_old_dotfiles.bak"
 LOG_FILE_DIR="${HOME}/log"
 LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
