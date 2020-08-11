@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export DOTFILES_SOURCE_DIR="${HOME}"
 export DOTFILES_DEST_DIR="${HOME}/Projects/.dotfiles"
 export DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
 

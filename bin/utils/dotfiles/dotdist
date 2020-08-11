@@ -1,18 +1,21 @@
 #!/bin/bash
 
-# Updates all specified dotfiles from $DOTFILES_LIST into specified location.
+# Updates all specified dotfiles in $DOTFILES_TARGET_DIR into source directory.
 # Uses `cmp` to compare files and `diff -c` to display changes when `-V` flag is
 # given.
 #
 # The $DOTFILESRC specifies the location of .dotfilesrc file to override default
 # script variables.
 #
-# ############################## Script Variables ##############################
+# ########################## Script Global Variables ###########################
 #
-# DOTFILES_LIST = Bash array list of config (dot) files or directory to update.
-# LOG_FILE_DIR  = Log file directory.
-# LOG_FILE      = Log file name. Only logs on `-d` flag or debug mode. Defaults
-#                 to current timestamp.
+# DOTFILES_LIST       = Bash array list of config (dot) files or directory to
+#                       update.
+# DOTFILES_SOURCE_DIR = Default source directory to distribute dotfiles from.
+# DOTFILES_TARGET_DIR = Default target directory to distribute dotfiles into.
+# LOG_FILE_DIR        = Log file directory.
+# LOG_FILE            = Log file name. Only logs on `-d` flag or debug mode.
+#                       Defaults to current timestamp.
 #
 # ##############################################################################
 #
@@ -22,7 +25,8 @@
 
 # Default script variables
 DOTFILES_LIST=()
-DOTFILES_DEST_DIR="${HOME}/Projects/.dotfiles"
+DOTFILES_SOURCE_DIR="${HOME}"
+DOTFILES_TARGET_DIR="${HOME}/Projects/.dotfiles"
 LOG_FILE_DIR="${HOME}/log"
 LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
 
@@ -55,12 +59,13 @@ usage() {
 cat << EOF
 USAGE:
 
-Updates all specified dotfiles from \$DOTFILES_LIST into specified location.
+Updates all specified dotfiles in \$DOTFILES_TARGET_DIR into \$HOME
 
-  dotupdate [ -dsvVy ]
+  dotupdate [ -bdsvVy ]
 
 OPTIONS:
 
+   -b : backup files
    -d : debug mode (redirect output in log file)
    -s : silent
    -v : verbose
@@ -72,8 +77,9 @@ EOF
 }
 
 # Set flag options
-while getopts "dsvVyh" opt; do
+while getopts "bdsvVyh" opt; do
   case "$opt" in
+    b) [[ -n "$IS_BACKUP"       ]] && unset IS_BACKUP                  || IS_BACKUP=true;;
     d) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
     s) [[ -n "$IS_SILENT"       ]] && unset IS_SILENT                  || IS_SILENT=true;;
     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
@@ -158,7 +164,7 @@ error() {
 }
 
 # Strip trailing '/' in DIR path variables
-DOTFILES_DEST_DIR=$(echo ${DOTFILES_DEST_DIR} | sed 's,/*$,,')
+DOTFILES_TARGET_DIR=$(echo ${DOTFILES_TARGET_DIR} | sed 's,/*$,,')
 LOG_FILE_DIR=$(echo ${LOG_FILE_DIR} | sed 's,/*$,,')
 
 # Log stdout and stderr to $LOG_FILE in $LOG_FILE_DIR
@@ -223,7 +229,7 @@ detect_changes() {
       # Get relative path
       __rel_path_file=$(echo "${__source_file}" | sed "s,${__source}/,,")
       __target_file="${__target}/${__rel_path_file}"
-      # Compare dotfiles in destination dir with local copy in home dir
+      # Compare dotfiles in destination dir with local copy in source dir
       if cmp -s "${__source_file}" "${__target_file}"; then
         if [[ ${IS_SILENT} -ne 1 ]]; then
           echolog "No changes detected in ${__source_file}"
@@ -252,7 +258,7 @@ detect_changes() {
       __tmp_total_files_count=$(expr ${__tmp_total_files_count} + 1)
     done < <(find "${__source}" -not -path "*/.git/*" -type f -print0) # Process substitution for outside variables
   else # Non-directory dotfile
-    # Compare dotfiles in destination dir with local copy in home dir
+    # Compare dotfiles in destination dir with local copy in source dir
     if cmp -s "${__source}" "${__target}"; then
       if [[ ${IS_SILENT} -ne 1 ]]; then
         echolog "No Changes detected in ${__source}"
@@ -393,11 +399,11 @@ total_files_count=0
 echolog "Detecting dotfiles changes..."
 echolog
 for dotfile in ${DOTFILES_LIST[@]}; do
-  # Strip home directory from path
-  home_stripped=$(echo "$dotfile" | sed "s,${HOME}/,,")
+  # Strip source directory from path
+  source_stripped=$(echo "$dotfile" | sed "s,${DOTFILES_SOURCE_DIR}/,,")
 
-  detect_changes "${DOTFILES_DEST_DIR}/${home_stripped}" "${dotfile}" changes changes_count files_count
-  detect_delete "${dotfile}" "${DOTFILES_DEST_DIR}/${home_stripped}" delete delete_count
+  detect_changes "${DOTFILES_TARGET_DIR}/${source_stripped}" "${dotfile}" changes changes_count files_count
+  detect_delete "${dotfile}" "${DOTFILES_TARGET_DIR}/${source_stripped}" delete delete_count
 
   # Initialize counters if none
   [[ -z "${changes_count}" ]] && changes_count=0
@@ -489,32 +495,32 @@ if [[ -z "${SKIP_CONFIRM}" ]]; then
   fi
 fi
 
-# # Copy changes to destination directory and delete missing files
-# echo -e "${changes_list}" | while IFS= read -r file_tuple; do
-#   IFS=';' read -r -a file_arr <<< "$file_tuple"
-#   source_file="${file_arr[0]}"; target_file="${file_arr[1]}"
-#   target_dir="$(dirname "${target_file}")"
-#   if [[ -z "${target_file}" ]]; then # check if target_file is missing
-#     rm -v "${source_file}" | log
-#   elif [[ -d "${target_dir}" ]]; then # Check target dir path
-#     cp -rLv ${source_file} ${target_file} | log
-#   else # Create target dir if not existing
-#     mkdir -p "${target_dir}"
-#     cp -rLv ${source_file} ${target_file} | log
-#   fi
-# done
-#
-# # Final check
-# for dotfile in ${DOTFILES_LIST[@]}; do
-#   # Strip home directory from path
-#   home_stripped=$(echo "$dotfile" | sed "s,${HOME}/,,")
-#
-#   detect_changes "${DOTFILES_DEST_DIR}/${home_stripped}" "${dotfile}" changes changes_count files_count
-#   detect_delete "${dotfile}" "${DOTFILES_DEST_DIR}/${home_stripped}" delete delete_count
-#
-#   [[ ${changes_count} -gt 0 ]] || [[ ${delete_count} -gt 0 ]] &&
-#     error "Dotupdate failed. Changes persists" 1
-# done
+# Copy changes to destination directory and delete missing files
+echo -e "${changes_list}" | while IFS= read -r file_tuple; do
+  IFS=';' read -r -a file_arr <<< "$file_tuple"
+  source_file="${file_arr[0]}"; target_file="${file_arr[1]}"
+  target_dir="$(dirname "${target_file}")"
+  if [[ -z "${target_file}" ]]; then # check if target_file is missing
+    rm -v "${source_file}" | log
+  elif [[ -d "${target_dir}" ]]; then # Check target dir path
+    cp -rLv ${source_file} ${target_file} | log
+  else # Create target dir if not existing
+    mkdir -p "${target_dir}"
+    cp -rLv ${source_file} ${target_file} | log
+  fi
+done
+
+# Final check
+for dotfile in ${DOTFILES_LIST[@]}; do
+  # Strip home directory from path
+  source_stripped=$(echo "$dotfile" | sed "s,${DOTFILES_SOURCE_DIR}/,,")
+
+  detect_changes "${DOTFILES_TARGET_DIR}/${source_stripped}" "${dotfile}" changes changes_count files_count
+  detect_delete "${dotfile}" "${DOTFILES_TARGET_DIR}/${source_stripped}" delete delete_count
+
+  [[ ${changes_count} -gt 0 ]] || [[ ${delete_count} -gt 0 ]] &&
+    error "Dotupdate failed. Changes persists" 1
+done
 
 ok "Dotfiles update successful!"
 
