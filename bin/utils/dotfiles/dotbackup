@@ -1,11 +1,13 @@
 #!/bin/bash
 
-# Backs up all specified dotfiles from $DOTFILES_LIST into $DOTFILES_BACKUP_DIR
+# Backs up all specified dotfiles from DOTFILES_LIST into DOTFILES_BACKUP_DIR
 # within a current timestamp named directory.
 #
 # The $DOTFILESRC specifies the location of .dotfilesrc file to override default
 # script variables.
 #
+# ########################## Script Global Variables ###########################
+
 # DOTFILES_BACKUP_DIR = Specifies the location of backup files.
 # DOTFILES_LIST       = Bash array list of config (dot) files or directory to
 #                       backup.
@@ -14,7 +16,9 @@
 # LOG_FILE            = Log file name. Only logs on `-d` flag or debug mode.
 #                       Defaults to current timestamp.
 #
-# Author : Mark Lucernas -- https://github.com/marklcrns
+# ##############################################################################
+#
+# Author : Mark Lucernas <https://github.com/marklcrns>
 # Date   : 2020-08-02
 
 
@@ -54,7 +58,7 @@ usage() {
 cat << EOF
 USAGE:
 
-Backs up all specified dotfiles from \$DOTFILES_LIST into \$DOTFILES_BACKUP_DIR
+Backs up all specified dotfiles from DOTFILES_LIST into DOTFILES_BACKUP_DIR
 within a current timestamp named directory.
 
   dotbackup [ -dsvy ]
@@ -190,7 +194,6 @@ fi
 echolog "\nTotal filepaths in DOTFILES_LIST: ${dotfiles_count}"
 
 # Confirmation
-# see /bin/syntax-helpers/confirm
 if [[ -z "${SKIP_CONFIRM}" ]]; then
   log "Do you wish to continue? (Y/y): "
   confirm "Do you wish to continue? (Y/y): "

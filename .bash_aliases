@@ -338,6 +338,7 @@ alias dotupdate=dotfilesupdate
 alias dotclearbak=cleardotfilesbak
 alias dotadd="cd ${DOTFILES} && git add ."
 alias dotcommit="cd ${DOTFILES} && git commit"
+alias dotcommitall="cd ${DOTFILES} && git add . && git commit"
 alias dotpush=dotfilespush
 
 # GitHub

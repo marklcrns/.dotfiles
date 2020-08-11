@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Updates all specified dotfiles from $DOTFILES_LIST into target directory.
+# Updates all specified dotfiles from DOTFILES_SOURCE_DIR into
+# DOTFILES_TARGET_DIR.
 # Uses `cmp` to compare files and `diff -c` to display changes when `-V` flag is
 # given.
 #
@@ -19,7 +20,7 @@
 #
 # ##############################################################################
 #
-# Author : Mark Lucernas -- https://github.com/marklcrns
+# Author : Mark Lucernas <https://github.com/marklcrns>
 # Date   : 2020-08-05
 
 
@@ -59,7 +60,8 @@ usage() {
 cat << EOF
 USAGE:
 
-Updates all specified dotfiles from \$DOTFILES_LIST into specified location.
+Updates all specified dotfiles from DOTFILES_SOURCE_DIR into
+DOTFILES_TARGET_DIR.
 
   dotupdate [ -bdsvVy ]
 
@@ -164,6 +166,7 @@ error() {
 }
 
 # Strip trailing '/' in DIR path variables
+DOTFILES_SOURCE_DIR=$(echo ${DOTFILES_SOURCE_DIR} | sed 's,/*$,,')
 DOTFILES_TARGET_DIR=$(echo ${DOTFILES_TARGET_DIR} | sed 's,/*$,,')
 LOG_FILE_DIR=$(echo ${LOG_FILE_DIR} | sed 's,/*$,,')
 
@@ -488,7 +491,6 @@ echolog
 
 
 # Confirmation
-# see /bin/syntax-helpers/confirm
 if [[ -z "${SKIP_CONFIRM}" ]]; then
   log "Do you wish to continue? (Y/y): "
   confirm "Do you wish to continue? (Y/y): "
@@ -519,12 +521,13 @@ for dotfile in ${DOTFILES_LIST[@]}; do
   # Strip source directory from path
   source_stripped=$(echo "$dotfile" | sed "s,${DOTFILES_SOURCE_DIR}/,,")
 
-  detect_changes "${dotfile}" "${DOTFILES_TARGET_DIR}/${source_stripped}" changes changes_count files_count
-  detect_delete "${DOTFILES_TARGET_DIR}/${source_stripped}" "${dotfile}" delete delete_count
-
-  [[ ${changes_count} -gt 0 ]] || [[ ${delete_count} -gt 0 ]] &&
-    error "Dotupdate failed. Changes persists" 1
+  detect_changes "${dotfile}" "${DOTFILES_TARGET_DIR}/${source_stripped}" changes changes_count files_count 1
+  detect_delete "${DOTFILES_TARGET_DIR}/${source_stripped}" "${dotfile}" delete delete_count files_count 1
 done
+
+# Catch errors
+[[ ${changes_count} -gt 0 ]] || [[ ${delete_count} -gt 0 ]] &&
+  error "Dotupdate failed. Changes persists" 1
 
 ok "Dotfiles update successful!"
 

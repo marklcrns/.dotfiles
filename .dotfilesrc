@@ -1,43 +1,10 @@
 #!/bin/bash
 
-export DOTFILES_SOURCE_DIR="${HOME}"
-export DOTFILES_DEST_DIR="${HOME}/Projects/.dotfiles"
-export DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
-
-export DOTFILES_LIST=(
-"${HOME}/.bash_aliases"
-"${HOME}/.bash_profile"
-"${HOME}/.bashrc"
-"${HOME}/.config/UltiSnips/"
-"${HOME}/.config/ranger/"
-"${HOME}/.config/zathura/"
-"${HOME}/.ctags"
-"${HOME}/.ctags.d/"
-"${HOME}/.dotfilesrc"
-"${HOME}/.gitconfig"
-"${HOME}/.gtd/"
-"${HOME}/.mutt/"
-"${HOME}/.profile"
-"${HOME}/.rclonesyncwd/Filters"
-"${HOME}/.ripgreprc"
-"${HOME}/.scimrc"
-"${HOME}/.tmux.conf"
-"${HOME}/.tmux/wsl_tmux_statusline.sh"
-"${HOME}/.vim/session/"
-"${HOME}/.zprofile"
-"${HOME}/.zshenv"
-"${HOME}/.zshrc"
-"${HOME}/bin/"
-)
-
-# WSL specific configs
-if [[ "$(grep -i microsoft /proc/version)" ]]; then
-  export DOTFILES_LIST=(
+DOTFILES_LIST=(
   "${HOME}/.bash_aliases"
   "${HOME}/.bash_profile"
   "${HOME}/.bashrc"
   "${HOME}/.config/UltiSnips/"
-  "${HOME}/.config/mimeapps.list"
   "${HOME}/.config/ranger/"
   "${HOME}/.config/zathura/"
   "${HOME}/.ctags"
@@ -45,7 +12,6 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   "${HOME}/.dotfilesrc"
   "${HOME}/.gitconfig"
   "${HOME}/.gtd/"
-  "${HOME}/.local/share/applications/*.desktop"
   "${HOME}/.mutt/"
   "${HOME}/.profile"
   "${HOME}/.rclonesyncwd/Filters"
@@ -58,5 +24,18 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   "${HOME}/.zshenv"
   "${HOME}/.zshrc"
   "${HOME}/bin/"
+)
+
+# WSL specific configs
+if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  # Append to DOTFILES_LIST
+  DOTFILES_LIST_WSL=(
+    "${HOME}/.config/mimeapps.list"
+    "${HOME}/.local/share/applications/*.desktop"
   )
 fi
+
+export DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
+export DOTFILES_DEST_DIR="${HOME}/Projects/.dotfiles"
+export DOTFILES_LIST=(${DOTFILES_LIST[@]} ${DOTFILES_LIST_WSL[@]})
+export DOTFILES_SOURCE_DIR="${HOME}"
