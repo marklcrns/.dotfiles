@@ -440,7 +440,7 @@ done
 
 # Abort if no changes or delete detected
 [[ ${total_changes_count} -eq 0 ]] && [[ ${total_deleted_count} -eq 0 ]] &&
-  abort "\nAborting... No dotfiles to backup."
+  abort "\nAborting... No dotfiles to distribute."
 
 echolog
 echolog "${ULINE}Files with changes:${NC}"
