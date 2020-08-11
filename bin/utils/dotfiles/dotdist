@@ -396,7 +396,11 @@ detect_delete() {
 if [[ -n "${IS_BACKUP}" ]]; then
   echolog "Backing up dotfiles..."
   echolog
-  ./dotbackup -sy
+  if [[ -n "${IS_VERBOSE}" ]]; then
+    ./dotbackup -vy
+  else
+    ./dotbackup -sy
+  fi
 fi
 
 total_changes_count=0
