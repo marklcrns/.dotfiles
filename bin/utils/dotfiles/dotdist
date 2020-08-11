@@ -59,7 +59,8 @@ while getopts "dsvVyh" opt; do
     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
     y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;
     h) usage && exit 0;;
-    *) error "Invalid flag.";;
+    *) usage && echo -e "${SCRIPTPATH}:\n${RED}ERROR: Invalid flag.${NC}"
+      exit 1
   esac
 done 2>/dev/null
 shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
