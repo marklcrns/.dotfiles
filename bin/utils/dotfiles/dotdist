@@ -518,7 +518,7 @@ if [[ -n "${IS_BACKUP}" ]]; then
   elif [[ -n "${IS_VERBOSE}" ]]; then
     ./dotbackup -vya
   else
-    ./dotbackup -sya
+    ./dotbackup -ya
   fi
 fi
 

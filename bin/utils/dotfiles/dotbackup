@@ -315,7 +315,7 @@ if [[ -n "${AUTO_CLEAN}" ]]; then
   elif [[ -n ${IS_VERBOSE} ]]; then
     ./dotclearbak -vy ${DOTFILES_BACKUP_LIMIT}
   else
-    ./dotclearbak -sy ${DOTFILES_BACKUP_LIMIT}
+    ./dotclearbak -y ${DOTFILES_BACKUP_LIMIT}
   fi
 fi
 

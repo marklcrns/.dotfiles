@@ -216,7 +216,6 @@ fi
 
 ################################# START SCRIPT #################################
 
-
 echolog "Detecting backup files..."
 echolog
 
@@ -270,7 +269,6 @@ new_backup_dir_count=$(ls "${DOTFILES_BACKUP_DIR}" | wc -l)
 if [[ $(( ${new_backup_dir_count} + ${removed_count} )) -eq ${backup_dir_count} ]]; then
   echolog
   ok "Total removed: ${removed_count}"
-  echolog
 else
   error "Clearing dotfiles backups failed." 2
 fi
