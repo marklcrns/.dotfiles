@@ -291,5 +291,8 @@ if [[ -n "${AUTO_CLEAN}" ]]; then
   fi
 fi
 
+# Catch if dotclearbak failed
+[[ $? -ne 0 ]] && error "Failed to clear backup files" $?
+
 finish "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME} backup created!"
 

@@ -523,6 +523,9 @@ if [[ -n "${IS_BACKUP}" ]]; then
   fi
 fi
 
+# Catch if dotbackup failed
+[[ $? -ne 0 ]] && error "Failed to backup files" $?
+
 echolog
 echolog "Distributing dotfiles..."
 echolog
