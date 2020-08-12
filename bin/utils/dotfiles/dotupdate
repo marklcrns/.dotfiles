@@ -404,10 +404,6 @@ detect_delete() {
   [[ -n "${__total_files_count}" ]] && eval $__total_files_count=$__tmp_total_files_count
 }
 
-# TODO: Implement more elegant dotfiles backup
-# if [[ -n "${IS_BACKUP}" ]]; then
-# fi
-
 total_changes_count=0
 total_deleted_count=0
 total_files_count=0
@@ -509,6 +505,10 @@ if [[ -z "${SKIP_CONFIRM}" ]]; then
   fi
 fi
 
+
+# TODO: Implement more elegant dotfiles backup
+# if [[ -n "${IS_BACKUP}" ]]; then
+# fi
 
 # Copy changes to destination directory and delete missing files
 echo -e "${changes_list}" | while IFS= read -r file_tuple; do

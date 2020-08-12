@@ -256,7 +256,7 @@ do
 
   # Copy dotfile into backup directory
   cp -rL ${dotfile_stripped} ${full_backup_dir} 2>&1 | log
-  warning "${dotfile_stripped} -> ${fill_backup_dir}"
+  warning "${dotfile_stripped} -> ${full_backup_dir}"
 done
 
 # Final check if all files and directories are copied
