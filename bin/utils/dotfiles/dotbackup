@@ -121,7 +121,7 @@ log() {
       [[ -n "${DEBUG}" ]] && echo -e "${IN}" >> "${LOG_FILE_PATH}"
     fi
     # Echo log message if IS_VERY_VERBOSE
-    if [[ -n "${IS_VERY_VERBOSE}" ]] && [[ ! ${message} =~ ^\n$ ]]; then
+    if [[ -n "${IS_VERY_VERBOSE}" ]] && [[ -n ${message// } ]]; then # If IS_VERY_VERBOSE and not only spaces
       [[ ${force_silent} -ne 1 ]] && echo -e "$message" # Skip message if force_silent
     fi
   fi
