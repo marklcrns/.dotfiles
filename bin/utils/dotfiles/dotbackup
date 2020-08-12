@@ -64,7 +64,7 @@ USAGE:
 Backs up all specified dotfiles from DOTFILES_LIST into DOTFILES_BACKUP_DIR
 within a current timestamp named directory.
 
-  dotbackup [ -dsvy ] [ -a backups-limit ]
+  dotbackup [ -dsvVy ] [ -a backups-limit ]
 
 OPTIONS:
 
@@ -72,6 +72,7 @@ OPTIONS:
    -d : debug mode (redirect output in log file)
    -s : silent
    -v : verbose
+   -V : very verbose
    -y : skip confirmation
    -h : help
 
@@ -79,13 +80,14 @@ EOF
 }
 
 # Set flag options
-while getopts "c:dsvyh" opt; do
+while getopts "a:dsvVyh" opt; do
   case "$opt" in
-    a) [[ -n "$AUTO_CLEAN"   ]] && unset AUTO_CLEAN   || AUTO_CLEAN=true; DOTFILES_BACKUP_LIMIT="${OPTARG}";;
-    d) [[ -n "$DEBUG"        ]] && unset DEBUG        || DEBUG=true;;
-    s) [[ -n "$IS_SILENT"    ]] && unset IS_SILENT    || IS_SILENT=true;;
-    v) [[ -n "$IS_VERBOSE"   ]] && unset IS_VERBOSE   || IS_VERBOSE=true;;
-    y) [[ -n "$SKIP_CONFIRM" ]] && unset SKIP_CONFIRM || SKIP_CONFIRM=true;;
+    a) [[ -n "$AUTO_CLEAN"      ]] && unset AUTO_CLEAN                 || AUTO_CLEAN=true; DOTFILES_BACKUP_LIMIT="${OPTARG}";;
+    d) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
+    s) [[ -n "$IS_SILENT"       ]] && unset IS_SILENT                  || IS_SILENT=true;;
+    v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
+    V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
+    y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;
     h) usage && exit 0;;
     *) usage && echo -e "${SCRIPTPATH}:\n${RED}ERROR: Invalid flag.${NC}"
       exit 1
@@ -103,14 +105,20 @@ fi
 # and store it in $IN (used with pipe '|').  Only log message on debug mode.
 # Echoes $IN if used with pipe.
 log() {
-  if [[ -n "$1" ]]; then
-    IN="$1"
+  message=$1
+  force_silent=$2
+  if [[ -n "$message" ]]; then
+    IN="$message"
     [[ -n "${DEBUG}" ]] && echo -e "${IN}" >> "${LOG_FILE_PATH}"
   else
     read IN
     if [[ -n ${IN} ]]; then
-      [[ -n "${DEBUG}" ]] && echo -e "${IN}" | tee -a "${LOG_FILE_PATH}"
+      [[ -n "${DEBUG}" ]] && echo -e "${IN}" >> "${LOG_FILE_PATH}"
     fi
+  fi
+  # Echo log message if IS_VERY_VERBOSE
+  if [[ -n "${IS_VERY_VERBOSE}" ]]; then
+    [[ ${force_silent} -eq 1 ]] || echo -e "$message" # Skip message if force_silent
   fi
 }
 
@@ -128,7 +136,7 @@ echolog(){
 }
 
 ok() {
-  message="$1"
+  message=$1
   if [[ -n "${message}" ]]; then
     [[ -z "${IS_SILENT}" ]] && echo -e "${GREEN}${message}${NC}"
     # Log message on debug mode
@@ -137,7 +145,7 @@ ok() {
 }
 
 warning() {
-  message="$1"
+  message=$1
   if [[ -n "${message}" ]]; then
     [[ -z "${IS_SILENT}" ]] && echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
@@ -146,7 +154,7 @@ warning() {
 }
 
 abort() {
-  message="$1"
+  message=$1
   if [[ -n "${message}" ]]; then
     [[ -z "${IS_SILENT}" ]] && echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
@@ -156,8 +164,8 @@ abort() {
 }
 
 error() {
-  message="$1"
-  exitcode="$2"
+  message=$1
+  exitcode=$2
   if [[ -n "${message}" ]]; then
     [[ -z "${IS_SILENT}" ]] && echo -e "${RED}${message}${NC}"
     # Log message on debug mode
@@ -170,7 +178,7 @@ error() {
 }
 
 finish() {
-  message="$1"
+  message=$1
   if [[ -n "${message}" ]]; then
     [[ -z "${IS_SILENT}" ]] && echo -e "${message}"
     # Log message on debug mode
@@ -215,10 +223,10 @@ echolog "\nTotal filepaths in DOTFILES_LIST: ${dotfiles_count}"
 
 # Confirmation
 if [[ -z "${SKIP_CONFIRM}" ]]; then
-  log "Do you wish to continue? (Y/y): "
+  log "Do you wish to continue? (Y/y): \n" 1
   confirm "Do you wish to continue? (Y/y): "
   if [[ "${?}" -eq 1 ]]; then
-    abort "Backup aborted."
+    abort "Update aborted."
   elif [[ "${?}" -eq 2 ]]; then
     error "Unsupported shell"
   fi
@@ -274,7 +282,9 @@ done
 
 # Auto clean backup directory if AUTO_CLEAN
 if [[ -n "${AUTO_CLEAN}" ]]; then
-  if [[ -n ${IS_VERBOSE} ]]; then
+  if [[ -n "${IS_VERY_VERBOSE}" ]]; then
+    ./dotclearbak -Vy ${DOTFILES_BACKUP_LIMIT}
+  elif [[ -n ${IS_VERBOSE} ]]; then
     ./dotclearbak -vy ${DOTFILES_BACKUP_LIMIT}
   else
     ./dotclearbak -sy ${DOTFILES_BACKUP_LIMIT}

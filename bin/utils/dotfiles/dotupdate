@@ -98,14 +98,20 @@ shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
 # and store it in $IN (used with pipe '|').  Only log message on debug mode.
 # Echoes $IN if used with pipe.
 log() {
-  if [[ -n "$1" ]]; then
-    IN="$1"
+  message=$1
+  force_silent=$2
+  if [[ -n "$message" ]]; then
+    IN="$message"
     [[ -n "${DEBUG}" ]] && echo -e "${IN}" >> "${LOG_FILE_PATH}"
   else
     read IN
     if [[ -n ${IN} ]]; then
-      [[ -n "${DEBUG}" ]] && echo -e "${IN}" | tee -a "${LOG_FILE_PATH}"
+      [[ -n "${DEBUG}" ]] && echo -e "${IN}" >> "${LOG_FILE_PATH}"
     fi
+  fi
+  # Echo log message if IS_VERY_VERBOSE
+  if [[ -n "${IS_VERY_VERBOSE}" ]]; then
+    [[ ${force_silent} -eq 1 ]] || echo -e "$message" # Skip message if force_silent
   fi
 }
 
@@ -123,7 +129,7 @@ echolog(){
 }
 
 ok() {
-  message="$1"
+  message=$1
   if [[ -n "${message}" ]]; then
     [[ -z "${IS_SILENT}" ]] && echo -e "${GREEN}${message}${NC}"
     # Log message on debug mode
@@ -132,7 +138,7 @@ ok() {
 }
 
 warning() {
-  message="$1"
+  message=$1
   if [[ -n "${message}" ]]; then
     [[ -z "${IS_SILENT}" ]] && echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
@@ -141,7 +147,7 @@ warning() {
 }
 
 abort() {
-  message="$1"
+  message=$1
   if [[ -n "${message}" ]]; then
     [[ -z "${IS_SILENT}" ]] && echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
@@ -151,8 +157,8 @@ abort() {
 }
 
 error() {
-  message="$1"
-  exitcode="$2"
+  message=$1
+  exitcode=$2
   if [[ -n "${message}" ]]; then
     [[ -z "${IS_SILENT}" ]] && echo -e "${RED}${message}${NC}"
     # Log message on debug mode
@@ -165,7 +171,7 @@ error() {
 }
 
 finish() {
-  message="$1"
+  message=$1
   if [[ -n "${message}" ]]; then
     [[ -z "${IS_SILENT}" ]] && echo -e "${message}"
     # Log message on debug mode
@@ -496,7 +502,7 @@ echolog
 
 # Confirmation
 if [[ -z "${SKIP_CONFIRM}" ]]; then
-  log "Do you wish to continue? (Y/y): "
+  log "Do you wish to continue? (Y/y): \n" 1
   confirm "Do you wish to continue? (Y/y): "
   if [[ "${?}" -eq 1 ]]; then
     abort "Update aborted."
