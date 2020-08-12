@@ -106,27 +106,32 @@ log() {
   fi
   # Echo log message if IS_VERY_VERBOSE
   if [[ -n "${IS_VERY_VERBOSE}" ]]; then
-    [[ ${force_silent} -eq 1 ]] || echo -e "$message" # Skip message if force_silent
+    [[ ${force_silent} -ne 1 ]] && echo -e "$message" # Skip message if force_silent
   fi
 }
 
 echolog(){
   message=$1
+  force_silent=$2
   if [[ -n "${message}" ]]; then
     # echo if verbose
-    [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && echo -e "${message}"
+    [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e "${message}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   else # Print newline if no message
-    [[ -n "${IS_VERBOSE}" ]] && echo -e ""
+    [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e ""
     [[ -n "${DEBUG}" ]] && echo -e "" >> "${LOG_FILE_PATH}"
   fi
 }
 
 ok() {
   message=$1
+  force_silent=$2
   if [[ -n "${message}" ]]; then
-    [[ -z "${IS_SILENT}" ]] && echo -e "${GREEN}${message}${NC}"
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e "${GREEN}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
@@ -134,8 +139,10 @@ ok() {
 
 warning() {
   message=$1
+  force_silent=$2
   if [[ -n "${message}" ]]; then
-    [[ -z "${IS_SILENT}" ]] && echo -e "${YELLOW}${message}${NC}"
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
@@ -143,8 +150,10 @@ warning() {
 
 abort() {
   message=$1
+  force_silent=$2
   if [[ -n "${message}" ]]; then
-    [[ -z "${IS_SILENT}" ]] && echo -e "${YELLOW}${message}${NC}"
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
@@ -154,11 +163,14 @@ abort() {
 error() {
   message=$1
   exit_code=$2
+  force_silent=$3
   if [[ -n "${message}" ]]; then
     if [[ -n ${exit_code} ]]; then # Remove SCRIPTPATH if no exit code
-      [[ -z "${IS_SILENT}" ]] && echo -e "${RED}\n${SCRIPTPATH}: ${message}${NC}"
+      [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+        echo -e "${RED}\n${SCRIPTPATH}: ${message}${NC}"
     else
-      [[ -z "${IS_SILENT}" ]] && echo -e "${RED}${message}${NC}"
+      [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+        echo -e "${RED}${message}${NC}"
     fi
     # Log message on debug mode
     if [[ -n ${exit_code} ]]; then # Remove SCRIPTPATH if no exit code
@@ -175,8 +187,10 @@ error() {
 
 finish() {
   message=$1
+  force_silent=$2
   if [[ -n "${message}" ]]; then
-    [[ -z "${IS_SILENT}" ]] && echo -e "\n${message}"
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e "\n${message}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "\n${message}" >> "${LOG_FILE_PATH}"
   fi
@@ -243,7 +257,7 @@ declare -a to_remove_array
 while [[ "$(ls "${DOTFILES_BACKUP_DIR}" | wc -l)" -gt ${DOTFILES_BACKUP_LIMIT} ]]; do
   to_remove=$(ls "${DOTFILES_BACKUP_DIR}" -1tr | head -1) # Get oldest backup
   # Delete dotfiles backup overflow
-  rm -rf "${DOTFILES_BACKUP_DIR}/${to_remove}" | log
+  rm -rfv "${DOTFILES_BACKUP_DIR}/${to_remove}" | log
   # Append to array and increment count
   warning "${DOTFILES_BACKUP_DIR}/${to_remove} deleted"
   removed_count=$((removed_count+1))
