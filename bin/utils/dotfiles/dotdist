@@ -161,13 +161,13 @@ error() {
     if [[ -n ${exit_code} ]]; then # Remove SCRIPTPATH if no exit code
       [[ -z "${IS_SILENT}" ]] && echo -e "${RED}\n${SCRIPTPATH}: ${message}${NC}"
     else
-      [[ -z "${IS_SILENT}" ]] && echo -e "${RED}\n${message}${NC}"
+      [[ -z "${IS_SILENT}" ]] && echo -e "${RED}${message}${NC}"
     fi
     # Log message on debug mode
     if [[ -n ${exit_code} ]]; then # Remove SCRIPTPATH if no exit code
       [[ -n "${DEBUG}" ]] && echo -e "\n${SCRIPTPATH}: ${message}" >> "${LOG_FILE_PATH}"
     else
-      [[ -n "${DEBUG}" ]] && echo -e "\n${message}" >> "${LOG_FILE_PATH}"
+      [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
     fi
   fi
   # Exit with specified exit code. Do not exit if no exit code
