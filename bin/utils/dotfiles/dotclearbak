@@ -155,9 +155,9 @@ error() {
   message=$1
   exitcode=$2
   if [[ -n "${message}" ]]; then
-    [[ -z "${IS_SILENT}" ]] && echo -e "${RED}${message}${NC}"
+    [[ -z "${IS_SILENT}" ]] && echo -e "${RED}${SCRIPTPATH}: ${message}${NC}"
     # Log message on debug mode
-    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+    [[ -n "${DEBUG}" ]] && echo -e "${SCRIPTPATH}: ${message}" >> "${LOG_FILE_PATH}"
   fi
   # Exit with specified exit code. Do not exit if no exit code
   if [[ -n ${exitcode} ]]; then
@@ -168,9 +168,9 @@ error() {
 finish() {
   message=$1
   if [[ -n "${message}" ]]; then
-    [[ -z "${IS_SILENT}" ]] && echo -e "${message}"
+    [[ -z "${IS_SILENT}" ]] && echo -e "\n${message}"
     # Log message on debug mode
-    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+    [[ -n "${DEBUG}" ]] && echo -e "\n${message}" >> "${LOG_FILE_PATH}"
   fi
   exit 0
 }

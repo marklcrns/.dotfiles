@@ -167,9 +167,9 @@ error() {
   message=$1
   exitcode=$2
   if [[ -n "${message}" ]]; then
-    [[ -z "${IS_SILENT}" ]] && echo -e "${RED}${message}${NC}"
+    [[ -z "${IS_SILENT}" ]] && echo -e "${RED}${SCRIPTPATH}: ${message}${NC}"
     # Log message on debug mode
-    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+    [[ -n "${DEBUG}" ]] && echo -e "${SCRIPTPATH}: ${message}" >> "${LOG_FILE_PATH}"
   fi
   # Exit with specified exit code. Do not exit if no exit code
   if [[ -n ${exitcode} ]]; then
@@ -180,9 +180,9 @@ error() {
 finish() {
   message=$1
   if [[ -n "${message}" ]]; then
-    [[ -z "${IS_SILENT}" ]] && echo -e "${message}"
+    [[ -z "${IS_SILENT}" ]] && echo -e "\n${message}"
     # Log message on debug mode
-    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+    [[ -n "${DEBUG}" ]] && echo -e "\n${message}" >> "${LOG_FILE_PATH}"
   fi
   exit 0
 }
@@ -268,6 +268,7 @@ do
   warning "${dotfile_stripped} -> ${full_backup_dir}"
 done
 
+errors_count=0
 # Final check if all files and directories are copied
 for dotfile in ${DOTFILES_LIST[@]};
 do
@@ -276,9 +277,12 @@ do
   full_backup_dir="${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}"
 
   if [[ ! -e "${full_backup_dir}/${dotfile_stripped}" ]]; then
-    error "'${dotfile_stripped}' is missing from '${full_backup_dir}'" 2
+    error "'${dotfile_stripped}' is missing from '${full_backup_dir}'"
+    errors_count=$((errors_count+1))
   fi
 done
+
+[[ ${errors_count} -gt 0 ]] && error "Missing files in backup directory" 2
 
 # Auto clean backup directory if AUTO_CLEAN
 if [[ -n "${AUTO_CLEAN}" ]]; then
