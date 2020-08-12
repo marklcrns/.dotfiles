@@ -407,7 +407,7 @@ sudo apt install docker.io
 
 cd ~/Downloads
 
-sudo apt install screenfetch neofetch htop -y
+sudo apt install screenfetch neofetch htop colordiff -y
 
 # Crazy terminal outputs
 # Ref: https://linoxide.com/linux-how-to/linux-fun-terminal-crazy-output/

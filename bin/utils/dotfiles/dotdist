@@ -109,8 +109,8 @@ log() {
       [[ -n "${DEBUG}" ]] && echo -e "${IN}" >> "${LOG_FILE_PATH}"
     fi
     # Echo log message if IS_VERY_VERBOSE
-    if [[ -n "${IS_VERY_VERBOSE}" ]]; then
-      [[ ${force_silent} -ne 1 ]] && echo -e "$message" # Skip message if force_silent
+    if [[ -n "${IS_VERY_VERBOSE}" ]] && [[ ! ${message} =~ ^\n$ ]]; then
+      [[ ${force_silent} -ne 1 ]] && echo -e "${message}" # Skip message if force_silent
     fi
   fi
 }
@@ -466,16 +466,18 @@ while IFS= read -r file_tuple; do
   # Split file_tuple
   IFS=';' read -r -a file_arr <<< "${file_tuple}"
   source_file="${file_arr[0]}"; target_file="${file_arr[1]}"
-    # Copy source to target file
+  # Copy source to target file
   if [[ -z "${target_file}" ]]; then # check if target_file is missing
     echolog "${RED}-${source_file}${NC}"
   elif [[ -e "${target_file}" ]]; then # check if target_file not existing
     # Diff source and target file
     if [[ -n "${IS_VERY_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]]; then
       if command -v colordiff &> /dev/null; then
-        diff -c "${target_file}" "${source_file}" | colordiff | log
+        diff -c "${target_file}" "${source_file}" | colordiff
+        log "${source_file}" 1
       else
-        diff -c "${target_file}" "${source_file}" --color | log
+        diff -c "${target_file}" "${source_file}" --color
+        log "${source_file}" 1
       fi
     else
       # echolog source file if not very verbose

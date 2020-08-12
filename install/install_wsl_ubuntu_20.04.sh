@@ -385,7 +385,7 @@ wget https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.deb && \
 
 cd ~/Downloads
 
-sudo apt install screenfetch neofetch htop -y
+sudo apt install screenfetch neofetch htop colordiff -y
 
 # Crazy terminal outputs
 # Ref: https://linoxide.com/linux-how-to/linux-fun-terminal-crazy-output/

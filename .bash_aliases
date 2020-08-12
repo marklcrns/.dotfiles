@@ -288,14 +288,6 @@ DOTFILES="${HOME}/Projects/.dotfiles"
 #   cd ${CURRENT_DIR_SAVE}
 # }
 #
-# dotfilespush() {
-#   CURRENT_DIR_SAVE=$(pwd)
-#   cd ${DOTFILES}
-#   git add . && git commit
-#   git push --all
-#   cd ${CURRENT_DIR_SAVE}
-# }
-#
 # # Limits to only 10 dotfiles backup at a time
 # # Appending to arrays: https://unix.stackexchange.com/a/395103
 # # Appending to integer and string: https://stackoverflow.com/a/18041780
@@ -332,6 +324,13 @@ DOTFILES="${HOME}/Projects/.dotfiles"
 #   printf "${GREEN}Dotfiles backups cleared!${NC}\n"
 # }
 
+dotfilespush() {
+  CURRENT_DIR_SAVE=$(pwd)
+  cd ${DOTFILES}
+  git add . && git commit
+  git push --all
+  cd ${CURRENT_DIR_SAVE}
+}
 
 alias dotf="cd ${DOTFILES}"
 alias dotb="dotbackup -aVy"

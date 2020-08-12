@@ -473,8 +473,10 @@ while IFS= read -r file_tuple; do
     if [[ -n "${IS_VERY_VERBOSE}" ]] && [[ -z "${silent}" ]]; then
       if command -v colordiff &> /dev/null; then
         diff -c "${target_file}" "${source_file}" | colordiff
+        log "${source_file}" 1
       else
         diff -c "${target_file}" "${source_file}" --color
+        log "${source_file}" 1
       fi
     else
       # echolog source file if not very verbose
