@@ -1,11 +1,25 @@
 #!/bin/bash
 
 # Limits to only 10 dotfiles backup at a time
-# Appending to arrays: https://unix.stackexchange.com/a/395103
-# Appending to integer and string: https://stackoverflow.com/a/18041780
-# Looping through arrays: https://stackoverflow.com/a/8880633
+#
+# The $DOTFILESRC specifies the location of .dotfilesrc file to override default
+# script variables.
+#
+# ########################## Script Global Variables ###########################
+#
+# DEFAULT_DOTFILES_BACKUP_LIMIT = Sets the default auto clean backup limit
+# DOTFILES_BACKUP_DIR           = Specifies the location of backup files.
+#                                 directory to backup.
+# LOG_FILE_DIR                  = Log file directory.
+# LOG_FILE                      = Log file name. Only logs on `-d` flag or debug
+#                                 mode. Defaults to current timestamp.
+#
+# ##############################################################################
+#
+# Author : Mark Lucernas <https://github.com/marklcrns>
+# Date   : 2020-08-11
 
-DOTFILES_BACKUP_LIMIT=10
+DEFAULT_DOTFILES_BACKUP_LIMIT=10
 DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
 LOG_FILE_DIR="${HOME}/log"
 LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
@@ -70,7 +84,8 @@ done 2>/dev/null
 shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
 
 # Overwrite default limit if given
-[[ -n ${1} ]] && DOTFILES_BACKUP_LIMIT=$1
+[[ -n ${1} ]] &&
+  DOTFILES_BACKUP_LIMIT=$1 || DOTFILES_BACKUP_LIMIT=${DEFAULT_DOTFILES_BACKUP_LIMIT}
 
 # Stores message into $IN if string argument is passed in, else read from stdin
 # and store it in $IN (used with pipe '|').  Only log message on debug mode.
@@ -107,7 +122,6 @@ ok() {
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
-  exit 0
 }
 
 warning() {
@@ -143,6 +157,16 @@ error() {
   fi
 }
 
+finish() {
+  message="$1"
+  if [[ -n "${message}" ]]; then
+    [[ -z "${IS_SILENT}" ]] && echo -e "${message}"
+    # Log message on debug mode
+    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+  fi
+  exit 0
+}
+
 # Strip trailing '/' in DIR path variables
 DOTFILES_BACKUP_DIR=$(echo "${DOTFILES_BACKUP_DIR}" | sed 's,/*$,,')
 DOTFILES_DEST_DIR=$(echo ${DOTFILES_DEST_DIR} | sed -r "s,(.*)/$,\1,")
@@ -162,25 +186,27 @@ fi
 
 ################################# START SCRIPT #################################
 
-to_remove_count=0
-declare -a removed_array
 
 echolog "Detecting backup files..."
 echolog
 
-# TODO: Loop
-counter=0
-backup_dir_count=$(ls ${DOTFILES_BACKUP_DIR} | wc -l)
-# If limit == 0, Delete all. Else, delete dotbackups until equals limit
-while [[ ${backup_dir_count} -gt ${counter} ]]; do
-  to_remove=$(ls ${DOTFILES_BACKUP_DIR} | tail -1)
-  # Delete dotfiles backup overflow
-  echolog "${DOTFILES_BACKUP_DIR}/${to_remove}"
-  # Append to array, increment remove count, and decrement counter
-  removed_array+=("${to_remove[@]}\n")
-  to_remove_count=$((to_remove_count+1))
-  counter=$((counter-1))
-done
+# TODO: Cache backups to be deleted for more thorough checks
+backup_dir_count=$(ls "${DOTFILES_BACKUP_DIR}" | wc -l)
+to_remove_count=$(( ${backup_dir_count} - ${DOTFILES_BACKUP_LIMIT} ))
+ls "${DOTFILES_BACKUP_DIR}"
+
+[[ ${to_remove_count} -lt 0 ]] && to_remove_count=${backup_dir_count}
+
+echolog
+echolog "Total backups: \t\t\t${backup_dir_count}"
+warning "Oldest backups to remove: \t${to_remove_count}"
+echolog
+
+if [[ ${to_remove_count} -eq 0 ]]; then # Abort if nothing to delete
+  abort "Nothing to delete. Skipping..."
+elif [[ ${backup_dir_count} -lt ${DOTFILES_BACKUP_LIMIT} ]]; then # Abort if still below limit
+  abort "Backups still below limit. Skipping..."
+fi
 
 # Confirmation
 if [[ -z "${SKIP_CONFIRM}" ]]; then
@@ -194,20 +220,28 @@ if [[ -z "${SKIP_CONFIRM}" ]]; then
 fi
 
 removed_count=0
+declare -a to_remove_array
 
-if [[ ${to_remove_count} -eq 0 ]]; then
-  # If still below limit
-  echolog "Nothing to delete. Skipping..."
+# If limit == 0, Delete all. Else, delete dotbackups until equals limit
+while [[ "$(ls "${DOTFILES_BACKUP_DIR}" | wc -l)" -gt ${DOTFILES_BACKUP_LIMIT} ]]; do
+  to_remove=$(ls "${DOTFILES_BACKUP_DIR}" -1tr | head -1) # Get oldest backup
+  # Delete dotfiles backup overflow
+  rm -rf "${DOTFILES_BACKUP_DIR}/${to_remove}" | log
+  # Append to array and increment count
+  warning "${DOTFILES_BACKUP_DIR}/${to_remove} deleted"
+  removed_count=$((removed_count+1))
+done
+
+new_backup_dir_count=$(ls "${DOTFILES_BACKUP_DIR}" | wc -l)
+
+# Check if clear backup successful
+if [[ $(( ${new_backup_dir_count} + ${removed_count} )) -eq ${backup_dir_count} ]]; then
+  echolog
+  ok "Total removed: ${removed_count}"
   echolog
 else
-  # Removed all dotfiles backup in removed_array
-  for backup in ${removed_array[@]}; do
-    rm -rfv "${backup}" | log
-    echolog "${RED}${backup} deleted${NC}"
-    removed_count=$((removed_count+1))
-  done
-  echolog "Total Removed: ${removed_count}"
+  error "Clearing dotfiles backups failed." 2
 fi
 
-ok "Dotfiles backups cleared!"
+finish "Dotfiles backups cleared"
 

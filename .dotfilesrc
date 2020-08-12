@@ -35,6 +35,7 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   )
 fi
 
+export DEFAULT_DOTFILES_BACKUP_LIMIT=10
 export DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
 export DOTFILES_DEST_DIR="${HOME}/Projects/.dotfiles"
 export DOTFILES_LIST=(${DOTFILES_LIST[@]} ${DOTFILES_LIST_WSL[@]})

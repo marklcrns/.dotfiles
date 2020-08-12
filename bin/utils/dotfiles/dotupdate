@@ -129,7 +129,6 @@ ok() {
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
-  exit 0
 }
 
 warning() {
@@ -163,6 +162,16 @@ error() {
   if [[ -n ${exitcode} ]]; then
     [[ ${exitcode} -ge 0 ]] && exit ${exitcode}
   fi
+}
+
+finish() {
+  message="$1"
+  if [[ -n "${message}" ]]; then
+    [[ -z "${IS_SILENT}" ]] && echo -e "${message}"
+    # Log message on debug mode
+    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+  fi
+  exit 0
 }
 
 # Strip trailing '/' in DIR path variables
@@ -489,7 +498,6 @@ echolog "Total files to updated: \t${total_files_count}"
   echolog "${RED}Total delete files: \t\t${total_deleted_count}${NC}"
 echolog
 
-
 # Confirmation
 if [[ -z "${SKIP_CONFIRM}" ]]; then
   log "Do you wish to continue? (Y/y): "
@@ -501,6 +509,7 @@ if [[ -z "${SKIP_CONFIRM}" ]]; then
   fi
 fi
 
+
 # Copy changes to destination directory and delete missing files
 echo -e "${changes_list}" | while IFS= read -r file_tuple; do
   IFS=';' read -r -a file_arr <<< "$file_tuple"
@@ -509,10 +518,12 @@ echo -e "${changes_list}" | while IFS= read -r file_tuple; do
   if [[ -z "${target_file}" ]]; then # check if target_file is missing
     rm -v "${source_file}" | log
   elif [[ -d "${target_dir}" ]]; then # Check target dir path
-    cp -rLv ${source_file} ${target_file} | log
+    cp -rL ${source_file} ${target_file} | log
+    warning "${source_file} -> ${target_file}"
   else # Create target dir if not existing
     mkdir -p "${target_dir}"
-    cp -rLv ${source_file} ${target_file} | log
+    cp -rL ${source_file} ${target_file} | log
+    warning "${source_file} -> ${target_file}"
   fi
 done
 
@@ -527,7 +538,7 @@ done
 
 # Catch errors
 [[ ${changes_count} -gt 0 ]] || [[ ${delete_count} -gt 0 ]] &&
-  error "Dotupdate failed. Changes persists" 1
+  error "Dotupdate failed. Changes persists" 2
 
-ok "Dotfiles update successful!"
+finish "Dotfiles update successful!"
 
