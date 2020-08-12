@@ -510,6 +510,9 @@ fi
 # if [[ -n "${IS_BACKUP}" ]]; then
 # fi
 
+echolog
+echolog "Updating dotfiles..."
+echolog
 # Copy changes to destination directory and delete missing files
 echo -e "${changes_list}" | while IFS= read -r file_tuple; do
   IFS=';' read -r -a file_arr <<< "$file_tuple"

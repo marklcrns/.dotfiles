@@ -225,8 +225,9 @@ if [[ -z "${SKIP_CONFIRM}" ]]; then
 fi
 
 
-cd ${HOME}
-echolog "\nBacking up..."
+echolog
+echolog "Backing up local dotfiles..."
+echolog
 
 # Create backup directory
 mkdir -p "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}"
