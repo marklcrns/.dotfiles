@@ -153,7 +153,7 @@ abort() {
 
 error() {
   message=$1
-  exitcode=$2
+  exit_code=$2
   if [[ -n "${message}" ]]; then
     if [[ -n ${exit_code} ]]; then # Remove SCRIPTPATH if no exit code
       [[ -z "${IS_SILENT}" ]] && echo -e "${RED}\n${SCRIPTPATH}: ${message}${NC}"
@@ -168,8 +168,8 @@ error() {
     fi
   fi
   # Exit with specified exit code. Do not exit if no exit code
-  if [[ -n ${exitcode} ]]; then
-    [[ ${exitcode} -ge 0 ]] && exit ${exitcode}
+  if [[ -n ${exit_code} ]]; then
+    [[ ${exit_code} -ge 0 ]] && exit ${exit_code}
   fi
 }
 
