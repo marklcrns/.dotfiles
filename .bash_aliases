@@ -155,191 +155,193 @@ alias cdypath='cd "`vs clipboard`" && clear'
 # Update dotfiles backup repository
 DOTFILES="${HOME}/Projects/.dotfiles"
 
-dotfilesbackup() {
-  CURRENT_DIR_SAVE=$(pwd)
-  cd ${HOME}
-  DOTBACKUPDIR=${HOME}/.dotfiles.bak/`date +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
-  mkdir -p ${DOTBACKUPDIR}
-  mkdir -p ${DOTBACKUPDIR}/.config ${DOTBACKUPDIR}/.vim ${DOTBACKUPDIR}/.local/share/applications
-  cp -r \
-    bin \
-    .dotfilesrc \
-    .profile \
-    .bash_profile .bashrc .bash_aliases \
-    .zprofile .zshenv .zshrc \
-    .tmux.conf \
-    .tmux/wsl_tmux_statusline.sh \
-    .gitconfig \
-    .gitalias.txt \
-    .ctags \
-    .ctags.d/ \
-    .mutt/ \
-    .rclonesyncwd/ \
-    .ripgreprc \
-    .scimrc \
-    ${DOTBACKUPDIR}
+# DERPRECATED by dotfiles scripts
+#
+# dotfilesbackup() {
+#   CURRENT_DIR_SAVE=$(pwd)
+#   cd ${HOME}
+#   DOTBACKUPDIR=${HOME}/.dotfiles.bak/`date +"%Y-%m-%dT%H:%M:%S"`_old_dotfiles.bak
+#   mkdir -p ${DOTBACKUPDIR}
+#   mkdir -p ${DOTBACKUPDIR}/.config ${DOTBACKUPDIR}/.vim ${DOTBACKUPDIR}/.local/share/applications
+#   cp -r \
+#     bin \
+#     .dotfilesrc \
+#     .profile \
+#     .bash_profile .bashrc .bash_aliases \
+#     .zprofile .zshenv .zshrc \
+#     .tmux.conf \
+#     .tmux/wsl_tmux_statusline.sh \
+#     .gitconfig \
+#     .gitalias.txt \
+#     .ctags \
+#     .ctags.d/ \
+#     .mutt/ \
+#     .rclonesyncwd/ \
+#     .ripgreprc \
+#     .scimrc \
+#     ${DOTBACKUPDIR}
+#
+#   cp -r \
+#     ~/.config/ranger/ \
+#     ~/.config/UltiSnips/ \
+#     ~/.config/zathura/ \
+#     ${DOTBACKUPDIR}/.config
+#
+#   cp -r .vim/session ${DOTBACKUPDIR}/.vim
+#   # Check if WSL
+#   if [[ "$(grep -i microsoft /proc/version)" ]]; then
+#     cp -r "/mnt/c/Users/${WIN_USERNAME}/Documents/.gtd/" ${DOTBACKUPDIR}
+#     cp ~/.config/mimeapps.list ${DOTBACKUPDIR}/.config
+#     cp -r ~/.local/share/applications ${DOTBACKUPDIR}/.local/share/applications
+#   else
+#     cp -r ~/.gtd/ ${DOTBACKUPDIR}
+#   fi
+#   printf "\n${GREEN}DOTFILES BACKUP COMPLETE...${NC}\n\n"
+#   cd ${CURRENT_DIR_SAVE}
+# }
+#
+# dotfilesdist() {
+#   CURRENT_DIR_SAVE=$(pwd)
+#   # backup files first
+#   dotfilesbackup
+#   # distribute dotfiles
+#   cd ${DOTFILES}
+#   cp -r \
+#     .dotfilesrc \
+#     .profile \
+#     .bash_profile .bashrc .bash_aliases \
+#     .zprofile .zshenv .zshrc \
+#     .tmux.conf \
+#     .gitconfig \
+#     .gitalias.txt \
+#     .ctags \
+#     .ctags.d/ \
+#     .mutt/ \
+#     .rclonesyncwd/ \
+#     .ripgreprc \
+#     .scimrc \
+#     ${HOME}
+#
+#   cp .rclonesyncwd/Filters ~/.rclonesyncwd
+#   rm -rf ~/.vim/session; cp -r .vim/session ~/.vim
+#   rm -rf ~/bin; cp -r bin ~/bin
+#   rm -rf ~/.config/{ranger,zathura,UltiSnips}; cp -r \
+#     .config/ranger/ \
+#     .config/UltiSnips/ \
+#     .config/zathura/ \
+#     ~/.config
+#
+#   # Check if WSL
+#   if [[ "$(grep -i microsoft /proc/version)" ]]; then
+#     cp wsl_tmux_statusline.sh ~/.tmux/
+#     cp -r .gtd /mnt/c/Users/${WIN_USERNAME}/Documents
+#     cp .config/mimeapps.list ~/.config
+#     rm -rf ~/.local/share/applications/*.desktop; cp .local/share/applications/* ~/.local/share/applications
+#   else
+#     cp -r .gtd ${HOME}
+#   fi
+#   # Limit all backups to 10 at a time
+#   limitdotfilesbak 10
+#   printf "\n${GREEN}DOTFILES DISTRIBUTION COMPLETE...${NC}\n\n"
+#   cd ${CURRENT_DIR_SAVE}
+# }
+#
+# dotfilesupdate() {
+#   CURRENT_DIR_SAVE=$(pwd)
+#   cd ${DOTFILES}
+#   cp -r \
+#     ~/.dotfilesrc \
+#     ~/.profile \
+#     ~/.bash_profile ~/.bashrc ~/.bash_aliases \
+#     ~/.zprofile ~/.zshenv ~/.zshrc \
+#     ~/.tmux.conf \
+#     ~/.tmux/wsl_tmux_statusline.sh \
+#     ~/.gitconfig \
+#     ~/.gitalias.txt \
+#     ~/.ripgreprc \
+#     ~/.scimrc \
+#     .
+#
+#   mkdir -p .tmux/ ; cp ~/.tmux/wsl_tmux_statusline.sh .tmux/
+#   mkdir -p .rclonesyncwd/ ; cp ~/.rclonesyncwd/Filters .rclonesyncwd/
+#   rm -rf .vim/session; cp -r ~/.vim/session .vim
+#   rm -rf bin; cp -r ~/bin .
+#   rm -rf .config/{ranger,zathura,Ultisnips}; cp -r \
+#     ~/.config/ranger/ \
+#     ~/.config/UltiSnips/ \
+#     ~/.config/zathura/ \
+#     .config
+#
+#   # Check if WSL
+#   if [[ "$(grep -i microsoft /proc/version)" ]]; then
+#     cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/.gtd .
+#     cp ~/.config/mimeapps.list .config
+#     rm -rf .local/share/applications/*.desktop
+#
+#     [[ ! -d ".local/share/applications" ]] && mkdir -p .local/share/applications
+#     cp -r ~/.local/share/applications/*.desktop .local/share/applications
+#   else
+#     cp -r ~/.gtd .
+#   fi
+#   git add .; git status
+#   printf "${GREEN}Dotfiles update complete${NC}\n"
+#   cd ${CURRENT_DIR_SAVE}
+# }
+#
+# dotfilespush() {
+#   CURRENT_DIR_SAVE=$(pwd)
+#   cd ${DOTFILES}
+#   git add . && git commit
+#   git push --all
+#   cd ${CURRENT_DIR_SAVE}
+# }
+#
+# # Limits to only 10 dotfiles backup at a time
+# # Appending to arrays: https://unix.stackexchange.com/a/395103
+# # Appending to integer and string: https://stackoverflow.com/a/18041780
+# # Looping through arrays: https://stackoverflow.com/a/8880633
+# limitdotfilesbak() {
+#   LIMIT=${1}
+#   REMOVED_COUNT=0
+#   REMOVED_LIST=()
+#   # If limit == 0, Delete all. Else, delete dotbackups until equals limit
+#   while [[ "$(ls ~/.dotfiles.bak | wc -l)" -gt ${LIMIT} ]]; do
+#     TO_REMOVE=$(ls ~/.dotfiles.bak | tail -1)
+#     # Delete dotfiles backup overflow
+#     rm -rf ~/.dotfiles.bak/${TO_REMOVE}
+#     # Append to array and increment count
+#     REMOVED_LIST+=("${TO_REMOVE[@]} deleted\n")
+#     let REMOVED_COUNT+=1
+#   done
+#   if [[ ${REMOVED_COUNT} -eq 0 ]]; then
+#     # If still below limit
+#     printf "${GREEN}Nothing to delete. Skipping...${NC}\n"
+#   else
+#     # Print all removed dotfiles backup in red font color
+#     printf "${RED}\n"
+#     for i in ${REMOVED_LIST[@]}; do
+#       printf "${i}"
+#     done
+#     printf "${NC}"
+#     echo "Total Removed: ${REMOVED_COUNT}"
+#   fi
+# }
+#
+# cleardotfilesbak() {
+#   limitdotfilesbak 0
+#   printf "${GREEN}Dotfiles backups cleared!${NC}\n"
+# }
 
-  cp -r \
-    ~/.config/ranger/ \
-    ~/.config/UltiSnips/ \
-    ~/.config/zathura/ \
-    ${DOTBACKUPDIR}/.config
 
-  cp -r .vim/session ${DOTBACKUPDIR}/.vim
-  # Check if WSL
-  if [[ "$(grep -i microsoft /proc/version)" ]]; then
-    cp -r "/mnt/c/Users/${WIN_USERNAME}/Documents/.gtd/" ${DOTBACKUPDIR}
-    cp ~/.config/mimeapps.list ${DOTBACKUPDIR}/.config
-    cp -r ~/.local/share/applications ${DOTBACKUPDIR}/.local/share/applications
-  else
-    cp -r ~/.gtd/ ${DOTBACKUPDIR}
-  fi
-  printf "\n${GREEN}DOTFILES BACKUP COMPLETE...${NC}\n\n"
-  cd ${CURRENT_DIR_SAVE}
-}
-
-dotfilesdist() {
-  CURRENT_DIR_SAVE=$(pwd)
-  # backup files first
-  dotfilesbackup
-  # distribute dotfiles
-  cd ${DOTFILES}
-  cp -r \
-    .dotfilesrc \
-    .profile \
-    .bash_profile .bashrc .bash_aliases \
-    .zprofile .zshenv .zshrc \
-    .tmux.conf \
-    .gitconfig \
-    .gitalias.txt \
-    .ctags \
-    .ctags.d/ \
-    .mutt/ \
-    .rclonesyncwd/ \
-    .ripgreprc \
-    .scimrc \
-    ${HOME}
-
-  cp .rclonesyncwd/Filters ~/.rclonesyncwd
-  rm -rf ~/.vim/session; cp -r .vim/session ~/.vim
-  rm -rf ~/bin; cp -r bin ~/bin
-  rm -rf ~/.config/{ranger,zathura,UltiSnips}; cp -r \
-    .config/ranger/ \
-    .config/UltiSnips/ \
-    .config/zathura/ \
-    ~/.config
-
-  # Check if WSL
-  if [[ "$(grep -i microsoft /proc/version)" ]]; then
-    cp wsl_tmux_statusline.sh ~/.tmux/
-    cp -r .gtd /mnt/c/Users/${WIN_USERNAME}/Documents
-    cp .config/mimeapps.list ~/.config
-    rm -rf ~/.local/share/applications/*.desktop; cp .local/share/applications/* ~/.local/share/applications
-  else
-    cp -r .gtd ${HOME}
-  fi
-  # Limit all backups to 10 at a time
-  limitdotfilesbak 10
-  printf "\n${GREEN}DOTFILES DISTRIBUTION COMPLETE...${NC}\n\n"
-  cd ${CURRENT_DIR_SAVE}
-}
-
-dotfilesupdate() {
-  CURRENT_DIR_SAVE=$(pwd)
-  cd ${DOTFILES}
-  cp -r \
-    ~/.dotfilesrc \
-    ~/.profile \
-    ~/.bash_profile ~/.bashrc ~/.bash_aliases \
-    ~/.zprofile ~/.zshenv ~/.zshrc \
-    ~/.tmux.conf \
-    ~/.tmux/wsl_tmux_statusline.sh \
-    ~/.gitconfig \
-    ~/.gitalias.txt \
-    ~/.ripgreprc \
-    ~/.scimrc \
-    .
-
-  mkdir -p .tmux/ ; cp ~/.tmux/wsl_tmux_statusline.sh .tmux/
-  mkdir -p .rclonesyncwd/ ; cp ~/.rclonesyncwd/Filters .rclonesyncwd/
-  rm -rf .vim/session; cp -r ~/.vim/session .vim
-  rm -rf bin; cp -r ~/bin .
-  rm -rf .config/{ranger,zathura,Ultisnips}; cp -r \
-    ~/.config/ranger/ \
-    ~/.config/UltiSnips/ \
-    ~/.config/zathura/ \
-    .config
-
-  # Check if WSL
-  if [[ "$(grep -i microsoft /proc/version)" ]]; then
-    cp -r /mnt/c/Users/${WIN_USERNAME}/Documents/.gtd .
-    cp ~/.config/mimeapps.list .config
-    rm -rf .local/share/applications/*.desktop
-
-    [[ ! -d ".local/share/applications" ]] && mkdir -p .local/share/applications
-    cp -r ~/.local/share/applications/*.desktop .local/share/applications
-  else
-    cp -r ~/.gtd .
-  fi
-  git add .; git status
-  printf "${GREEN}Dotfiles update complete${NC}\n"
-  cd ${CURRENT_DIR_SAVE}
-}
-
-dotfilespush() {
-  CURRENT_DIR_SAVE=$(pwd)
-  cd ${DOTFILES}
-  git add . && git commit
-  git push --all
-  cd ${CURRENT_DIR_SAVE}
-}
-
-# Limits to only 10 dotfiles backup at a time
-# Appending to arrays: https://unix.stackexchange.com/a/395103
-# Appending to integer and string: https://stackoverflow.com/a/18041780
-# Looping through arrays: https://stackoverflow.com/a/8880633
-limitdotfilesbak() {
-  LIMIT=${1}
-  REMOVED_COUNT=0
-  REMOVED_LIST=()
-  # If limit == 0, Delete all. Else, delete dotbackups until equals limit
-  while [[ "$(ls ~/.dotfiles.bak | wc -l)" -gt ${LIMIT} ]]; do
-    TO_REMOVE=$(ls ~/.dotfiles.bak | tail -1)
-    # Delete dotfiles backup overflow
-    rm -rf ~/.dotfiles.bak/${TO_REMOVE}
-    # Append to array and increment count
-    REMOVED_LIST+=("${TO_REMOVE[@]} deleted\n")
-    let REMOVED_COUNT+=1
-  done
-  if [[ ${REMOVED_COUNT} -eq 0 ]]; then
-    # If still below limit
-    printf "${GREEN}Nothing to delete. Skipping...${NC}\n"
-  else
-    # Print all removed dotfiles backup in red font color
-    printf "${RED}\n"
-    for i in ${REMOVED_LIST[@]}; do
-      printf "${i}"
-    done
-    printf "${NC}"
-    echo "Total Removed: ${REMOVED_COUNT}"
-  fi
-}
-
-cleardotfilesbak() {
-  limitdotfilesbak 0
-  printf "${GREEN}Dotfiles backups cleared!${NC}\n"
-}
-
-
-alias dotfiles="cd ${DOTFILES}"
-alias dotbackup=dotfilesbackup
-alias dotdist=dotfilesdist
-alias dotupdate=dotfilesupdate
-alias dotclearbak=cleardotfilesbak
-alias dotadd="cd ${DOTFILES} && git add ."
-alias dotcommit="cd ${DOTFILES} && git commit"
-alias dotcommitall="cd ${DOTFILES} && git add . && git commit"
-alias dotpush=dotfilespush
+alias dotf="cd ${DOTFILES}"
+alias dotb="dotbackup -aVy"
+alias dotd="dotdist -bVy"
+alias dotu="dotupdate -Vy"
+alias dotcb="dotclearbak -Vy"
+alias dota="cd ${DOTFILES} && git add ."
+alias dotcm="cd ${DOTFILES} && git commit"
+alias dotcma="cd ${DOTFILES} && git add . && git commit"
+alias dotp=dotfilespush
 
 # GitHub
 alias gh='open https://github.com'

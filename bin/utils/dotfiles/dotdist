@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Updates all specified dotfiles in DOTFILES_TARGET_DIR into DOTFILES_SOURCE_DIR
+# Distribute all specified dotfiles in DOTFILES_LIST from DOTFILES_TARGET_DIR
+# into DOTFILES_SOURCE_DIR.
 # Uses `cmp` to compare files and `diff -c` to display changes when `-V` flag is
 # given.
 #
@@ -59,9 +60,10 @@ usage() {
 cat << EOF
 USAGE:
 
-Updates all specified dotfiles in DOTFILES_TARGET_DIR into DOTFILES_SOURCE_DIR
+Distribute all specified dotfiles in DOTFILES_LIST from DOTFILES_TARGET_DIR
+into DOTFILES_SOURCE_DIR.
 
-  dotupdate [ -bdsvVy ]
+  dotdist [ -bdsvVy ]
 
 OPTIONS:
 

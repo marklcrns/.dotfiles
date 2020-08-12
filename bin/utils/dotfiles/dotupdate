@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Updates all specified dotfiles from DOTFILES_SOURCE_DIR into
+# Updates all specified dotfiles in DOTFILES_LIST from DOTFILES_SOURCE_DIR into
 # DOTFILES_TARGET_DIR.
 # Uses `cmp` to compare files and `diff -c` to display changes when `-V` flag is
 # given.
@@ -60,7 +60,7 @@ usage() {
 cat << EOF
 USAGE:
 
-Updates all specified dotfiles from DOTFILES_SOURCE_DIR into
+Updates all specified dotfiles in DOTFILES_LIST from DOTFILES_SOURCE_DIR into
 DOTFILES_TARGET_DIR.
 
   dotupdate [ -bdsvVy ]
@@ -451,7 +451,7 @@ done
 
 # Abort if no changes or delete detected
 [[ ${total_changes_count} -eq 0 ]] && [[ ${total_deleted_count} -eq 0 ]] &&
-  abort "\nAborting... No dotfiles to backup."
+  abort "\nAborting... No dotfiles to update."
 
 echolog
 echolog "${ULINE}Files with changes:${NC}"
