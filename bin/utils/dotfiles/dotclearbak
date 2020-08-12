@@ -24,7 +24,7 @@ DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
 LOG_FILE_DIR="${HOME}/log"
 LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
 
-SCRIPTPATH="$( cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 ; pwd -P )"
+SCRIPTPATH="$(realpath -s $0)"
 
 # Ansi color code variables
 RED="\e[0;91m"
@@ -198,14 +198,13 @@ finish() {
 }
 
 # Strip trailing '/' in DIR path variables
-DOTFILES_BACKUP_DIR=$(echo "${DOTFILES_BACKUP_DIR}" | sed 's,/*$,,')
-DOTFILES_DEST_DIR=$(echo ${DOTFILES_DEST_DIR} | sed -r "s,(.*)/$,\1,")
-LOG_FILE_DIR=$(echo ${LOG_FILE_DIR} | sed -r "s,(.*)/$,\1,")
+DOTFILES_BACKUP_DIR=$(echo ${DOTFILES_BACKUP_DIR} | sed 's,/*$,,')
+LOG_FILE_DIR=$(echo ${LOG_FILE_DIR} | sed 's,/*$,,')
 
 # Log stdout and stderr to $LOG_FILE in $LOG_FILE_DIR
 if [[ -n "${DEBUG}" ]]; then
-  # Strip trailing '/' in LOG_FILE_DIR path and append "/$LOG_FILE"
-  LOG_FILE_PATH="$(echo ${LOG_FILE_DIR} | sed -r "s,(.*)/$,\1,")/${LOG_FILE}"
+  # Append LOG_FILE
+  LOG_FILE_PATH="${LOG_FILE_DIR}/${LOG_FILE}"
   # Create log directory if not existing
   if [[ ! -d "${LOG_FILE_DIR}" ]]; then
     mkdir -p "${LOG_FILE_DIR}"
@@ -265,6 +264,7 @@ done
 
 new_backup_dir_count=$(ls "${DOTFILES_BACKUP_DIR}" | wc -l)
 
+# TODO: Add remaining files to be deleted on error
 # Check if clear backup successful
 if [[ $(( ${new_backup_dir_count} + ${removed_count} )) -eq ${backup_dir_count} ]]; then
   echolog

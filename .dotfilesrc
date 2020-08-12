@@ -1,43 +1,44 @@
 #!/bin/bash
 
+export DEFAULT_DOTFILES_BACKUP_LIMIT=10
+export DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
+export DOTFILES_SOURCE_DIR="${HOME}"
+export DOTFILES_TARGET_DIR="${HOME}/Projects/.dotfiles"
+
 DOTFILES_LIST=(
-  "${HOME}/.bash_aliases"
-  "${HOME}/.bash_profile"
-  "${HOME}/.bashrc"
-  "${HOME}/.config/UltiSnips/"
-  "${HOME}/.config/ranger/"
-  "${HOME}/.config/zathura/"
-  "${HOME}/.ctags"
-  "${HOME}/.ctags.d/"
-  "${HOME}/.dotfilesrc"
-  "${HOME}/.gitconfig"
-  "${HOME}/.gtd/"
-  "${HOME}/.mutt/"
-  "${HOME}/.profile"
-  "${HOME}/.rclonesyncwd/Filters"
-  "${HOME}/.ripgreprc"
-  "${HOME}/.scimrc"
-  "${HOME}/.tmux.conf"
-  "${HOME}/.tmux/wsl_tmux_statusline.sh"
-  "${HOME}/.tmuxinator/"
-  "${HOME}/.vim/session/"
-  "${HOME}/.zprofile"
-  "${HOME}/.zshenv"
-  "${HOME}/.zshrc"
-  "${HOME}/bin/"
+  "${DOTFILES_SOURCE_DIR}/.bash_aliases"
+  "${DOTFILES_SOURCE_DIR}/.bash_profile"
+  "${DOTFILES_SOURCE_DIR}/.bashrc"
+  "${DOTFILES_SOURCE_DIR}/.config/UltiSnips/"
+  "${DOTFILES_SOURCE_DIR}/.config/ranger/"
+  "${DOTFILES_SOURCE_DIR}/.config/zathura/"
+  "${DOTFILES_SOURCE_DIR}/.ctags"
+  "${DOTFILES_SOURCE_DIR}/.ctags.d/"
+  "${DOTFILES_SOURCE_DIR}/.dotfilesrc"
+  "${DOTFILES_SOURCE_DIR}/.gitconfig"
+  "${DOTFILES_SOURCE_DIR}/.gtd/"
+  "${DOTFILES_SOURCE_DIR}/.mutt/"
+  "${DOTFILES_SOURCE_DIR}/.profile"
+  "${DOTFILES_SOURCE_DIR}/.rclonesyncwd/Filters"
+  "${DOTFILES_SOURCE_DIR}/.ripgreprc"
+  "${DOTFILES_SOURCE_DIR}/.scimrc"
+  "${DOTFILES_SOURCE_DIR}/.tmux.conf"
+  "${DOTFILES_SOURCE_DIR}/.tmux/wsl_tmux_statusline.sh"
+  "${DOTFILES_SOURCE_DIR}/.tmuxinator/"
+  "${DOTFILES_SOURCE_DIR}/.vim/session/"
+  "${DOTFILES_SOURCE_DIR}/.zprofile"
+  "${DOTFILES_SOURCE_DIR}/.zshenv"
+  "${DOTFILES_SOURCE_DIR}/.zshrc"
+  "${DOTFILES_SOURCE_DIR}/bin/"
 )
 
 # WSL specific configs
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
   # Append to DOTFILES_LIST
   DOTFILES_LIST_WSL=(
-    "${HOME}/.config/mimeapps.list"
-    "${HOME}/.local/share/applications/*.desktop"
+    "${DOTFILES_SOURCE_DIR}/.config/mimeapps.list"
+    "${DOTFILES_SOURCE_DIR}/.local/share/applications/*.desktop"
   )
 fi
 
-export DEFAULT_DOTFILES_BACKUP_LIMIT=10
-export DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
-export DOTFILES_DEST_DIR="${HOME}/Projects/.dotfiles"
 export DOTFILES_LIST=(${DOTFILES_LIST[@]} ${DOTFILES_LIST_WSL[@]})
-export DOTFILES_SOURCE_DIR="${HOME}"
