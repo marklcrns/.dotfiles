@@ -534,14 +534,15 @@ echo -e "${changes_list}" | while IFS= read -r file_tuple; do
   source_file="${file_arr[0]}"; target_file="${file_arr[1]}"
   target_dir="$(dirname "${target_file}")"
   if [[ -z "${target_file}" ]]; then # check if target_file is missing
-    rm -fv "${source_file}" | log
+    rm -fv "${source_file}" | log &&
+      warning "${source_file} deleted"
   elif [[ -d "${target_dir}" ]]; then # Check target dir path
-    cp -rLv ${source_file} ${target_file} | log
-    warning "${source_file} -> ${target_file}"
+    cp -rLv ${source_file} ${target_file} | log &&
+      warning "${source_file} -> ${target_file}"
   else # Create target dir if not existing
     mkdir -p "${target_dir}"
-    cp -rLv ${source_file} ${target_file} | log
-    warning "${source_file} -> ${target_file}"
+    cp -rLv ${source_file} ${target_file} | log &&
+      warning "${source_file} -> ${target_file}"
   fi
 done
 
