@@ -160,9 +160,17 @@ error() {
   message=$1
   exitcode=$2
   if [[ -n "${message}" ]]; then
-    [[ -z "${IS_SILENT}" ]] && echo -e "${RED}${SCRIPTPATH}: ${message}${NC}"
+    if [[ -n ${exit_code} ]]; then # Remove SCRIPTPATH if no exit code
+      [[ -z "${IS_SILENT}" ]] && echo -e "${RED}${SCRIPTPATH}: ${message}${NC}"
+    else
+      [[ -z "${IS_SILENT}" ]] && echo -e "${RED}${message}${NC}"
+    fi
     # Log message on debug mode
-    [[ -n "${DEBUG}" ]] && echo -e "${SCRIPTPATH}: ${message}" >> "${LOG_FILE_PATH}"
+    if [[ -n ${exit_code} ]]; then # Remove SCRIPTPATH if no exit code
+      [[ -n "${DEBUG}" ]] && echo -e "${SCRIPTPATH}: ${message}" >> "${LOG_FILE_PATH}"
+    else
+      [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+    fi
   fi
   # Exit with specified exit code. Do not exit if no exit code
   if [[ -n ${exitcode} ]]; then
