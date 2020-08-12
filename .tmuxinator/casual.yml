@@ -1,0 +1,12 @@
+# /home/marklcrns/.tmuxinator/casual.yml
+
+name: casual
+root: ~/
+
+windows:
+  - MAIN:
+      layout: cfc1,93x52,0,0[93x40,0,0,20,93x11,0,41,21]
+      panes:
+        - clear && neofetch
+        - cd ~/Projects/Dev && clear
+

@@ -1,0 +1,13 @@
+# /home/marklcrns/.tmuxinator/web-dev.yml
+
+name: web-dev
+root: ~/Projects/Dev/Playground/javascript
+
+
+windows:
+  - MAIN:
+      layout: cff4,93x54,0,0[93x26,0,0,39,93x27,0,27{46x27,0,27,41,46x27,47,27,42}]
+      panes:
+        - clear
+        - clear
+        - clear

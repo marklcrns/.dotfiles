@@ -1,0 +1,20 @@
+# /home/marklcrns/.tmuxinator/summer20.yml
+
+# Linux Ubuntu 20.04 School summer 2020 setup
+
+name: school
+root: ~/
+
+windows:
+  - CISC:
+      layout: 60bd,210x52,0,0[210x41,0,0,47,210x10,0,42{105x10,0,42,54,104x10,106,42,55}]
+      panes:
+        - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad CISC"
+        - cd ~/Docs/wiki && clear
+        - cd ~/Docs/wiki/school/files/summer-2020/CISC-191 && clear
+  - ENGL:
+      layout: e0c2,210x52,0,0[210x41,0,0,48,210x10,0,42{105x10,0,42,58,104x10,106,42,59}]
+      panes:
+        - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad ENGL"
+        - cd ~/Docs/wiki && clear
+        - cd ~/Docs/wiki/school/files/summer-2020/ENGL-205 && clear

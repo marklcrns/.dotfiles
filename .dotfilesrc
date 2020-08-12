@@ -19,6 +19,7 @@ DOTFILES_LIST=(
   "${HOME}/.scimrc"
   "${HOME}/.tmux.conf"
   "${HOME}/.tmux/wsl_tmux_statusline.sh"
+  "${HOME}/.tmuxinator/"
   "${HOME}/.vim/session/"
   "${HOME}/.zprofile"
   "${HOME}/.zshenv"
