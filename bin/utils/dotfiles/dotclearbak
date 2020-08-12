@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Limits to only 10 dotfiles backup at a time
+# Clears dotfiles backups only upto DOTFILES_BACKUP_LIMIT. Clears all when
+# DOTFILES_BACKUP_LIMIT is 0 or no arguments was given.
 #
 # The $DOTFILESRC specifies the location of .dotfilesrc file to override default
 # script variables.
@@ -53,10 +54,10 @@ usage() {
   cat << EOF
 USAGE:
 
-Backs up all specified dotfiles from \$DOTFILES_LIST into \$DOTFILES_BACKUP_DIR
-within a current timestamp named directory.
+Clears dotfiles backups only up to DOTFILES_BACKUP_LIMIT. Clears all when
+DOTFILES_BACKUP_LIMIT is 0 or no arguments was given.
 
-  dotbackup [ -dsvVy ]
+  dotclearbak [ -dsvVy ] [ backup-limit ]
 
 OPTIONS:
 
