@@ -8,7 +8,7 @@
 # The $DOTFILESRC specifies the location of .dotfilesrc file to override default
 # script variables.
 #
-# ########################## Script Global Variables ###########################
+########################### Script Global Variables ############################
 #
 # DOTFILES_LIST       = Bash array list of config (dot) files or directory to
 #                       update.
@@ -18,11 +18,13 @@
 # LOG_FILE            = Log file name. Only logs on `-d` flag or debug mode.
 #                       Defaults to current timestamp.
 #
-# ##############################################################################
+################################################################################
 #
 # Author : Mark Lucernas <https://github.com/marklcrns>
 # Date   : 2020-08-05
 
+
+################################################## CONSTANT GLOBAL VARIABLES ###
 
 # Default script variables
 DOTFILES_LIST=()
@@ -54,6 +56,7 @@ if [[ -e "${DOTFILESRC}" ]]; then
   source "${DOTFILESRC}"
 fi
 
+############################################################### FLAG OPTIONS ###
 
 # Display help
 usage() {
@@ -93,6 +96,8 @@ while getopts "bdsvVyh" opt; do
   esac
 done 2>/dev/null
 shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
+
+########################################################## UTILITY FUNCTIONS ###
 
 # Log message into LOG_FILE_PATH. Can be used with pipeline '|' to log message
 # from stdout.
@@ -150,12 +155,23 @@ execlog() {
     # Log command_string on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${command_string}" >> "${LOG_FILE_PATH}"
     # execute command
-    eval "${command_string}" && return 0 || return 1
+    if eval "${command_string}"; then
+      return 0
+    else
+      # echo if verbose
+      [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+        echo -e "${RED}${FUNCNAME[0]}(): Command \'${command_string}\' failed${NC}"
+      # Log command_string on debug mode
+      [[ -n "${DEBUG}" ]] &&
+        echo -e "${FUNCNAME[0]}(): Command \'${command_string}\' failed" >> "${LOG_FILE_PATH}"
+      return 1
+    fi
   else
     # Return error if no command given
     [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
-      echolog "${RED}${FUNCNAME[0]}(): Command not found${NC}"
-    [[ -n "${DEBUG}" ]] && echo -e "${FUNCNAME[0]}: Command not found" >> "${LOG_FILE_PATH}"
+      echo -e "${RED}${FUNCNAME[0]}(): Command not found${NC}"
+    [[ -n "${DEBUG}" ]] &&
+      echo -e "${FUNCNAME[0]}: Command not found" >> "${LOG_FILE_PATH}"
     return 1
   fi
 }
@@ -247,6 +263,8 @@ finish() {
   exit 0
 }
 
+####################################################### PRE-EXECUTION SET UP ###
+
 # Strip trailing '/' in DIR path variables
 DOTFILES_SOURCE_DIR=$(echo ${DOTFILES_SOURCE_DIR} | sed 's,/*$,,')
 DOTFILES_TARGET_DIR=$(echo ${DOTFILES_TARGET_DIR} | sed 's,/*$,,')
@@ -264,7 +282,7 @@ if [[ -n "${DEBUG}" ]]; then
   echo -e "${SCRIPTPATH} log outputs\n" > ${LOG_FILE_PATH}
 fi
 
-################################# START SCRIPT #################################
+########################################################## SCRIPT EXECUTIONS ###
 
 # TODO: Make bidirectional
 #       Make diffing changes detect the most recent file
@@ -604,6 +622,8 @@ echo -e "${changes_list}" | while IFS= read -r file_tuple; do
   fi
 done
 
+#################################################################### WRAP UP ###
+
 # Final check
 for dotfile in ${DOTFILES_LIST[@]}; do
   # Strip source directory from path
@@ -613,7 +633,7 @@ for dotfile in ${DOTFILES_LIST[@]}; do
   detect_delete "${dotfile}" "${DOTFILES_TARGET_DIR}/${source_stripped}" delete delete_count files_count 1
 done
 
-# Catch errors
+# Catch final check errors
 [[ ${changes_count} -gt 0 ]] || [[ ${delete_count} -gt 0 ]] &&
   error "Dotupdate failed. Changes persists" 2
 

@@ -6,7 +6,7 @@
 # The $DOTFILESRC specifies the location of .dotfilesrc file to override default
 # script variables.
 #
-# ########################## Script Global Variables ###########################
+########################### Script Global Variables ############################
 #
 # DEFAULT_DOTFILES_BACKUP_LIMIT = Sets the default auto clean backup limit
 # DOTFILES_BACKUP_DIR           = Specifies the location of backup files.
@@ -20,11 +20,13 @@
 # LOG_FILE                      = Log file name. Only logs on `-d` flag or debug
 #                                 mode. Defaults to current timestamp.
 #
-# ##############################################################################
+################################################################################
 #
 # Author : Mark Lucernas <https://github.com/marklcrns>
 # Date   : 2020-08-02
 
+
+################################################## CONSTANT GLOBAL VARIABLES ###
 
 # Default script variables
 DEFAULT_DOTFILES_BACKUP_LIMIT=10
@@ -58,6 +60,7 @@ if [[ -e "${DOTFILESRC}" ]]; then
   source "${DOTFILESRC}"
 fi
 
+############################################################### FLAG OPTIONS ###
 
 # Display help
 usage() {
@@ -99,6 +102,8 @@ while getopts "aA:dsvVyh" opt; do
   esac
 done 2>/dev/null
 shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
+
+########################################################## UTILITY FUNCTIONS ###
 
 # Log message into LOG_FILE_PATH. Can be used with pipeline '|' to log message
 # from stdout.
@@ -156,12 +161,23 @@ execlog() {
     # Log command_string on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${command_string}" >> "${LOG_FILE_PATH}"
     # execute command
-    eval "${command_string}" && return 0 || return 1
+    if eval "${command_string}"; then
+      return 0
+    else
+      # echo if verbose
+      [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+        echo -e "${RED}${FUNCNAME[0]}(): Command \'${command_string}\' failed${NC}"
+      # Log command_string on debug mode
+      [[ -n "${DEBUG}" ]] &&
+        echo -e "${FUNCNAME[0]}(): Command \'${command_string}\' failed" >> "${LOG_FILE_PATH}"
+      return 1
+    fi
   else
     # Return error if no command given
     [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
-      echolog "${RED}${FUNCNAME[0]}(): Command not found${NC}"
-    [[ -n "${DEBUG}" ]] && echo -e "${FUNCNAME[0]}: Command not found" >> "${LOG_FILE_PATH}"
+      echo -e "${RED}${FUNCNAME[0]}(): Command not found${NC}"
+    [[ -n "${DEBUG}" ]] &&
+      echo -e "${FUNCNAME[0]}: Command not found" >> "${LOG_FILE_PATH}"
     return 1
   fi
 }
@@ -253,6 +269,8 @@ finish() {
   exit 0
 }
 
+####################################################### PRE-EXECUTION SET UP ###
+
 # Strip trailing '/' in DIR path variables
 DOTFILES_BACKUP_DIR=$(echo ${DOTFILES_BACKUP_DIR} | sed 's,/*$,,')
 DOTFILES_SOURCE_DIR=$(echo ${DOTFILES_SOURCE_DIR} | sed 's,/*$,,')
@@ -270,7 +288,7 @@ if [[ -n "${DEBUG}" ]]; then
   echo -e "${SCRIPTPATH} log outputs\n" > ${LOG_FILE_PATH}
 fi
 
-################################# START SCRIPT #################################
+########################################################## SCRIPT EXECUTIONS ###
 
 # Set default backup limit if DOTFILES_BACKUP_LIMIT is invalid
 if [[ -n "${AUTO_CLEAN}" ]]; then
@@ -340,7 +358,10 @@ do
   fi
 done
 
+#################################################################### WRAP UP ###
+
 errors_count=0
+
 # Final check if all files and directories are copied
 for dotfile in ${DOTFILES_LIST[@]};
 do
