@@ -334,8 +334,8 @@ dotfilespush() {
 
 alias dotf="cd ${DOTFILES}"
 alias dotb="dotbackup -aVy"
-alias dotd="dotdist -bVy"
-alias dotu="dotupdate -Vy"
+alias dotd="dotdist -bV"
+alias dotu="dotupdate -V"
 alias dotcb="dotclearbak -Vy"
 alias dota="cd ${DOTFILES} && git add ."
 alias dotcm="cd ${DOTFILES} && git commit"

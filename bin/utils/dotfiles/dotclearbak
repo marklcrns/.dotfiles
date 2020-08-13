@@ -216,15 +216,18 @@ fi
 
 ################################# START SCRIPT #################################
 
-echolog "Detecting backup files..."
+echolog "Detecting all backup files..."
 echolog
+echolog "$(ls "${DOTFILES_BACKUP_DIR}")"
 
 # TODO: Cache backups to be deleted for more thorough checks
 backup_dir_count=$(ls "${DOTFILES_BACKUP_DIR}" | wc -l)
 to_remove_count=$(( ${backup_dir_count} - ${DOTFILES_BACKUP_LIMIT} ))
-ls "${DOTFILES_BACKUP_DIR}"
 
-[[ ${to_remove_count} -lt 0 ]] && to_remove_count=${backup_dir_count}
+# Cache backup directories to remove
+if [[ ${to_remove_count} -lt 0 ]]; then
+  to_remove_count=${backup_dir_count}
+fi
 
 echolog
 echolog "Total backups: \t\t\t${backup_dir_count}"
@@ -248,29 +251,30 @@ if [[ -z "${SKIP_CONFIRM}" ]]; then
   fi
 fi
 
+echolog "Removing excess backups..."
+echolog
 
+# Get oldest backups amount based on DOTFILES_BACKUP_LIMIT
+to_remove_list="$(ls -1 ${DOTFILES_BACKUP_DIR} | head -${to_remove_count})"
 removed_count=0
-declare -a to_remove_array
 
-# If limit == 0, Delete all. Else, delete dotbackups until equals limit
-while [[ "$(ls "${DOTFILES_BACKUP_DIR}" | wc -l)" -gt ${DOTFILES_BACKUP_LIMIT} ]]; do
-  to_remove=$(ls "${DOTFILES_BACKUP_DIR}" -1tr | head -1) # Get oldest backup
-  # Delete dotfiles backup overflow
-  rm -rfv "${DOTFILES_BACKUP_DIR}/${to_remove}" | log
-  # Append to array and increment count
-  warning "${DOTFILES_BACKUP_DIR}/${to_remove} deleted"
-  removed_count=$((removed_count+1))
-done
+while IFS= read -r backup_file; do
+  if rm -rf "${DOTFILES_BACKUP_DIR}/${backup_file}"; then
+    warning "${DOTFILES_BACKUP_DIR}/${backup_file} deleted"
+    # Increment removed count
+    removed_count=$((removed_count+1))
+  else
+    error "Failed to remove ${DOTFILES_BACKUP_DIR}/${backup_file}"
+  fi
+done <<< "${to_remove_list}"
 
 new_backup_dir_count=$(ls "${DOTFILES_BACKUP_DIR}" | wc -l)
 
-# TODO: Add remaining files to be deleted on error
-# Check if clear backup successful
 if [[ $(( ${new_backup_dir_count} + ${removed_count} )) -eq ${backup_dir_count} ]]; then
   echolog
   ok "Total removed: ${removed_count}"
 else
-  error "Clearing dotfiles backups failed." 2
+  error "Clearing dotfiles backups failed" 2
 fi
 
 finish "Dotfiles backups cleared"

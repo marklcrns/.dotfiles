@@ -7,14 +7,14 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +531 utils/dotfiles/dotupdate
-badd +93 utils/dotfiles/dotdist
-badd +22 utils/dotfiles/dotclearbak
-badd +292 dotbackup
-badd +336 ~/.bash_aliases
+badd +272 dotbackup
+badd +361 ~/.bash_aliases
+badd +262 dotclearbak
+badd +543 dotdist
+badd +532 dotupdate
 argglobal
 %argdel
-edit utils/dotfiles/dotdist
+edit dotupdate
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -30,13 +30,13 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 120 - ((38 * winheight(0) + 21) / 43)
+let s:l = 347 - ((23 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-120
-normal! 0
-lcd ~/utils/dotfiles/utils/dotfiles/utils/dotfiles/utils/dotfiles/utils/dotfiles
+347
+normal! 019|
+lcd ~/bin
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

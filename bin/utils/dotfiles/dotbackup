@@ -288,8 +288,11 @@ do
     mkdir -p ${full_backup_dir}
   fi
   # Copy dotfile into backup directory
-  cp -rLv "${DOTFILES_SOURCE_DIR}/${dotfile_stripped}" "${full_backup_dir}" | log &&
-    warning "${DOTFILES_SOURCE_DIR}/${dotfile_stripped} -> ${full_backup_dir}"
+  if cp -rL "${DOTFILES_SOURCE_DIR}/${dotfile_stripped}" "${full_backup_dir}"; then
+    ok "${DOTFILES_SOURCE_DIR}/${dotfile_stripped} -> ${full_backup_dir}"
+  else
+    error "Failed to copy ${DOTFILES_SOURCE_DIR}/${dotfile_stripped} -> ${full_backup_dir}"
+  fi
 done
 
 errors_count=0
