@@ -588,20 +588,20 @@ echo -e "${changes_list}" | while IFS= read -r file_tuple; do
   source_file="${file_arr[0]}"; target_file="${file_arr[1]}"
   target_dir="$(dirname "${target_file}")"
   if [[ -z "${target_file}" ]]; then # check if target_file is missing
-    if execlog "rm -f ${source_file}"; then
+    if execlog "rm -f ${source_file}" 1; then
       ok "${source_file} deleted"
     else
       error "Failed to delete ${source_file}"
     fi
   elif [[ -d "${target_dir}" ]]; then # Check target dir path
-    if execlog "cp -rL ${source_file} ${target_file}"; then
+    if execlog "cp -rL ${source_file} ${target_file}" 1; then
       ok "${source_file} -> ${target_file}"
     else
-      error "Faield to copy ${source_file} -> ${target_file}"
+      error "Failed to copy ${source_file} -> ${target_file}"
     fi
   else # Create target dir if not existing
     execlog "mkdir -p ${target_dir}"
-    if execlog "cp -rL ${source_file} ${target_file}"; then
+    if execlog "cp -rL ${source_file} ${target_file}" 1; then
       ok "${source_file} -> ${target_file}"
     else
       error "Failed to copy ${source_file} -> ${target_file}"
