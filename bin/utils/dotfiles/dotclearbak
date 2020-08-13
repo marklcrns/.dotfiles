@@ -90,6 +90,7 @@ shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
 # from stdout.
 # Second argument accepts integer value of 1 only to force silent.
 # Logs message on DEBUG.
+# Echo message if IS_VERY_VERBOSE
 log() {
   message=$1
   force_silent=$2
@@ -102,7 +103,7 @@ log() {
       [[ -n "${DEBUG}" ]] && echo -e "${IN}" >> "${LOG_FILE_PATH}"
     fi
     # Echo log message if IS_VERY_VERBOSE
-    if [[ -n "${IS_VERY_VERBOSE}" ]] && [[ -n ${message// } ]]; then # If IS_VERY_VERBOSE and not only spaces
+    if [[ -n "${IS_VERY_VERBOSE}" ]]; then
       [[ ${force_silent} -ne 1 ]] && echo -e "$message" # Skip message if force_silent
     fi
   fi
@@ -130,6 +131,7 @@ echolog(){
 # Execute command string with `eval` then log into LOG_FILE_PATH
 # Second argument accepts integer value of 1 only to force silent.
 # Logs message on DEBUG.
+# Echo message if IS_VERBOSE
 execlog() {
   command_string=$1
   force_silent=$2
@@ -302,7 +304,7 @@ to_remove_list="$(ls -1 ${DOTFILES_BACKUP_DIR} | head -${to_remove_count})"
 removed_count=0
 
 while IFS= read -r backup_file; do
-  if rm -rf "${DOTFILES_BACKUP_DIR}/${backup_file}"; then
+  if execlog "rm -rf ${DOTFILES_BACKUP_DIR}/${backup_file}"; then
     warning "${DOTFILES_BACKUP_DIR}/${backup_file} deleted"
     # Increment removed count
     removed_count=$((removed_count+1))

@@ -104,6 +104,7 @@ shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
 # from stdout.
 # Second argument accepts integer value of 1 only to force silent.
 # Logs message on DEBUG.
+# Echo message if IS_VERY_VERBOSE
 log() {
   message=$1
   force_silent=$2
@@ -116,7 +117,7 @@ log() {
       [[ -n "${DEBUG}" ]] && echo -e "${IN}" >> "${LOG_FILE_PATH}"
     fi
     # Echo log message if IS_VERY_VERBOSE
-    if [[ -n "${IS_VERY_VERBOSE}" ]] && [[ -n ${message// } ]]; then # If IS_VERY_VERBOSE and not only spaces
+    if [[ -n "${IS_VERY_VERBOSE}" ]]; then
       [[ ${force_silent} -ne 1 ]] && echo -e "$message" # Skip message if force_silent
     fi
   fi
@@ -144,6 +145,7 @@ echolog(){
 # Execute command string with `eval` then log into LOG_FILE_PATH
 # Second argument accepts integer value of 1 only to force silent.
 # Logs message on DEBUG.
+# Echo message if IS_VERBOSE
 execlog() {
   command_string=$1
   force_silent=$2
@@ -328,10 +330,10 @@ do
   if [[ -n "${subdir}" ]]; then
     full_backup_dir="${full_backup_dir}/${subdir}"
     # Create subdirectories
-    mkdir -p ${full_backup_dir}
+    execlog "mkdir -p ${full_backup_dir}"
   fi
   # Copy dotfile into backup directory
-  if cp -rL "${DOTFILES_SOURCE_DIR}/${dotfile_stripped}" "${full_backup_dir}"; then
+  if execlog "cp -rL ${DOTFILES_SOURCE_DIR}/${dotfile_stripped} ${full_backup_dir}"; then
     ok "${DOTFILES_SOURCE_DIR}/${dotfile_stripped} -> ${full_backup_dir}"
   else
     error "Failed to copy ${DOTFILES_SOURCE_DIR}/${dotfile_stripped} -> ${full_backup_dir}"

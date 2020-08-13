@@ -98,6 +98,7 @@ shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
 # from stdout.
 # Second argument accepts integer value of 1 only to force silent.
 # Logs message on DEBUG.
+# Echo message if IS_VERY_VERBOSE
 log() {
   message=$1
   force_silent=$2
@@ -110,7 +111,7 @@ log() {
       [[ -n "${DEBUG}" ]] && echo -e "${IN}" >> "${LOG_FILE_PATH}"
     fi
     # Echo log message if IS_VERY_VERBOSE
-    if [[ -n "${IS_VERY_VERBOSE}" ]] && [[ -n ${message// } ]]; then # If IS_VERY_VERBOSE and not only spaces
+    if [[ -n "${IS_VERY_VERBOSE}" ]]; then
       [[ ${force_silent} -ne 1 ]] && echo -e "$message" # Skip message if force_silent
     fi
   fi
@@ -138,6 +139,7 @@ echolog(){
 # Execute command string with `eval` then log into LOG_FILE_PATH
 # Second argument accepts integer value of 1 only to force silent.
 # Logs message on DEBUG.
+# Echo message if IS_VERBOSE
 execlog() {
   command_string=$1
   force_silent=$2
@@ -568,20 +570,20 @@ echo -e "${changes_list}" | while IFS= read -r file_tuple; do
   source_file="${file_arr[0]}"; target_file="${file_arr[1]}"
   target_dir="$(dirname "${target_file}")"
   if [[ -z "${target_file}" ]]; then # check if target_file is missing
-    if rm -f "${source_file}"; then
+    if execlog "rm -f ${source_file}"; then
       ok "${source_file} deleted"
     else
       error "Failed to delete ${source_file}"
     fi
   elif [[ -d "${target_dir}" ]]; then # Check target dir path
-    if cp -rL ${source_file} ${target_file}; then
+    if execlog "cp -rL ${source_file} ${target_file}"; then
       ok "${source_file} -> ${target_file}"
     else
       error "Faield to copy ${source_file} -> ${target_file}"
     fi
   else # Create target dir if not existing
-    mkdir -p "${target_dir}"
-    if cp -rL ${source_file} ${target_file}; then
+    execlog "mkdir -p ${target_dir}"
+    if execlog "cp -rL ${source_file} ${target_file}"; then
       ok "${source_file} -> ${target_file}"
     else
       error "Failed to copy ${source_file} -> ${target_file}"
@@ -590,6 +592,9 @@ echo -e "${changes_list}" | while IFS= read -r file_tuple; do
 done
 
 # Final check
+log " " 1
+log "Final check..." 1
+log " " 1
 for dotfile in ${DOTFILES_LIST[@]}; do
   # Strip source directory from path
   source_stripped=$(echo "$dotfile" | sed "s,${DOTFILES_SOURCE_DIR}/,,")
