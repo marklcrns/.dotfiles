@@ -11,10 +11,10 @@ badd +272 dotbackup
 badd +361 ~/.bash_aliases
 badd +262 dotclearbak
 badd +543 dotdist
-badd +532 dotupdate
+badd +273 dotupdate
 argglobal
 %argdel
-edit dotupdate
+edit ~/.bash_aliases
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -30,13 +30,13 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 347 - ((23 * winheight(0) + 19) / 38)
+let s:l = 370 - ((15 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-347
-normal! 019|
-lcd ~/bin
+370
+normal! 0
+lcd ~/
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

@@ -94,9 +94,10 @@ while getopts "bdsvVyh" opt; do
 done 2>/dev/null
 shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
 
-# Stores message into $IN if string argument is passed in, else read from stdin
-# and store it in $IN (used with pipe '|').  Only log message on debug mode.
-# Echoes $IN if used with pipe.
+# Log message into LOG_FILE_PATH. Can be used with pipeline '|' to log message
+# from stdout.
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
 log() {
   message=$1
   force_silent=$2
@@ -115,22 +116,51 @@ log() {
   fi
 }
 
+# Echo message and log into LOG_FILE_PATH.
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
 echolog(){
   message=$1
   force_silent=$2
   if [[ -n "${message}" ]]; then
     # echo if verbose
-    [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
       echo -e "${message}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   else # Print newline if no message
-    [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
       echo -e ""
     [[ -n "${DEBUG}" ]] && echo -e "" >> "${LOG_FILE_PATH}"
   fi
 }
 
+# Execute command string with `eval` then log into LOG_FILE_PATH
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
+execlog() {
+  command_string=$1
+  force_silent=$2
+  if [[ -n "${command_string}" ]]; then
+    # echo if verbose
+    [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e "${command_string}"
+    # Log command_string on debug mode
+    [[ -n "${DEBUG}" ]] && echo -e "${command_string}" >> "${LOG_FILE_PATH}"
+    # execute command
+    eval "${command_string}" && return 0 || return 1
+  else
+    # Return error if no command given
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echolog "${RED}${FUNCNAME[0]}(): Command not found${NC}"
+    [[ -n "${DEBUG}" ]] && echo -e "${FUNCNAME[0]}: Command not found" >> "${LOG_FILE_PATH}"
+    return 1
+  fi
+}
+
+# Echo message in GREEN characters
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
 ok() {
   message=$1
   force_silent=$2
@@ -142,6 +172,9 @@ ok() {
   fi
 }
 
+# Echo message in YELLOW characters
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
 warning() {
   message=$1
   force_silent=$2
@@ -153,6 +186,9 @@ warning() {
   fi
 }
 
+# Echo message in YELLOW characters and `exit` script with exit code 1
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
 abort() {
   message=$1
   force_silent=$2
@@ -165,6 +201,10 @@ abort() {
   exit 1
 }
 
+# Echo message in RED characters and `exit` script with exit code 1.
+# Second argument accepts integer to override default exit code.
+# Third argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
 error() {
   message=$1
   exit_code=$2
@@ -190,6 +230,9 @@ error() {
   fi
 }
 
+# Echo message in GREEN characters and `exit` with exit code 0
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
 finish() {
   message=$1
   force_silent=$2
