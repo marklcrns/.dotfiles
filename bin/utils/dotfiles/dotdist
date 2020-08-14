@@ -613,7 +613,7 @@ echo -e "${changes_list}" | while IFS= read -r file_tuple; do
       error "Failed to copy ${source_file} -> ${target_file}"
     fi
   else # Create target dir if not existing
-    execlog mkdir -p "${target_dir}"
+    execlog "mkdir -p ${target_dir}"
     if execlog "cp -rL ${source_file} ${target_file}" 1; then
       ok "${source_file} -> ${target_file}"
     else

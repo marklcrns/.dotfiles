@@ -329,7 +329,7 @@ echolog "Backing up local dotfiles..."
 echolog
 
 # Create backup directory
-mkdir -p "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}"
+execlog "mkdir -p ${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}" 1
 
 # Backup all dotfiles
 for dotfile in ${DOTFILES_LIST[@]};
