@@ -212,10 +212,12 @@ detect_delete() {
       if [[ -e "${__target_file}" ]]; then
         echolog "File exist in ${__target_file}" ${silent}
       else
-        echolog "${RED}File to be deleted ${__source_file}${NC}" ${silent}
         # Record deletion if not NO_DELETE
         if [[ -z "${NO_DELETE}" ]]; then
+          echolog "${RED}File to be deleted ${__source_file}${NC}" ${silent}
           __tmp_deletion_count=$(expr ${__tmp_deletion_count} + 1)
+        else
+          echolog "${RED}File to be deleted ${__source_file} ${YELLOW}SKIPPED${NC}" ${silent}
         fi
         # Append to changes list
         if [[ -z ${__tmp_deletion_list} ]]; then
