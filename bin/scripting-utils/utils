@@ -39,6 +39,9 @@
 # RED             = ANSI red color code.
 # GREEN           = ANSI green color code.
 # YELLOW          = ANSI yellow color code.
+# PURPLE          = ANSI purple color code.
+# BO_NC           = ANSI bold color code.
+# UL_NC           = ANSI underline color code.
 #
 ################################################################################
 #
@@ -105,13 +108,17 @@ function echolog(){
 # Execute command string with `eval` then log into LOG_FILE_PATH
 # $2 argument accepts only integer value of 1 to force silent.
 # Logs message on DEBUG.
-# Echo message if IS_VERBOSE
+# Echo error message if IS_VERBOSE
+# Echo execution message if IS_VERY_VERBOSE
 function execlog() {
   command_string=$1
   force_silent=$2
   if [[ -n "${command_string}" ]]; then
     # execute command
     if eval ${command_string}; then
+      if [[ -n "${IS_VERY_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+        echo -e "${PURPLE}Executing '${command_string}'${NC}"
+      fi
       return 0
     else
       # echo if verbose

@@ -81,7 +81,7 @@ detect_changes() {
 
   # Exit if invalid path
   if [[ ! -e "${__source}" ]]; then
-    error "${SCRIPTPATH} ${FUNCNAME[0]}: Invalid source path \'${__source}\'"
+    error "${SCRIPTPATH} ${FUNCNAME[0]}: Invalid source path '${__source}'"
     return 2
   fi
 

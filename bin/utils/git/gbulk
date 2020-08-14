@@ -229,8 +229,7 @@ pushrepo() {
     wait
     echolog
     execlog "git add ."
-    execlog "git commit"
-    if execlog "git commit"; then
+    if execlog "git commit" 1; then
       [[ -n ${FORCE_REPO} ]] &&
         execlog "git push --all --force" || execlog "git push --all"
       # If Authentication failed, push until successful or interrupted
