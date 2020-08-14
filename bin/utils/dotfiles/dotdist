@@ -506,7 +506,7 @@ for dotfile in ${DOTFILES_LIST[@]}; do
   source_stripped=$(echo "$dotfile" | sed "s,${DOTFILES_SOURCE_DIR}/,,")
 
   detect_changes "${DOTFILES_TARGET_DIR}/${source_stripped}" "${dotfile}" changes changes_count files_count 1
-  if [[ -z ${NO_DELETE} ]]; then
+  if [[ -z "${NO_DELETE}" ]]; then
     detect_delete "${dotfile}" "${DOTFILES_TARGET_DIR}/${source_stripped}" delete delete_count files_count 1
   fi
 done
