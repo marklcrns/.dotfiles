@@ -14,7 +14,7 @@
 # ok()       = Echo message in GREEN characters.
 # finish     = Echo message in GREEN characters and exit with 0 exit code.
 # warning()  = Echo message in YELLOW characters.
-# abort()    = Echo message in YELLOW characters and exit with 1 exit code.
+# abort()    = Echo message in YELLOW characters and exit with 0 exit code.
 # error()    = Echo message in RED characters and exit with 1 exit code by
 #              default. Also accepts integer to override default exit code.
 # cleanlog() = Clean oldest excess log files if exceeds $1 (limit) integer
@@ -165,7 +165,7 @@ function warning() {
   fi
 }
 
-# Echo message in YELLOW characters and `exit` script with exit code 1
+# Echo message in YELLOW characters and `exit` script with exit code 0
 # $2 argument accepts only integer value of 1 to force silent.
 # Logs message on DEBUG.
 function abort() {
@@ -177,7 +177,7 @@ function abort() {
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   fi
-  exit 1
+  exit 0
 }
 
 # Echo message in RED characters and `exit` script with exit code 1.
