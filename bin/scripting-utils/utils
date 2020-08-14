@@ -12,7 +12,7 @@
 # echolog() = Echo message and log into LOG_FILE_PATH.
 # execlog() = Execute string command with `eval` and log into LOG_FILE_PATH.
 # ok()      = Echo message in GREEN characters.
-# finished  = Echo message in GREEN characters and exit with 0 exit code.
+# finish    = Echo message in GREEN characters and exit with 0 exit code.
 # warning() = Echo message in YELLOW characters.
 # abort()   = Echo message in YELLOW characters and exit with 1 exit code.
 # error()   = Echo message in RED characters and exit with 1 exit code by
@@ -209,7 +209,7 @@ function finish() {
   force_silent=$2
   if [[ -n "${message}" ]]; then
     [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
-      echo -e "\n${message}"
+      echo -e "${BO_NC}\n${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "\n${message}" >> "${LOG_FILE_PATH}"
   fi
@@ -219,6 +219,33 @@ function finish() {
 
 ############################################ BOILERPLATE TO IMPLEMENT SCRIPT ###
 
+
+# ################################################## CONSTANT GLOBAL VARIABLES ###
+#
+# LOG_FILE_DIR="${HOME}/log"
+# LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
+#
+# SCRIPTPATH="$(realpath -s $0)"
+#
+# ############################################## EXTERNAL DEPENDENCIES SCRIPTS ###
+#
+# # Ansi color code variables
+# if [[ -e "../../scripting-utils/colors" ]]; then
+#   source ../../scripting-utils/colors
+# else
+#   echo "${SCRIPTPATH} WARNING: Failed to source \'../../scripting-utils/colors\' dependency"
+#   echo
+# fi
+# # Utility functions
+# if [[ -e "../../scripting-utils/utils" ]]; then
+#   source ../../scripting-utils/utils
+# else
+#   echo "${SCRIPTPATH} ERROR: Failed to source \'../../scripting-utils/utils\' dependency"
+#   exit 1
+# fi
+#
+# ############################################################### FLAG OPTIONS ###
+#
 # # Display help
 # usage() {
 #   cat << EOF
@@ -226,11 +253,11 @@ function finish() {
 #
 # Command description.
 #
-#   command [ -dsvVy ]
+#   command [ -DsvVy ]
 #
 # OPTIONS:
 #
-#   -d  debug mode (redirect output in log file)
+#   -D  debug mode (redirect output in log file)
 #   -s  silent output
 #   -v  verbose output
 #   -V  very verbose output
@@ -241,9 +268,9 @@ function finish() {
 # }
 #
 # # Set flag options
-# while getopts "dsvVyh" opt; do
+# while getopts "DsvVyh" opt; do
 #   case "$opt" in
-#     d) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
+#     D) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
 #     s) [[ -n "$IS_SILENT"       ]] && unset IS_SILENT                  || IS_SILENT=true;;
 #     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
 #     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
