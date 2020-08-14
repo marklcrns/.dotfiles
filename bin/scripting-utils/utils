@@ -23,6 +23,11 @@
 # NOTE: All functions has force_silent local variable to disable function
 # outputs.
 #
+################################# DEPENDENCIES #################################
+#
+# ./colors  Pre-defined global variables for colorful string
+#           outputs.
+#
 ########################### Script Global Variables ############################
 #
 # DEBUG           = Enables logging of all log functions.
@@ -346,7 +351,7 @@ function cleanlog() {
 }
 
 
-############################################ BOILERPLATE TO IMPLEMENT SCRIPT ###
+######################################### BOILERPLATE TO INTEGRATE INTO SCRIPT ###
 
 
 # ################################################## CONSTANT GLOBAL VARIABLES ###
