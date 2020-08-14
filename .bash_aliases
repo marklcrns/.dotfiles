@@ -164,10 +164,10 @@ dotfilespush() {
 }
 
 alias dotf="cd ${DOTFILES}"
-alias dotb="dotbackup -advy"
-alias dotd="dotdist -bdv"
-alias dotu="dotupdate -dv"
-alias dotcb="dotclearbak -dvy"
+alias dotb="dotbackup -aDvy"
+alias dotd="dotdist -bDv"
+alias dotu="dotupdate -Dv"
+alias dotcb="dotclearbak -Dvy"
 alias dota="cd ${DOTFILES} && git add ."
 alias dotcm="cd ${DOTFILES} && git commit"
 alias dotcma="cd ${DOTFILES} && git add . && git commit"
