@@ -54,13 +54,14 @@ Git helper tool for bulk git local repository operations.
 
   gbulk [ -dsvVy ] [ path-to-repo ] [ git-commands ]
   gbulk [ -dsvVy ] [ -l repo-list ] [ git-commands ]
-  gbulk [ -dpPsSvVy ] [ path-to-repo ]
-  gbulk [ -dpPsSvVy ] [ -l repo-list ]
+  gbulk [ -dfpPsSvVy ] [ path-to-repo ]
+  gbulk [ -dfpPsSvVy ] [ -l repo-list ]
 
 OPTIONS:
 
   -d  debug mode (redirect output in log file)
   -l  use string list of git repositories delimited by new line
+  -f  force git push or pull
   -p  pre-defined auto git push
   -P  pre-defined auto git pull
   -s  silent output
@@ -273,9 +274,9 @@ statusrepo() {
 
 execgitcmd() {
   repo=$1
-
+  # Check if repo is given
   [[ -z "${repo}" ]] && error "${FUNCNAME[0]}() No repository arg specified" && return 1
-
+  # Execute Git command
   if [[ -n "${IS_STATUS}" ]]; then
     execlog "statusrepo ${repo} 1"
   elif [[ -n "${IS_PUSH}" ]]; then
