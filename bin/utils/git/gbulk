@@ -43,22 +43,19 @@ SCRIPTPATH="$(realpath -s $0)"
 ############################################## EXTERNAL DEPENDENCIES SCRIPTS ###
 
 # Ansi color code variables
-if [[ -e "../../scripting-utils/colors" ]]; then
-  source ../../scripting-utils/colors
+if [[ -e "${SCRIPTDIR}/../../scripting-utils/colors" ]]; then
+  source "${SCRIPTDIR}/../../scripting-utils/colors"
 else
   echo "${SCRIPTPATH} WARNING: Failed to source '../../scripting-utils/colors' dependency"
   echo
 fi
 # Utility functions
-if [[ -e "../../scripting-utils/utils" ]]; then
-  source ../../scripting-utils/utils
+if [[ -e "${SCRIPTDIR}/../../scripting-utils/utils" ]]; then
+  source "${SCRIPTDIR}/../../scripting-utils/utils"
 else
   echo "${SCRIPTPATH} ERROR: Failed to source '../../scripting-utils/utils' dependency"
   exit 1
 fi
-
-# Source rc file if exist
-[[ -e "${DOTFILESRC}" ]] && source "${DOTFILESRC}"
 
 ############################################################### FLAG OPTIONS ###
 
