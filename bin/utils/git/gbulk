@@ -11,6 +11,13 @@
 # The $DOTFILESRC specifies the location of .dotfilesrc file to override default
 # script variables.
 #
+################################# DEPENDENCIES #################################
+#
+# ../../scripting-utils/colors  Pre-defined global variables for colorful string
+#                               outputs.
+# ../../scripting-utils/utils   Utility functions for detailed debugging
+#                               outputs.
+#
 ########################### Script Global Variables ############################
 #
 # LOG_FILE_DIR = Log file directory.
@@ -32,21 +39,22 @@ LOG_FILE_DIR="${HOME}/log"
 LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
 
 SCRIPTPATH="$(realpath -s $0)"
+SCRIPTDIR=$(dirname ${SCRIPTPATH})
 
 ############################################## EXTERNAL DEPENDENCIES SCRIPTS ###
 
 # Ansi color code variables
-if [[ -e "../../scripting-utils/colors" ]]; then
-  source ../../scripting-utils/colors
+if [[ -e "${SCRIPTDIR}/../../scripting-utils/colors" ]]; then
+  source "${SCRIPTDIR}/../../scripting-utils/colors"
 else
-  echo "${SCRIPTPATH} WARNING: Failed to source \'../../scripting-utils/colors\' dependency"
+  echo "${SCRIPTPATH} WARNING: Failed to source '../../scripting-utils/colors' dependency"
   echo
 fi
 # Utility functions
-if [[ -e "../../scripting-utils/utils" ]]; then
-  source ../../scripting-utils/utils
+if [[ -e "${SCRIPTDIR}/../../scripting-utils/utils" ]]; then
+  source "${SCRIPTDIR}/../../scripting-utils/utils"
 else
-  echo "${SCRIPTPATH} ERROR: Failed to source \'../../scripting-utils/utils\' dependency"
+  echo "${SCRIPTPATH} ERROR: Failed to source '../../scripting-utils/utils' dependency"
   exit 1
 fi
 

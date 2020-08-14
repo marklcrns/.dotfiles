@@ -9,6 +9,14 @@
 # The $DOTFILESRC specifies the location of .dotfilesrc file to override default
 # script variables.
 #
+################################# DEPENDENCIES #################################
+#
+# ../../scripting-utils/colors  Pre-defined global variables for colorful string
+#                               outputs.
+# ../../scripting-utils/utils   Utility functions for detailed debugging
+#                               outputs.
+# ./detect                      Changes and deletion detection functions.
+#
 ########################### Script Global Variables ############################
 #
 # DOTFILES_LIST       = Bash array list of config (dot) files or directory to
@@ -38,29 +46,29 @@ LOG_FILE_DIR="${HOME}/log"
 LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
 
 SCRIPTPATH="$(realpath -s $0)"
+SCRIPTDIR=$(dirname ${SCRIPTPATH})
 
 ############################################## EXTERNAL DEPENDENCIES SCRIPTS ###
 
 # Ansi color code variables
-if [[ -e "../../scripting-utils/colors" ]]; then
-  source ../../scripting-utils/colors
+if [[ -e "${SCRIPTDIR}/../../scripting-utils/colors" ]]; then
+  source "${SCRIPTDIR}/../../scripting-utils/colors"
 else
-  echo "${SCRIPTPATH} WARNING: Failed to source \'../../scripting-utils/colors\' dependency"
+  echo "${SCRIPTPATH} WARNING: Failed to source '../../scripting-utils/colors' dependency"
   echo
 fi
 # Utility functions
-if [[ -e "../../scripting-utils/utils" ]]; then
-  source ../../scripting-utils/utils
+if [[ -e "${SCRIPTDIR}/../../scripting-utils/utils" ]]; then
+  source "${SCRIPTDIR}/../../scripting-utils/utils"
 else
-  echo "${SCRIPTPATH} ERROR: Failed to source \'../../scripting-utils/utils\' dependency"
+  echo "${SCRIPTPATH} ERROR: Failed to source '../../scripting-utils/utils' dependency"
   exit 1
 fi
-
 # Detect utility for changes and deletion detection
-if [[ -e "./detect" ]]; then
-  source ./detect
+if [[ -e "${SCRIPTDIR}/detect" ]]; then
+  source "${SCRIPTDIR}/detect"
 else
-  echo "${SCRIPTPATH} ERROR: Failed to source \'./detect\' dependency"
+  echo "${SCRIPTPATH} ERROR: Failed to source './detect' dependency"
   exit 1
 fi
 
@@ -412,12 +420,19 @@ done < <(echo -e "${changes_list}") # Process substitution for outside variables
 # Changes and deletes tally
 echolog
 echolog "Total files to update: \t\t${total_files_count}"
-[[ ${modified_files_count} -gt 0 ]] &&
+if [[ ${modified_files_count} -gt 0 ]]; then
   echolog "${YELLOW}Total changed files: \t\t${modified_files_count}${NC}"
-[[ ${new_files_count} -gt 0 ]] &&
+fi
+if [[ ${new_files_count} -gt 0 ]]; then
   echolog "${GREEN}Total new files: \t\t${new_files_count}${NC}"
-[[ ${total_deleted_count} -gt 0 ]] &&
-  echolog "${RED}Total delete files: \t\t${total_deleted_count}${NC}"
+fi
+if [[ -z ${NO_DELETE} ]]; then
+  if [[ ${total_deleted_count} -gt 0 ]]; then
+    echolog "${RED}Total delete files: \t\t${total_deleted_count}${NC}"
+  fi
+else
+  echolog "${RED}Total delete files: \t\t${YELLOW}SKIPPED${NC}"
+fi
 echolog
 
 # Confirmation
@@ -452,7 +467,7 @@ echo -e "${changes_list}" | while IFS= read -r file_tuple; do
         error "Failed to delete ${source_file}"
       fi
     else
-      warning "Skipping ${source_file} deletion..."
+      warning "Skipping ${source_file} deletion"
     fi
   elif [[ -d "${target_dir}" ]]; then # Check target dir path
     if execlog "cp -rL ${source_file} ${target_file}" 1; then
