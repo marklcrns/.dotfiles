@@ -110,29 +110,36 @@ function execlog() {
   command_string=$1
   force_silent=$2
   if [[ -n "${command_string}" ]]; then
-    # echo if verbose
-    [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
-      echo -e "${command_string}"
-    # Log command_string on debug mode
-    [[ -n "${DEBUG}" ]] && echo -e "${command_string}" >> "${LOG_FILE_PATH}"
     # execute command
-    if eval "${command_string}"; then
+    if eval ${command_string}; then
       return 0
     else
       # echo if verbose
-      [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
-        echo -e "${RED}${FUNCNAME[0]}(): Command string \'${command_string}\' failed${NC}"
+      if [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+        echo -e "${RED}${FUNCNAME[0]}(): Command string '${command_string}' failed${NC}"
+      fi
       # Log command_string on debug mode
-      [[ -n "${DEBUG}" ]] &&
-        echo -e "${FUNCNAME[0]}(): Command string \'${command_string}\' failed" >> "${LOG_FILE_PATH}"
+      if [[ -n "${DEBUG}" ]]; then
+        echo -e "${FUNCNAME[0]}(): Command string '${command_string}' failed" >> "${LOG_FILE_PATH}"
+      fi
       return 1
+    fi
+    # echo if verbose
+    if [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+      echo -e "${command_string}"
+    fi
+    # Log command_string on debug mode
+    if [[ -n "${DEBUG}" ]]; then
+      echo -e "${command_string}" >> "${LOG_FILE_PATH}"
     fi
   else
     # Return error if no command given
-    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+    if [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
       echo -e "${RED}${FUNCNAME[0]}(): Command string not found${NC}"
-    [[ -n "${DEBUG}" ]] &&
+    fi
+    if [[ -n "${DEBUG}" ]]; then
       echo -e "${FUNCNAME[0]}: Command string not found" >> "${LOG_FILE_PATH}"
+    fi
     return 1
   fi
 }

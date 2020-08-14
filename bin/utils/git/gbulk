@@ -24,6 +24,12 @@
 # LOG_FILE     = Log file name. Only logs on `-d` flag or debug
 #                mode. Defaults to current timestamp.
 #
+################################## Resources ###################################
+#
+# https://stackoverflow.com/q/5143795/11850077
+# https://stackoverflow.com/a/24775215/11850077
+# https://stackoverflow.com/q/2180270/11850077
+#
 ################################################################################
 # Author : Mark Lucernas <https://github.com/marklcrns>
 # Date   : 2020-08-11
@@ -156,9 +162,8 @@ if [[ -z ${IS_REPO_LIST} ]]; then
         done
       fi
     fi
-
   fi
-else # If not IS_REPO_LIST
+else # If IS_REPO_LIST
   # Ignore Git command arguments if IS_PUSH, IS_PULL, and IS_STATUS
   if [[ -z ${IS_PUSH} ]] && [[ -z ${IS_PULL} ]] && [[ -z ${IS_STATUS} ]]; then
     # Check arguments
@@ -217,18 +222,25 @@ pushrepo() {
   remote_head=$(git log --decorate --oneline | grep "origin/${branch_name}")
   # Add, commit and push if has changes
   if [[ -n ${changes} ]]; then
-    warning "Changes detected in $(pwd). Pushing changes..."
-    echolog "Adding all changes and committing in ${interval}..." && sleep ${interval}
+    warning "Changes detected in ${git_repo}. Pushing changes..."
+    echolog "${BO_NC}Adding all changes and committing in ${interval}...${NC}"
+    # Sleep and for amount of time before proceeding
+    sleep ${interval} &
+    wait
     echolog
     execlog "git add ."
     execlog "git commit"
-    [[ -n ${FORCE_REPO} ]] &&
-      execlog "git push --all --force" || execlog "git push --all"
-    # If Authentication failed, push until successful or interrupted
-    while [[ $? -eq 128 ]]; do
+    if execlog "git commit"; then
       [[ -n ${FORCE_REPO} ]] &&
         execlog "git push --all --force" || execlog "git push --all"
-    done
+      # If Authentication failed, push until successful or interrupted
+      while [[ $? -eq 128 ]]; do
+        [[ -n ${FORCE_REPO} ]] &&
+          execlog "git push --all --force" || execlog "git push --all"
+      done
+    else
+      warning "Repo '${git_repo} commit aborted"
+    fi
   elif [[ ! "${remote_head}" == *"HEAD ->"* ]]; then
     # if HEAD ahead of remote or has something to push. push repo.
     [[ -n ${FORCE_REPO} ]] &&
@@ -238,7 +250,7 @@ pushrepo() {
         execlog "git push --all --force" || execlog "git push --all"
     done
   else
-    echolog "No changes detected in $(pwd). Skipping..."
+    echolog "No changes detected in ${git_repo}. Skipping..."
   fi
 }
 
@@ -254,14 +266,14 @@ pullrepo() {
   if [[ -n ${changes} ]]; then
     # Force pull repo if FORCE_PULL
     if [[ -n ${FORCE_REPO} ]]; then
-      warning "Changes detected in $(pwd) files. Hard resetting repo..."
+      warning "Changes detected in ${git_repo} files. Hard resetting repo..."
       execlog "git reset --hard HEAD^"
       execlog "git pull --all"
     else
-      warning "Changes detected in $(pwd) files. Skipping repo..."
+      warning "Changes detected in ${git_repo} files. Skipping repo..."
     fi
   else
-    echolog "$(pwd). Pulling from remote"
+    echolog "${git_repo}. Pulling from remote"
     execlog "git pull --all"
     # If Authentication failed, push until successful or interrupted
     while [[ ${?} -eq 128 ]]; do
@@ -280,24 +292,24 @@ statusrepo() {
   changes=$(git status --porcelain)
   # Git status if has changes
   if [[ -n ${changes} ]]; then
-    warning "Changes detected in $(pwd)."
+    warning "Changes detected in ${git_repo}"
     execlog "git status"
   else
-    echolog "No changes detected in $(pwd)."
+    echolog "No changes detected in ${git_repo}"
   fi
 }
 
 execgitcmd() {
   repo=$1
   # Check if repo is given
-  [[ -z "${repo}" ]] && error "${FUNCNAME[0]}() No repository arg specified" && return 1
+  [[ -z "${repo}" ]] && error "${FUNCNAME[0]}(): No repository arg specified" && return 1
   # Execute Git command
   if [[ -n "${IS_STATUS}" ]]; then
-    execlog "statusrepo ${repo} 1"
+    statusrepo ${repo} 1
   elif [[ -n "${IS_PUSH}" ]]; then
-    execlog "pushrepo ${repo} 1"
+    pushrepo ${repo} 1
   elif [[ -n "${IS_PULL}" ]]; then
-    execlog "pullrepo ${repo} 1"
+    pullrepo ${repo} 1
   else
     if [[ -n "${GIT_COMMANDS}" ]]; then
       execlog "${GIT_COMMANDS}"
@@ -315,7 +327,7 @@ if [[ -n "${IS_REPO_LIST}" ]]; then
     [[ -z "${repo}" ]] && continue
     # Wait until another git commit finish processing if exist
     if [[ -n $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}') ]]; then
-      execlog "wait $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}')"
+      wait $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}')
     fi
     execgitcmd ${repo}
   done
@@ -326,7 +338,11 @@ fi
 #################################################################### WRAP UP ###
 
 # Clean log files
-[[ -n "${IS_VERY_VERBOSE}" ]] && cleanlog 1000 || cleanlog 1000 1
+if [[ -n "${IS_VERY_VERBOSE}" ]]; then
+  [[ -n "${DEBUG}" ]] && cleanlog 1000
+else
+  [[ -n "${DEBUG}" ]] && cleanlog 1000 1
+fi
 
 finish "All repo push complete!"
 

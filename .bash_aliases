@@ -185,10 +185,6 @@ browsegithubrepo() {
 }
 alias openrepo=browsegithubrepo
 
-# Resources:
-# Check repo existing files changes: https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes
-# Check repo for all repo changes: https://stackoverflow.com/a/24775215/11850077
-# Check if in git repo: https://stackoverflow.com/questions/2180270/check-if-current-directory-is-a-git-repository
 export CONF_REPO_LIST="\
   ${DOTFILES}
   ${HOME}/Docs/wiki
@@ -234,25 +230,6 @@ pushrepo() {
   fi
 }
 
-pushallconfrepo() {
-  CURRENT_DIR_SAVE=$(pwd)
-
-  # Loop over all repo list excluding empty new line
-  for line in $(echo ${CONF_REPO_LIST}); do
-    # continue of line is empty String
-    [[ -z $line ]] && continue
-    # Wait until another git commit finish processing if exist
-    if [[ -n $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}') ]]; then
-      wait $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}')
-    fi
-    # Go to a repo repo then push
-    cd $line && pushrepo
-  done
-
-  printf "${GREEN}All repo push complete!${NC}\n"
-  cd ${CURRENT_DIR_SAVE}
-}
-
 pullrepo() {
   # Check if in git repo
   [[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && return 1
@@ -271,48 +248,6 @@ pullrepo() {
   fi
 }
 
-pullallconfrepo() {
-  CURRENT_DIR_SAVE=$(pwd)
-  # Loop over all repo list excluding empty new line
-  while read line && [[ -n $line ]]; do
-    cd $line && pullrepo
-  done <<< ${CONF_REPO_LIST}
-
-  echo 'All remote pull complete!'
-  cd ${CURRENT_DIR_SAVE}
-}
-
-forcepullrepo() {
-  # Check if in git repo
-  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && return 1
-  # Check for git repo changes
-  CHANGES=$(git status --porcelain --untracked-files=no)
-  # Pull if no changes
-  if [[ -n ${CHANGES} ]]; then
-    printf "${YELLOW}Changes detected in $(pwd) files. Hard resetting repo...${NC}\n"
-    git reset --hard HEAD^
-    git pull --all
-  else
-    echo "$(pwd). Pulling from remote"
-    git pull --all
-    # If Authentication failed, push until successful or interrupted
-    while [[ ${?} -eq 128 ]]; do
-      git push --all
-    done
-  fi
-}
-
-forcepullallconfrepo() {
-  CURRENT_DIR_SAVE=$(pwd)
-  # Loop over all repo list excluding empty new line
-  while read line && [[ -n $line ]]; do
-    cd $line && forcepullrepo
-  done <<< ${CONF_REPO_LIST}
-
-  printf "${GREEN}All remote pull complete!${NC}\n"
-  cd ${CURRENT_DIR_SAVE}
-}
-
 statusrepo() {
   # Check if in git repo
   [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && return
@@ -327,21 +262,15 @@ statusrepo() {
   fi
 }
 
-statusallconfrepo() {
-  CURRENT_DIR_SAVE=$(pwd)
-  while read line && [[ -n $line ]]; do
-    cd $line && statusrepo
-  done <<< ${CONF_REPO_LIST}
-
-  printf "${GREEN}All repo status complete!${NC}\n"
-  cd ${CURRENT_DIR_SAVE}
-}
-
-alias gprintconf=printallconfrepo
-alias gpullconf=pullallconfrepo
-alias gfpullconf=forcepullallconfrepo
-alias gpushconf=pushallconfrepo
-alias gstatusconf=statusallconfrepo
+# NOTE: Aliases with '\n' must be string literal, while double quoting all
+# in-line variable references  to read all string characters, otherwise will be
+# truncated at the '\n'.
+alias gprintconf='echo "${CONF_REPO_LIST}"'
+alias gpullconf='gbulk -PV -l "${CONF_REPO_LIST}"'
+alias gfpullconf='gbulk -fPV -l "${CONF_REPO_LIST}"'
+alias gpushconf='gbulk -pV -l "${CONF_REPO_LIST}"'
+alias gfpushconf='gbulk -fpV -l "${CONF_REPO_LIST}"'
+alias gstatusconf='gbulk -SV -l "${CONF_REPO_LIST}"'
 
 # Resources:
 # Find: https://stackoverflow.com/a/15736463

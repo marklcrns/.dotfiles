@@ -239,7 +239,11 @@ fi
 [[ $? -ne 0 ]] && error "Failed to clear backup files" $?
 
 # Clean log files
-[[ -n "${IS_VERY_VERBOSE}" ]] && cleanlog 1000 || cleanlog 1000 1
+if [[ -n "${IS_VERY_VERBOSE}" ]]; then
+  [[ -n "${DEBUG}" ]] && cleanlog 1000
+else
+  [[ -n "${DEBUG}" ]] && cleanlog 1000 1
+fi
 
 finish "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME} backup created!"
 

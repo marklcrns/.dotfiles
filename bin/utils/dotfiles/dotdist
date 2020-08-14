@@ -516,7 +516,11 @@ done
   error "Dotupdate failed. Changes persists" 2
 
 # Clean log files
-[[ -n "${IS_VERY_VERBOSE}" ]] && cleanlog 1000 || cleanlog 1000 1
+if [[ -n "${IS_VERY_VERBOSE}" ]]; then
+  [[ -n "${DEBUG}" ]] && cleanlog 1000
+else
+  [[ -n "${DEBUG}" ]] && cleanlog 1000 1
+fi
 
 finish "Dotfiles update successful!"
 
