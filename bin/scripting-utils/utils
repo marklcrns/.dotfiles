@@ -1,0 +1,280 @@
+#!/bin/bash
+
+################################################################################
+# Collection of bash script functions for detailed output and debugging.
+#
+# WARNING: This is not an executable script. This script is meant to be used as
+# a utility by sourcing this script for efficient bash script writing.
+#
+################################# Functions ###################################
+#
+# log()     = Log message parameter into LOG_FILE_PATH.
+# echolog() = Echo message and log into LOG_FILE_PATH.
+# execlog() = Execute string command with `eval` and log into LOG_FILE_PATH.
+# ok()      = Echo message in GREEN characters.
+# finished  = Echo message in GREEN characters and exit with 0 exit code.
+# warning() = Echo message in YELLOW characters.
+# abort()   = Echo message in YELLOW characters and exit with 1 exit code.
+# error()   = Echo message in RED characters and exit with 1 exit code by
+#             default. Also accepts integer to override default exit code.
+#
+# NOTE: All functions has force_silent local variable to disable function
+# outputs.
+#
+########################### Script Global Variables ############################
+#
+# DEBUG           = Enables logging of all log functions.
+# LOG_FILE_PATH   = Log file destination path.
+# IS_SILENT       = Disables output of all functions.
+# IS_VERY_VERBOSE = Enables output of log() function.
+# SCRIPTPATH      = Script absolute path `realpath -s $0`.
+# RED             = ANSI red color code.
+# GREEN           = ANSI green color code.
+# YELLOW          = ANSI yellow color code.
+#
+################################################################################
+#
+# Author : Mark Lucernas <https://github.com/marklcrns>
+# Date   : 2020-08-13
+################################################################################
+
+
+
+
+
+# Prevent from being executed directly in the terminal
+if [ ${0##*/} == ${BASH_SOURCE[0]##*/} ]; then
+  echo "WARNING:"
+  echo "$(realpath -s $0) is not meant to be executed directly!"
+  echo "Use this script only by sourcing it."
+  echo
+  exit 1
+fi
+
+
+# Log message into LOG_FILE_PATH. Can be used with pipeline '|' to log message
+# from stdout.
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
+# Echo message if IS_VERY_VERBOSE
+function log() {
+  message=$1
+  force_silent=$2
+  if [[ -n "$message" ]]; then
+    IN="$message"
+    [[ -n "${DEBUG}" ]] && echo -e "${IN}" >> "${LOG_FILE_PATH}"
+  else
+    read IN
+    if [[ -n ${IN} ]]; then
+      [[ -n "${DEBUG}" ]] && echo -e "${IN}" >> "${LOG_FILE_PATH}"
+    fi
+    # Echo log message if IS_VERY_VERBOSE
+    if [[ -n "${IS_VERY_VERBOSE}" ]]; then
+      [[ ${force_silent} -ne 1 ]] && echo -e "$message" # Skip message if force_silent
+    fi
+  fi
+}
+
+# Echo message and log into LOG_FILE_PATH.
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
+function echolog(){
+  message=$1
+  force_silent=$2
+  if [[ -n "${message}" ]]; then
+    # echo if verbose
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e "${message}"
+    # Log message on debug mode
+    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+  else # Print newline if no message
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e ""
+    [[ -n "${DEBUG}" ]] && echo -e "" >> "${LOG_FILE_PATH}"
+  fi
+}
+
+# Execute command string with `eval` then log into LOG_FILE_PATH
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
+# Echo message if IS_VERBOSE
+function execlog() {
+  command_string=$1
+  force_silent=$2
+  if [[ -n "${command_string}" ]]; then
+    # echo if verbose
+    [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e "${command_string}"
+    # Log command_string on debug mode
+    [[ -n "${DEBUG}" ]] && echo -e "${command_string}" >> "${LOG_FILE_PATH}"
+    # execute command
+    if eval "${command_string}"; then
+      return 0
+    else
+      # echo if verbose
+      [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+        echo -e "${RED}${FUNCNAME[0]}(): Command string \'${command_string}\' failed${NC}"
+      # Log command_string on debug mode
+      [[ -n "${DEBUG}" ]] &&
+        echo -e "${FUNCNAME[0]}(): Command string \'${command_string}\' failed" >> "${LOG_FILE_PATH}"
+      return 1
+    fi
+  else
+    # Return error if no command given
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e "${RED}${FUNCNAME[0]}(): Command string not found${NC}"
+    [[ -n "${DEBUG}" ]] &&
+      echo -e "${FUNCNAME[0]}: Command string not found" >> "${LOG_FILE_PATH}"
+    return 1
+  fi
+}
+
+# Echo message in GREEN characters
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
+function ok() {
+  message=$1
+  force_silent=$2
+  if [[ -n "${message}" ]]; then
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e "${GREEN}${message}${NC}"
+    # Log message on debug mode
+    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+  fi
+}
+
+# Echo message in YELLOW characters
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
+function warning() {
+  message=$1
+  force_silent=$2
+  if [[ -n "${message}" ]]; then
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e "${YELLOW}${message}${NC}"
+    # Log message on debug mode
+    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+  fi
+}
+
+# Echo message in YELLOW characters and `exit` script with exit code 1
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
+function abort() {
+  message=$1
+  force_silent=$2
+  if [[ -n "${message}" ]]; then
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e "${YELLOW}${message}${NC}"
+    # Log message on debug mode
+    [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+  fi
+  exit 1
+}
+
+# Echo message in RED characters and `exit` script with exit code 1.
+# Second argument accepts integer to override default exit code.
+# Third argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
+function error() {
+  message=$1
+  exit_code=$2
+  force_silent=$3
+  if [[ -n "${message}" ]]; then
+    if [[ -n ${exit_code} ]]; then # Remove SCRIPTPATH if no exit code
+      [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+        echo -e "${RED}\n${SCRIPTPATH}: ${message}${NC}"
+    else
+      [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+        echo -e "${RED}${message}${NC}"
+    fi
+    # Log message on debug mode
+    if [[ -n ${exit_code} ]]; then # Remove SCRIPTPATH if no exit code
+      [[ -n "${DEBUG}" ]] && echo -e "\n${SCRIPTPATH}: ${message}" >> "${LOG_FILE_PATH}"
+    else
+      [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
+    fi
+  fi
+  # Exit with specified exit code. Do not exit if no exit code
+  if [[ -n ${exit_code} ]]; then
+    [[ ${exit_code} -ge 0 ]] && exit ${exit_code}
+  fi
+}
+
+# Echo message in GREEN characters and `exit` with exit code 0
+# Second argument accepts integer value of 1 only to force silent.
+# Logs message on DEBUG.
+function finish() {
+  message=$1
+  force_silent=$2
+  if [[ -n "${message}" ]]; then
+    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      echo -e "\n${message}"
+    # Log message on debug mode
+    [[ -n "${DEBUG}" ]] && echo -e "\n${message}" >> "${LOG_FILE_PATH}"
+  fi
+  exit 0
+}
+
+
+############################################ BOILERPLATE TO IMPLEMENT SCRIPT ###
+
+# # Display help
+# usage() {
+#   cat << EOF
+# USAGE:
+#
+# Command description.
+#
+#   command [ -dsvVy ]
+#
+# OPTIONS:
+#
+#   -d  debug mode (redirect output in log file)
+#   -s  silent output
+#   -v  verbose output
+#   -V  very verbose output
+#   -y  skip confirmation
+#   -h  help
+#
+# EOF
+# }
+#
+# # Set flag options
+# while getopts "dsvVyh" opt; do
+#   case "$opt" in
+#     d) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
+#     s) [[ -n "$IS_SILENT"       ]] && unset IS_SILENT                  || IS_SILENT=true;;
+#     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
+#     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
+#     y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;
+#     h) usage && exit 0;;
+#     *) usage && echo -e "${SCRIPTPATH}:\n${RED}ERROR: Invalid flag.${NC}"
+#       exit 1
+#   esac
+# done 2>/dev/null
+# shift "$((OPTIND-1))"
+#
+# ####################################################### PRE-EXECUTION SET UP ###
+#
+# # Strip trailing '/' in DIR path variables
+# LOG_FILE_DIR=$(echo ${LOG_FILE_DIR} | sed 's,/*$,,')
+#
+# # Log stdout and stderr to $LOG_FILE in $LOG_FILE_DIR
+# if [[ -n "${DEBUG}" ]]; then
+#   # Append LOG_FILE
+#   LOG_FILE_PATH="${LOG_FILE_DIR}/${LOG_FILE}"
+#   # Create log directory if not existing
+#   if [[ ! -d "${LOG_FILE_DIR}" ]]; then
+#     mkdir -p "${LOG_FILE_DIR}"
+#   fi
+#   # Initialize log file
+#   echo -e "${SCRIPTPATH} log outputs\n" > ${LOG_FILE_PATH}
+# fi
+#
+# ################################################## SCRIPT ARGUMENTS HANDLING ###
+#
+# ##################################################### SCRIPT MAIN EXECUTIONS ###
+#
+# #################################################################### WRAP UP ###
+
