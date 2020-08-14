@@ -13,9 +13,9 @@
 #
 ########################### Script Global Variables ############################
 #
-# LOG_FILE_DIR                  = Log file directory.
-# LOG_FILE                      = Log file name. Only logs on `-d` flag or debug
-#                                 mode. Defaults to current timestamp.
+# LOG_FILE_DIR = Log file directory.
+# LOG_FILE     = Log file name. Only logs on `-d` flag or debug
+#                mode. Defaults to current timestamp.
 #
 ################################################################################
 # Author : Mark Lucernas <https://github.com/marklcrns>
@@ -33,14 +33,24 @@ LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
 
 SCRIPTPATH="$(realpath -s $0)"
 
-##################################### SOURCING EXTERNAL DEPENDENCIES SCRIPTS ###
+############################################## EXTERNAL DEPENDENCIES SCRIPTS ###
 
 # Ansi color code variables
-[[ -e "./../../scripting-utils/colors" ]] && source ./../../scripting-utils/colors
+if [[ -e "../../scripting-utils/colors" ]]; then
+  source ../../scripting-utils/colors
+else
+  echo "${SCRIPTPATH} WARNING: Failed to source \'../../scripting-utils/colors\' dependency"
+  echo
+fi
 # Utility functions
-[[ -e "./../../scripting-utils/utils" ]] && source ./../../scripting-utils/utils
+if [[ -e "../../scripting-utils/utils" ]]; then
+  source ../../scripting-utils/utils
+else
+  echo "${SCRIPTPATH} ERROR: Failed to source \'../../scripting-utils/utils\' dependency"
+  exit 1
+fi
 
-# Rc file if exist
+# Source rc file if exist
 [[ -e "${DOTFILESRC}" ]] && source "${DOTFILESRC}"
 
 ############################################################### FLAG OPTIONS ###
@@ -52,14 +62,14 @@ USAGE:
 
 Git helper tool for bulk git local repository operations.
 
-  gbulk [ -dsvVy ] [ path-to-repo ] [ git-commands ]
-  gbulk [ -dsvVy ] [ -l repo-list ] [ git-commands ]
-  gbulk [ -dfpPsSvVy ] [ path-to-repo ]
-  gbulk [ -dfpPsSvVy ] [ -l repo-list ]
+  gbulk [ -DsvVy ] [ path-to-repo ] [ git-commands ]
+  gbulk [ -DsvVy ] [ -l repo-list ] [ git-commands ]
+  gbulk [ -DfpPsSvVy ] [ path-to-repo ]
+  gbulk [ -DfpPsSvVy ] [ -l repo-list ]
 
 OPTIONS:
 
-  -d  debug mode (redirect output in log file)
+  -D  debug mode (redirect output in log file)
   -l  use string list of git repositories delimited by new line
   -f  force git push or pull
   -p  pre-defined auto git push
@@ -75,9 +85,9 @@ EOF
 }
 
 # Set flag options
-while getopts "dl:pPsSvVyh" opt; do
+while getopts "Dl:pPsSvVyh" opt; do
   case "$opt" in
-    d) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
+    D) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
     f) [[ -n "$FORCE_REPO"      ]] && unset FORCE_REPO                 || FORCE_REPO=true;;
     l) [[ -n "$IS_REPO_LIST"    ]] && unset IS_REPO_LIST               || IS_REPO_LIST=true; REPO_LIST=${OPTARG};;
     p) [[ -n "$IS_PUSH"         ]] && unset IS_PUSH                    || IS_PUSH=true;;
