@@ -515,5 +515,8 @@ done
 [[ ${changes_count} -gt 0 ]] || [[ ${delete_count} -gt 0 ]] &&
   error "Dotupdate failed. Changes persists" 2
 
+# Clean log files
+[[ -n "${IS_VERY_VERBOSE}" ]] && cleanlog 1000 || cleanlog 1000 1
+
 finish "Dotfiles update successful!"
 

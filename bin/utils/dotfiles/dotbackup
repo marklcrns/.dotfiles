@@ -238,5 +238,8 @@ fi
 # Catch if dotclearbak failed
 [[ $? -ne 0 ]] && error "Failed to clear backup files" $?
 
+# Clean log files
+[[ -n "${IS_VERY_VERBOSE}" ]] && cleanlog 1000 || cleanlog 1000 1
+
 finish "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME} backup created!"
 

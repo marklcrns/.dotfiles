@@ -39,20 +39,19 @@ LOG_FILE_DIR="${HOME}/log"
 LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
 
 SCRIPTPATH="$(realpath -s $0)"
-SCRIPTDIR=$(dirname ${SCRIPTPATH})
 
 ############################################## EXTERNAL DEPENDENCIES SCRIPTS ###
 
 # Ansi color code variables
-if [[ -e "${SCRIPTDIR}/../../scripting-utils/colors" ]]; then
-  source "${SCRIPTDIR}/../../scripting-utils/colors"
+if [[ -e "../../scripting-utils/colors" ]]; then
+  source ../../scripting-utils/colors
 else
   echo "${SCRIPTPATH} WARNING: Failed to source '../../scripting-utils/colors' dependency"
   echo
 fi
 # Utility functions
-if [[ -e "${SCRIPTDIR}/../../scripting-utils/utils" ]]; then
-  source "${SCRIPTDIR}/../../scripting-utils/utils"
+if [[ -e "../../scripting-utils/utils" ]]; then
+  source ../../scripting-utils/utils
 else
   echo "${SCRIPTPATH} ERROR: Failed to source '../../scripting-utils/utils' dependency"
   exit 1
@@ -327,6 +326,9 @@ else
 fi
 
 #################################################################### WRAP UP ###
+
+# Clean log files
+[[ -n "${IS_VERY_VERBOSE}" ]] && cleanlog 1000 || cleanlog 1000 1
 
 finish "All repo push complete!"
 

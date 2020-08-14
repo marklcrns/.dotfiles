@@ -121,21 +121,24 @@ fi
 
 ################################################## SCRIPT ARGUMENTS HANDLING ###
 
-########################################################## SCRIPT EXECUTIONS ###
-
 # Overwrite default limit if given
-[[ -n ${1} ]] &&
-  DOTFILES_BACKUP_LIMIT=$1 || DOTFILES_BACKUP_LIMIT=${DEFAULT_DOTFILES_BACKUP_LIMIT}
+if [[ -n $1 ]]; then
+  DOTFILES_BACKUP_LIMIT=$1
+else
+  DOTFILES_BACKUP_LIMIT=${DEFAULT_DOTFILES_BACKUP_LIMIT}
+fi
+
+########################################################## SCRIPT EXECUTIONS ###
 
 echolog "Detecting all backup files..."
 echolog
 echolog "$(ls "${DOTFILES_BACKUP_DIR}")"
 
-# TODO: Cache backups to be deleted for more thorough checks
+# Assess backups to be be removed
 backup_dir_count=$(ls "${DOTFILES_BACKUP_DIR}" | wc -l)
 to_remove_count=$(( ${backup_dir_count} - ${DOTFILES_BACKUP_LIMIT} ))
 
-# Cache backup directories to remove
+# Cache backup directories to be removed
 if [[ ${to_remove_count} -lt 0 ]]; then
   to_remove_count=${backup_dir_count}
 fi
@@ -143,6 +146,7 @@ fi
 echolog
 echolog "Total backups: \t\t\t${backup_dir_count}"
 warning "Oldest backups to remove: \t${to_remove_count}"
+echolog "Backup limit: \t\t\t${DOTFILES_BACKUP_LIMIT}"
 echolog
 
 if [[ ${to_remove_count} -eq 0 ]]; then # Abort if nothing to delete
@@ -169,6 +173,7 @@ echolog
 to_remove_list="$(ls -1 ${DOTFILES_BACKUP_DIR} | head -${to_remove_count})"
 removed_count=0
 
+# Execute backups removal
 while IFS= read -r backup_file; do
   if execlog "rm -rf ${DOTFILES_BACKUP_DIR}/${backup_file}" 1; then
     warning "${DOTFILES_BACKUP_DIR}/${backup_file} deleted"
@@ -183,13 +188,16 @@ done <<< "${to_remove_list}"
 
 # Final check
 new_backup_dir_count=$(ls "${DOTFILES_BACKUP_DIR}" | wc -l)
-
+# Check if all backups due for deletion are deleted
 if [[ $(( ${new_backup_dir_count} + ${removed_count} )) -eq ${backup_dir_count} ]]; then
   echolog
   ok "Total removed: ${removed_count}"
 else
   error "Clearing dotfiles backups failed" 2
 fi
+
+# Clean log files
+[[ -n "${IS_VERY_VERBOSE}" ]] && cleanlog 1000 || cleanlog 1000 1
 
 finish "Dotfiles backups cleared"
 
