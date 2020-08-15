@@ -145,6 +145,10 @@ total_changes_count=0
 total_deleted_count=0
 total_files_count=0
 
+# TODO: Handle symlink with detect functions
+# Bash: how to get real path of a symlink?: https://stackoverflow.com/a/29789399/11850077
+# How do I check if a file is a symbolic link to a directory?: https://unix.stackexchange.com/a/96910
+# Recursive diff and symlinks: https://superuser.com/questions/635638/recursive-diff-and-symlinks
 echolog "Detecting dotfiles changes..."
 echolog
 for dotfile in ${DOTFILES_LIST[@]}; do
