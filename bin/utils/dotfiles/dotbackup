@@ -139,8 +139,7 @@ fi
 
 # Set default backup limit if DOTFILES_BACKUP_LIMIT is invalid
 if [[ -n "${AUTO_CLEAN}" ]]; then
-  [[ ${DOTFILES_BACKUP_LIMIT} -lt 0 ]] &&
-    DOTFILES_BACKUP_LIMIT=${DEFAULT_DOTFILES_BACKUP_LIMIT}
+  [[ ${DOTFILES_BACKUP_LIMIT} -lt 0 ]] && DOTFILES_BACKUP_LIMIT=${DEFAULT_DOTFILES_BACKUP_LIMIT}
 fi
 
 dotfiles_count=0
@@ -222,16 +221,20 @@ do
   fi
 done
 
-[[ ${errors_count} -gt 0 ]] && error "Missing files in backup directory" 2
+if [[ ${errors_count} -gt 0 ]]; then
+  error "Missing files in backup directory"
+else
+  ok "${BLUE}${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME} backup created${NC}"
+fi
 
 # Auto clean backup directory if AUTO_CLEAN
 if [[ -n "${AUTO_CLEAN}" ]]; then
   if [[ -n "${IS_VERY_VERBOSE}" ]]; then
-    ./dotclearbak -Vy ${DOTFILES_BACKUP_LIMIT}
+    ${SCRIPTDIR}/dotclearbak -Vy ${DOTFILES_BACKUP_LIMIT}
   elif [[ -n ${IS_VERBOSE} ]]; then
-    ./dotclearbak -vy ${DOTFILES_BACKUP_LIMIT}
+    ${SCRIPTDIR}/dotclearbak -vy ${DOTFILES_BACKUP_LIMIT}
   else
-    ./dotclearbak -y ${DOTFILES_BACKUP_LIMIT}
+    ${SCRIPTDIR}/dotclearbak -y ${DOTFILES_BACKUP_LIMIT}
   fi
 fi
 
@@ -245,5 +248,5 @@ else
   [[ -n "${DEBUG}" ]] && cleanlog 1000 1
 fi
 
-finish "${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME} backup created!"
+finish "Dotfiles backup successful!"
 

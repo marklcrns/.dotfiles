@@ -130,6 +130,7 @@ fi
 
 ########################################################## SCRIPT EXECUTIONS ###
 
+echolog
 echolog "Detecting all backup files..."
 echolog
 echolog "$(ls "${DOTFILES_BACKUP_DIR}")"
@@ -203,5 +204,5 @@ else
   [[ -n "${DEBUG}" ]] && cleanlog 1000 1
 fi
 
-finish "Dotfiles backups cleared"
+finish "Dotfiles backups cleared!"
 

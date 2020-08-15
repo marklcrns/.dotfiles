@@ -41,7 +41,6 @@
 # YELLOW          = ANSI yellow color code.
 # PURPLE          = ANSI purple color code.
 # BO_NC           = ANSI bold color code.
-# UL_NC           = ANSI underline color code.
 #
 ################################################################################
 #
@@ -275,7 +274,8 @@ function cleanlog() {
 
   # Get total log files to delete
   if [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
-    echo -e "${UL_NC}Removing excess log files:${NC}"
+    echo
+    echo -e "Removing excess log files:"
     echo
     echo -e "Total log files: \t\t${log_file_count}"
     echo -e "Oldest log files to remove: \t${to_remove_count}"
@@ -283,6 +283,7 @@ function cleanlog() {
     echo
   fi
   if [[ -n "${DEBUG}" ]]; then
+    echo "" >> "${LOG_FILE_PATH}"
     echo -e "Removing excess log files:" >> "${LOG_FILE_PATH}"
     echo "" >> "${LOG_FILE_PATH}"
     echo -e "Total log files: \t\t\t${backup_dir_count}" >> "${LOG_FILE_PATH}"
@@ -347,11 +348,11 @@ function cleanlog() {
   if [[ $(( ${new_backup_dir_count} + ${removed_count} )) -eq ${log_file_count} ]]; then
     if [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
       echo
-      echo -e  "Total removed: ${removed_count}"
+      echo -e  "Total log files removed: ${removed_count}"
     fi
     if [[ -n "${DEBUG}" ]]; then
       echo "" >> "${LOG_FILE_PATH}"
-      echo -e  "Total removed: ${removed_count}" >> "${LOG_FILE_PATH}"
+      echo -e  "Total log files removed: ${removed_count}" >> "${LOG_FILE_PATH}"
     fi
   else
     if [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
