@@ -244,7 +244,9 @@ if [[ -z ${NO_DELETE} ]]; then
     echolog "${RED}Total delete files: \t\t${total_deleted_count}${NC}"
   fi
 else
-  echolog "${RED}Total delete files: \t\t${YELLOW}SKIPPED${NC}"
+  if [[ ${total_deleted_count} -gt 0 ]]; then
+    echolog "${RED}Total delete files: \t\t${YELLOW}SKIPPED${NC}"
+  fi
 fi
 echolog
 
