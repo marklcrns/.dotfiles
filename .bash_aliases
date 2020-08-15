@@ -274,7 +274,7 @@ alias gpullconf='gbulk -PV -l "${CONF_REPO_LIST}"'
 alias gfpullconf='gbulk -fPV -l "${CONF_REPO_LIST}"'
 alias gpushconf='gbulk -pV -l "${CONF_REPO_LIST}"'
 alias gfpushconf='gbulk -fpV -l "${CONF_REPO_LIST}"'
-alias gstatusconf='gbulk -SV -l "${CONF_REPO_LIST}"'
+alias gstatusconf='gbulk -sV -l "${CONF_REPO_LIST}"'
 
 # Resources:
 # Find: https://stackoverflow.com/a/15736463
