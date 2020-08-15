@@ -7,20 +7,21 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +148 gbulk
-badd +240 ~/bin/scripting-utils/utils
-badd +39 ~/bin/scripting-utils/colors
-badd +12 ~/.dotfilesrc
+badd +229 gbulk
+badd +77 ~/bin/scripting-utils/utils
+badd +183 ~/.bash_aliases
 argglobal
 %argdel
 $argadd gbulk
-edit gbulk
+edit ~/.bash_aliases
 set splitbelow splitright
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
+exe '2resize ' . ((&lines * 1 + 22) / 45)
+exe 'vert 2resize ' . ((&columns * 48 + 102) / 204)
 argglobal
 setlocal fdm=syntax
 setlocal fde=0
@@ -30,13 +31,28 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 148 - ((18 * winheight(0) + 19) / 38)
+let s:l = 183 - ((15 * winheight(0) + 20) / 41)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-148
+183
 normal! 0
-lcd ~/bin
+lcd ~/
+wincmd w
+argglobal
+enew
+setlocal fdm=syntax
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=99
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+lcd ~/
+wincmd w
+exe '2resize ' . ((&lines * 1 + 22) / 45)
+exe 'vert 2resize ' . ((&columns * 48 + 102) / 204)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
