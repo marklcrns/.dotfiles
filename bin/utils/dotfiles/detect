@@ -102,7 +102,7 @@ detect_changes() {
       __rel_path_file=$(echo "${__source_file}" | sed "s,${__source}/,,")
       __target_file="${__target}/${__rel_path_file}"
       # Compare dotfiles in target dir with local copy in source dir
-      if cmp -s "${__source_file}" "${__target_file}"; then
+      if cmp "${__source_file}" "${__target_file}"; then
         if [[ ${silent} -ne 1 ]]; then
           echolog "No changes detected in ${__source_file}"
         else

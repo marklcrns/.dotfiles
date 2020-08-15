@@ -72,16 +72,16 @@ USAGE:
 Clears dotfiles backups only up to DOTFILES_BACKUP_LIMIT. Clears all when
 DOTFILES_BACKUP_LIMIT is 0 or no arguments was given.
 
-  dotclearbak [ -DsvVy ] [ backup-limit ]
+  dotclearbak [ -DqvVy ] [ backup-limit ]
 
 OPTIONS:
 
-   -D : debug mode (redirect output in log file)
-   -s : silent
-   -v : verbose
-   -V : very verbose
-   -y : skip confirmation
-   -h : help
+  -D  debug mode (redirect output in log file)
+  -q  quite output
+  -v  verbose output
+  -V  very verbose output
+  -y  skip confirmation
+  -h  help
 
 EOF
 }
@@ -90,7 +90,7 @@ EOF
 while getopts "DsvVyh" opt; do
   case "$opt" in
     D) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
-    s) [[ -n "$IS_SILENT"       ]] && unset IS_SILENT                  || IS_SILENT=true;;
+    q) [[ -n "$IS_QUITE"        ]] && unset IS_QUITE                    || IS_QUITE=true;;
     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
     y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;

@@ -73,10 +73,10 @@ USAGE:
 
 Git helper tool for bulk git local repository operations.
 
-  gbulk [ -DsvVy ] [ path-to-repo ] [ git-commands ]
-  gbulk [ -DsvVy ] [ -l repo-list ] [ git-commands ]
-  gbulk [ -DfpPsSvVy ] [ path-to-repo ]
-  gbulk [ -DfpPsSvVy ] [ -l repo-list ]
+  gbulk [ -DqvVy ] [ path-to-repo ] [ git-commands ]
+  gbulk [ -DqvVy ] [ -l repo-list ] [ git-commands ]
+  gbulk [ -DfpPqsvVy ] [ path-to-repo ]
+  gbulk [ -DfpPqsvVy ] [ -l repo-list ]
 
 OPTIONS:
 
@@ -85,8 +85,8 @@ OPTIONS:
   -f  force git push or pull
   -p  pre-defined auto git push
   -P  pre-defined auto git pull
-  -s  silent output
-  -S  pre-defined auto git status
+  -q  quite output
+  -s  pre-defined auto git status
   -v  verbose output
   -V  very verbose output
   -y  skip confirmation
@@ -96,15 +96,15 @@ EOF
 }
 
 # Set flag options
-while getopts "Dl:pPsSvVyh" opt; do
+while getopts "Dl:pPqsvVyh" opt; do
   case "$opt" in
     D) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
     f) [[ -n "$FORCE_REPO"      ]] && unset FORCE_REPO                 || FORCE_REPO=true;;
     l) [[ -n "$IS_REPO_LIST"    ]] && unset IS_REPO_LIST               || IS_REPO_LIST=true; REPO_LIST=${OPTARG};;
     p) [[ -n "$IS_PUSH"         ]] && unset IS_PUSH                    || IS_PUSH=true;;
     P) [[ -n "$IS_PULL"         ]] && unset IS_PULL                    || IS_PULL=true;;
-    s) [[ -n "$IS_SILENT"       ]] && unset IS_SILENT                  || IS_SILENT=true;;
-    S) [[ -n "$IS_STATUS"       ]] && unset IS_STATUS                  || IS_STATUS=true;;
+    q) [[ -n "$IS_QUITE"        ]] && unset IS_QUITE                   || IS_QUITE=true;;
+    s) [[ -n "$IS_STATUS"       ]] && unset IS_STATUS                  || IS_STATUS=true;;
     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
     y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;

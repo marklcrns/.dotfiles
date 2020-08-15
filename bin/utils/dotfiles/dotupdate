@@ -85,16 +85,16 @@ USAGE:
 Updates all specified dotfiles in DOTFILES_LIST from DOTFILES_SOURCE_DIR into
 DOTFILES_TARGET_DIR.
 
-  dotupdate [ -bdDsvVy ]
+  dotupdate [ -bdDqvVy ]
 
 OPTIONS:
 
    -b : backup files
    -d : skip file deletion
    -D : debug mode (redirect output in log file)
-   -s : silent
-   -v : verbose
-   -V : very verbose
+   -q : quite output
+   -v : verbose output
+   -V : very verbose output
    -y : skip confirmation
    -h : help
 
@@ -102,12 +102,12 @@ EOF
 }
 
 # Set flag options
-while getopts "bdDsvVyh" opt; do
+while getopts "bdDqvVyh" opt; do
   case "$opt" in
     b) [[ -n "$IS_BACKUP"       ]] && unset IS_BACKUP                  || IS_BACKUP=true;;
     d) [[ -n "$NO_DELETE"       ]] && unset NO_DELETE                  || NO_DELETE=true;;
     D) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
-    s) [[ -n "$IS_SILENT"       ]] && unset IS_SILENT                  || IS_SILENT=true;;
+    q) [[ -n "$IS_QUITE"        ]] && unset IS_QUITE                   || IS_QUITE=true;;
     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
     y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;
@@ -151,8 +151,11 @@ for dotfile in ${DOTFILES_LIST[@]}; do
   # Strip source directory from path
   source_stripped=$(echo "$dotfile" | sed "s,${DOTFILES_SOURCE_DIR}/,,")
 
-  detect_changes "${dotfile}" "${DOTFILES_TARGET_DIR}/${source_stripped}" changes changes_count files_count
-  detect_delete "${DOTFILES_TARGET_DIR}/${source_stripped}" "${dotfile}" delete delete_count
+  source_file="${dotfile}"
+  target_file="${DOTFILES_TARGET_DIR}/${source_stripped}"
+
+  detect_changes "${source_file}" "${target_file}" changes changes_count files_count
+  detect_delete "${target_file}" "${source_file}" delete delete_count
 
   # Initialize counters if none
   [[ -z "${changes_count}" ]] && changes_count=0
@@ -207,7 +210,7 @@ while IFS= read -r file_tuple; do
     fi
   elif [[ -e "${target_file}" ]]; then # check if target_file not existing
     # Diff source and target file
-    if [[ -n "${IS_VERY_VERBOSE}" ]] && [[ -z "${silent}" ]]; then
+    if [[ -n "${IS_VERY_VERBOSE}" ]] && [[ -z "${IS_QUITE}" ]]; then
       if command -v colordiff &> /dev/null; then
         diff -c "${target_file}" "${source_file}" | colordiff
         log "${source_file}" 1
@@ -304,9 +307,12 @@ for dotfile in ${DOTFILES_LIST[@]}; do
   # Strip source directory from path
   source_stripped=$(echo "$dotfile" | sed "s,${DOTFILES_SOURCE_DIR}/,,")
 
-  detect_changes "${dotfile}" "${DOTFILES_TARGET_DIR}/${source_stripped}" changes changes_count files_count 1
+  source_file="${dotfile}"
+  target_file="${DOTFILES_TARGET_DIR}/${source_stripped}"
+
+  detect_changes "${source_file}" "${target_file}" changes changes_count files_count 1
   if [[ -z "${NO_DELETE}" ]]; then
-    detect_delete "${DOTFILES_TARGET_DIR}/${source_stripped}" "${dotfile}" delete delete_count files_count 1
+    detect_delete "${target_file}" "${source_file}" delete delete_count files_count 1
   fi
 done
 

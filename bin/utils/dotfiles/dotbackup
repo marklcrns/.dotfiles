@@ -81,18 +81,18 @@ USAGE:
 Backs up all specified dotfiles from DOTFILES_LIST into DOTFILES_BACKUP_DIR
 within a current timestamp named directory.
 
-  dotbackup [ -aDsvVy ] [ -A backups-limit ]
+  dotbackup [ -aDqvVy ] [ -A backups-limit ]
 
 OPTIONS:
 
-   -a : auto clean old backups if greater than default limit
-   -A : auto clean old backups if greater than specified limit
-   -D : debug mode (redirect output in log file)
-   -s : silent
-   -v : verbose
-   -V : very verbose
-   -y : skip confirmation
-   -h : help
+  -a  auto clean old backups if greater than default limit
+  -A  auto clean old backups if greater than specified limit
+  -D  debug mode (redirect output in log file)
+  -q  quite output
+  -v  verbose output
+  -V  very verbose output
+  -y  skip confirmation
+  -h  help
 
 EOF
 }
@@ -103,7 +103,7 @@ while getopts "aA:DsvVyh" opt; do
     a) [[ -n "$AUTO_CLEAN"      ]] && unset AUTO_CLEAN                 || AUTO_CLEAN=true;;
     A) [[ -n "$AUTO_CLEAN"      ]] && unset AUTO_CLEAN                 || AUTO_CLEAN=true; DOTFILES_BACKUP_LIMIT="${OPTARG}";;
     D) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
-    s) [[ -n "$IS_SILENT"       ]] && unset IS_SILENT                  || IS_SILENT=true;;
+    q) [[ -n "$IS_QUITE"        ]] && unset IS_QUITE                   || IS_QUITE=true;;
     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
     y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;

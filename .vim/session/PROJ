@@ -8,23 +8,17 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +6 src/test/java/edu/sdccd/cisc191/wizardGame/gui/screen/WindowTest.java
-badd +38 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/Window.java
+badd +68 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/Window.java
 argglobal
 %argdel
 $argadd src/test/java/edu/sdccd/cisc191/wizardGame/gui/screen/WindowTest.java
 edit src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/Window.java
 set splitbelow splitright
-wincmd _ | wincmd |
-vsplit
-1wincmd h
-wincmd w
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 106 + 106) / 213)
-exe 'vert 2resize ' . ((&columns * 106 + 106) / 213)
 argglobal
 setlocal fdm=syntax
 setlocal fde=0
@@ -34,36 +28,13 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 67 - ((12 * winheight(0) + 19) / 38)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-67
-normal! 0
-lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
-wincmd w
-argglobal
-if bufexists("~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/Window.java") | buffer ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/Window.java | else | edit ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A/src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/Window.java | endif
-setlocal fdm=syntax
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=99
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-23
-normal! zo
-let s:l = 22 - ((5 * winheight(0) + 19) / 38)
+let s:l = 22 - ((5 * winheight(0) + 17) / 35)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 22
 normal! 02|
 lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
-wincmd w
-exe 'vert 1resize ' . ((&columns * 106 + 106) / 213)
-exe 'vert 2resize ' . ((&columns * 106 + 106) / 213)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
