@@ -91,13 +91,13 @@ curl_install() {
 }
 
 git_clone() {
-  from=$1
-  to=$1
+  from="$1"
+  to="$1"
 
   # If output/destination file is given, else use regular curl
   if [[ -n "${to}" ]]; then
     # Check destination directory validity
-    if [[ ! -d "$(dirname ${to})" ]]; then
+    if [[ ! -d "$(dirname "${to}")" ]]; then
       error "Invalid git clone destination path '${to}'"
       return 1
     fi
