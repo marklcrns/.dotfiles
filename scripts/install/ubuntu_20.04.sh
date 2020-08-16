@@ -215,8 +215,11 @@ if curl_install "https://raw.githubusercontent.com/creationix/nvm/master/install
 fi
 
 # Yarn (Needs to go before APT_PACKAGES_PACKAGE_MANAGER installation)
-curl_install "https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+# Alternative
+curl -o- -L https://yarnpkg.com/install.sh | bash
+# Not working
+# curl_install "https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"
+# echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
 apt_bulk_install "${APT_PACKAGES_PACKAGE_MANAGER[@]}"
 npm_bulk_install "${NPM_PACKAGES_PACKAGE_MANAGER[@]}"
