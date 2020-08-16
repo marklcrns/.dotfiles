@@ -117,7 +117,7 @@ pip_install() {
   pip_version=$1
   package=$2
 
-  # Check pip version
+  # Check pip version if not 2 or 3
   if [[ -n ${pip_version} ]]; then
     if [[ ${pip_version} -gt 3 || ${pip_version} -lt 2 ]]; then
       error "Invalid pip version"
@@ -126,7 +126,7 @@ pip_install() {
   fi
 
   # Check if package exists in pip repository
-  if ! pip${pip_version} search ${package}; then
+  if ! eval "pip${pip_version} search ${package}"; then
     error "${package} package not found in pip repository"
     return 1
   fi
