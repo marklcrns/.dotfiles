@@ -124,23 +124,24 @@ git_clone() {
     fi
 
     # Execute installation
+
     if git clone "${from}" "${to}"; then
       ok "Git clone '${from}' -> '${to}' successful!"
-    # else
-    #   # Catch error if authentication failed and try again
-    #   while [[ ${?} -eq 128 ]]; do
-    #     git clone "${from}" "${to}" && ok "Git clone '${from}' -> '${to}' successful!"
-    #   done
+    else
+      # Catch error if authentication failed and try again
+      while [[ ${?} -eq 128 ]]; do
+        git clone "${from}" "${to}" && ok "Git clone '${from}' -> '${to}' successful!"
+      done
     fi
   else
     # Execute installation
     if git clone "${from}"; then
       ok "Git clone '${from}' successful!"
-    # else
-    #   # Catch error if authentication failed and try again
-    #   while [[ ${?} -eq 128 ]]; do
-    #     git clone "${from}" && ok "Git clone '${from}' successful!"
-    #   done
+    else
+      # Catch error if authentication failed and try again
+      while [[ ${?} -eq 128 ]]; do
+        git clone "${from}" && ok "Git clone '${from}' successful!"
+      done
     fi
   fi
 }
