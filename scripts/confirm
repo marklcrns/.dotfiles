@@ -16,7 +16,7 @@
 
 MESSAGE=$1
 
-if [[ -z ${MESSAGE} ]]; then
+if [[ -z "${MESSAGE}" ]]; then
   MESSAGE="Do you wish to continue? (Y/y) "
 fi
 
@@ -28,13 +28,13 @@ reply() {
   fi
 }
 
-if [ -n "`$SHELL -c 'echo $ZSH_VERSION'`" ]; then # Zsh prompt
+if [ -n "$(${SHELL} -c 'echo ${ZSH_VERSION}')" ]; then # Zsh prompt
   printf "${MESSAGE}"
   read REPLY
   echo
   reply
-elif [ -n "`$SHELL -c 'echo $BASH_VERSION'`" ]; then # Bash prompt
-  read -p ${MESSAGE} -n 1 -r
+elif [ -n "$(${SHELL} -c 'echo ${BASH_VERSION}')" ]; then # Bash prompt
+  read -p "${MESSAGE}" -n 1 -r
   echo
   reply
 else
