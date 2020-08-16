@@ -216,12 +216,12 @@ fi
 
 #################### Fonts ####################
 
-FONTS_PACKAGES="${PACKAGES}/fonts.sh"
+FONT_PACKAGES="${PACKAGES}/font.sh"
 
-if [[ -f "${FONTS_PACKAGES}" ]]; then
-  source "${FONTS_PACKAGES}"
+if [[ -f "${FONT_PACKAGES}" ]]; then
+  source "${FONT_PACKAGES}"
 else
-  error "${FONTS_PACKAGES} not found"
+  error "${FONT_PACKAGES} not found"
 fi
 
 #################### Tools ####################
