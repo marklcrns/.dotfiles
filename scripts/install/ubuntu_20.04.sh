@@ -39,18 +39,11 @@ else
   echo "${SCRIPTPATH} ERROR: Failed to source '../utils' dependency"
   exit 1
 fi
+# Install utility functions
 if [[ -e "${SCRIPTDIR}/install_utils.sh" ]]; then
   source "${SCRIPTDIR}/install_utils.sh"
 else
   echo "${SCRIPTPATH} ERROR: Failed to source './install_utils.sh' dependency"
-  exit 1
-fi
-
-# Packages to install
-if [[ -e "${SCRIPTDIR}/packages.sh" ]]; then
-  source "${SCRIPTDIR}/packages.sh"
-else
-  echo "${SCRIPTPATH} ERROR: Failed to source './packages.sh' dependency"
   exit 1
 fi
 
