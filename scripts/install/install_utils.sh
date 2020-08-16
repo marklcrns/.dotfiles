@@ -128,9 +128,19 @@ git_clone() {
     if git clone "${from}" "${to}"; then
       ok "Git clone '${from}' -> '${to}' successful!"
     else
-      # Catch error if authentication failed and try again
-      while [[ ${?} -eq 128 ]]; do
-        git clone "${from}" "${to}" && ok "Git clone '${from}' -> '${to}' successful!"
+      # Catch error if authentication failed and try again up to 5 tries
+      for i in {1..5}; do
+        if [[ ${?} -eq 128 ]]; then
+          if git clone "${from}" "${to}"; then
+            ok "Git clone '${from}' -> '${to}' successful!"
+            break
+          fi
+        else
+          break
+        fi
+        if [[ $? -ne 0 ]]; then
+          error "Cloning ${from} failed"
+        fi
       done
     fi
   else
@@ -138,9 +148,19 @@ git_clone() {
     if git clone "${from}"; then
       ok "Git clone '${from}' successful!"
     else
-      # Catch error if authentication failed and try again
-      while [[ ${?} -eq 128 ]]; do
-        git clone "${from}" && ok "Git clone '${from}' successful!"
+      # Catch error if authentication failed and try again up to 5 tries
+      for i in {1..5}; do
+        if [[ ${?} -eq 128 ]]; then
+          if git clone "${from}"; then
+            ok "Git clone '${from}' -> '${to}' successful!"
+            break
+          fi
+        else
+          break
+        fi
+        if [[ $? -ne 0 ]]; then
+          error "Cloning ${from} failed"
+        fi
       done
     fi
   fi
