@@ -26,5 +26,5 @@ apt_bulk_install "${APT_PACKAGES_FILE_MANAGER[@]}"
 # Copy default ranger config
 ranger --copy-config=all
 # Devicons
-git_clone "https://github.com/alexanderjeurissen/ranger_devicons" "${HOME}/.config/ranger/plugins/ranger_devicons"
+git_clone "https://github.com/alexanderjeurissen/ranger_devicons" "${HOME}/.config/ranger/plugins"
 

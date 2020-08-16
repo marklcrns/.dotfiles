@@ -112,18 +112,28 @@ git_clone() {
   # If output/destination file is given, else use regular curl
   if [[ -n "${to}" ]]; then
     # Check destination directory validity
-    if [[ ! -d "$(dirname "${to}")" ]]; then
+    if [[ ! -d "${to}" ]]; then
       error "Invalid git clone destination path '${to}'"
       return 1
     fi
     # Execute installation
-    if eval "git clone ${from} ${to}"; then
+    if git clone "${from}" "${to}"; then
       ok "Git clone '${from}' -> '${to}' successful!"
+    else
+      # Catch error if authentication failed and try again
+      while [[ ${?} -eq 128 ]]; do
+        git clone "${from}" "${to}" && ok "Git clone '${from}' -> '${to}' successful!"
+      done
     fi
   else
     # Execute installation
-    if eval "git clone ${from}"; then
+    if git clone "${from}"; then
       ok "Git clone '${from}' successful!"
+    else
+      # Catch error if authentication failed and try again
+      while [[ ${?} -eq 128 ]]; do
+        git clone "${from}" && ok "Git clone '${from}' successful!"
+      done
     fi
   fi
 }

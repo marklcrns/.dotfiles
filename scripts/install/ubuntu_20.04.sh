@@ -17,11 +17,6 @@
 
 ################################################## CONSTANT GLOBAL VARIABLES ###
 
-DOTFILES_DIR="${SCRIPTDIR}/../.."
-DOWNLOADS_DIR="${HOME}/Downloads"
-TRASH_DIR="${HOME}/.Trash"
-PACKAGES="${SCRIPTDIR}/packages"
-
 LOG_FILE_DIR="${HOME}/log"
 LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
 
@@ -121,6 +116,11 @@ if [[ -z "${SKIP_CONFIRM}" ]]; then
     error "${SCRIPTPATH}: Unsupported shell"
   fi
 fi
+
+DOTFILES_DIR="${SCRIPTDIR}/../.."
+DOWNLOADS_DIR="${HOME}/Downloads"
+TRASH_DIR="${HOME}/.Trash"
+PACKAGES="${SCRIPTDIR}/packages"
 
 [[ ! -d "${HOME}/Projects" ]] && mkdir -p "${HOME}/Projects"
 [[ ! -d "${HOME}/Downloads" ]] && mkdir -p "${DOWNLOADS_DIR}"
