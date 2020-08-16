@@ -56,7 +56,7 @@ fi
 curl_install "https://rclone.org/install.sh | sudo bash"
 
 # Fzf
-if git_clone "https://github.com/junegunn/fzf.git --depth=1" "${DOWNLOADS_DIR}/.fzf"; then
+if git_clone "--depth 1 https://github.com/junegunn/fzf.git " "${DOWNLOADS_DIR}/.fzf"; then
   "${DOWNLOADS_DIR}/.fzf/install"
 fi
 
