@@ -56,7 +56,7 @@ fi
 curl_install "https://rclone.org/install.sh | sudo bash"
 
 # Fzf
-if git_clone "--depth 1 https://github.com/junegunn/fzf.git " "${DOWNLOADS_DIR}/.fzf"; then
+if git_clone "--depth=1 https://github.com/junegunn/fzf.git" "${DOWNLOADS_DIR}/.fzf"; then
   "${DOWNLOADS_DIR}/.fzf/install"
 fi
 
@@ -67,7 +67,7 @@ if curl_install "https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION
   sudo dpkg -i "bat_${BAT_VERSION}_amd64.deb"
 fi
 
-if git_clone "--depth 1 https://github.com/universal-ctags/ctags.git" "${DOWNLOADS_DIR}/ctags"; then
+if git_clone "--depth=1 https://github.com/universal-ctags/ctags.git" "${DOWNLOADS_DIR}/ctags"; then
 
   apt_bulk_install "${APT_PACKAGES_TOOLS_CTAGS_DEPENDENCIES[@]}"
 
