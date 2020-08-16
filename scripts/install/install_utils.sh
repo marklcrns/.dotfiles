@@ -97,7 +97,7 @@ git_clone() {
   # If output/destination file is given, else use regular curl
   if [[ -n "${to}" ]]; then
     # Check destination directory validity
-    if [[ ! -d "$(dirname "${to}")" ]]; then
+    if [[ ! -d "$(echo $(dirname "${to}"))" ]]; then
       error "Invalid git clone destination path '${to}'"
       return 1
     fi
