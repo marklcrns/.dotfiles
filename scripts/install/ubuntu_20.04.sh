@@ -113,8 +113,6 @@ fi
 
 ##################################################### SCRIPT MAIN EXECUTIONS ###
 
-cd ${DOWNLOADS_DIR}
-
 # Confirmation
 if [[ -z "${SKIP_CONFIRM}" ]]; then
   log "Do you wish to continue? (Y/y): \n" 1
@@ -133,6 +131,14 @@ TRASH_DIR="${HOME}/.Trash"
 [[ ! -d "${HOME}/Projects" ]] && mkdir -p "${HOME}/Projects"
 [[ ! -d "${HOME}/Downloads" ]] && mkdir -p "${DOWNLOADS_DIR}"
 [[ ! -d "${HOME}/.Trash" ]] && mkdir -p "${TRASH_DIR}"
+
+cd ${DOWNLOADS_DIR}
+
+#TODO: TEMPORARY FOR WSL
+# Nameserver workaround for WSL2
+# Creates resolve.conf backup to $HOME as nameserver.txt
+cat /etc/resolv.conf > ~/nameserver.txt
+echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 
 # Apt update and upgrade
 if sudo apt update -y; then
