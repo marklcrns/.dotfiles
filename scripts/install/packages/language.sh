@@ -6,6 +6,8 @@ APT_PACKAGES_LANGUAGE=(
   # Python
   "python-dev" # Deprecated
   "python3-dev"
+  "libffi-dev"
+  "libssl-dev"
   "python3-pip"
   "python3-venv"
   # Java
