@@ -18,6 +18,11 @@ apt_install() {
     error "${package} package not found in apt repository"
     return 1
   fi
+  # Check if already installed
+  if dpkg -s "${package}" &> /dev/null; then
+    ok "Apt ${package} package already installed"
+    return 0
+  fi
   # sudo apt update if is_update
   if [[ ${is_update} -eq 1 ]]; then
     # if WSL nameserver to 8.8.8.8 before updating
@@ -42,8 +47,18 @@ apt_install() {
   # Execute installation
   if eval "sudo apt install ${package} -y"; then
     ok "Apt ${package} package installation successful!"
+    if [[ -n ${successful_packages} ]]; then
+      successful_packages="${successful_packages}\nApt ${package}"
+    else
+      successful_packages="Apt ${package}"
+    fi
   else
     error "Apt ${package} package installation failed"
+    if [[ -n ${failed_packages} ]]; then
+      failed_packages="${failed_packages}\nApt ${package}"
+    else
+      failed_packages="Apt ${package}"
+    fi
   fi
 }
 
@@ -125,6 +140,12 @@ pip_install() {
     fi
   fi
 
+  # Check if already installed
+  if eval "pip${pip_version} list | grep -F ${package}"; then
+    ok "Pip${pip_version} ${package} already installed"
+    return 0
+  fi
+
   # Check if package exists in pip repository
   if ! eval "pip${pip_version} search ${package}"; then
     error "${package} package not found in pip repository"
@@ -165,6 +186,19 @@ npm_install() {
   # Check if package exists in npm repository
   if npm search ${package} | grep -q "^No matches found"; then
     error "${package} package not found in npm repository"
+  fi
+
+  # Check if package already installed
+  if [[ ${is_global} -eq 1 ]]; then
+    if eval "npm list -g | grep -F ${package}" &> /dev/null; then
+      ok "Npm ${package} global package already installed"
+      return 0
+    fi
+  else
+    if eval "npm list | grep -F ${package}" &> /dev/null; then
+      ok "Npm ${package} local package already installed"
+      return 0
+    fi
   fi
 
   # Execute installation

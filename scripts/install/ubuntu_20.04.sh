@@ -17,6 +17,11 @@
 
 ################################################## CONSTANT GLOBAL VARIABLES ###
 
+DOTFILES_DIR="${SCRIPTDIR}/../.."
+DOWNLOADS_DIR="${HOME}/Downloads"
+TRASH_DIR="${HOME}/.Trash"
+PACKAGES="${SCRIPTDIR}/packages"
+
 LOG_FILE_DIR="${HOME}/log"
 LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
 
@@ -117,22 +122,17 @@ if [[ -z "${SKIP_CONFIRM}" ]]; then
   fi
 fi
 
-DOTFILES_DIR="${SCRIPTDIR}/../.."
-DOWNLOADS_DIR="${HOME}/Downloads"
-TRASH_DIR="${HOME}/.Trash"
-PACKAGES="${SCRIPTDIR}/packages"
-
 [[ ! -d "${HOME}/Projects" ]] && mkdir -p "${HOME}/Projects"
 [[ ! -d "${HOME}/Downloads" ]] && mkdir -p "${DOWNLOADS_DIR}"
 [[ ! -d "${HOME}/.Trash" ]] && mkdir -p "${TRASH_DIR}"
 
 cd ${DOWNLOADS_DIR}
 
-
+successful_packages=""
+failed_packages=""
 
 #TODO: TEMPORARY FOR WSL
-# Nameserver workaround for WSL2
-# Creates resolve.conf backup to $HOME as nameserver.txt
+# Internet connection issue on apt update workaround for WSL2
 cat /etc/resolv.conf > ~/nameserver.txt
 echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 
@@ -285,6 +285,19 @@ else
 fi
 
 
+echolog
+echolog "${UL_NC}Successfully Installed Packages${NC}"
+echolog
+while IFS= read -r package; do
+  ok "${package}"
+done < <(echo -e "${successful_packages}") # Process substitution for outside variables
+
+echolog
+echolog "${UL_NC}Failed Package Installations${NC}"
+echolog
+while IFS= read -r package; do
+  warning "${package}"
+done < <(echo -e "${failed_packages}") # Process substitution for outside variables
 
 
 finish 'INSTALLATION COMPLETE!'
