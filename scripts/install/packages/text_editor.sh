@@ -40,17 +40,10 @@ git_clone "https://github.com/marklcrns/ThinkVim" "${HOME}/.config/nvim/"
 if cd ${HOME}/.config/nvim; then
   ## python3 host prog
   mkdir -p env/python3 && cd env/python3
-  python3 -m venv env && \
-    source env/bin/activate && \
-    pip_bulk_install 3 "${PIP3_PACKAGES_TEXT_EDITOR_NEOVIM[@]}" && \
+  python3 -m venv env &&
+    source env/bin/activate &&
+    pip_bulk_install 3 "${PIP3_PACKAGES_TEXT_EDITOR_NEOVIM[@]}" &&
     deactivate
-
-  ## python2 host prog (DEPRECATED)
-  # mkdir -p env/python && cd env/python
-  # python -m venv env && \
-  #   source env/bin/activate && \
-  #   pip install neovim tasklib send2trash vim-vint flake8 pylint autopep8 && \
-  #   deactivate
 fi
 
 ## Clone Vimwiki wikis
