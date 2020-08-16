@@ -20,10 +20,23 @@ apt_install() {
   fi
   # sudo apt update if is_update
   if [[ ${is_update} -eq 1 ]]; then
-    if sudo apt update -y; then
-      ok "Apt update successful!"
+    # if WSL nameserver to 8.8.8.8 before updating
+    if [[ "$(grep -i microsoft /proc/version)" ]]; then
+      cat /etc/resolv.conf > ~/nameserver.txt
+      echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+      if sudo apt update -y; then
+        ok "Apt update successful!"
+      else
+        error "Apt update failed"
+      fi
+      # restore nameserver after apt update
+      cat ~/nameserver.txt | sudo tee /etc/resolv.conf
     else
-      error "Apt update failed"
+      if sudo apt update -y; then
+        ok "Apt update successful!"
+      else
+        error "Apt update failed"
+      fi
     fi
   fi
   # Execute installation
