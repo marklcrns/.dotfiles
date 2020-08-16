@@ -34,10 +34,10 @@ echolog
 
 # Python2 (OPTIONAL) DEPRECATED
 # Ref: https://linuxize.com/post/how-to-install-pip-on-ubuntu-20.04/
-if apt_install "python2-dev"; then
-  curl_install "https://bootstrap.pypa.io/get-pip.py" "${DOWNLOADS_DIR}/get-pip.py"
-  execlog "sudo python ${DOWNLOADS_DIR}/get-pip.py"
-fi
+# if apt_install "python2-dev"; then
+#   curl_install "https://bootstrap.pypa.io/get-pip.py" "${DOWNLOADS_DIR}/get-pip.py"
+#   execlog "sudo python ${DOWNLOADS_DIR}/get-pip.py"
+# fi
 
 apt_bulk_install "${APT_PACKAGES_LANGUAGE[@]}"
 pip_bulk_install 3 "${PIP3_PACKAGES_LANGUAGES[@]}"
