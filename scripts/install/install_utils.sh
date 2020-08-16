@@ -14,7 +14,7 @@ apt_install() {
   is_update=$2
 
   # Check if package exists in apt repository
-  if [[ -z "$(apt-cache search --names-only ${package})" ]]; then
+  if ! apt-cache search --names-only "${package}" | grep -F "${package}"; then
     error "${package} package not found in apt repository"
     return 1
   fi
