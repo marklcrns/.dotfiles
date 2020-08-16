@@ -141,11 +141,8 @@ cat /etc/resolv.conf > ~/nameserver.txt
 echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 
 # Apt update and upgrade
-if sudo apt update -y; then
-  error "Apt update failed" 1
-fi
-if sudo apt upgrade -y; then
-  error "Apt upgrade failed" 1
+if sudo apt update upgrade -y; then
+  error "Apt update and upgrade failed" 1
 fi
 
 echolog
