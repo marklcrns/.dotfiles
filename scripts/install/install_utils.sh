@@ -47,18 +47,10 @@ apt_install() {
   # Execute installation
   if eval "sudo apt install ${package} -y"; then
     ok "Apt ${package} package installation successful!"
-    if [[ -n ${successful_packages} ]]; then
-      successful_packages="${successful_packages}\nApt ${package}"
-    else
-      successful_packages="Apt ${package}"
-    fi
+    successful_packages="${successful_packages}\nApt ${package}"
   else
     error "Apt ${package} package installation failed"
-    if [[ -n ${failed_packages} ]]; then
-      failed_packages="${failed_packages}\nApt ${package}"
-    else
-      failed_packages="Apt ${package}"
-    fi
+    failed_packages="${failed_packages}\nApt ${package}"
   fi
 }
 
