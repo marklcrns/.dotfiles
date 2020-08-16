@@ -137,8 +137,8 @@ cd ${DOWNLOADS_DIR}
 #TODO: TEMPORARY FOR WSL
 # Nameserver workaround for WSL2
 # Creates resolve.conf backup to $HOME as nameserver.txt
-cat /etc/resolv.conf > ~/nameserver.txt
-echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+# cat /etc/resolv.conf > ~/nameserver.txt
+# echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 
 # Apt update and upgrade
 if ! sudo apt update && sudo apt upgrade -y; then
@@ -149,7 +149,6 @@ echolog
 echolog "${UL_NC}Installing Essential Packages${NC}"
 echolog
 
-sudo ufw enable
 sudo apt-add-repository universe -y
 
 apt_bulk_install "${APT_PACKAGES_ESSENTIAL[@]}"
