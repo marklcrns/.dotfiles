@@ -175,11 +175,12 @@ sudo update-alternatives --set java ${JDK_HOME}/bin/java
 sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
 
 # Copy the Java path excluding the 'bin/java' to environment if not exist
-grep -q 'JAVA_HOME=' /etc/environment && \
-  sudo sed -i "s,^JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}/jre/," /etc/environment || \
-  echo "JAVA_HOME=${JDK_HOME}/jre/" | sudo tee -a /etc/environment
-source environ
-source /etc/environment
+if grep -q 'JAVA_HOME=' /etc/environment; then
+  sudo sed -i "s,^JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}/jre/," /etc/environment ||
+    echo "JAVA_HOME=${JDK_HOME}/jre/" | sudo tee -a /etc/environment
+
+  source /etc/environment
+fi
 
 ## Oracle JDK 11.0.7
 # cd $SCRIPTDIR/install/
@@ -213,7 +214,7 @@ if curl_install "https://raw.githubusercontent.com/creationix/nvm/master/install
   nvm alias default $LATESTNPM
 fi
 
-Yarn (Needs to go before APT_PACKAGES_PACKAGE_MANAGER installation)
+# Yarn (Needs to go before APT_PACKAGES_PACKAGE_MANAGER installation)
 curl_install "https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
