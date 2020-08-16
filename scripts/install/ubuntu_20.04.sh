@@ -124,15 +124,18 @@ if [[ -z "${SKIP_CONFIRM}" ]]; then
   fi
 fi
 
-DOTFILES_DIR="$SCRIPTDIR/../.."
+DOTFILES_DIR="${SCRIPTDIR}/../.."
 DOWNLOADS_DIR="${HOME}/Downloads"
 TRASH_DIR="${HOME}/.Trash"
+PACKAGES="${SCRIPTDIR}/packages"
 
 [[ ! -d "${HOME}/Projects" ]] && mkdir -p "${HOME}/Projects"
 [[ ! -d "${HOME}/Downloads" ]] && mkdir -p "${DOWNLOADS_DIR}"
 [[ ! -d "${HOME}/.Trash" ]] && mkdir -p "${TRASH_DIR}"
 
 cd ${DOWNLOADS_DIR}
+
+
 
 #TODO: TEMPORARY FOR WSL
 # Nameserver workaround for WSL2
@@ -148,317 +151,155 @@ fi
 # restore nameserver
 cat ~/nameserver.txt | sudo tee /etc/resolv.conf
 
-echolog
-echolog "${UL_NC}Installing Essential Packages${NC}"
-echolog
+#################### Essentials ####################
 
-sudo apt-add-repository universe -y
+ESSENTIAL_PACKAGES="${PACKAGES}/essential.sh"
 
-apt_bulk_install "${APT_PACKAGES_ESSENTIAL[@]}"
-
-echolog
-echolog "${UL_NC}Installing Language Packages${NC}"
-echolog
-
-apt_bulk_install "${APT_PACKAGES_LANGUAGE[@]}"
-
-# Python2 pip (OPTIONAL)
-# Ref: https://linuxize.com/post/how-to-install-pip-on-ubuntu-20.04/
-curl_install "https://bootstrap.pypa.io/get-pip.py" "${DOWNLOADS_DIR}/get-pip.py"
-execlog "sudo python ${DOWNLOADS_DIR}/get-pip.py"
-
-pip_bulk_install 3 "${PIP3_PACKAGES_LANGUAGES[@]}"
-
-export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-## Set java and javac 11 as default
-sudo update-alternatives --set java ${JDK_HOME}/bin/java
-sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
-
-# Copy the Java path excluding the 'bin/java' to environment if not exist
-if grep -q 'JAVA_HOME=' /etc/environment; then
-  sudo sed -i "s,^JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}/jre/," /etc/environment ||
-    echo "JAVA_HOME=${JDK_HOME}/jre/" | sudo tee -a /etc/environment
-
-  source /etc/environment
+if [[ -f "${ESSENTIAL_PACKAGES}" ]]; then
+  source "${ESSENTIAL_PACKAGES}"
+else
+  error "${ESSENTIAL_PACKAGES} not found"
 fi
 
-## Oracle JDK 11.0.7
-# cd $SCRIPTDIR/install/
-# sudo cp jdk-11.0.7_linux-x64_bin.tar.gz /var/cache/oracle-jdk11-installer-local && \
-#   echo "deb http://ppa.launchpad.net/linuxuprising/java/ubuntu focal main" | \
-#   sudo tee /etc/apt/sources.list.d/linuxuprising-java.list && \
-#   sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 73C3DB2A && \
-#   sudo apt update && \
-#   sudo apt install oracle-java11-installer-local -y && \
-#   sudo apt install oracle-java11-set-default-local -y && \
-#   sudo update-alternatives --set java /usr/lib/jvm/java-11-oracle/bin/java
+#################### Languages ####################
 
-# # copy the Java path excluding the 'bin/java' if not exist
-# grep -q 'JAVA_HOME=' /etc/environment && \
-#   sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="/usr/lib/jvm/java-11-oracle/",' /etc/environment || \
-#   echo 'JAVA_HOME="/usr/lib/jvm/java-11-oracle/"' | sudo tee -a /etc/environment
-# source /etc/environment
+LANGUAGE_PACKAGES="${PACKAGES}/language.sh"
+
+if [[ -f "${LANGUAGE_PACKAGES}" ]]; then
+  source "${LANGUAGE_PACKAGES}"
+else
+  error "${LANGUAGE_PACKAGES} not found"
+fi
 
 #################### Package Managers ####################
 
-echolog
-echolog "${UL_NC}Installing Package Manager Packages${NC}"
-echolog
+PACKAGE_MANAGER_PACKAGES="${PACKAGES}/package_manager.sh"
 
-NVM/NodeJS
-if curl_install "https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash"; then
-  LATESTNPM=`nvm ls-remote | tail -1 | sed 's/^.*\(v[0-9\.]\)/\1/'`
-  ## install latest npm
-  nvm install $LATESTNPM
-  nvm use $LATESTNPM
-  nvm alias default $LATESTNPM
+if [[ -f "${PACKAGE_MANAGER_PACKAGES}" ]]; then
+  source "${PACKAGE_MANAGER_PACKAGES}"
+else
+  error "${PACKAGE_MANAGER_PACKAGES} not found"
 fi
-
-# Yarn (Needs to go before APT_PACKAGES_PACKAGE_MANAGER installation)
-# Alternative
-curl -o- -L https://yarnpkg.com/install.sh | bash
-# Not working
-# curl_install "https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"
-# echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-
-apt_bulk_install "${APT_PACKAGES_PACKAGE_MANAGER[@]}"
-npm_bulk_install "${NPM_PACKAGES_PACKAGE_MANAGER[@]}"
 
 ############### Shell ################
 
+SHELL_PACKAGES="${PACKAGES}/shell.sh"
 
-apt_bulk_install "${APT_PACKAGES_SHELL[@]}"
-
-# Oh-my-zsh, plugins and themes
-if sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"; then
-  git_clone "https://github.com/zsh-users/zsh-autosuggestions" "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
-  git_clone "https://github.com/zsh-users/zsh-syntax-highlighting.git" "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
-  git_clone "https://github.com/romkatv/powerlevel10k.git" "${HOME}/.oh-my-zsh/themes/powerlevel10k"
+if [[ -f "${SHELL_PACKAGES}" ]]; then
+  source "${SHELL_PACKAGES}"
+else
+  error "${SHELL_PACKAGES} not found"
 fi
 
 #################### Session Manager ####################
 
-apt_bulk_install "${APT_PACKAGES_SESSION_MANAGER[@]}"
-pip_bulk_install 3 "${PIP3_PACKAGES_SESSION_MANAGER[@]}"
+SESSION_MANAGER_PACKAGES="${PACKAGES}/session_manager.sh"
 
-# Tmuxinator
-git_clone "https://github.com/marklcrns/.tmuxinator" "${HOME}/.tmuxinator"
-# Tmux plugin manager
-git_clone "https://github.com/tmux-plugins/tpm" "${HOME}/.tmux/plugins/tpm"
-
+if [[ -f "${SESSION_MANAGER_PACKAGES}" ]]; then
+  source "${SESSION_MANAGER_PACKAGES}"
+else
+  error "${SESSION_MANAGER_PACKAGES} not found"
+fi
 
 #################### File Manager ####################
 
-apt_bulk_install "${APT_PACKAGES_FILE_EXPLORER[@]}"
+FILE_MANAGER_PACKAGES="${PACKAGES}/file_manager.sh"
 
-# Copy default ranger config
-ranger --copy-config=all
-# Devicons
-git_clone "https://github.com/alexanderjeurissen/ranger_devicons" "${HOME}/.config/ranger/plugins/ranger_devicons"
-
-
+if [[ -f "${FILE_MANAGER_PACKAGES}" ]]; then
+  source "${FILE_MANAGER_PACKAGES}"
+else
+  error "${FILE_MANAGER_PACKAGES} not found"
+fi
 
 ############### Text Editors ##################
 
-apt_bulk_install "${APT_PACKAGES_TEXT_EDITOR[@]}"
-npm_bulk_install 1 "${NPM_PACKAGES_TEXT_EDITOR[@]}"
+TEXT_EDITOR_PACKAGES="${PACKAGES}/text_editor.sh"
 
-
-# Install python and python3 env in nvim root directory
-cd ${HOME}/.config/nvim
-## python3 host prog
-mkdir -p env/python3 && cd env/python3
-python3 -m venv env && \
-  source env/bin/activate && \
-  pip_bulk_install 3 "${PIP3_PACKAGES_TEXT_EDITOR_NEOVIM[@]}" && \
-  deactivate
-
-## python2 host prog (DEPRECATED)
-# mkdir -p env/python && cd env/python
-# python -m venv env && \
-#   source env/bin/activate && \
-#   pip install neovim tasklib send2trash vim-vint flake8 pylint autopep8 && \
-#   deactivate
-
-# Personal neovim config files
-git_clone "https://github.com/marklcrns/ThinkVim" "${HOME}/.config/nvim/"
-
-## Clone Vimwiki wikis
-[[ -d "${HOME}/Docs/wiki" ]] && rm -rf ~/Docs/wiki
-git_clone "https://github.com/marklcrns/wiki" "${HOME}/Docs/wiki" && \
-  git_clone "https://github.com/marklcrns/wiki-wiki" "${HOME}/Docs/wiki/wiki"
-
-## Kite
-# bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)"
-
+if [[ -f "${TEXT_EDITOR_PACKAGES}" ]]; then
+  source "${TEXT_EDITOR_PACKAGES}"
+else
+  error "${TEXT_EDITOR_PACKAGES} not found"
+fi
 
 #################### Fonts ####################
 
-sudo cp "${SCRIPTDIR}/../../fonts/Haskplex-Nerd-Regular.ttf" /usr/local/share/fonts
-sudo cp "${SCRIPTDIR}/../../fonts/Sauce Code Pro Nerd Font Complete.ttf" /usr/local/share/fonts
+FONTS_PACKAGES="${PACKAGES}/fonts.sh"
 
-#################### Utilities ####################
-
-apt_bulk_install "${APT_PACKAGES_UTILITY[@]}"
-
-# Git-lfs
-if curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash; then
-  apt_install "git-lfs"
-  git lfs install
+if [[ -f "${FONTS_PACKAGES}" ]]; then
+  source "${FONTS_PACKAGES}"
+else
+  error "${FONTS_PACKAGES} not found"
 fi
 
-# Rclone
-curl_install "https://rclone.org/install.sh | sudo bash"
+#################### Tools ####################
 
-# Fzf
-if git_clone "https://github.com/junegunn/fzf.git --depth=1" "${DOWNLOADS_DIR}/.fzf"; then
-  "${DOWNLOADS_DIR}/.fzf/install"
-fi
+TOOLS_PACKAGES="${PACKAGES}/tools.sh"
 
-# Bat v0.15.4 (Manual)
-# Ref: https://github.com/sharkdp/bat#on-ubuntu
-BAT_VERSION="0.15.4"
-if curl_install "https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION}/bat_${BAT_VERSION}_amd64.deb"; then
-  sudo dpkg -i "bat_${BAT_VERSION}_amd64.deb"
-fi
-
-if git_clone "https://github.com/universal-ctags/ctags.git --depth=1" "${DOWNLOADS_DIR}"; then
-
-  apt_bulk_install "${APT_PACKAGES_UTILITY_CTAGS_DEPENDENCIES[@]}"
-
-  cd ${DOWNLOADS_DIR}/ctags
-  ./autogen.sh
-  ./configure
-  make
-  sudo make install
-
-  cd ${DOWNLOADS_DIR}
-fi
-
-# Lazygit
-if sudo add-apt-repository ppa:lazygit-team/release -y; then
-  apt_install "lazygit" 1
-fi
-
-## R-Pandoc
-### dependencies
-if apt_install "r-base"; then
-  curl -sSL https://get.haskellstack.org/ | sh
-  if git_clone "https://github.com/cdupont/R-pandoc.git" "${DOWNLOADS_DIR}"; then
-    cd "${DOWNLOADS_DIR}R-pandoc" && stack install
-
-    cd "${DOWNLOADS_DIR}"
-  fi
-fi
-
-# Personal pandoc configurations
-git_clone "https://github.com/marklcrns/pandoc-goodies" "${HOME}/.pandoc"
-
-# Exa
-if curl_install "https://sh.rustup.rs -sSf | sh"; then
-  EXA_VERSION="0.9.0"
-  cd "${DOWNLOADS_DIR}"
-  if wget -c "https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-${EXA_VERSION}.zip"; then
-    unzip exa-linux-x86_64-${EXA_VERSION}.zip
-    sudo mv exa-linux-x86_64 /usr/local/bin/exa
-  fi
+if [[ -f "${TOOLS_PACKAGES}" ]]; then
+  source "${TOOLS_PACKAGES}"
+else
+  error "${TOOLS_PACKAGES} not found"
 fi
 
 #################### Browser ####################
 
-# Google Chrome
-if wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"; then
-  sudo apt install ./google-chrome-stable_current_amd64.deb
+BROWSER_PACKAGES="${PACKAGES}/browser.sh"
+
+if [[ -f "${BROWSER_PACKAGES}" ]]; then
+  source "${BROWSER_PACKAGES}"
+else
+  error "${BROWSER_PACKAGES} not found"
 fi
 
-#################### Web Server (LAMP) and Other ####################
+#################### Server ####################
 
-apt_bulk_install "${APT_PACKAGES_WEB_SERVER[@]}"
+SERVER_PACKAGES="${PACKAGES}/server.sh"
 
-## create backup of apache2.conf and copy www dir to ~/Projects/www
-sudo cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.bak
-# Append only if not already
-# Ref: https://superuser.com/a/1314183
-sudo grep -q "<Directory /home/$(id -un)/Projects/www>" /etc/apache2/apache2.conf || \
-  sudo sed -i "\$i<Directory /home/$(id -un)/Projects/www>\n\tOptions Indexes FollowSymLinks\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n" /etc/apache2/apache2.conf
-  # resolve "forbidden You don't have permission to access / on this server" issue
-  # Solution: https://askubuntu.com/a/738527
-  # Resources:
-  # https://unix.stackexchange.com/questions/26284/how-can-i-use-sed-to-replace-a-multi-line-string
-  # https://stackoverflow.com/questions/11234001/replace-multiple-lines-using-sed
-  # TODO: Fix. Multiple \n match does not work
-  # sudo sed 'N; s/<Directory \/>\n\tOptions FollowSymLinks\n\tAllowOverride None\n\tRequire all denied/<Directory \/>\n\tOptions Indexes FollowSymLinks Includes ExecCGI\n\tAllowOverride all\n\tRequire all granted/g' \
-  #  /etc/apache2/apache2.conf
-
-  cp -r /var/www ${HOME}/Projects/
-  mkdir -p ${HOME}/Projects/www/default
-  # replace DocumentRoot in /etc/apache2/sites-enabled/000-default.conf
-  # Modify only if not already
-  sudo grep -qF "# DocumentRoot /var/www/html" /etc/apache2/sites-enabled/000-default.conf || \
-    sudo sed -i "s,DocumentRoot /var/www/html,# DocumentRoot /var/www/html\n\tDocumentRoot /home/$(id -un)/Projects/www/default," \
-    /etc/apache2/sites-enabled/000-default.conf
-      echo "<h1>This is Apache2 default site</h1>" > ~/Projects/www/default/index.html
-      sudo service apache2 restart
-
-# MySQL
-if apt_install "mysql-server" && apt_install "mysql-client" -y; then
-  ## When passsword prompt:
-  ## Password valdation: Low `0`
-  ## Then Answer `y` for the rest of the question prompts
-  sudo service mysql start && sudo mysql_secure_installation
-fi
-
-# PHP
-if apt_bulk_install "${APT_PACKAGES_WEB_SERVER_PHP_DEPENDENCIES[@]}"; then
-  echo '<?php\nphpinfo();\n?>' > ~/Projects/www/default/info.php
-fi
-
-# PhpMyAdmin
-# Ref: https://www.fosslinux.com/6745/how-to-install-phpmyadmin-with-lamp-stack-on-ubuntu.htm
-# MYSQL application password for phpmyadmin set up
-if sudo service mysql start; then # its IMPORTANT that mysql is running before installing
-  # PhpMyAdmin Prompt:
-  # apache2
-  # Yes
-  apt_install phpmyadmin
+if [[ -f "${SERVER_PACKAGES}" ]]; then
+  source "${SERVER_PACKAGES}"
+else
+  error "${SERVER_PACKAGES} not found"
 fi
 
 #################### Virtual Machine/Containers ####################
 
-# # Vagrant 2.2.9
-# if wget https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.deb; then
-#   sudo dpkg -i vagrant_2.2.9_x86_64.deb
-#   sudo apt -f install
-# fi
+VIRTUAL_MACHINE_PACKAGES="${PACKAGES}/virtual_machine.sh"
+
+if [[ -f "${VIRTUAL_MACHINE_PACKAGES}" ]]; then
+  source "${VIRTUAL_MACHINE_PACKAGES}"
+else
+  error "${VIRTUAL_MACHINE_PACKAGES} not found"
+fi
 
 #################### Misc ####################
 
-apt_bulk_install "${APT_PACKAGES_MISC[@]}"
+MISC_PACKAGES="${PACKAGES}/misc.sh"
 
-# Battery saving tool
-apt_install tlp && sudo tlp start
-
-# Tldr
-mkdir -p ~/bin
-curl -o ~/bin/tldr https://raw.githubusercontent.com/raylee/tldr/master/tldr && \
-  chmod +x ~/bin/tldr
-
-# Taskwarrior & Timewarrior
-if apt_install taskwarrior timewarrior -y; then
-  pip3 install --user git+git://github.com/tbabej/tasklib@develop && \
-  pip install --user git+git://github.com/tbabej/tasklib@develop
-  # Personal Timewarrior configuration files
-  git_clone "https://github.com/marklcrns/.timewarrior" "${HOME}/.timewarrior"
-  # Taskwarrior hooks
-  if git clone https://github.com/marklcrns/.task ~/.task; then
-    ln -s ${HOME}/.task/.taskrc ${HOME}/.taskrc && \
-      cd ${HOME}/.task/hooks && \
-        sudo chmod +x on-modify-pirate on-add-pirate on-modify.timewarrior
-    if pip_install 3 "taskwarrior-time-tracking-hook"; then
-      ln -s `which taskwarrior_time_tracking_hook` "~/.task/hooks/on-modify.timetracking"
-    fi
-  fi
+if [[ -f "${MISC_PACKAGES}" ]]; then
+  source "${MISC_PACKAGES}"
+else
+  error "${MISC_PACKAGES} not found"
 fi
+
+#################### Desktop Apps ####################
+
+DESKTOP_APPS_PACKAGES="${PACKAGES}/desktop_apps.sh"
+
+if [[ -f "${DESKTOP_APPS_PACKAGES}" ]]; then
+  source "${DESKTOP_APPS_PACKAGES}"
+else
+  error "${DESKTOP_APPS_PACKAGES} not found"
+fi
+
+
+
+
+finish 'INSTALLATION COMPLETE!'
+
+
+
+
+
 
 
 #################### MIME Applications ####################
@@ -470,46 +311,6 @@ fi
 # mkdir ~/.local/share/applications
 # cp applications/* ~/.local/share/applications/
 # ln -sf ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
-
-
-#################### Desktop Apps ####################
-
-apt_bulk_install ${APT_PACKAGES_DESKTOP_APPLICATION[@]}
-
-# Peek
-if sudo add-apt-repository ppa:peek-developers/stable -y; then
-  apt_install peek
-fi
-
-# # Wine
-# ## Installation
-# sudo dpkg --add-architecture i386
-# if wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -; then
-#   if sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' -y; then
-#     apt_install "--install-recommends winehq-stable" 1
-#     # Setup
-#     winecfg
-#   fi
-#   # PlayOnLinux
-#   apt_install playonlinux
-# fi
-
-
-#################### Windows Manager ####################
-
-# DWM
-# Ref: https://medium.com/hacker-toolbelt/dwm-windows-manager-in-ubuntu-14958224a782
-## If asked, choose XDM as display manager (you can even remove gdm3: sudo apt-get remove gdm3)
-# if apt_bulk_install "${APT_PACKAGES_DESKTOP_WINDOW_MANAGER[@]}"; then
-#   echo dwm > ${HOME}.xsession
-# fi
-
-
-
-exit 0
-
-
-
 
 
 #################### Dotfiles ####################
@@ -524,5 +325,4 @@ source ~/.bashrc
 
 #################################################################### WRAP UP ###
 
-finish 'INSTALLATION COMPLETE!'
 
