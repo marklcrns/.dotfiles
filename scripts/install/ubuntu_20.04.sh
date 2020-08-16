@@ -416,11 +416,11 @@ fi
 
 #################### Virtual Machine/Containers ####################
 
-# Vagrant 2.2.9
-if wget https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.deb; then
-  sudo dpkg -i vagrant_2.2.9_x86_64.deb
-  sudo apt -f install
-fi
+# # Vagrant 2.2.9
+# if wget https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.deb; then
+#   sudo dpkg -i vagrant_2.2.9_x86_64.deb
+#   sudo apt -f install
+# fi
 
 #################### Misc ####################
 
@@ -472,19 +472,18 @@ if sudo add-apt-repository ppa:peek-developers/stable -y; then
   apt_install peek
 fi
 
-# Wine
-## Installation
-sudo dpkg --add-architecture i386
-if wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -; then
-  if sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' -y; then
-    apt_install "--install-recommends winehq-stable" 1
-    # Setup
-    winecfg
-  fi
-
-  # PlayOnLinux
-  apt_install playonlinux
-fi
+# # Wine
+# ## Installation
+# sudo dpkg --add-architecture i386
+# if wget -O - https://dl.winehq.org/wine-builds/winehq.key | sudo apt-key add -; then
+#   if sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' -y; then
+#     apt_install "--install-recommends winehq-stable" 1
+#     # Setup
+#     winecfg
+#   fi
+#   # PlayOnLinux
+#   apt_install playonlinux
+# fi
 
 
 #################### Windows Manager ####################
