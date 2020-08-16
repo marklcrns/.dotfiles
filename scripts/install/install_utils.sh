@@ -111,11 +111,18 @@ git_clone() {
 
   # If output/destination file is given, else use regular curl
   if [[ -n "${to}" ]]; then
+
     # Check destination directory validity
-    if [[ ! -d "${to}" ]]; then
-      error "Invalid git clone destination path '${to}'"
+    if [[ ! -d "$(dirname "${to}")" ]]; then
+      error "Invalid git clone destination directory path '${to}'"
       return 1
     fi
+
+    if [[ -d "${to}/.git" ]]; then
+      warning "Removing old ${to} repository"
+      rm -rf "${to}"
+    fi
+
     # Execute installation
     if git clone "${from}" "${to}"; then
       ok "Git clone '${from}' -> '${to}' successful!"
@@ -150,17 +157,18 @@ pip_install() {
     fi
   fi
 
+  # Check if package exists in pip repository
+  if ! eval "pip${pip_version} search ${package} &> /dev/null"; then
+    error "${package} package not found in pip repository"
+    return 1
+  fi
+
   # Check if already installed
-  if eval "pip${pip_version} list | grep -F ${package}"; then
+  if eval "pip${pip_version} list | grep -F ${package} &> /dev/null"; then
     ok "Pip${pip_version} ${package} already installed"
     return 0
   fi
 
-  # Check if package exists in pip repository
-  if ! eval "pip${pip_version} search ${package}"; then
-    error "${package} package not found in pip repository"
-    return 1
-  fi
   # Execute installation
   if eval "pip${pip_version} install ${package}"; then
     ok "Pip${pip_version} ${package} package installation successful!"

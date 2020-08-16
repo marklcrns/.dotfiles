@@ -21,7 +21,7 @@ apt_bulk_install "${APT_PACKAGES_SESSION_MANAGER[@]}"
 pip_bulk_install 3 "${PIP3_PACKAGES_SESSION_MANAGER[@]}"
 
 # Tmuxinator
-git_clone "https://github.com/marklcrns/.tmuxinator" "${HOME}"
+git_clone "https://github.com/marklcrns/.tmuxinator" "${HOME}/.tmuxinator"
 # Tmux plugin manager
-git_clone "https://github.com/tmux-plugins/tpm" "${HOME}/.tmux/plugins"
+git_clone "https://github.com/tmux-plugins/tpm" "${HOME}/.tmux/plugins/tpm"
 
