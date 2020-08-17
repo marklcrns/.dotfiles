@@ -122,8 +122,8 @@ git_clone() {
     else
       # Catch error if authentication failed and try again up to 5 tries
       for i in {1..5}; do
-        warning "Git authentication failed. Try again ($i/5)"
         if [[ ${?} -eq 128 ]]; then
+          warning "Git authentication failed. Try again ($i/5)"
           if git clone "${from}" "${to}"; then
             ok "Git clone '${from}' -> '${to}' successful!" && break
           fi
@@ -143,10 +143,9 @@ git_clone() {
       # Catch error if authentication failed and try again up to 5 tries
       for i in {1..5}; do
         if [[ ${?} -eq 128 ]]; then
-          warning "Git authentication failed. Try again ($i/5)"
           if git clone "${from}"; then
-            ok "Git clone '${from}' -> '${to}' successful!"
-            break
+            warning "Git authentication failed. Try again ($i/5)"
+            ok "Git clone '${from}' -> '${to}' successful!" && break
           fi
         else
           break
