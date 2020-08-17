@@ -296,7 +296,7 @@ echolog
 echolog "${UL_NC}Failed Package Installations${NC}"
 echolog
 while IFS= read -r package; do
-  warning "${package}"
+  error "${package}"
 done < <(echo -e "${failed_packages}") # Process substitution for outside variables
 
 
