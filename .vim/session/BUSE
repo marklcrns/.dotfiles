@@ -2,17 +2,15 @@ let SessionLoad = 1
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
-cd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
+cd ~/Docs/wiki
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +6 src/test/java/edu/sdccd/cisc191/wizardGame/gui/screen/WindowTest.java
-badd +68 src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/Window.java
+badd +1 school/md/fall-2020/BUSE-120/index.md
 argglobal
 %argdel
-$argadd src/test/java/edu/sdccd/cisc191/wizardGame/gui/screen/WindowTest.java
-edit src/main/java/edu/sdccd/cisc191/wizardGame/gui/screen/Window.java
+edit school/md/fall-2020/BUSE-120/index.md
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -21,20 +19,19 @@ set winminwidth=0
 set winwidth=1
 argglobal
 setlocal fdm=syntax
-setlocal fde=0
+setlocal fde=Foldexpr_markdown(v:lnum)
 setlocal fmr={{{,}}}
 setlocal fdi=#
 setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 22 - ((5 * winheight(0) + 17) / 35)
+let s:l = 2 - ((1 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-22
-normal! 02|
-lcd ~/Projects/Dev/eclipse-workspace/CISC191-SUM20-A
+2
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

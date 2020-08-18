@@ -7,13 +7,13 @@ windows:
   - CONF:
       layout: 21d2,93x51,0,0[93x39,0,0,36,93x11,0,40,39]
       panes:
-        - htop
+        - bashtop
         - cd ~/.config/nvim && clear
   - TASK:
       layout: f700,93x51,0,0[93x12,0,0,37,93x7,0,13,40,93x30,0,21{57x30,0,21[57x19,0,21,41,57x4,0,41,42,57x5,0,46,43],35x30,58,21,44}]
       panes:
         - dtoday
-        - cmatrix
+        - clear
         - while true; do clear && task proj:Todo next limit:5; sleep 2; done
         - watch_all_task
         - while true; do clear && timew; sleep 2; done

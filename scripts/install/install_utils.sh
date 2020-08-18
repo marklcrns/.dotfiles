@@ -9,6 +9,65 @@ if [ ${0##*/} == ${BASH_SOURCE[0]##*/} ]; then
   exit 1
 fi
 
+# Exclude 'ppa:' from repo argument if is_ppa
+# e.g. for 'sudo add-apt-repository ppa:bashtop-monitor/bashtop', only pass in
+# 'bashtop-monitor/bashtop'
+apt_add_repo() {
+  repo=$1
+  is_ppa=$2
+
+  if find /etc/apt/ -name "*.list" | xargs cat | grep -h "^[[:space:]]*deb.*${repo}" &> /dev/null; then
+    ok "Apt repository '${repo}' already added in '/etc/apt/'"
+    return 0
+  fi
+
+  # if WSL, nameserver to 8.8.8.8 before updating
+  if [[ "$(grep -i microsoft /proc/version)" ]]; then
+    cat /etc/resolv.conf > ~/nameserver.txt
+    echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf &> /dev/null
+    # Add ppa if is_ppa
+    if [[ ${is_ppa} -eq 1 ]];then
+      warning "Adding ppa:${repo}..."
+      if sudo add-apt-repository "ppa:${repo}" -y &> /dev/null; then
+        ok "Apt ppa '${repo}' added"
+      else
+        error "Apt ppa '${repo}' failed to be added ... Removing"
+        sudo add-apt-repository -r "ppa:${repo}"
+      fi
+    else
+      warning "Adding ${repo}..."
+      if sudo add-apt-repository "${repo}" -y &> /dev/null; then
+        ok "Apt '${repo}' repository added" -y
+      else
+        error "Apt '${repo}' repository failed to be added ... Removing"
+        sudo add-apt-repository -r "${repo}" -y
+      fi
+    fi
+    # restore nameserver after adding apt
+    cat ~/nameserver.txt | sudo tee /etc/resolv.conf &> /dev/null
+  else
+    # Add ppa if is_ppa
+    if [[ ${is_ppa} -eq 1 ]];then
+      warning "Adding ppa:${repo}..."
+      if sudo add-apt-repository "ppa:${repo}" -y &> /dev/null; then
+        ok "Apt ppa '${repo}' added"
+      else
+        error "Apt ppa '${repo}' failed to be added ... Removing"
+        sudo add-apt-repository -r "ppa:${repo}"
+      fi
+    else
+      warning "Adding ${repo}..."
+      if sudo add-apt-repository "${repo}" -y &> /dev/null; then
+        ok "Apt '${repo}' repository added" -y
+      else
+        error "Apt '${repo}' repository failed to be added ... Removing"
+        sudo add-apt-repository -r "${repo}" -y
+      fi
+    fi
+  fi
+}
+
+# Will `apt update` first before installation if $2 -eq 1
 apt_install() {
   package=$1
   is_update=$2
@@ -25,17 +84,17 @@ apt_install() {
   fi
   # sudo apt update if is_update
   if [[ ${is_update} -eq 1 ]]; then
-    # if WSL nameserver to 8.8.8.8 before updating
+    # if WSL, nameserver to 8.8.8.8 before updating
     if [[ "$(grep -i microsoft /proc/version)" ]]; then
       cat /etc/resolv.conf > ~/nameserver.txt
-      echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+      echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf &> /dev/null
       if sudo apt update -y; then
         ok "Apt update successful!"
       else
         error "Apt update failed"
       fi
       # restore nameserver after apt update
-      cat ~/nameserver.txt | sudo tee /etc/resolv.conf
+      cat ~/nameserver.txt | sudo tee /etc/resolv.conf &> /dev/null
     else
       if sudo apt update -y; then
         ok "Apt update successful!"
@@ -54,6 +113,8 @@ apt_install() {
   fi
 }
 
+# if apt package is appended with ';update', will `apt update` first before
+# installation
 apt_bulk_install() {
   packages=("$@")
 

@@ -1,0 +1,32 @@
+# /home/marklcrns/.tmuxinator/fall20.yml
+
+# WSL Ubuntu 20.04 School fall 2020 setup
+
+name: school
+root: ~/
+
+windows:
+  - CISC:
+      layout: 5776,93x38,0,0[93x29,0,0,38,93x8,0,30{46x8,0,30,42,46x8,47,30,43}]
+      panes:
+        - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad CISC"
+        - cd ~/Docs/wiki && clear
+        - cd ~/Docs/wiki/school/files/fall-2020/CISC-192 && clear
+  - MATH:
+      layout: 5776,93x38,0,0[93x29,0,0,38,93x8,0,30{46x8,0,30,42,46x8,47,30,43}]
+      panes:
+        - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad MATH"
+        - cd ~/Docs/wiki && clear
+        - cd ~/Docs/wiki/school/files/fall-2020/MATH-150 && clear
+  - ECON:
+      layout: 5776,93x38,0,0[93x29,0,0,38,93x8,0,30{46x8,0,30,42,46x8,47,30,43}]
+      panes:
+        - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad ECON"
+        - cd ~/Docs/wiki && clear
+        - cd ~/Docs/wiki/school/files/fall-2020/ECON-120 && clear
+  - BUSE:
+      layout: 5776,93x38,0,0[93x29,0,0,38,93x8,0,30{46x8,0,30,42,46x8,47,30,43}]
+      panes:
+        - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad BUSE"
+        - cd ~/Docs/wiki && clear
+        - cd ~/Docs/wiki/school/files/fall-2020/BUSE-120 && clear
