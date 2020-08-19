@@ -7,25 +7,25 @@ root: ~/
 
 windows:
   - CISC:
-      layout: 5776,93x38,0,0[93x29,0,0,38,93x8,0,30{46x8,0,30,42,46x8,47,30,43}]
+      layout: 36df,142x51,0,0[142x41,0,0,49,142x9,0,42{71x9,0,42,54,70x9,72,42,55}]
       panes:
         - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad CISC"
         - cd ~/Docs/wiki && clear
         - cd ~/Docs/wiki/school/files/fall-2020/CISC-192 && clear
   - MATH:
-      layout: 5776,93x38,0,0[93x29,0,0,38,93x8,0,30{46x8,0,30,42,46x8,47,30,43}]
+      layout: 36df,142x51,0,0[142x41,0,0,49,142x9,0,42{71x9,0,42,54,70x9,72,42,55}]
       panes:
         - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad MATH"
         - cd ~/Docs/wiki && clear
         - cd ~/Docs/wiki/school/files/fall-2020/MATH-150 && clear
   - ECON:
-      layout: 5776,93x38,0,0[93x29,0,0,38,93x8,0,30{46x8,0,30,42,46x8,47,30,43}]
+      layout: 36df,142x51,0,0[142x41,0,0,49,142x9,0,42{71x9,0,42,54,70x9,72,42,55}]
       panes:
         - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad ECON"
         - cd ~/Docs/wiki && clear
         - cd ~/Docs/wiki/school/files/fall-2020/ECON-120 && clear
   - BUSE:
-      layout: 5776,93x38,0,0[93x29,0,0,38,93x8,0,30{46x8,0,30,42,46x8,47,30,43}]
+      layout: 36df,142x51,0,0[142x41,0,0,49,142x9,0,42{71x9,0,42,54,70x9,72,42,55}]
       panes:
         - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad BUSE"
         - cd ~/Docs/wiki && clear
