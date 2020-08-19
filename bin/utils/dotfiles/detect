@@ -62,7 +62,7 @@ fi
 #      by ';', and delimited by '\n'.
 # $4 = Detected changes count
 # $5 = Total files compared
-# $6 = Pass in integer '1' to turn on IS_SILENT
+# $6 = Pass in integer '1' to turn on IS_QUITE
 #
 # Returns $3, $4, $5 variable args with new values from execution.
 detect_changes() {
@@ -175,7 +175,7 @@ detect_changes() {
 # $3 = List of source files that does not exist in the target file path.
 # $4 = Detected changes count
 # $5 = Total files compared
-# $6 = Pass in integer '1' to turn on IS_SILENT
+# $6 = Pass in integer '1' to turn on IS_QUITE
 #
 # Returns $3, $4, $5 variable args with new values from execution.
 detect_delete() {
