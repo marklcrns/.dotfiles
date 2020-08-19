@@ -294,7 +294,7 @@ echo -e "${changes_list}" | while IFS= read -r file_tuple; do
         error "Failed to delete ${source_file}"
       fi
     else
-      warning "Skipping ${source_file} deletion"
+      warning "${source_file} SKIPPING deletion"
     fi
   elif [[ -d "${target_dir}" ]]; then # Check target dir path
     if execlog "cp -rL ${source_file} ${target_file}" 1; then
