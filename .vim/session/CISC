@@ -7,13 +7,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +15 school/md/fall-2020/CISC-192/index.md
+badd +20 school/md/fall-2020/CISC-192/index.md
 badd +13 school/md/fall-2020/CISC-192/chapters/chapter-1/index.md
 badd +1 school/md/fall-2020/CISC-192/chapters/chapter-1/notes.md
-badd +20 school/md/summer-2020/CISC-191/modules/week-4/notes/generics-and-collections/index.md
 argglobal
 %argdel
-edit school/md/summer-2020/CISC-191/modules/week-4/notes/generics-and-collections/index.md
+edit school/md/fall-2020/CISC-192/index.md
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -29,12 +28,12 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 46 - ((11 * winheight(0) + 17) / 34)
+let s:l = 20 - ((14 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-46
-normal! 08|
+20
+normal! 03|
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

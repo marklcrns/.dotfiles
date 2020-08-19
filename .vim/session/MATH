@@ -2,18 +2,18 @@ let SessionLoad = 1
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
-cd ~/Docs/wiki
+cd ~/bin/utils/git
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +16 school/md/fall-2020/BUSE-120/index.md
-badd +11 school/md/fall-2020/BUSE-120/modules/index.md
-badd +13 school/md/fall-2020/BUSE-120/modules/module-1/index.md
-badd +13 school/md/fall-2020/BUSE-120/modules/module-1/notes.md
+badd +20 ~/Docs/wiki/school/md/fall-2020/MATH-150/index.md
+badd +12 ~/Docs/wiki/school/md/fall-2020/MATH-150/chapters/index.md
+badd +31 ~/Docs/wiki/school/md/fall-2020/MATH-150/chapters/chapter-2.md
+badd +221 ~/.config/nvim/coc-settings.json
 argglobal
 %argdel
-edit school/md/fall-2020/BUSE-120/index.md
+edit ~/Docs/wiki/school/md/fall-2020/MATH-150/index.md
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -29,12 +29,13 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 16 - ((15 * winheight(0) + 18) / 37)
+let s:l = 20 - ((19 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-16
+20
 normal! 0
+lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
