@@ -267,11 +267,11 @@ if [[ -n "${IS_BACKUP}" ]]; then
   echolog "Backing up dotfiles..."
   echolog
   if [[ -n "${IS_VERY_VERBOSE}" ]]; then
-    ./dotbackup -Vya
+    ${SCRIPTDIR}/dotbackup -Vya
   elif [[ -n "${IS_VERBOSE}" ]]; then
-    ./dotbackup -vya
+    ${SCRIPTDIR}/dotbackup -vya
   else
-    ./dotbackup -ya
+    ${SCRIPTDIR}/dotbackup -ya
   fi
 fi
 
