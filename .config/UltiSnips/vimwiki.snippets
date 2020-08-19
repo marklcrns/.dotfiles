@@ -140,7 +140,11 @@ $0
 endsnippet
 
 snippet tag "HTML tag <>" bA
-<$1>$0</$1>
+<$1>
+
+${0:${VISUAL}}
+
+</$1>
 endsnippet
 
 snippet (.+)?fen "Fenced code block" rbA
@@ -415,6 +419,50 @@ for row in range(0, 3):
 
 snip.rv = result
 `
+endsnippet
+
+snippet tab2 "Two tables side by side" bA
+<center>
+
+<table>
+%% Table Headings are OPTIONAL
+<tr><th>${1:Table Heading 1}</th><th>${2:Table Heading 2}</th></tr>
+<tr><td>
+
+%% Insert first table HERE
+
+</td><td>
+
+%% Insert second table HERE
+
+</td></tr>
+</table>
+
+</center>
+endsnippet
+
+snippet tab3 "Three tables side by side" bA
+<center>
+
+<table>
+%% Table Headings are OPTIONAL
+<tr><th>${1:Table Heading 1}</th><th>${2:Table Heading 2}</th><th>${3:Table Heading 3}</th></tr>
+<tr><td>
+
+%% Insert first table HERE
+
+</td><td>
+
+%% Insert second table HERE
+
+</td><td>
+
+%% Insert Third table HERE
+
+</td></tr>
+</table>
+
+</center>
 endsnippet
 
 snippet TM "Markdown trademark symbol" i
@@ -1478,7 +1526,4 @@ Text Books
 		* Authors: O'Sullivan/Sheffrin/Perez
 
 endsnippet
-
-
-# ==========ENGL 205 Note taking snippets========== #
 
