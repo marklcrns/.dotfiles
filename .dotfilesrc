@@ -42,3 +42,4 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
 fi
 
 export DOTFILES_LIST=(${DOTFILES_LIST[@]} ${DOTFILES_LIST_WSL[@]})
+

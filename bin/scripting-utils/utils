@@ -12,7 +12,7 @@
 # echolog()  = Echo message and log into LOG_FILE_PATH.
 # execlog()  = Execute string command with `eval` and log into LOG_FILE_PATH.
 # ok()       = Echo message in GREEN characters.
-# finish     = Echo message in GREEN characters and exit with 0 exit code.
+# finish()     = Echo message in GREEN characters and exit with 0 exit code.
 # warning()  = Echo message in YELLOW characters.
 # abort()    = Echo message in YELLOW characters and exit with 0 exit code.
 # error()    = Echo message in RED characters and exit with 1 exit code by

@@ -26,6 +26,9 @@ echolog
 apt_add_repo "bashtop-monitory/bashtop" -y
 apt_install "bashtop" 1
 
+# Glances
+pip_install 3 "glances"
+
 apt_bulk_install "${APT_PACKAGES_MISC[@]}"
 
 # Battery saving tool

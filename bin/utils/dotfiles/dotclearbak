@@ -153,7 +153,7 @@ echolog
 if [[ ${to_remove_count} -eq 0 ]]; then # Abort if nothing to delete
   abort "Nothing to delete. Skipping..."
 elif [[ ${backup_dir_count} -lt ${DOTFILES_BACKUP_LIMIT} ]]; then # Abort if still below limit
-  abort "Backups still below limit. Skipping..."
+  abort "Backups still below limit. Skipping deletion..."
 fi
 
 # Confirmation

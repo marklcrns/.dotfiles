@@ -12,7 +12,7 @@
 # echolog()  = Echo message and log into LOG_FILE_PATH.
 # execlog()  = Execute string command with `eval` and log into LOG_FILE_PATH.
 # ok()       = Echo message in GREEN characters.
-# finish     = Echo message in GREEN characters and exit with 0 exit code.
+# finish()     = Echo message in GREEN characters and exit with 0 exit code.
 # warning()  = Echo message in YELLOW characters.
 # abort()    = Echo message in YELLOW characters and exit with 0 exit code.
 # error()    = Echo message in RED characters and exit with 1 exit code by
@@ -92,12 +92,12 @@ function echolog(){
   force_silent=$2
   if [[ -n "${message}" ]]; then
     # echo if verbose
-    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+    [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]] &&
       echo -e "${message}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
   else # Print newline if no message
-    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+    [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]] &&
       echo -e ""
     [[ -n "${DEBUG}" ]] && echo -e "" >> "${LOG_FILE_PATH}"
   fi
@@ -114,13 +114,13 @@ function execlog() {
   if [[ -n "${command_string}" ]]; then
     # execute command
     if eval ${command_string}; then
-      if [[ -n "${IS_VERY_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+      if [[ -n "${IS_VERY_VERBOSE}" ]] && [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]]; then
         echo -e "${PURPLE}Executing '${command_string}'${NC}"
       fi
       return 0
     else
       # echo if verbose
-      if [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+      if [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]]; then
         echo -e "${RED}${FUNCNAME[0]}(): Command string '${command_string}' failed${NC}"
       fi
       # Log command_string on debug mode
@@ -130,7 +130,7 @@ function execlog() {
       return 1
     fi
     # echo if verbose
-    if [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+    if [[ -n "${IS_VERBOSE}" ]] && [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]]; then
       echo -e "${command_string}"
     fi
     # Log command_string on debug mode
@@ -139,7 +139,7 @@ function execlog() {
     fi
   else
     # Return error if no command given
-    if [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+    if [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]]; then
       echo -e "${RED}${FUNCNAME[0]}(): Command string not found${NC}"
     fi
     if [[ -n "${DEBUG}" ]]; then
@@ -156,7 +156,7 @@ function ok() {
   message=$1
   force_silent=$2
   if [[ -n "${message}" ]]; then
-    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+    [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]] &&
       echo -e "${GREEN}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
@@ -170,7 +170,7 @@ function warning() {
   message=$1
   force_silent=$2
   if [[ -n "${message}" ]]; then
-    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+    [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]] &&
       echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
@@ -184,7 +184,7 @@ function abort() {
   message=$1
   force_silent=$2
   if [[ -n "${message}" ]]; then
-    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+    [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]] &&
       echo -e "${YELLOW}${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "${message}" >> "${LOG_FILE_PATH}"
@@ -202,10 +202,10 @@ function error() {
   force_silent=$3
   if [[ -n "${message}" ]]; then
     if [[ -n ${exit_code} ]]; then # Remove SCRIPTPATH if no exit code
-      [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]] &&
         echo -e "${RED}\n${SCRIPTPATH}: ${message}${NC}"
     else
-      [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+      [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]] &&
         echo -e "${RED}${message}${NC}"
     fi
     # Log message on debug mode
@@ -228,7 +228,7 @@ function finish() {
   message=$1
   force_silent=$2
   if [[ -n "${message}" ]]; then
-    [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]] &&
+    [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]] &&
       echo -e "${BO_NC}\n${message}${NC}"
     # Log message on debug mode
     [[ -n "${DEBUG}" ]] && echo -e "\n${message}" >> "${LOG_FILE_PATH}"
@@ -272,7 +272,7 @@ function cleanlog() {
   fi
 
   # Get total log files to delete
-  if [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+  if [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]]; then
     echo
     echo -e "Removing excess log files:"
     echo
@@ -292,7 +292,7 @@ function cleanlog() {
 
   # Abort if log files count is below limit
   if [[ ${to_remove_count} -eq 0 ]]; then # Abort if nothing to delete
-    if [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+    if [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]]; then
       echo -e "No log files to delete."
     fi
     if [[ -n "${DEBUG}" ]]; then
@@ -300,7 +300,7 @@ function cleanlog() {
     fi
     return 0
   elif [[ ${log_file_count} -lt ${limit} ]]; then # Abort if still below limit
-    if [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+    if [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]]; then
       echo -e "Log files still below limit. Skipping..."
     fi
     if [[ -n "${DEBUG}" ]]; then
@@ -309,7 +309,7 @@ function cleanlog() {
     return 0
   fi
 
-  if [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+  if [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]]; then
     echo -e "Removing excess backups..."
     echo
   fi
@@ -323,7 +323,7 @@ function cleanlog() {
   # Execute log file removal
   while IFS= read -r log_file; do
     if rm -rf ${LOG_FILE_DIR}/${log_file}; then
-      if [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+      if [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]]; then
         echo -e "${YELLOW}${LOG_FILE_DIR}/${log_file} deleted${NC}"
       fi
       if [[ -n "${DEBUG}" ]]; then
@@ -332,7 +332,7 @@ function cleanlog() {
       # Increment removed count
       removed_count=$((removed_count+1))
     else
-      if [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+      if [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]]; then
         echo -e "${RED}Failed to remove ${LOG_FILE_DIR}/${log_file}${NC}"
       fi
       if [[ -n "${DEBUG}" ]]; then
@@ -345,7 +345,7 @@ function cleanlog() {
   new_backup_dir_count=$(ls "${LOG_FILE_DIR}" | wc -l)
   # Check if all log files due for deletion are deleted
   if [[ $(( ${new_backup_dir_count} + ${removed_count} )) -eq ${log_file_count} ]]; then
-    if [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+    if [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]]; then
       echo
       echo -e  "Total log files removed: ${removed_count}"
     fi
@@ -354,7 +354,7 @@ function cleanlog() {
       echo -e  "Total log files removed: ${removed_count}" >> "${LOG_FILE_PATH}"
     fi
   else
-    if [[ -z "${IS_SILENT}" ]] && [[ ${force_silent} -ne 1 ]]; then
+    if [[ -z "${IS_SILENT}" && -z "${IS_QUITE}" ]] && [[ ${force_silent} -ne 1 ]]; then
       echo -e "${RED}\n${SCRIPTPATH}: Clearing log files failed${NC}"
     fi
     if [[ -n "${DEBUG}" ]]; then
