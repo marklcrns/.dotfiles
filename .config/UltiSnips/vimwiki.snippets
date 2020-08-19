@@ -139,6 +139,10 @@ snippet h6 "Header 6" bA
 $0
 endsnippet
 
+snippet tag "HTML tag <>" bA
+<$1>$0</$1>
+endsnippet
+
 snippet (.+)?fen "Fenced code block" rbA
 \`\`\``!p snip.rv = "" if match.group(1) == None else match.group(1)`
 ${0:${VISUAL}}
@@ -177,12 +181,8 @@ snippet vf "Open file link into vim" w
 [*${1:${VISUAL}}](vfile:../../../$0)
 endsnippet
 
-snippet fi "Image tag for files" w
-![${1:${VISUAL}}](../../../$0)
-endsnippet
-
-snippet i "Image tag for urls" w
-![${1:${VISUAL}}]($2)
+snippet img "Image link" w
+![${1:${VISUAL}}]($0)
 endsnippet
 
 snippet al "Markdown anchor link" w
@@ -539,7 +539,7 @@ endsnippet
 snippet term "Word or phrase definition" bA
 <a name="$1">**${2:${VISUAL}}**</a>
 
-	- $0
+- $0
 endsnippet
 
 # Usage: &name-of-link&alink
@@ -580,7 +580,7 @@ snip.rv = match.group(2).capitalize()
 if match.group(1) and match.group(3):
   snip.rv = ""
 else:
-  snip.rv = "\n\n  - $0"
+  snip.rv = "\n\n- $0"
 `
 endsnippet
 
