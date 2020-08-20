@@ -147,6 +147,10 @@ ${0:${VISUAL}}
 </$1>
 endsnippet
 
+snippet itag "In-line HTML tag <>" wA
+<$1>${0:${VISUAL}}</$1>
+endsnippet
+
 snippet (.+)?fen "Fenced code block" rbA
 \`\`\``!p snip.rv = "" if match.group(1) == None else match.group(1)`
 ${0:${VISUAL}}
