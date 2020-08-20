@@ -2,17 +2,17 @@ let SessionLoad = 1
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
-cd ~/bin/utils/git
+cd ~/Docs/wiki
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +22 ~/Docs/wiki/school/md/fall-2020/MATH-150/index.md
-badd +12 ~/Docs/wiki/school/md/fall-2020/MATH-150/chapters/index.md
-badd +64 ~/Docs/wiki/school/md/fall-2020/MATH-150/chapters/chapter-2.md
+badd +22 school/md/fall-2020/MATH-150/index.md
+badd +12 school/md/fall-2020/MATH-150/chapters/index.md
+badd +1 school/md/fall-2020/MATH-150/chapters/chapter-2.md
 argglobal
 %argdel
-edit ~/Docs/wiki/school/md/fall-2020/MATH-150/chapters/chapter-2.md
+edit school/md/fall-2020/MATH-150/chapters/chapter-2.md
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -28,11 +28,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 54 - ((12 * winheight(0) + 18) / 37)
+let s:l = 114 - ((27 * winheight(0) + 18) / 37)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-54
+114
 normal! 0
 lcd ~/Docs/wiki
 tabnext 1

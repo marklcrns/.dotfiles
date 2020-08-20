@@ -8,7 +8,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +24 packages.sh
-badd +1 ubuntu_20.04.sh
+badd +180 ubuntu_20.04.sh
 badd +69 install_utils.sh
 argglobal
 %argdel
@@ -29,11 +29,11 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 70 + 71) / 142)
+exe 'vert 1resize ' . ((&columns * 69 + 70) / 141)
 exe '2resize ' . ((&lines * 18 + 20) / 41)
-exe 'vert 2resize ' . ((&columns * 71 + 71) / 142)
+exe 'vert 2resize ' . ((&columns * 71 + 70) / 141)
 exe '3resize ' . ((&lines * 18 + 20) / 41)
-exe 'vert 3resize ' . ((&columns * 71 + 71) / 142)
+exe 'vert 3resize ' . ((&columns * 71 + 70) / 141)
 argglobal
 setlocal fdm=syntax
 setlocal fde=0
@@ -87,11 +87,11 @@ normal! zt
 normal! 0
 lcd ~/Projects/.dotfiles
 wincmd w
-exe 'vert 1resize ' . ((&columns * 70 + 71) / 142)
+exe 'vert 1resize ' . ((&columns * 69 + 70) / 141)
 exe '2resize ' . ((&lines * 18 + 20) / 41)
-exe 'vert 2resize ' . ((&columns * 71 + 71) / 142)
+exe 'vert 2resize ' . ((&columns * 71 + 70) / 141)
 exe '3resize ' . ((&lines * 18 + 20) / 41)
-exe 'vert 3resize ' . ((&columns * 71 + 71) / 142)
+exe 'vert 3resize ' . ((&columns * 71 + 70) / 141)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
