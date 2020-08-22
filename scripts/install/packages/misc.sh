@@ -23,7 +23,7 @@ echolog "${UL_NC}Installing Misc Packages${NC}"
 echolog
 
 # Bashtop
-apt_add_repo "bashtop-monitory/bashtop" -y
+apt_add_repo "bashtop-monitor/bashtop" 1
 apt_install "bashtop" 1
 
 # Glances
