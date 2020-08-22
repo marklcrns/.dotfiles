@@ -1,15 +1,15 @@
 #!/bin/bash
 
 APT_PACKAGES_PACKAGE_MANAGER=(
-  "npm"
-  "yarn;update"
+  'npm'
+  'yarn;update'
 )
 
 NPM_PACKAGES_PACKAGE_MANAGER=(
-  "npm@latest"
+  'npm@latest'
   # Extras
-  "browser-sync"
-  "gulp-cli"
+  'browser-sync'
+  'gulp-cli'
 )
 
 echolog

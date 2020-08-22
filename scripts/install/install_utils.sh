@@ -166,21 +166,18 @@ git_clone() {
 
   # If output/destination file is given, else use regular curl
   if [[ -n "${to}" ]]; then
-
     # Check destination directory validity
     if [[ ! -d "$(dirname "${to}")" ]]; then
       error "Invalid git clone destination directory path '${to}'"
       failed_packages="${failed_packages}\nGit clone '${from}' -> '${to}' FAILED. Invalid directory path"
       return 1
     fi
-
+    # Remove old repository if existing
     if [[ -d "${to}/.git" ]]; then
       warning "Removing old ${to} repository"
       rm -rf "${to}"
     fi
-
     # Execute installation
-
     if git clone "${from}" "${to}"; then
       ok "Git clone '${from}' -> '${to}' successful!" && return 0
       successful_packages="${successful_packages}\nGit clone '${from}' -> '${to}' SUCCESSFUL"
