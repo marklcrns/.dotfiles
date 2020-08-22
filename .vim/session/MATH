@@ -7,9 +7,9 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +25 school/md/fall-2020/MATH-150/index.md
-badd +7 school/md/fall-2020/MATH-150/chapters/index.md
-badd +282 school/md/fall-2020/MATH-150/chapters/chapter-2.md
+badd +26 school/md/fall-2020/MATH-150/index.md
+badd +13 school/md/fall-2020/MATH-150/chapters/index.md
+badd +101 school/md/fall-2020/MATH-150/chapters/chapter-2.md
 argglobal
 %argdel
 edit school/md/fall-2020/MATH-150/chapters/chapter-2.md
@@ -28,11 +28,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 283 - ((17 * winheight(0) + 14) / 29)
+let s:l = 311 - ((17 * winheight(0) + 17) / 34)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-283
+311
 normal! 0
 lcd ~/Docs/wiki
 tabnext 1
