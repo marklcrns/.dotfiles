@@ -75,11 +75,13 @@ apt_install() {
   # Check if package exists in apt repository
   if ! apt-cache search --names-only "${package}" | grep -F "${package}"; then
     error "${package} package not found in apt repository"
+    failed_packages="${failed_packages}\nApt ${package} FAILED. Package not found"
     return 1
   fi
   # Check if already installed
   if dpkg -s "${package}" &> /dev/null; then
     ok "Apt ${package} package already installed"
+    skipped_packages="${skipped_packages}\nApt ${package} SKIPPED"
     return 0
   fi
   # sudo apt update if is_update
@@ -106,10 +108,10 @@ apt_install() {
   # Execute installation
   if eval "sudo apt install ${package} -y"; then
     ok "Apt ${package} package installation successful!"
-    successful_packages="${successful_packages}\nApt ${package}"
+    successful_packages="${successful_packages}\nApt ${package} SUCCESSFUL"
   else
     error "Apt ${package} package installation failed"
-    failed_packages="${failed_packages}\nApt ${package}"
+    failed_packages="${failed_packages}\nApt ${package} FAILED"
   fi
 }
 
@@ -168,6 +170,7 @@ git_clone() {
     # Check destination directory validity
     if [[ ! -d "$(dirname "${to}")" ]]; then
       error "Invalid git clone destination directory path '${to}'"
+      failed_packages="${failed_packages}\nGit clone '${from}' -> '${to}' FAILED. Invalid directory path"
       return 1
     fi
 
@@ -179,7 +182,8 @@ git_clone() {
     # Execute installation
 
     if git clone "${from}" "${to}"; then
-      ok "Git clone '${from}' -> '${to}' successful!"
+      ok "Git clone '${from}' -> '${to}' successful!" && return 0
+      successful_packages="${successful_packages}\nGit clone '${from}' -> '${to}' SUCCESSFUL"
     else
       # Catch error if authentication failed and try again up to 5 tries
       for i in {1..5}; do
@@ -187,7 +191,8 @@ git_clone() {
           warning "Git authentication failed. Try again ($i/5)"
           if git clone "${from}" "${to}"; then
             wait
-            ok "Git clone '${from}' -> '${to}' successful!" && break
+            ok "Git clone '${from}' -> '${to}' successful!" && return 0
+            successful_packages="${successful_packages}\nGit clone '${from}' -> '${to}' SUCCESSFUL"
           fi
         else
           break
@@ -196,11 +201,15 @@ git_clone() {
           error "Cloning ${from} failed"
         fi
       done
+      # Ran out of sign in attempts
+      failed_packages="${failed_packages}\nGit clone '${from}' -> '${to}' FAILED"
+      return 1
     fi
   else
     # Execute installation
     if git clone "${from}"; then
-      ok "Git clone '${from}' successful!"
+      ok "Git clone '${from}' successful!" && return 0
+      successful_packages="${successful_packages}\nGit clone '${from}' -> '${to}' SUCCESSFUL"
     else
       # Catch error if authentication failed and try again up to 5 tries
       for i in {1..5}; do
@@ -208,7 +217,8 @@ git_clone() {
           warning "Git authentication failed. Try again ($i/5)"
           if git clone "${from}"; then
             wait
-            ok "Git clone '${from}' -> '${to}' successful!" && break
+            ok "Git clone '${from}' -> '${to}' successful!" && return 0
+            successful_packages="${successful_packages}\nGit clone '${from}' -> '${to}' SUCCESSFUL"
           fi
         else
           break
@@ -217,6 +227,9 @@ git_clone() {
           error "Cloning ${from} failed"
         fi
       done
+      # Ran out of sign in attempts
+      failed_packages="${failed_packages}\nGit clone '${from}' -> '${to}' FAILED"
+      return 1
     fi
   fi
 }
@@ -229,27 +242,29 @@ pip_install() {
   if [[ -n ${pip_version} ]]; then
     if [[ ${pip_version} -gt 3 || ${pip_version} -lt 2 ]]; then
       error "Invalid pip version"
+      failed_packages="${failed_packages}\nPip${pip_version} ${package} FAILED. Invalid pip version"
       return 1
     fi
   fi
-
   # Check if package exists in pip repository
   if ! eval "pip${pip_version} search ${package} &> /dev/null"; then
     error "${package} package not found in pip repository"
+    failed_packages="${failed_packages}\nPip${pip_version} ${package} FAILED. Package not found"
     return 1
   fi
-
   # Check if already installed
   if eval "pip${pip_version} list | grep -F ${package} &> /dev/null"; then
     ok "Pip${pip_version} ${package} already installed"
+    skipped_packages="${skipped_packages}\nPip${pip_version} ${package} SKIPPED"
     return 0
   fi
-
   # Execute installation
   if eval "pip${pip_version} install ${package}"; then
     ok "Pip${pip_version} ${package} package installation successful!"
+    successful_packages="${successful_packages}\nPip${pip_version} ${package} SUCCESSFUL"
   else
     error "Pip${pip_version} ${package} package installation failed"
+    failed_packages="${failed_packages}\nPip${pip_version} ${package} FAILED"
   fi
 }
 
@@ -270,7 +285,6 @@ pip_bulk_install() {
   else
     error "${FUNCNAME[0]}: Array not found" 1
   fi
-
 }
 
 npm_install() {
@@ -280,33 +294,38 @@ npm_install() {
   # Check if package exists in npm repository
   if npm search ${package} | grep -q "^No matches found"; then
     error "${package} package not found in npm repository"
+    failed_packages="${failed_packages}\nNpm ${package} FAILED. Package not found"
   fi
-
   # Check if package already installed
   if [[ ${is_global} -eq 1 ]]; then
     if eval "npm list -g | grep -F ${package}" &> /dev/null; then
       ok "Npm ${package} global package already installed"
+      successful_packages="${successful_packages}\nNpm ${package} SUCCESSFUL"
       return 0
     fi
   else
     if eval "npm list | grep -F ${package}" &> /dev/null; then
       ok "Npm ${package} local package already installed"
+      skipped_packages="${skipped_packages}\nNpm ${package} SKIPPED"
       return 0
     fi
   fi
-
   # Execute installation
   if [[ ${is_global} -eq 1 ]]; then
     if eval "npm -g install ${package}"; then
       ok "Npm ${package} global package installation successful!"
+      successful_packages="${successful_packages}\nNpm ${package} SUCCESSFUL"
     else
       error "Npm ${package} global package installation failed"
+      failed_packages="${failed_packages}\nNpm ${package} FAILED"
     fi
   else
     if eval "npm install ${package}"; then
       ok "Npm ${package} local package installation successful!"
+      successful_packages="${successful_packages}\nNpm ${package} SUCCESSFUL"
     else
       error "Npm ${package} local package installation failed"
+      failed_packages="${failed_packages}\nNpm ${package} FAILED"
     fi
   fi
 }

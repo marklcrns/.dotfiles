@@ -130,6 +130,7 @@ cd ${DOWNLOADS_DIR}
 
 successful_packages=""
 failed_packages=""
+skipped_packages=""
 
 #TODO: TEMPORARY FOR WSL
 # Internet connection issue on apt update workaround for WSL2
@@ -286,11 +287,18 @@ fi
 
 
 echolog
-echolog "${UL_NC}Successfully Installed Packages${NC}"
+echolog "${UL_NC}Successful Package Installations${NC}"
 echolog
 while IFS= read -r package; do
   ok "${package}"
 done < <(echo -e "${successful_packages}") # Process substitution for outside variables
+
+echolog
+echolog "${UL_NC}Skipped Package Installations${NC}"
+echolog
+while IFS= read -r package; do
+  error "${package}"
+done < <(echo -e "${skipped_packages}") # Process substitution for outside variables
 
 echolog
 echolog "${UL_NC}Failed Package Installations${NC}"

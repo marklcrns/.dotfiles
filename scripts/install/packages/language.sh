@@ -23,6 +23,7 @@ APT_PACKAGES_LANGUAGE=(
 )
 
 PIP3_PACKAGES_LANGUAGES=(
+  "wheel"
   "notebook"
   "Send2Trash"
   "pipenv"
@@ -42,20 +43,19 @@ echolog
 apt_bulk_install "${APT_PACKAGES_LANGUAGE[@]}"
 pip_bulk_install 3 "${PIP3_PACKAGES_LANGUAGES[@]}"
 
+# Set java and javac 11 as default
 export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-## Set java and javac 11 as default
 sudo update-alternatives --set java ${JDK_HOME}/bin/java
 sudo update-alternatives --set javac ${JDK_HOME}/bin/javac
-
 # Copy the Java path excluding the 'bin/java' to environment if not exist
 if grep -q 'JAVA_HOME=' /etc/environment; then
-  sudo sed -i "s,^JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}/jre/," /etc/environment ||
+  if ! sudo sed -i "s,^JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}/jre/," /etc/environment; then
     echo "JAVA_HOME=${JDK_HOME}/jre/" | sudo tee -a /etc/environment
-
+  fi
   source /etc/environment
 fi
 
-## Oracle JDK 11.0.7
+# # Oracle JDK 11.0.7
 # cd $SCRIPTDIR/install/
 # sudo cp jdk-11.0.7_linux-x64_bin.tar.gz /var/cache/oracle-jdk11-installer-local && \
 #   echo "deb http://ppa.launchpad.net/linuxuprising/java/ubuntu focal main" | \
@@ -65,7 +65,7 @@ fi
 #   sudo apt install oracle-java11-installer-local -y && \
 #   sudo apt install oracle-java11-set-default-local -y && \
 #   sudo update-alternatives --set java /usr/lib/jvm/java-11-oracle/bin/java
-
+#
 # # copy the Java path excluding the 'bin/java' if not exist
 # grep -q 'JAVA_HOME=' /etc/environment && \
 #   sudo sed -i 's,^JAVA_HOME=.*,JAVA_HOME="/usr/lib/jvm/java-11-oracle/",' /etc/environment || \
