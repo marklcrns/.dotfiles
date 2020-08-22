@@ -195,6 +195,7 @@ export CONF_REPO_LIST="\
   ${HOME}/Docs/wiki/wiki
   ${HOME}/Projects/references
   ${HOME}/.config/nvim
+  ${HOME}/.config/nvim-config
   ${HOME}/.tmuxinator
   ${HOME}/.timewarrior
   ${HOME}/.task
