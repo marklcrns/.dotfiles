@@ -296,7 +296,7 @@ echolog
 while IFS= read -r package; do
   ok "${package}"
   total_count=$(expr ${total_count} + 1)
-  successful_packages=$(expr ${successful_packages} + 1)
+  successful_count=$(expr ${successful_count} + 1)
 done < <(echo -e "${successful_packages}") # Process substitution for outside variables
 
 echolog
@@ -319,8 +319,9 @@ done < <(echo -e "${failed_packages}") # Process substitution for outside variab
 
 echolog
 echolog "Successful packages:\t${successful_count}"
-echolog "Skipped packages:\t\t${skipped_count}"
-echolog "failed packages:\t\t${failed_count}"
+echolog "Skipped packages:\t${skipped_count}"
+echolog "failed packages:\t${failed_count}"
+echolog "${BO_NC}Total packages:\t${total_count}"
 
 finish 'INSTALLATION COMPLETE!'
 
