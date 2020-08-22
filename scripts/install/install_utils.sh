@@ -18,6 +18,7 @@ apt_add_repo() {
 
   if find /etc/apt/ -name "*.list" | xargs cat | grep -h "^[[:space:]]*deb.*${repo}" &> /dev/null; then
     ok "Apt repository '${repo}' already added in '/etc/apt/'"
+    skipped_packages="${skipped_packages}\nApt ${repo} ADDED SKIPPED"
     return 0
   fi
 
@@ -30,17 +31,21 @@ apt_add_repo() {
       warning "Adding ppa:${repo}..."
       if sudo add-apt-repository "ppa:${repo}" -y &> /dev/null; then
         ok "Apt ppa '${repo}' added"
+        successful_packages="${successful_packages}\nApt ${repo} ADDED"
       else
         error "Apt ppa '${repo}' failed to be added ... Removing"
         sudo add-apt-repository -r "ppa:${repo}"
+        failed_packages="${failed_packages}\nApt ${repo} NOT ADDED"
       fi
     else
       warning "Adding ${repo}..."
       if sudo add-apt-repository "${repo}" -y &> /dev/null; then
         ok "Apt '${repo}' repository added" -y
+        successful_packages="${successful_packages}\nApt ${repo} ADDED"
       else
         error "Apt '${repo}' repository failed to be added ... Removing"
         sudo add-apt-repository -r "${repo}" -y
+        failed_packages="${failed_packages}\nApt ${repo} NOT ADDED"
       fi
     fi
     # restore nameserver after adding apt
@@ -51,17 +56,21 @@ apt_add_repo() {
       warning "Adding ppa:${repo}..."
       if sudo add-apt-repository "ppa:${repo}" -y &> /dev/null; then
         ok "Apt ppa '${repo}' added"
+        successful_packages="${successful_packages}\nApt ${repo} ADDED"
       else
         error "Apt ppa '${repo}' failed to be added ... Removing"
         sudo add-apt-repository -r "ppa:${repo}"
+        failed_packages="${failed_packages}\nApt ${repo} NOT ADDED"
       fi
     else
       warning "Adding ${repo}..."
       if sudo add-apt-repository "${repo}" -y &> /dev/null; then
         ok "Apt '${repo}' repository added" -y
+        successful_packages="${successful_packages}\nApt ${repo} ADDED"
       else
         error "Apt '${repo}' repository failed to be added ... Removing"
         sudo add-apt-repository -r "${repo}" -y
+        failed_packages="${failed_packages}\nApt ${repo} NOT ADDED"
       fi
     fi
   fi

@@ -2,7 +2,6 @@
 
 APT_PACKAGES_TEXT_EDITOR=(
   "neovim"
-  "python-neovim" # Deprecated, not found
   "python3-neovim"
   # Dependencies
   "yad"

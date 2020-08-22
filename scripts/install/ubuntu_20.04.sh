@@ -285,12 +285,18 @@ else
   error "${DESKTOP_APPS_PACKAGES} not found"
 fi
 
+total_count=0
+successful_count=0
+skipped_count=0
+failed_count=0
 
 echolog
 echolog "${UL_NC}Successful Package Installations${NC}"
 echolog
 while IFS= read -r package; do
   ok "${package}"
+  total_count=$(expr ${total_count} + 1)
+  successful_packages=$(expr ${successful_packages} + 1)
 done < <(echo -e "${successful_packages}") # Process substitution for outside variables
 
 echolog
@@ -298,6 +304,8 @@ echolog "${UL_NC}Skipped Package Installations${NC}"
 echolog
 while IFS= read -r package; do
   warning "${package}"
+  total_count=$(expr ${total_count} + 1)
+  skipped_count=$(expr ${skipped_count} + 1)
 done < <(echo -e "${skipped_packages}") # Process substitution for outside variables
 
 echolog
@@ -305,8 +313,14 @@ echolog "${UL_NC}Failed Package Installations${NC}"
 echolog
 while IFS= read -r package; do
   error "${package}"
+  total_count=$(expr ${total_count} + 1)
+  failed_count=$(expr ${failed_count} + 1)
 done < <(echo -e "${failed_packages}") # Process substitution for outside variables
 
+echolog
+echolog "Successful packages:\t${successful_count}"
+echolog "Skipped packages:\t\t${skipped_count}"
+echolog "failed packages:\t\t${failed_count}"
 
 finish 'INSTALLATION COMPLETE!'
 
