@@ -16,7 +16,7 @@ echolog
 echolog "${UL_NC}Installing Package Manager Packages${NC}"
 echolog
 
-NVM/NodeJS
+# NVM/NodeJS
 if curl_install "https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash"; then
   LATESTNPM=`nvm ls-remote | tail -1 | sed 's/^.*\(v[0-9\.]\)/\1/'`
   ## install latest npm
@@ -34,4 +34,8 @@ curl -o- -L https://yarnpkg.com/install.sh | bash
 
 apt_bulk_install "${APT_PACKAGES_PACKAGE_MANAGER[@]}"
 npm_bulk_install "${NPM_PACKAGES_PACKAGE_MANAGER[@]}"
+
+# Solves Missing write access to /usr/local/lib error
+# https://flaviocopes.com/npm-fix-missing-write-access-error/
+sudo chown -R ${USER} /usr/local/lib/node_modules
 
