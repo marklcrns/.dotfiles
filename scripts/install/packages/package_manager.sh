@@ -1,15 +1,13 @@
 #!/bin/bash
 
 APT_PACKAGES_PACKAGE_MANAGER=(
-  'npm'
-  'yarn;update'
+  "npm"
+  "yarn;update"
 )
 
 NPM_PACKAGES_PACKAGE_MANAGER=(
-  'npm@latest'
-  # Extras
-  'browser-sync'
-  'gulp-cli'
+  "browser-sync"
+  "gulp-cli"
 )
 
 echolog
@@ -38,4 +36,5 @@ npm_bulk_install "${NPM_PACKAGES_PACKAGE_MANAGER[@]}"
 # Solves Missing write access to /usr/local/lib error
 # https://flaviocopes.com/npm-fix-missing-write-access-error/
 sudo chown -R ${USER} /usr/local/lib/node_modules
-
+# Update npm to latest version
+npm install -g npm@latest
