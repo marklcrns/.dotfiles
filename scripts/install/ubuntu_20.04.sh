@@ -297,7 +297,7 @@ echolog
 echolog "${UL_NC}Skipped Package Installations${NC}"
 echolog
 while IFS= read -r package; do
-  error "${package}"
+  warning "${package}"
 done < <(echo -e "${skipped_packages}") # Process substitution for outside variables
 
 echolog
