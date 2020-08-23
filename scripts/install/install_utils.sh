@@ -250,25 +250,31 @@ pip_install() {
       return 1
     fi
   fi
+  # Check if pip is installed
+  if ! command -v pip${pip_version}; then
+    error "Pip${pip_version} not installed" 1
+  else
+    which_pip="$(which "pip${pip_version}")"
+  fi
   # Check if package exists in pip repository
   if ! eval "pip${pip_version} search ${package} &> /dev/null"; then
     error "${package} package not found in pip repository"
-    failed_packages="${failed_packages}\nPip${pip_version} ${package} FAILED. Package not found"
+    failed_packages="${failed_packages}\nPip${pip_version} ${package} for '${which_pip}' FAILED. Package not found"
     return 1
   fi
   # Check if already installed
   if eval "pip${pip_version} list | grep -F ${package} &> /dev/null"; then
     ok "Pip${pip_version} ${package} already installed"
-    skipped_packages="${skipped_packages}\nPip${pip_version} ${package} SKIPPED"
+    skipped_packages="${skipped_packages}\nPip${pip_version} ${package} for '${which_pip}' SKIPPED"
     return 0
   fi
   # Execute installation
   if eval "pip${pip_version} install ${package}"; then
     ok "Pip${pip_version} ${package} package installation successful!"
-    successful_packages="${successful_packages}\nPip${pip_version} ${package} SUCCESSFUL"
+    successful_packages="${successful_packages}\nPip${pip_version} ${package} for '${which_pip}' SUCCESSFUL"
   else
     error "Pip${pip_version} ${package} package installation failed"
-    failed_packages="${failed_packages}\nPip${pip_version} ${package} FAILED"
+    failed_packages="${failed_packages}\nPip${pip_version} ${package} for '${which_pip}' FAILED"
   fi
 }
 
