@@ -188,8 +188,9 @@ git_clone() {
     fi
     # Execute installation
     if git clone "${from}" "${to}"; then
-      ok "Git clone '${from}' -> '${to}' successful!" && return 0
+      ok "Git clone '${from}' -> '${to}' successful!"
       successful_packages="${successful_packages}\nGit clone '${from}' -> '${to}' SUCCESSFUL"
+      return 0
     else
       # Catch error if authentication failed and try again up to 5 tries
       for i in {1..5}; do
@@ -197,25 +198,24 @@ git_clone() {
           warning "Git authentication failed. Try again ($i/5)"
           if git clone "${from}" "${to}"; then
             wait
-            ok "Git clone '${from}' -> '${to}' successful!" && return 0
+            ok "Git clone '${from}' -> '${to}' successful!"
             successful_packages="${successful_packages}\nGit clone '${from}' -> '${to}' SUCCESSFUL"
+            return 0
           fi
-        else
-          break
-        fi
-        if [[ $? -ne 0 ]]; then
-          error "Cloning ${from} failed"
         fi
       done
-      # Ran out of sign in attempts
-      failed_packages="${failed_packages}\nGit clone '${from}' -> '${to}' FAILED"
-      return 1
+      if [[ $? -ne 0 ]]; then
+        error "Cloning ${from} failed"
+        failed_packages="${failed_packages}\nGit clone '${from}' -> '${to}' FAILED"
+        return 1
+      fi
     fi
   else
     # Execute installation
     if git clone "${from}"; then
-      ok "Git clone '${from}' successful!" && return 0
+      ok "Git clone '${from}' successful!"
       successful_packages="${successful_packages}\nGit clone '${from}' -> '${to}' SUCCESSFUL"
+      return 0
     else
       # Catch error if authentication failed and try again up to 5 tries
       for i in {1..5}; do
@@ -223,19 +223,17 @@ git_clone() {
           warning "Git authentication failed. Try again ($i/5)"
           if git clone "${from}"; then
             wait
-            ok "Git clone '${from}' -> '${to}' successful!" && return 0
+            ok "Git clone '${from}' -> '${to}' successful!"
             successful_packages="${successful_packages}\nGit clone '${from}' -> '${to}' SUCCESSFUL"
+            return 0
           fi
-        else
-          break
-        fi
-        if [[ $? -ne 0 ]]; then
-          error "Cloning ${from} failed"
         fi
       done
-      # Ran out of sign in attempts
-      failed_packages="${failed_packages}\nGit clone '${from}' -> '${to}' FAILED"
-      return 1
+      if [[ $? -ne 0 ]]; then
+        error "Cloning ${from} failed"
+        failed_packages="${failed_packages}\nGit clone '${from}' -> '${to}' FAILED"
+        return 1
+      fi
     fi
   fi
 }
