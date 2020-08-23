@@ -105,7 +105,7 @@ git_clone "https://github.com/marklcrns/pandoc-goodies" "${HOME}/.pandoc"
 if curl_install "https://sh.rustup.rs | sh"; then
   EXA_VERSION="0.9.0"
   cd "${DOWNLOADS_DIR}"
-  if wget_install "https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-${EXA_VERSION}.zip"; then
+  if wget_install "https://github.com/ogham/exa/releases/download/v${EXA_VERSION}/exa-linux-x86_64-${EXA_VERSION}.zip"; then
     unzip exa-linux-x86_64-${EXA_VERSION}.zip
     sudo mv exa-linux-x86_64 /usr/local/bin/exa
   fi
