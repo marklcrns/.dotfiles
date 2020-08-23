@@ -1,43 +1,43 @@
 #!/bin/bash
 
-export DEFAULT_DOTFILES_BACKUP_LIMIT=10
 export DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
-export DOTFILES_SOURCE_DIR="${HOME}"
-export DOTFILES_TARGET_DIR="${HOME}/Projects/.dotfiles"
+export DOTFILES_BACKUP_LIMIT=10
+export DOTFILES_LOCAL="${HOME}"
+export DOTFILES_REPO="${HOME}/Projects/.dotfiles"
 
 DOTFILES_LIST=(
-  "${DOTFILES_SOURCE_DIR}/.bash_aliases"
-  "${DOTFILES_SOURCE_DIR}/.bash_profile"
-  "${DOTFILES_SOURCE_DIR}/.bashrc"
-  "${DOTFILES_SOURCE_DIR}/.config/UltiSnips/"
-  "${DOTFILES_SOURCE_DIR}/.config/ranger/"
-  "${DOTFILES_SOURCE_DIR}/.config/zathura/"
-  "${DOTFILES_SOURCE_DIR}/.ctags"
-  "${DOTFILES_SOURCE_DIR}/.ctags.d/"
-  "${DOTFILES_SOURCE_DIR}/.dotfilesrc"
-  "${DOTFILES_SOURCE_DIR}/.gitconfig"
-  "${DOTFILES_SOURCE_DIR}/.gtd/"
-  "${DOTFILES_SOURCE_DIR}/.mutt/"
-  "${DOTFILES_SOURCE_DIR}/.profile"
-  "${DOTFILES_SOURCE_DIR}/.rclonesyncwd/Filters"
-  "${DOTFILES_SOURCE_DIR}/.ripgreprc"
-  "${DOTFILES_SOURCE_DIR}/.scimrc"
-  "${DOTFILES_SOURCE_DIR}/.tmux.conf"
-  "${DOTFILES_SOURCE_DIR}/.tmux/wsl_tmux_statusline.sh"
-  "${DOTFILES_SOURCE_DIR}/.tmuxinator/"
-  "${DOTFILES_SOURCE_DIR}/.vim/session/"
-  "${DOTFILES_SOURCE_DIR}/.zprofile"
-  "${DOTFILES_SOURCE_DIR}/.zshenv"
-  "${DOTFILES_SOURCE_DIR}/.zshrc"
-  "${DOTFILES_SOURCE_DIR}/bin/"
+  "${DOTFILES_LOCAL}/.bash_aliases"
+  "${DOTFILES_LOCAL}/.bash_profile"
+  "${DOTFILES_LOCAL}/.bashrc"
+  "${DOTFILES_LOCAL}/.config/UltiSnips/"
+  "${DOTFILES_LOCAL}/.config/ranger/"
+  "${DOTFILES_LOCAL}/.config/zathura/"
+  "${DOTFILES_LOCAL}/.ctags"
+  "${DOTFILES_LOCAL}/.ctags.d/"
+  "${DOTFILES_LOCAL}/.dotfilesrc"
+  "${DOTFILES_LOCAL}/.gitconfig"
+  "${DOTFILES_LOCAL}/.gtd/"
+  "${DOTFILES_LOCAL}/.mutt/"
+  "${DOTFILES_LOCAL}/.profile"
+  "${DOTFILES_LOCAL}/.rclonesyncwd/Filters"
+  "${DOTFILES_LOCAL}/.ripgreprc"
+  "${DOTFILES_LOCAL}/.scimrc"
+  "${DOTFILES_LOCAL}/.tmux.conf"
+  "${DOTFILES_LOCAL}/.tmux/wsl_tmux_statusline.sh"
+  "${DOTFILES_LOCAL}/.tmuxinator/"
+  "${DOTFILES_LOCAL}/.vim/session/"
+  "${DOTFILES_LOCAL}/.zprofile"
+  "${DOTFILES_LOCAL}/.zshenv"
+  "${DOTFILES_LOCAL}/.zshrc"
+  "${DOTFILES_LOCAL}/bin/"
 )
 
 # WSL specific configs
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
   # Append to DOTFILES_LIST
   DOTFILES_LIST_WSL=(
-    "${DOTFILES_SOURCE_DIR}/.config/mimeapps.list"
-    "${DOTFILES_SOURCE_DIR}/.local/share/applications/*.desktop"
+    "${DOTFILES_LOCAL}/.config/mimeapps.list"
+    "${DOTFILES_LOCAL}/.local/share/applications/*.desktop"
   )
 fi
 

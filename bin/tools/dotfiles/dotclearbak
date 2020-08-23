@@ -16,12 +16,12 @@
 #
 ########################### Script Global Variables ############################
 #
-# DEFAULT_DOTFILES_BACKUP_LIMIT = Sets the default auto clean backup limit
-# DOTFILES_BACKUP_DIR           = Specifies the location of backup files.
-#                                 directory to backup.
-# LOG_FILE_DIR                  = Log file directory.
-# LOG_FILE                      = Log file name. Only logs on `-d` flag or debug
-#                                 mode. Defaults to current timestamp.
+# DOTFILES_BACKUP_LIMIT = Auto clean backup limit
+# DOTFILES_BACKUP_DIR   = Specifies the location of backup files.  directory to
+#                         backup.
+# LOG_FILE_DIR          = Log file directory.
+# LOG_FILE              = Log file name. Only logs on `-d` flag or debug mode.
+#                         Defaults to current timestamp.
 #
 ################################################################################
 # Author : Mark Lucernas <https://github.com/marklcrns>
@@ -34,7 +34,7 @@
 
 ################################################## CONSTANT GLOBAL VARIABLES ###
 
-DEFAULT_DOTFILES_BACKUP_LIMIT=10
+DOTFILES_BACKUP_LIMIT=10
 DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
 LOG_FILE_DIR="${HOME}/log"
 LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
@@ -72,7 +72,9 @@ USAGE:
 Clears dotfiles backups only up to DOTFILES_BACKUP_LIMIT. Clears all when
 DOTFILES_BACKUP_LIMIT is 0 or no arguments was given.
 
+  dotclearbak [ -DqvVy ]
   dotclearbak [ -DqvVy ] [ backup-limit ]
+  dotclearbak [ -DqvVy ] [ backup-limit ] [ dotfiles-backup-dir ]
 
 OPTIONS:
 
@@ -90,7 +92,7 @@ EOF
 while getopts "DsvVyh" opt; do
   case "$opt" in
     D) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
-    q) [[ -n "$IS_QUITE"        ]] && unset IS_QUITE                    || IS_QUITE=true;;
+    q) [[ -n "$IS_QUITE"        ]] && unset IS_QUITE                   || IS_QUITE=true;;
     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
     y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;
@@ -123,9 +125,24 @@ fi
 
 # Overwrite default limit if given
 if [[ -n $1 ]]; then
-  DOTFILES_BACKUP_LIMIT=$1
-else
-  DOTFILES_BACKUP_LIMIT=${DEFAULT_DOTFILES_BACKUP_LIMIT}
+  tmp_dotfiles_backup_limit=$1
+  if [[ ${tmp_dotfiles_backup_limit} -ge 0 ]]; then
+    DOTFILES_BACKUP_LIMIT=${tmp_dotfiles_backup_limit}
+  else
+    error "Invalid dotfiles backup limit" 1
+  fi
+fi
+
+# Validate dotfiles backup directory argument
+if [[ -n $2 ]]; then
+  tmp_dotfiles_backup_dir="$2"
+  if [[ -d "${tmp_dotfiles_backup_dir}" ]]; then
+    DOTFILES_BACKUP_DIR="${tmp_dotfiles_backup_dir}"
+    # Strip trailing '/' in DIR path variables
+    DOTFILES_BACKUP_DIR=$(echo ${DOTFILES_BACKUP_DIR} | sed 's,/*$,,')
+  else
+    error "Invalid dotfiles backup directory path '${DOTFILES_BACKUP_DIR}'" 1
+  fi
 fi
 
 ########################################################## SCRIPT EXECUTIONS ###

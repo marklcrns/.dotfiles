@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ################################################################################
-# Distribute all specified dotfiles in DOTFILES_LIST from DOTFILES_TARGET_DIR
-# into DOTFILES_SOURCE_DIR.
+# Distribute all specified dotfiles in DOTFILES_LIST from DOTFILES_REPO
+# into DOTFILES_LOCAL.
 # Uses `cmp` to compare files and `diff -c` to display changes when `-V` flag is
 # given.
 #
@@ -19,13 +19,12 @@
 #
 ########################### Script Global Variables ############################
 #
-# DOTFILES_LIST       = Bash array list of config (dot) files or directory to
-#                       update.
-# DOTFILES_SOURCE_DIR = Default source directory to distribute dotfiles from.
-# DOTFILES_TARGET_DIR = Default target directory to distribute dotfiles into.
-# LOG_FILE_DIR        = Log file directory.
-# LOG_FILE            = Log file name. Only logs on `-d` flag or debug mode.
-#                       Defaults to current timestamp.
+# DOTFILES_LIST  = Bash array list of config (dot) files or directory to update.
+# DOTFILES_LOCAL = Default local dotfiles directory to distribute dotfiles into.
+# DOTFILES_REPO  = Default dotfiles repo directory to distribute dotfiles from.
+# LOG_FILE_DIR   = Log file directory.
+# LOG_FILE       = Log file name. Only logs on `-d` flag or debug mode.
+#                  Defaults to current timestamp.
 #
 ################################################################################
 # Author : Mark Lucernas <https://github.com/marklcrns>
@@ -40,8 +39,8 @@
 
 # Default script variables
 DOTFILES_LIST=()
-DOTFILES_SOURCE_DIR="${HOME}"
-DOTFILES_TARGET_DIR="${HOME}/Projects/.dotfiles"
+DOTFILES_LOCAL="${HOME}"
+DOTFILES_REPO="${HOME}/Projects/.dotfiles"
 LOG_FILE_DIR="${HOME}/log"
 LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
 
@@ -82,10 +81,11 @@ usage() {
 cat << EOF
 USAGE:
 
-Distribute all specified dotfiles in DOTFILES_LIST from DOTFILES_TARGET_DIR
-into DOTFILES_SOURCE_DIR.
+Distribute all specified dotfiles in DOTFILES_LIST from DOTFILES_REPO
+into DOTFILES_LOCAL.
 
   dotdist [ -bdDqvVy ]
+  dotdist [ -bdDqvVy ] [ dotfiles-repo ] [ dotfiles-local ]
 
 OPTIONS:
 
@@ -122,8 +122,8 @@ shift "$((OPTIND-1))" # explanation https://unix.stackexchange.com/a/214151
 ####################################################### PRE-EXECUTION SET UP ###
 
 # Strip trailing '/' in DIR path variables
-DOTFILES_SOURCE_DIR=$(echo ${DOTFILES_SOURCE_DIR} | sed 's,/*$,,')
-DOTFILES_TARGET_DIR=$(echo ${DOTFILES_TARGET_DIR} | sed 's,/*$,,')
+DOTFILES_LOCAL=$(echo ${DOTFILES_LOCAL} | sed 's,/*$,,')
+DOTFILES_REPO=$(echo ${DOTFILES_REPO} | sed 's,/*$,,')
 LOG_FILE_DIR=$(echo ${LOG_FILE_DIR} | sed 's,/*$,,')
 
 # Log stdout and stderr to $LOG_FILE in $LOG_FILE_DIR
@@ -140,6 +140,31 @@ fi
 
 ################################################## SCRIPT ARGUMENTS HANDLING ###
 
+if [[ -n $1 ]]; then
+  tmp_dotfiles_repo="$1"
+  # Validate dotfiles repo directory argument
+  if [[ -d "${tmp_dotfiles_repo}" && -d "${tmp_dotfiles_repo}/.git" ]]; then
+    DOTFILES_REPO="${tmp_dotfiles_repo}"
+    # Strip trailing '/' in DIR path variables
+    DOTFILES_REPO=$(echo ${DOTFILES_REPO} | sed 's,/*$,,')
+  else
+    error "Invalid dotfiles repository directory path '${DOTFILES_REPO}'" 1
+  fi
+  if [[ -n $2 ]]; then
+    tmp_dotfiles_local="$2"
+    # Validate local dotfiles directory argument
+    if [[ -d "${tmp_dotfiles_local}" ]]; then
+      DOTFILES_LOCAL="${tmp_dotfiles_local}"
+      # Strip trailing '/' in DIR path variables
+      DOTFILES_LOCAL=$(echo ${DOTFILES_LOCAL} | sed 's,/*$,,')
+    else
+      error "Invalid local dotfiles directory path '${DOTFILES_LOCAL}'" 1
+    fi
+  else
+    error "Missing local dotfiles directory path argument" 1
+  fi
+fi
+
 ########################################################## SCRIPT EXECUTIONS ###
 
 total_changes_count=0
@@ -150,9 +175,9 @@ echolog "Detecting dotfiles changes..."
 echolog
 for dotfile in ${DOTFILES_LIST[@]}; do
   # Strip source directory from path
-  source_stripped=$(echo "$dotfile" | sed "s,${DOTFILES_SOURCE_DIR}/,,")
+  source_stripped=$(echo "$dotfile" | sed "s,${DOTFILES_LOCAL}/,,")
 
-  source_file="${DOTFILES_TARGET_DIR}/${source_stripped}"
+  source_file="${DOTFILES_REPO}/${source_stripped}"
   target_file="${dotfile}"
 
   detect_changes "${source_file}" "${target_file}" changes changes_count files_count
@@ -317,9 +342,9 @@ done
 # Final check
 for dotfile in ${DOTFILES_LIST[@]}; do
   # Strip source directory from path
-  source_stripped=$(echo "$dotfile" | sed "s,${DOTFILES_SOURCE_DIR}/,,")
+  source_stripped=$(echo "$dotfile" | sed "s,${DOTFILES_LOCAL}/,,")
 
-  source_file="${DOTFILES_TARGET_DIR}/${source_stripped}"
+  source_file="${DOTFILES_REPO}/${source_stripped}"
   target_file="${dotfile}"
 
   detect_changes "${source_file}" "${target_file}" changes changes_count files_count 1
