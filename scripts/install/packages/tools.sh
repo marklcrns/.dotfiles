@@ -64,7 +64,7 @@ fi
 # Ref: https://github.com/sharkdp/bat#on-ubuntu
 BAT_VERSION="0.15.4"
 if curl_install "https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION}/bat_${BAT_VERSION}_amd64.deb"; then
-  sudo dpkg -i "bat_${BAT_VERSION}_amd64.deb"
+  sudo dpkg -i "${DOWNLOADS_DIR}/bat_${BAT_VERSION}_amd64.deb"
 fi
 
 if git_clone "--depth=1 https://github.com/universal-ctags/ctags.git" "${DOWNLOADS_DIR}/ctags"; then

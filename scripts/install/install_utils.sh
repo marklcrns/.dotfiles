@@ -32,20 +32,24 @@ apt_add_repo() {
       if sudo add-apt-repository "ppa:${repo}" -y &> /dev/null; then
         ok "Apt ppa '${repo}' added"
         successful_packages="${successful_packages}\nApt ${repo} ADDED"
+        return 0
       else
         error "Apt ppa '${repo}' failed to be added ... Removing"
         sudo add-apt-repository -r "ppa:${repo}"
         failed_packages="${failed_packages}\nApt ${repo} NOT ADDED"
+        return 1
       fi
     else
       warning "Adding ${repo}..."
       if sudo add-apt-repository "${repo}" -y &> /dev/null; then
         ok "Apt '${repo}' repository added" -y
         successful_packages="${successful_packages}\nApt ${repo} ADDED"
+        return 0
       else
         error "Apt '${repo}' repository failed to be added ... Removing"
         sudo add-apt-repository -r "${repo}" -y
         failed_packages="${failed_packages}\nApt ${repo} NOT ADDED"
+        return 1
       fi
     fi
     # restore nameserver after adding apt
@@ -57,20 +61,24 @@ apt_add_repo() {
       if sudo add-apt-repository "ppa:${repo}" -y &> /dev/null; then
         ok "Apt ppa '${repo}' added"
         successful_packages="${successful_packages}\nApt ${repo} ADDED"
+        return 0
       else
         error "Apt ppa '${repo}' failed to be added ... Removing"
         sudo add-apt-repository -r "ppa:${repo}"
         failed_packages="${failed_packages}\nApt ${repo} NOT ADDED"
+        return 1
       fi
     else
       warning "Adding ${repo}..."
       if sudo add-apt-repository "${repo}" -y &> /dev/null; then
         ok "Apt '${repo}' repository added" -y
         successful_packages="${successful_packages}\nApt ${repo} ADDED"
+        return 0
       else
         error "Apt '${repo}' repository failed to be added ... Removing"
         sudo add-apt-repository -r "${repo}" -y
         failed_packages="${failed_packages}\nApt ${repo} NOT ADDED"
+        return 1
       fi
     fi
   fi
@@ -118,9 +126,11 @@ apt_install() {
   if eval "sudo apt install ${package} -y"; then
     ok "Apt ${package} package installation successful!"
     successful_packages="${successful_packages}\nApt ${package} SUCCESSFUL"
+    return 0
   else
     error "Apt ${package} package installation failed"
     failed_packages="${failed_packages}\nApt ${package} FAILED"
+    return 1
   fi
 }
 
@@ -158,13 +168,15 @@ curl_install() {
       return 1
     fi
     # Execute installation
-    if eval "curl -fsS ${from} -o ${to}"; then
+    if eval "curl -sS ${from} -o ${to}"; then
       ok "Curl '${from}' -> '${to}' successful!"
+      return 0
     fi
   else
     # Execute installation
-    if eval "curl -fsSO ${from}"; then
+    if eval "curl -sSO ${from}"; then
       ok "Curl '${from}' successful!"
+      return 0
     fi
   fi
 }
@@ -252,7 +264,9 @@ pip_install() {
   fi
   # Check if pip is installed
   if ! command -v pip${pip_version}; then
-    error "Pip${pip_version} not installed" 1
+    error "Pip${pip_version} not installed"
+    failed_packages="${failed_packages}\nPip${pip_version} ${package} FAILED. pip${pip_version} not installed"
+    return 1
   else
     which_pip="$(which "pip${pip_version}")"
   fi
@@ -272,9 +286,11 @@ pip_install() {
   if eval "pip${pip_version} install ${package}"; then
     ok "Pip${pip_version} ${package} package installation successful!"
     successful_packages="${successful_packages}\nPip${pip_version} ${package} for '${which_pip}' SUCCESSFUL"
+    return 0
   else
     error "Pip${pip_version} ${package} package installation failed"
     failed_packages="${failed_packages}\nPip${pip_version} ${package} for '${which_pip}' FAILED"
+    return 1
   fi
 }
 
@@ -305,6 +321,7 @@ npm_install() {
   if npm search ${package} | grep -q "^No matches found"; then
     error "${package} package not found in npm repository"
     failed_packages="${failed_packages}\nNpm ${package} FAILED. Package not found"
+    return 1
   fi
   # Check if package already installed
   if [[ ${is_global} -eq 1 ]]; then
@@ -325,17 +342,21 @@ npm_install() {
     if eval "npm -g install ${package}"; then
       ok "Npm ${package} global package installation successful!"
       successful_packages="${successful_packages}\nNpm ${package} SUCCESSFUL"
+      return 0
     else
       error "Npm ${package} global package installation failed"
       failed_packages="${failed_packages}\nNpm ${package} FAILED"
+      return 1
     fi
   else
     if eval "npm install ${package}"; then
       ok "Npm ${package} local package installation successful!"
       successful_packages="${successful_packages}\nNpm ${package} SUCCESSFUL"
+      return 0
     else
       error "Npm ${package} local package installation failed"
       failed_packages="${failed_packages}\nNpm ${package} FAILED"
+      return 1
     fi
   fi
 }
