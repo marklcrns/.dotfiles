@@ -158,12 +158,12 @@ curl_install() {
       return 1
     fi
     # Execute installation
-    if eval "curl -fLsS ${from} -o ${to}"; then
+    if eval "curl -fsS ${from} -o ${to}"; then
       ok "Curl '${from}' -> '${to}' successful!"
     fi
   else
     # Execute installation
-    if eval "curl -fLsSO ${from}"; then
+    if eval "curl -fsSO ${from}"; then
       ok "Curl '${from}' successful!"
     fi
   fi
