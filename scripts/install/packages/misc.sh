@@ -42,7 +42,6 @@ curl -o ~/bin/tldr https://raw.githubusercontent.com/raylee/tldr/master/tldr && 
 # Taskwarrior & Timewarrior
 if apt_install taskwarrior timewarrior -y; then
   pip3 install --user git+git://github.com/tbabej/tasklib@develop
-  pip install --user git+git://github.com/tbabej/tasklib@develop
   # Personal Timewarrior configuration files
   git_clone "https://github.com/marklcrns/.timewarrior" "${HOME}/.timewarrior"
   # Taskwarrior hooks

@@ -287,7 +287,6 @@ if [[ -z "${SKIP_CONFIRM}" ]]; then
 fi
 
 
-# TODO: Implement more elegant dotfiles backup
 if [[ -n "${IS_BACKUP}" ]]; then
   echolog "Backing up dotfiles..."
   echolog

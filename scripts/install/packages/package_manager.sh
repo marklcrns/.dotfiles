@@ -33,8 +33,6 @@ curl -o- -L https://yarnpkg.com/install.sh | bash
 apt_bulk_install "${APT_PACKAGES_PACKAGE_MANAGER[@]}"
 npm_bulk_install "${NPM_PACKAGES_PACKAGE_MANAGER[@]}"
 
-# Solves Missing write access to /usr/local/lib error
-# https://flaviocopes.com/npm-fix-missing-write-access-error/
-sudo chown -R ${USER} /usr/local/lib/node_modules
 # Update npm to latest version
 npm install -g npm@latest
+

@@ -117,7 +117,6 @@ if [[ -z "${SKIP_CONFIRM}" ]]; then
   fi
 fi
 
-DOTFILES_DIR="${SCRIPTDIR}/../.."
 DOWNLOADS_DIR="${HOME}/Downloads"
 TRASH_DIR="${HOME}/.Trash"
 PACKAGES="${SCRIPTDIR}/packages"
