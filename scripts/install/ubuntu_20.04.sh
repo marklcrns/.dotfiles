@@ -1,15 +1,14 @@
 #!/bin/bash
 
-# INSTALLER SCRIPT FOr UBUNTU 20.04 FOCAL FOSSA
+# Installer script for Linux and WSL 2 Ubuntu 20.04 Focal Fossa
 #
-# Store dotfiles repo in ~/Projects/.dotfiles
+# Store .dotfiles repo in ~/Projects/.dotfiles
 #
 # For Java Oracle JDK 11, Download Java SE that matches default-jdk installation
 # if the one provided in the install directory is not matched:
 # https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
 # for previous versions:
 # https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html
-# TODO: More checks
 
 
 
@@ -22,6 +21,7 @@ LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
 
 SCRIPTPATH="$(realpath -s $0)"
 SCRIPTDIR=$(dirname ${SCRIPTPATH})
+DOTFILES_ROOT="${SCRIPTDIR}/../.."
 
 ############################################## EXTERNAL DEPENDENCIES SCRIPTS ###
 
@@ -132,10 +132,11 @@ successful_packages=""
 failed_packages=""
 skipped_packages=""
 
-#TODO: TEMPORARY FOR WSL
 # Internet connection issue on apt update workaround for WSL2
-cat /etc/resolv.conf > ~/nameserver.txt
-echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  cat /etc/resolv.conf > ~/nameserver.txt
+  echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+fi
 
 # Apt update and upgrade
 if ! sudo apt update && sudo apt upgrade -y; then
@@ -143,7 +144,9 @@ if ! sudo apt update && sudo apt upgrade -y; then
 fi
 
 # restore nameserver
-cat ~/nameserver.txt | sudo tee /etc/resolv.conf
+if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  cat ~/nameserver.txt | sudo tee /etc/resolv.conf
+fi
 
 #################### Essentials ####################
 
@@ -285,6 +288,16 @@ else
   error "${DESKTOP_APPS_PACKAGES} not found"
 fi
 
+#################### Dotfiles ####################
+
+# Distribute dotfiles into $HOME
+source ${DOTFILES_ROOT}.dotfilesrc
+${DOTFILES_ROOT}/bin/tools/dotfiles/dotdist -v "${DOTFILES_ROOT}" "$HOME"
+
+
+#################################################################### WRAP UP ###
+
+
 total_count=0
 successful_count=0
 skipped_count=0
@@ -324,34 +337,4 @@ echolog "failed packages:\t${failed_count}"
 echolog "${BO_NC}Total packages:\t${total_count}"
 
 finish 'INSTALLATION COMPLETE!'
-
-
-
-
-
-
-
-#################### MIME Applications ####################
-
-# cd $DOTFILES
-
-# Custom MIME handlers
-# cp .config/mimeapps.list ~/.config/
-# mkdir ~/.local/share/applications
-# cp applications/* ~/.local/share/applications/
-# ln -sf ~/.config/mimeapps.list ~/.local/share/applications/mimeapps.list
-
-
-#################### Dotfiles ####################
-
-# Distribute dotfiles
-source ../.bash_aliases
-dotdist
-
-# source bashrc
-source ~/.bashrc
-
-
-#################################################################### WRAP UP ###
-
 
