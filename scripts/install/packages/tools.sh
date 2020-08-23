@@ -68,7 +68,6 @@ if curl_install "https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION
 fi
 
 if git_clone "--depth=1 https://github.com/universal-ctags/ctags.git" "${DOWNLOADS_DIR}/ctags"; then
-
   apt_bulk_install "${APT_PACKAGES_TOOLS_CTAGS_DEPENDENCIES[@]}"
 
   cd "${DOWNLOADS_DIR}/ctags"

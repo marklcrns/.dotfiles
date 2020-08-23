@@ -185,6 +185,20 @@ git_clone() {
   from=$1
   to=$2
 
+  # Validate git repo link
+  if [[ -n "${from}" ]]; then
+    # Extract git repo link
+    link="$(echo ${from} | sed -E "s,.*((https|git)(:\/\/|@)github.com(\/|:).*\/[^ ]+).*,\1,")"
+
+    if ! git ls-remote ${link}; then
+      error "Invalid git repo link '${link}'"
+      failed_packages="${failed_packages}\nGit clone '${link}' FAILED. Invalid git repo link"
+      return 1
+    fi
+  else
+    error "Missing git repo link"
+    return 1
+  fi
   # If output/destination file is given, else use regular curl
   if [[ -n "${to}" ]]; then
     # Check destination directory validity
