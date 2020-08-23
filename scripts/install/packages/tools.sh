@@ -47,7 +47,7 @@ echolog
 apt_bulk_install "${APT_PACKAGES_TOOLS[@]}"
 
 # Git-lfs
-if curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash; then
+if curl_install "https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash"; then
   apt_install "git-lfs"
   git lfs install
 fi
@@ -90,8 +90,8 @@ if apt_install "r-base"; then
 
   apt_bulk_install "${APT_PACKAGES_TOOLS_PANDOC_DEPENDENCIES[@]}"
 
-  curl -sSL https://get.haskellstack.org/ | sh
-  if git_clone "https://github.com/cdupont/R-pandoc.git" "${DOWNLOADS_DIR}"; then
+  curl_install "https://get.haskellstack.org/ | sh"
+  if git_clone "https://github.com/cdupont/R-pandoc.git" "${DOWNLOADS_DIR}/R-pandoc"; then
     cd "${DOWNLOADS_DIR}R-pandoc" && stack install
 
     cd "${DOWNLOADS_DIR}"
@@ -102,10 +102,10 @@ fi
 git_clone "https://github.com/marklcrns/pandoc-goodies" "${HOME}/.pandoc"
 
 # Exa
-if curl_install "https://sh.rustup.rs -sSf | sh"; then
+if curl_install "https://sh.rustup.rs | sh"; then
   EXA_VERSION="0.9.0"
   cd "${DOWNLOADS_DIR}"
-  if wget -c "https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-${EXA_VERSION}.zip"; then
+  if wget_install "https://github.com/ogham/exa/releases/download/v0.9.0/exa-linux-x86_64-${EXA_VERSION}.zip"; then
     unzip exa-linux-x86_64-${EXA_VERSION}.zip
     sudo mv exa-linux-x86_64 /usr/local/bin/exa
   fi

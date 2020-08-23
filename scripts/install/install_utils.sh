@@ -165,19 +165,44 @@ curl_install() {
     # Check destination directory validity
     if [[ ! -d "$(dirname ${to})" ]]; then
       error "Invalid curl destination path '${to}'"
+      failed_packages="${failed_packages}\nCurl '${from}' -> '${to}' FAILED. Invalid destination path"
       return 1
     fi
     # Execute installation
     if eval "curl -sS ${from} -o ${to}"; then
       ok "Curl '${from}' -> '${to}' successful!"
+      successful_packages="${successful_packages}\nCurl '${from}' -> '${to}' SUCCESSFUL"
       return 0
+    else
+      error "Curl '${from}' -> '${to}' FAILED"
+      failed_packages="${failed_packages}\nCurl '${from}' -> '${to}' FAILED"
+      return 1
     fi
   else
     # Execute installation
     if eval "curl -sSO ${from}"; then
       ok "Curl '${from}' successful!"
+      successful_packages="${successful_packages}\nCurl '${from}' -> '${to}' SUCCESSFUL"
       return 0
+    else
+      error "Curl '${from}' -> '${to}' FAILED"
+      failed_packages="${failed_packages}\nCurl '${from}' -> '${to}' FAILED"
+      return 1
     fi
+  fi
+}
+
+wget_install() {
+  from=$1
+
+  if eval "wget -c ${from}"; then
+    ok "Wget '${from}' successful!"
+    successful_packages="${successful_packages}\nWget '${from}' SUCCESSFUL"
+    return 0
+  else
+    error "Wget '${from}' failed!"
+    failed_packages="${failed_packages}\nWget '${from}' FAILED"
+    return 1
   fi
 }
 
@@ -190,7 +215,7 @@ git_clone() {
     # Extract git repo link
     link="$(echo ${from} | sed -E "s,.*((https|git)(:\/\/|@)github.com(\/|:).*\/[^ ]+).*,\1,")"
 
-    if ! git ls-remote ${link}; then
+    if ! git ls-remote ${link} &> /dev/null; then
       error "Invalid git repo link '${link}'"
       failed_packages="${failed_packages}\nGit clone '${link}' FAILED. Invalid git repo link"
       return 1
