@@ -187,7 +187,7 @@ git_clone() {
       rm -rf "${to}"
     fi
     # Execute installation
-    if git clone "${from}" "${to}"; then
+    if eval "git clone ${from} ${to}"; then
       ok "Git clone '${from}' -> '${to}' successful!"
       successful_packages="${successful_packages}\nGit clone '${from}' -> '${to}' SUCCESSFUL"
       return 0
@@ -196,7 +196,7 @@ git_clone() {
       for i in {1..5}; do
         if [[ ${?} -eq 128 ]]; then
           warning "Git authentication failed. Try again ($i/5)"
-          if git clone "${from}" "${to}"; then
+          if eval "git clone ${from} ${to}"; then
             wait
             ok "Git clone '${from}' -> '${to}' successful!"
             successful_packages="${successful_packages}\nGit clone '${from}' -> '${to}' SUCCESSFUL"
@@ -212,7 +212,7 @@ git_clone() {
     fi
   else
     # Execute installation
-    if git clone "${from}"; then
+    if eval "git clone ${from}"; then
       ok "Git clone '${from}' successful!"
       successful_packages="${successful_packages}\nGit clone '${from}' -> '${to}' SUCCESSFUL"
       return 0
@@ -221,7 +221,7 @@ git_clone() {
       for i in {1..5}; do
         if [[ ${?} -eq 128 ]]; then
           warning "Git authentication failed. Try again ($i/5)"
-          if git clone "${from}"; then
+          if eval "git clone ${from}"; then
             wait
             ok "Git clone '${from}' -> '${to}' successful!"
             successful_packages="${successful_packages}\nGit clone '${from}' -> '${to}' SUCCESSFUL"

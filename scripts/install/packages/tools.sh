@@ -41,7 +41,7 @@ APT_PACKAGES_TOOLS_PANDOC_DEPENDENCIES=(
 
 
 echolog
-echolog "${UL_NC}Installing Utility Packages${NC}"
+echolog "${UL_NC}Installing Tools Packages${NC}"
 echolog
 
 apt_bulk_install "${APT_PACKAGES_TOOLS[@]}"
