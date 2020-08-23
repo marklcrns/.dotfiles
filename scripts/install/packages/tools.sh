@@ -85,8 +85,8 @@ if sudo add-apt-repository ppa:lazygit-team/release -y; then
   apt_install "lazygit" 1
 fi
 
-## R-Pandoc
-### dependencies
+# R-Pandoc
+## dependencies
 if apt_install "r-base"; then
 
   apt_bulk_install "${APT_PACKAGES_TOOLS_PANDOC_DEPENDENCIES[@]}"

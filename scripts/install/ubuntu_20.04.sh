@@ -333,7 +333,7 @@ echolog
 echolog "Successful packages:\t${successful_count}"
 echolog "Skipped packages:\t${skipped_count}"
 echolog "failed packages:\t${failed_count}"
-echolog "${BO_NC}Total packages:\t${total_count}"
+echolog "${BO_NC}Total packages:\t\t${total_count}"
 
 finish 'INSTALLATION COMPLETE!'
 
