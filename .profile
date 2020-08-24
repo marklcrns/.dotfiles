@@ -31,6 +31,8 @@ export PATH=$PATH:$HOME/.rvm/bin
 export PATH=$PATH:$HOME/bin/plugins/rclonesync-V2
 # Emacs bin
 export PATH=$PATH:$HOME/emacs.d/bin
+# Global npm modules path
+export PATH=$PATH:$HOME/.npm-global/bin
 
 # WSL profile
 if [[ "$(grep -i microsoft /proc/version)" ]]; then

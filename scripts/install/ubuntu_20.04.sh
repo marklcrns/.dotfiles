@@ -293,6 +293,9 @@ fi
 source ${DOTFILES_ROOT}/.dotfilesrc
 ${DOTFILES_ROOT}/bin/tools/dotfiles/dotdist -v "${DOTFILES_ROOT}" "${HOME}"
 
+# Source .profile
+source ${HOME}/.profile
+
 
 #################################################################### WRAP UP ###
 
