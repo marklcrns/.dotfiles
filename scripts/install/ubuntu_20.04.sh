@@ -21,7 +21,7 @@ LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
 
 SCRIPTPATH="$(realpath -s $0)"
 SCRIPTDIR=$(dirname ${SCRIPTPATH})
-DOTFILES_ROOT="${SCRIPTDIR}/../.."
+DOTFILES_ROOT="$(realpath "${SCRIPTDIR}/../..")"
 
 ############################################## EXTERNAL DEPENDENCIES SCRIPTS ###
 

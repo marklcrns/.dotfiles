@@ -37,7 +37,7 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   # Append to DOTFILES_LIST
   DOTFILES_LIST_WSL=(
     "${DOTFILES_LOCAL}/.config/mimeapps.list"
-    "${DOTFILES_LOCAL}/.local/share/applications/*.desktop"
+    # "${DOTFILES_LOCAL}/.local/share/applications/*.desktop"
   )
 fi
 

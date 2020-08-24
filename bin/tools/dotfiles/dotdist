@@ -81,11 +81,12 @@ usage() {
 cat << EOF
 USAGE:
 
-Distribute all specified dotfiles in DOTFILES_LIST from DOTFILES_REPO
-into DOTFILES_LOCAL.
+Distribute all specified dotfiles in DOTFILES_LIST from DOTFILES_REPO into
+DOTFILES_LOCAL.
 
-  dotdist [ -bdDqvVy ]
-  dotdist [ -bdDqvVy ] [ dotfiles-repo ] [ dotfiles-local ]
+  dotdist
+  dotdist [ -bdDqvVy ] [ -r dotfilesrc-path ]
+  dotdist [ dotfiles-repo ] [ dotfiles-local ]
 
 OPTIONS:
 
@@ -93,6 +94,7 @@ OPTIONS:
   -d  skip file deletion
   -D  debug mode (redirect output in log file)
   -q  quite output
+  -r  specify dotfilesrc path
   -v  verbose output
   -V  very verbose output
   -y  skip confirmation
@@ -102,12 +104,13 @@ EOF
 }
 
 # Set flag options
-while getopts "bdDqvVyh" opt; do
+while getopts "bdDqr:vVyh" opt; do
   case "$opt" in
     b) [[ -n "$IS_BACKUP"       ]] && unset IS_BACKUP                  || IS_BACKUP=true;;
     d) [[ -n "$NO_DELETE"       ]] && unset NO_DELETE                  || NO_DELETE=true;;
     D) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
     q) [[ -n "$IS_QUITE"        ]] && unset IS_QUITE                   || IS_QUITE=true;;
+    r) [[ -n "$HAS_RC_FILE"     ]] && unset HAS_RC_FILE                || HAS_RC_FILE=true; tmp_rc_file_path="${OPTARG}";;
     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
     y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;
@@ -162,6 +165,14 @@ if [[ -n $1 ]]; then
     fi
   else
     error "Missing local dotfiles directory path argument" 1
+  fi
+fi
+
+if [[ -n "${HAS_RC_FILE}" ]]; then
+  if [[ -e "${tmp_rc_file_path}" ]]; then
+    source "${tmp_rc_file_path}"
+  else
+    error "Invalid rc file path '${tmp_rc_file_path}'" 1
   fi
 fi
 

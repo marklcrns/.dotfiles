@@ -2,7 +2,7 @@
 
 SCRIPTPATH="$(realpath -s $0)"
 SCRIPTDIR=$(dirname ${SCRIPTPATH})
-DOTFILES_ROOT="${SCRIPTDIR}/../.."
+DOTFILES_ROOT="$(realpath "${SCRIPTDIR}/../..")"
 DOWNLOADS_DIR="${HOME}/Downloads"
 
 source "${SCRIPTDIR}/../colors"
@@ -10,5 +10,4 @@ source "${SCRIPTDIR}/../utils"
 source "${SCRIPTDIR}/install_utils.sh"
 
 # Distribute dotfiles into $HOME
-source ${DOTFILES_ROOT}/.dotfilesrc
-${DOTFILES_ROOT}/bin/tools/dotfiles/dotdist -v "${DOTFILES_ROOT}" "${HOME}"
+${DOTFILES_ROOT}/bin/tools/dotfiles/dotdist -V -r "${DOTFILES_ROOT}/.dotfilesrc" "${DOTFILES_ROOT}" "${HOME}"

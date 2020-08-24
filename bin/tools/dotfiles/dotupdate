@@ -84,19 +84,21 @@ USAGE:
 Updates all specified dotfiles in DOTFILES_LIST from DOTFILES_LOCAL into
 DOTFILES_REPO.
 
-  dotupdate [ -bdDqvVy ]
-  dotupdate [ -bdDqvVy ] [ dotfiles-local ] [ dotfiles-repo ]
+  dotupdate
+  dotupdate [ -bdDqvVy ] [ -r dotfilesrc-path ]
+  dotupdate [ dotfiles-local ] [ dotfiles-repo ]
 
 OPTIONS:
 
-   -b : backup files
-   -d : skip file deletion
-   -D : debug mode (redirect output in log file)
-   -q : quite output
-   -v : verbose output
-   -V : very verbose output
-   -y : skip confirmation
-   -h : help
+  -b  backup files
+  -d  skip file deletion
+  -D  debug mode (redirect output in log file)
+  -q  quite output
+  -r  specify dotfilesrc path
+  -v  verbose output
+  -V  very verbose output
+  -y  skip confirmation
+  -h  help
 
 EOF
 }
@@ -108,6 +110,7 @@ while getopts "bdDqvVyh" opt; do
     d) [[ -n "$NO_DELETE"       ]] && unset NO_DELETE                  || NO_DELETE=true;;
     D) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
     q) [[ -n "$IS_QUITE"        ]] && unset IS_QUITE                   || IS_QUITE=true;;
+    r) [[ -n "$HAS_RC_FILE"     ]] && unset HAS_RC_FILE                || HAS_RC_FILE=true; tmp_rc_file_path="${OPTARG}";;
     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
     y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;
@@ -161,6 +164,14 @@ if [[ -n $1 ]]; then
     fi
   else
     error "Missing dotfiles repo directory path argument" 1
+  fi
+fi
+
+if [[ -n "${HAS_RC_FILE}" ]]; then
+  if [[ -e "${tmp_rc_file_path}" ]]; then
+    source "${tmp_rc_file_path}"
+  else
+    error "Invalid rc file path '${tmp_rc_file_path}'" 1
   fi
 fi
 

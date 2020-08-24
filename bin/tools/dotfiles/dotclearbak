@@ -72,14 +72,15 @@ USAGE:
 Clears dotfiles backups only up to DOTFILES_BACKUP_LIMIT. Clears all when
 DOTFILES_BACKUP_LIMIT is 0 or no arguments was given.
 
-  dotclearbak [ -DqvVy ]
-  dotclearbak [ -DqvVy ] [ backup-limit ]
-  dotclearbak [ -DqvVy ] [ backup-limit ] [ dotfiles-backup-dir ]
+  dotclearbak
+  dotclearbak [ -DqvVy ] [ -r dotfilesrc-path ]
+  dotclearbak [ backup-limit ] [ dotfiles-backup-dir ]
 
 OPTIONS:
 
   -D  debug mode (redirect output in log file)
   -q  quite output
+  -r  specify dotfilesrc path
   -v  verbose output
   -V  very verbose output
   -y  skip confirmation
@@ -142,6 +143,14 @@ if [[ -n $2 ]]; then
     DOTFILES_BACKUP_DIR=$(echo ${DOTFILES_BACKUP_DIR} | sed 's,/*$,,')
   else
     error "Invalid dotfiles backup directory path '${DOTFILES_BACKUP_DIR}'" 1
+  fi
+fi
+
+if [[ -n "${HAS_RC_FILE}" ]]; then
+  if [[ -e "${tmp_rc_file_path}" ]]; then
+    source "${tmp_rc_file_path}"
+  else
+    error "Invalid rc file path '${tmp_rc_file_path}'" 1
   fi
 fi
 
