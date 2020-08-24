@@ -291,7 +291,7 @@ fi
 
 # Distribute dotfiles into $HOME
 source ${DOTFILES_ROOT}/.dotfilesrc
-${DOTFILES_ROOT}/bin/tools/dotfiles/dotdist -v "${DOTFILES_ROOT}" "$HOME"
+${DOTFILES_ROOT}/bin/tools/dotfiles/dotdist -v "${DOTFILES_ROOT}" "${HOME}"
 
 
 #################################################################### WRAP UP ###

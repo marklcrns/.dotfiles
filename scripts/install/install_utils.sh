@@ -194,15 +194,37 @@ curl_install() {
 
 wget_install() {
   from=$1
+  to=$2
 
-  if eval "wget -c ${from}"; then
-    ok "Wget '${from}' successful!"
-    successful_packages="${successful_packages}\nWget '${from}' SUCCESSFUL"
-    return 0
+  # If output/destination file is given, else use regular curl
+  if [[ -n "${to}" ]]; then
+    # Check destination directory validity
+    if [[ ! -d "$(dirname ${to})" ]]; then
+      error "Invalid wget destination path '${to}'"
+      failed_packages="${failed_packages}\nWget '${from}' -> '${to}' FAILED. Invalid destination path"
+      return 1
+    fi
+    # Execute installation
+    if eval "wget -c ${from} ${to}"; then
+      ok "Wget '${from}' -> '${to}' successful!"
+      successful_packages="${successful_packages}\nWget '${from}' -> '${to}' SUCCESSFUL"
+      return 0
+    else
+      error "Wget '${from}' -> '${to}' FAILED"
+      failed_packages="${failed_packages}\nWget '${from}' -> '${to}' FAILED"
+      return 1
+    fi
   else
-    error "Wget '${from}' failed!"
-    failed_packages="${failed_packages}\nWget '${from}' FAILED"
-    return 1
+    # Execute installation
+    if eval "wget -c ${from}"; then
+      ok "Wget '${from}' successful!"
+      successful_packages="${successful_packages}\nWget'${from}' -> '${to}' SUCCESSFUL"
+      return 0
+    else
+      error "Wget '${from}' -> '${to}' FAILED"
+      failed_packages="${failed_packages}\nWget '${from}' -> '${to}' FAILED"
+      return 1
+    fi
   fi
 }
 
@@ -229,6 +251,7 @@ git_clone() {
     # Check destination directory validity
     if [[ ! -d "$(dirname "${to}")" ]]; then
       error "Invalid git clone destination directory path '${to}'"
+      echolog "$(dirname ${to})"
       failed_packages="${failed_packages}\nGit clone '${from}' -> '${to}' FAILED. Invalid directory path"
       return 1
     fi

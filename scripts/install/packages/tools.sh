@@ -63,9 +63,8 @@ fi
 # Bat v0.15.4 (Manual)
 # Ref: https://github.com/sharkdp/bat#on-ubuntu
 BAT_VERSION="0.15.4"
-if curl_install "https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION}/bat_${BAT_VERSION}_amd64.deb"; then
-  sudo dpkg -i "${DOWNLOADS_DIR}/bat_${BAT_VERSION}_amd64.deb"
-fi
+wget "https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION}/bat_${BAT_VERSION}_amd64.deb" "${DOWNLOADS_DIR}"
+sudo dpkg -i "${DOWNLOADS_DIR}/bat_${BAT_VERSION}_amd65.deb"
 
 if git_clone "--depth=1 https://github.com/universal-ctags/ctags.git" "${DOWNLOADS_DIR}/ctags"; then
   apt_bulk_install "${APT_PACKAGES_TOOLS_CTAGS_DEPENDENCIES[@]}"
@@ -80,7 +79,7 @@ if git_clone "--depth=1 https://github.com/universal-ctags/ctags.git" "${DOWNLOA
 fi
 
 # Lazygit
-if sudo add-apt-repository ppa:lazygit-team/release -y; then
+if apt_add_repo "lazygit-team/release" 1; then
   apt_install "lazygit" 1
 fi
 
