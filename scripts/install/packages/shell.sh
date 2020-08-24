@@ -18,3 +18,6 @@ if sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/
   git_clone "https://github.com/romkatv/powerlevel10k.git" "${HOME}/.oh-my-zsh/themes/powerlevel10k"
 fi
 
+# Make sure bash is still default login shell
+chsh -s /bin/bash
+
