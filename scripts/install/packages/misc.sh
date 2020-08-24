@@ -39,19 +39,3 @@ apt_install tlp && sudo tlp start
 curl -o ~/bin/tldr https://raw.githubusercontent.com/raylee/tldr/master/tldr && \
   chmod +x ~/bin/tldr
 
-# Taskwarrior & Timewarrior
-if apt_install taskwarrior timewarrior -y; then
-  pip3 install --user git+git://github.com/tbabej/tasklib@develop
-  # Personal Timewarrior configuration files
-  git_clone "https://github.com/marklcrns/.timewarrior" "${HOME}/.timewarrior"
-  # Taskwarrior hooks
-  if git_clone "https://github.com/marklcrns/.task" "${HOME}/.task"; then
-    ln -s ${HOME}/.task/.taskrc ${HOME}/.taskrc && \
-      cd ${HOME}/.task/hooks && \
-        sudo chmod +x on-modify-pirate on-add-pirate on-modify.timewarrior
-    if pip_install 3 "taskwarrior-time-tracking-hook"; then
-      ln -s `which taskwarrior_time_tracking_hook` "~/.task/hooks/on-modify.timetracking"
-    fi
-  fi
-fi
-

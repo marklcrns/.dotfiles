@@ -192,20 +192,21 @@ curl_install() {
   fi
 }
 
+# Specify destination directory
 wget_install() {
   from=$1
   to=$2
 
-  # If output/destination file is given, else use regular curl
+  # If has destination directory use -P flag, else use regular wget
   if [[ -n "${to}" ]]; then
     # Check destination directory validity
-    if [[ ! -d "$(dirname ${to})" ]]; then
+    if [[ ! -d "${to}" ]]; then
       error "Invalid wget destination path '${to}'"
       failed_packages="${failed_packages}\nWget '${from}' -> '${to}' FAILED. Invalid destination path"
       return 1
     fi
     # Execute installation
-    if eval "wget -c ${from} ${to}"; then
+    if eval "wget ${from} –P ${to}"; then
       ok "Wget '${from}' -> '${to}' successful!"
       successful_packages="${successful_packages}\nWget '${from}' -> '${to}' SUCCESSFUL"
       return 0
@@ -216,7 +217,7 @@ wget_install() {
     fi
   else
     # Execute installation
-    if eval "wget -c ${from}"; then
+    if eval "wget ${from}"; then
       ok "Wget '${from}' successful!"
       successful_packages="${successful_packages}\nWget'${from}' -> '${to}' SUCCESSFUL"
       return 0

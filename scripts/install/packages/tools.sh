@@ -62,9 +62,11 @@ fi
 # Bat v0.15.4 (Manual)
 # Ref: https://github.com/sharkdp/bat#on-ubuntu
 BAT_VERSION="0.15.4"
-wget "https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION}/bat_${BAT_VERSION}_amd64.deb" "${DOWNLOADS_DIR}"
-sudo dpkg -i "${DOWNLOADS_DIR}/bat_${BAT_VERSION}_amd65.deb"
+cd ${DOWNLOADS_DIR}
+wget_install "https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION}/bat_${BAT_VERSION}_amd64.deb"
+sudo dpkg -i "${DOWNLOADS_DIR}/bat_${BAT_VERSION}_amd64.deb"
 
+# Universal-ctags
 if git_clone "--depth=1 https://github.com/universal-ctags/ctags.git" "${DOWNLOADS_DIR}/ctags"; then
   apt_bulk_install "${APT_PACKAGES_TOOLS_CTAGS_DEPENDENCIES[@]}"
 

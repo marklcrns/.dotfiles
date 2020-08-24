@@ -61,9 +61,11 @@ fi
 
 # MySQL
 if apt_install "mysql-server" && apt_install "mysql-client" -y; then
-  warning "#############################################################################"
-  warning "# DO NOT install MySql validate_password_plugin for phpmyadmin installation #"
-  warning "#############################################################################"
+  echolog
+  warning "################################################################################"
+  warning "# DO NOT install MySQL VALIDATE PASSWORD COMPONENT for phpmyadmin installation #"
+  warning "################################################################################"
+  echolog
   sudo service mysql start && sudo mysql_secure_installation
 fi
 

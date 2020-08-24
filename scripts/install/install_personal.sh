@@ -1,20 +1,5 @@
 #!/bin/bash
 
-# Installer script for Linux and WSL 2 Ubuntu 20.04 Focal Fossa
-#
-# Store .dotfiles repo in ~/Projects/.dotfiles
-#
-# For Java Oracle JDK 11, Download Java SE that matches default-jdk installation
-# if the one provided in the install directory is not matched:
-# https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
-# for previous versions:
-# https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html
-
-
-
-
-
-################################################## CONSTANT GLOBAL VARIABLES ###
 
 LOG_FILE_DIR="${HOME}/log"
 LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
@@ -61,8 +46,7 @@ Command description.
 OPTIONS:
 
   -D  debug mode (redirect output in log file)
-  -q  quiet output
-  -q  quiet output except errors
+  -s  silent output
   -v  verbose output
   -V  very verbose output
   -y  skip confirmation
@@ -72,11 +56,10 @@ EOF
 }
 
 # Set flag options
-while getopts "DqQvVyh" opt; do
+while getopts "DsvVyh" opt; do
   case "$opt" in
     D) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
-    q) [[ -n "$IS_QUIET"        ]] && unset IS_QUIET                   || IS_QUIET=true;;
-    Q) [[ -n "$IS_ERROR_QUIET"  ]] && unset IS_ERROR_QUIET             || IS_QUIET=true; IS_ERROR_QUIET=true;;
+    s) [[ -n "$IS_SILENT"       ]] && unset IS_SILENT                  || IS_SILENT=true;;
     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
     y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;
@@ -123,10 +106,6 @@ DOWNLOADS_DIR="${HOME}/Downloads"
 TRASH_DIR="${HOME}/.Trash"
 PACKAGES="${SCRIPTDIR}/packages"
 
-[[ ! -d "${HOME}/Projects" ]] && mkdir -p "${HOME}/Projects"
-[[ ! -d "${HOME}/Downloads" ]] && mkdir -p "${DOWNLOADS_DIR}"
-[[ ! -d "${HOME}/.Trash" ]] && mkdir -p "${TRASH_DIR}"
-
 cd ${DOWNLOADS_DIR}
 
 successful_packages=""
@@ -149,144 +128,55 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   cat ~/nameserver.txt | sudo tee /etc/resolv.conf
 fi
 
-#################### Essentials ####################
-
-ESSENTIAL_PACKAGES="${PACKAGES}/essential.sh"
-
-if [[ -f "${ESSENTIAL_PACKAGES}" ]]; then
-  source "${ESSENTIAL_PACKAGES}"
-else
-  error "${ESSENTIAL_PACKAGES} not found"
-fi
-
-#################### Languages ####################
-
-LANGUAGE_PACKAGES="${PACKAGES}/language.sh"
-
-if [[ -f "${LANGUAGE_PACKAGES}" ]]; then
-  source "${LANGUAGE_PACKAGES}"
-else
-  error "${LANGUAGE_PACKAGES} not found"
-fi
-
-#################### Package Managers ####################
-
-PACKAGE_MANAGER_PACKAGES="${PACKAGES}/package_manager.sh"
-
-if [[ -f "${PACKAGE_MANAGER_PACKAGES}" ]]; then
-  source "${PACKAGE_MANAGER_PACKAGES}"
-else
-  error "${PACKAGE_MANAGER_PACKAGES} not found"
-fi
-
-############### Shell ################
-
-SHELL_PACKAGES="${PACKAGES}/shell.sh"
-
-if [[ -f "${SHELL_PACKAGES}" ]]; then
-  source "${SHELL_PACKAGES}"
-else
-  error "${SHELL_PACKAGES} not found"
-fi
-
-#################### Session Manager ####################
-
-SESSION_MANAGER_PACKAGES="${PACKAGES}/session_manager.sh"
-
-if [[ -f "${SESSION_MANAGER_PACKAGES}" ]]; then
-  source "${SESSION_MANAGER_PACKAGES}"
-else
-  error "${SESSION_MANAGER_PACKAGES} not found"
-fi
-
-#################### File Manager ####################
-
-FILE_MANAGER_PACKAGES="${PACKAGES}/file_manager.sh"
-
-if [[ -f "${FILE_MANAGER_PACKAGES}" ]]; then
-  source "${FILE_MANAGER_PACKAGES}"
-else
-  error "${FILE_MANAGER_PACKAGES} not found"
-fi
 
 ############### Text Editors ##################
 
-TEXT_EDITOR_PACKAGES="${PACKAGES}/text_editor.sh"
-
-if [[ -f "${TEXT_EDITOR_PACKAGES}" ]]; then
-  source "${TEXT_EDITOR_PACKAGES}"
-else
-  error "${TEXT_EDITOR_PACKAGES} not found"
+# Personal neovim config files
+git_clone "https://github.com/marklcrns/ThinkVim" "${HOME}/.config/nvim/"
+# Install nvim configs dependencies
+if cd ${HOME}/.config/nvim; then
+  ./scripts/install.sh
 fi
 
-#################### Fonts ####################
+# Clone Vimwiki wikis
+[[ -d "${HOME}/Docs/wiki" ]] && rm -rf ~/Docs/wiki
+[[ ! -d "${HOME}/Docs" ]] && mkdir -p "${HOME}/Docs"
+git_clone "https://github.com/marklcrns/wiki" "${HOME}/Docs/wiki" && \
+  git_clone "https://github.com/marklcrns/wiki-wiki" "${HOME}/Docs/wiki/wiki"
 
-FONT_PACKAGES="${PACKAGES}/font.sh"
+# Kite
+# bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)"
 
-if [[ -f "${FONT_PACKAGES}" ]]; then
-  source "${FONT_PACKAGES}"
-else
-  error "${FONT_PACKAGES} not found"
-fi
+#################### Session Manager ####################
 
-#################### Tools ####################
+# Tmuxinator
+git_clone "https://github.com/marklcrns/.tmuxinator" "${HOME}/.tmuxinator"
 
-TOOLS_PACKAGES="${PACKAGES}/tools.sh"
 
-if [[ -f "${TOOLS_PACKAGES}" ]]; then
-  source "${TOOLS_PACKAGES}"
-else
-  error "${TOOLS_PACKAGES} not found"
-fi
+#################### Dotfiles ####################
 
-#################### Browser ####################
+# Distribute dotfiles into $HOME
+${DOTFILES_ROOT}/bin/tools/dotfiles/dotdist -v -r "${DOTFILES_ROOT}/.dotfilesrc" "${DOTFILES_ROOT}" "${HOME}"
 
-BROWSER_PACKAGES="${PACKAGES}/browser.sh"
+# Source .profile
+source ${HOME}/.profile
 
-if [[ -f "${BROWSER_PACKAGES}" ]]; then
-  source "${BROWSER_PACKAGES}"
-else
-  error "${BROWSER_PACKAGES} not found"
-fi
-
-#################### Server ####################
-
-SERVER_PACKAGES="${PACKAGES}/server.sh"
-
-if [[ -f "${SERVER_PACKAGES}" ]]; then
-  source "${SERVER_PACKAGES}"
-else
-  error "${SERVER_PACKAGES} not found"
-fi
-
-#################### Virtual Machine/Containers ####################
-
-VIRTUAL_MACHINE_PACKAGES="${PACKAGES}/virtual_machine.sh"
-
-if [[ -f "${VIRTUAL_MACHINE_PACKAGES}" ]]; then
-  source "${VIRTUAL_MACHINE_PACKAGES}"
-else
-  error "${VIRTUAL_MACHINE_PACKAGES} not found"
-fi
 
 #################### Misc ####################
 
-MISC_PACKAGES="${PACKAGES}/misc.sh"
+# Taskwarrior & Timewarrior
+pip3 install --user git+git://github.com/tbabej/tasklib@develop
+# Personal Timewarrior configuration files
+git_clone "https://github.com/marklcrns/.timewarrior" "${HOME}/.timewarrior"
+# Taskwarrior hooks
+if git_clone "https://github.com/marklcrns/.task" "${HOME}/.task"; then
+  ln -s ${HOME}/.task/.taskrc ${HOME}/.taskrc && \
+    cd ${HOME}/.task/hooks && \
+    sudo chmod +x on-modify-pirate on-add-pirate on-modify.timewarrior
 
-if [[ -f "${MISC_PACKAGES}" ]]; then
-  source "${MISC_PACKAGES}"
-else
-  error "${MISC_PACKAGES} not found"
-fi
-
-#################### Desktop Apps ####################
-
-DESKTOP_APPS_PACKAGES="${PACKAGES}/desktop_apps.sh"
-
-if [[ -f "${DESKTOP_APPS_PACKAGES}" ]]; then
-  source "${DESKTOP_APPS_PACKAGES}"
-else
-  error "${DESKTOP_APPS_PACKAGES} not found"
+  if pip_install 3 "taskwarrior-time-tracking-hook"; then
+    ln -s `which taskwarrior_time_tracking_hook` "~/.task/hooks/on-modify.timetracking"
+  fi
 fi
 
 
@@ -336,5 +226,5 @@ echolog "Skipped packages:\t${skipped_count}"
 echolog "failed packages:\t${failed_count}"
 echolog "${BO_NC}Total packages:\t\t${total_count}"
 
-finish 'INSTALLATION COMPLETE!'
+finish 'PERSONAL INSTALLATION COMPLETE!'
 
