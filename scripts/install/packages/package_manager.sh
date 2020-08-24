@@ -35,8 +35,8 @@ npm_bulk_install "${NPM_PACKAGES_PACKAGE_MANAGER[@]}"
 
 # Solves Missing write access to /usr/local/lib error
 # https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
-mkdir ~/.npm-global
-npm config set prefix '~/.npm-global'
+mkdir ${HOME}/.npm-global
+npm config set prefix "${HOME}/.npm-global"
 
 # Update npm to latest version
 npm install -g npm@latest

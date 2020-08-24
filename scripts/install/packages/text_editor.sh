@@ -35,18 +35,12 @@ npm_bulk_install 1 "${NPM_PACKAGES_TEXT_EDITOR[@]}"
 
 # Personal neovim config files
 git_clone "https://github.com/marklcrns/ThinkVim" "${HOME}/.config/nvim/"
-
-# Install python and python3 env in nvim root directory
+# Install nvim configs dependencies
 if cd ${HOME}/.config/nvim; then
-  ## python3 host prog
-  mkdir -p env/python3 && cd env/python3
-  python3 -m venv env &&
-    source env/bin/activate &&
-    pip_bulk_install 3 "${PIP3_PACKAGES_TEXT_EDITOR_NEOVIM[@]}" &&
-    deactivate
+  scripts/install.sh
 fi
 
-## Clone Vimwiki wikis
+# Clone Vimwiki wikis
 [[ -d "${HOME}/Docs/wiki" ]] && rm -rf ~/Docs/wiki
 [[ ! -d "${HOME}/Docs" ]] && mkdir -p "${HOME}/Docs"
 git_clone "https://github.com/marklcrns/wiki" "${HOME}/Docs/wiki" && \
