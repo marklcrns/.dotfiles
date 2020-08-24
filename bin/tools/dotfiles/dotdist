@@ -216,7 +216,9 @@ for dotfile in ${DOTFILES_LIST[@]}; do
       changes_list="${changes_list}\n${delete}"
     fi
     # Increment delete counter
-    total_deleted_count=$(expr ${total_deleted_count} + ${delete_count})
+    if [[ -z "${NO_DELETE}" ]]; then
+      total_deleted_count=$(expr ${total_deleted_count} + ${delete_count})
+    fi
   fi
   # Increment total files counters
   total_files_count=$(expr ${total_files_count} + ${files_count} + ${delete_count})
