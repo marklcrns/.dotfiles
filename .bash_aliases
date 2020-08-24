@@ -47,7 +47,6 @@ alias flask='FLASK_APP=application.py FLASK_ENV=development FLASK_DEBUG=1 python
 
 # Python env
 alias envactivate='source env/bin/activate'
-alias envactivatefish='source env/bin/activate.fish'
 
 # Make native commands verbose
 alias mv='mv -v'
@@ -117,7 +116,6 @@ alias ls='exa'
 alias l='exa -l'
 alias la='exa -la'
 alias fd='fdfind'
-alias python='python3'
 
 # xclip shortcuts
 # use pipe before the alias command to work with xclip
