@@ -23,6 +23,8 @@ DOTFILES_LIST=(
   "${DOTFILES_LOCAL}/.ripgreprc"
   "${DOTFILES_LOCAL}/.scimrc"
   "${DOTFILES_LOCAL}/.tmux.conf"
+  "${DOTFILES_LOCAL}/.tmux/vim_tmux_pipenv_workaround.sh"
+  "${DOTFILES_LOCAL}/.tmux/wsl_statusline.conf"
   "${DOTFILES_LOCAL}/.tmux/wsl_tmux_statusline.sh"
   "${DOTFILES_LOCAL}/.tmuxinator/"
   "${DOTFILES_LOCAL}/.vim/session/"
