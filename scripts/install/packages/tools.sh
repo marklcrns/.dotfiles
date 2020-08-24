@@ -9,7 +9,6 @@ APT_PACKAGES_TOOLS=(
   "fd-find"
   "mlocate"
   "autojump"
-  "k-y"
   "synaptic"
   "rclone-browser"
   "ripgrep"
