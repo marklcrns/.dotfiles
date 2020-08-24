@@ -234,11 +234,13 @@ do
     # Create subdirectories
     execlog "mkdir -p ${full_backup_dir}"
   fi
-  # Copy dotfile into backup directory
-  if execlog "cp -rL ${DOTFILES_LOCAL}/${dotfile_stripped} ${full_backup_dir}" 1; then
-    ok "${DOTFILES_LOCAL}/${dotfile_stripped} -> ${full_backup_dir}"
-  else
-    error "Failed to copy ${DOTFILES_LOCAL}/${dotfile_stripped} -> ${full_backup_dir}"
+  # Copy dotfile into backup directory if existing
+  if [[ -e "${DOTFILES_LOCAL}/${dotfile_stripped}" ]]; then
+    if execlog "cp -rL ${DOTFILES_LOCAL}/${dotfile_stripped} ${full_backup_dir}" 1; then
+      ok "${DOTFILES_LOCAL}/${dotfile_stripped} -> ${full_backup_dir}"
+    else
+      error "Failed to copy ${DOTFILES_LOCAL}/${dotfile_stripped} -> ${full_backup_dir}"
+    fi
   fi
 done
 
@@ -252,10 +254,13 @@ do
   # Strip source directory from path
   dotfile_stripped=$(echo $dotfile | sed "s,${DOTFILES_LOCAL}/,,")
   full_backup_dir="${DOTFILES_BACKUP_DIR}/${BACKUP_DIR_NAME}"
-
-  if [[ ! -e "${full_backup_dir}/${dotfile_stripped}" ]]; then
-    error "'${dotfile_stripped}' is missing from '${full_backup_dir}'"
-    errors_count=$((errors_count+1))
+  # Only check existing local dotfiles
+  if [[ -e "${DOTFILES_LOCAL}/${dotfile_stripped}" ]]; then
+    # Append to error if dotfile is not in backups
+    if [[ ! -e "${full_backup_dir}/${dotfile_stripped}" ]]; then
+      error "'${dotfile_stripped}' is missing from '${full_backup_dir}'"
+      errors_count=$((errors_count+1))
+    fi
   fi
 done
 
