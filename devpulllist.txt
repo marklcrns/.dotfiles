@@ -4,7 +4,5 @@
 ~/Projects/Dev/github-projects/web-dev-projects/surprise;https://github.com/marklcrns/surprise
 ~/Projects/Dev/github-projects/javascript-template-codes;https://github.com/marklcrns/javascript-template-codes
 ~/Projects/Dev/cloned-repos/CISC191-SUM20-B;https://github.com/MiramarCISC/CISC191-SUM20-B
-~/Projects/Dev/cloned-repos/freecol;https://github.com/FreeCol/freecol
 ~/Projects/Dev/cloned-repos/CISC191;https://github.com/MiramarCISC/CISC191.git
-~/Projects/Dev/cloned-repos/Guitar-Hero-Sample;https://github.com/feritzcan/Guitar-Hero
 ~/Projects/Dev/cloned-repos/BlackWidow-Chess;https://github.com/amir650/BlackWidow-Chess
