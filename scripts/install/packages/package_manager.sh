@@ -25,7 +25,7 @@ fi
 
 # Yarn (Needs to go before APT_PACKAGES_PACKAGE_MANAGER installation)
 # Alternative
-curl -o- -L https://yarnpkg.com/install.sh | bash
+curl_install "https://yarnpkg.com/install.sh | bash"
 # Not working
 # curl_install "https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"
 # echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -34,8 +34,10 @@ apt_bulk_install "${APT_PACKAGES_PACKAGE_MANAGER[@]}"
 npm_bulk_install "${NPM_PACKAGES_PACKAGE_MANAGER[@]}"
 
 # Solves Missing write access to /usr/local/lib error
-# https://flaviocopes.com/npm-fix-missing-write-access-error/
-sudo chown -R ${USER} /usr/local/lib/node_modules
+# https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
+mkdir ~/.npm-global
+npm config set prefix '~/.npm-global'
+
 # Update npm to latest version
 npm install -g npm@latest
 

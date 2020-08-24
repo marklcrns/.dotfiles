@@ -16,6 +16,7 @@ NPM_PACKAGES_TEXT_EDITOR=(
 )
 
 PIP3_PACKAGES_TEXT_EDITOR_NEOVIM=(
+  "wheel"
   "neovim"
   "tasklib"
   "send2trash"
