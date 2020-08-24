@@ -325,7 +325,7 @@ pip_install() {
     fi
   fi
   # Check if pip is installed
-  if ! command -v pip${pip_version}; then
+  if ! command -v pip${pip_version} &> /dev/null; then
     error "Pip${pip_version} not installed"
     failed_packages="${failed_packages}\nPip${pip_version} ${package} FAILED. pip${pip_version} not installed"
     return 1
