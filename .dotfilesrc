@@ -16,6 +16,7 @@ DOTFILES_LIST=(
   "${DOTFILES_LOCAL}/.ctags.d/"
   "${DOTFILES_LOCAL}/.dotfilesrc"
   "${DOTFILES_LOCAL}/.gitconfig"
+  "${DOTFILES_LOCAL}/.gitconfig.d/gitalias.txt"
   "${DOTFILES_LOCAL}/.gtd/"
   "${DOTFILES_LOCAL}/.mutt/"
   "${DOTFILES_LOCAL}/.profile"

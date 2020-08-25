@@ -147,6 +147,9 @@ git_clone "https://github.com/marklcrns/wiki" "${HOME}/Docs/wiki" && \
 # Kite
 # bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)"
 
+# C/C++ Language server
+apt_install "ccls"
+
 #################### Session Manager ####################
 
 # Tmuxinator

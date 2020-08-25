@@ -33,17 +33,17 @@
   cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J' -c 'call PrintMergeDiffMappings()'
 [mergetool]
   prompt = true
-
 [diff]
   tool = nvimdiff
 [difftool]
   prompt = false
 [difftool "nvimdiff"]
   cmd = nvim -d \"$LOCAL\" \"$REMOTE\"
-
 [color]
   ui = auto
 
+[include]
+  path = ~/.gitconfig.d/gitalias.txt
 # Ref:
 # .gitconfig: https://github.com/connermcd/dotfiles/blob/master/.gitconfig
 # Show merge conflicts: https://stackoverflow.com/a/10874862
