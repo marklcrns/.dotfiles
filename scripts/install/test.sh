@@ -31,12 +31,8 @@ fi
 
 ##################################################### SCRIPT MAIN EXECUTIONS ###
 
-# Bat v0.15.4 (Manual)
-# Ref: https://github.com/sharkdp/bat#on-ubuntu
-BAT_VERSION="0.15.4"
-cd ${DOWNLOADS_DIR}
-wget_install "https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION}/bat_${BAT_VERSION}_amd64.deb"
-sudo dpkg -i "${DOWNLOADS_DIR}/bat_${BAT_VERSION}_amd64.deb"
+
+# INSERT TESTS HERE
 
 
 #################################################################### WRAP UP ###
