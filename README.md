@@ -6,8 +6,6 @@ Clone repo
 git clone https://github.com/marklcrns/.dotfiles ~/.dotfiles
 ```
 
-> **NOTE:** Could be anywhere other than `~/Projects` directory.
-
 ## Distribute Dotfiles
 
 ```bash
