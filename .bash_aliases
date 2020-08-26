@@ -151,7 +151,7 @@ alias ypath='pwd | cs clipboard && clear; echo "Current path copied to clipboard
 alias cdypath='cd "`vs clipboard`" && clear'
 
 # Update dotfiles backup repository
-DOTFILES="${HOME}/Projects/.dotfiles"
+DOTFILES="${HOME}/.dotfiles"
 
 dotfilespush() {
   CURRENT_DIR_SAVE=$(pwd)

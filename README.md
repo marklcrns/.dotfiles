@@ -2,7 +2,9 @@
 
 Clone repo
 
-`git clone https://github.com/marklcrns/.dotfiles ~/Projects/.dotfiles`
+```bash
+git clone https://github.com/marklcrns/.dotfiles ~/.dotfiles
+```
 
 > **NOTE:** Could be anywhere other than `~/Projects` directory.
 

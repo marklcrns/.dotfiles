@@ -3,7 +3,7 @@
 export DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
 export DOTFILES_BACKUP_LIMIT=10
 export DOTFILES_LOCAL="${HOME}"
-export DOTFILES_REPO="${HOME}/Projects/.dotfiles"
+export DOTFILES_REPO="${HOME}/.dotfiles"
 
 DOTFILES_LIST=(
   "${DOTFILES_LOCAL}/.bash_aliases"
