@@ -1,4 +1,4 @@
-# All my WSL and Linux dotfiles and configurations
+# All my WSL and Linux Dotfiles and configurations
 
 Clone repo
 
@@ -9,14 +9,14 @@ git clone https://github.com/marklcrns/.dotfiles ~/.dotfiles
 ## Distribute Dotfiles
 
 ```bash
-cd ~/.dotfile
+cd ~/.dotfiles
 ./bin/tools/dotfiles/dotdist -VD -r .dotfilesrc . $HOME
 ```
 
 ## Packages Installation
 
 ```bash
-cd ~/.dotfile
+cd ~/.dotfiles
 ./scripts/install/install.sh
 ```
 
