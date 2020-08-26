@@ -28,11 +28,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 338 - ((30 * winheight(0) + 18) / 37)
+let s:l = 434 - ((16 * winheight(0) + 14) / 28)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-338
+434
 normal! 0
 lcd ~/Docs/wiki
 tabnext 1

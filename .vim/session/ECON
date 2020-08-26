@@ -7,10 +7,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +25 school/md/fall-2020/ECON-120/index.md
+badd +16 school/md/fall-2020/ECON-120/index.md
 badd +4 school/md/fall-2020/ECON-120/chapters/index.md
-badd +13 school/md/fall-2020/ECON-120/chapters/chapter-1.md
-badd +439 school/md/spring-2020/ECON-121/notes/ch-1.md
+badd +12 school/md/fall-2020/ECON-120/chapters/chapter-1.md
+badd +12 school/md/spring-2020/ECON-121/notes/ch-1.md
 argglobal
 %argdel
 edit school/md/spring-2020/ECON-121/notes/ch-1.md
@@ -29,12 +29,17 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 6 - ((5 * winheight(0) + 17) / 34)
+let s:l = 16 - ((9 * winheight(0) + 10) / 20)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-6
-normal! 0
+16
+let s:c = 75 - ((69 * winwidth(0) + 40) / 80)
+if s:c > 0
+  exe 'normal! ' . s:c . '|zs' . 75 . '|'
+else
+  normal! 075|
+endif
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

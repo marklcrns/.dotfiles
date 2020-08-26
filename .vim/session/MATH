@@ -9,7 +9,7 @@ endif
 set shortmess=aoO
 badd +26 school/md/fall-2020/MATH-150/index.md
 badd +13 school/md/fall-2020/MATH-150/chapters/index.md
-badd +445 school/md/fall-2020/MATH-150/chapters/chapter-2.md
+badd +456 school/md/fall-2020/MATH-150/chapters/chapter-2.md
 argglobal
 %argdel
 edit school/md/fall-2020/MATH-150/chapters/chapter-2.md
@@ -28,19 +28,19 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 447 - ((25 * winheight(0) + 17) / 34)
+let s:l = 454 - ((16 * winheight(0) + 10) / 20)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-447
-normal! 0
+454
+normal! 038|
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
 unlet! s:wipebuf
-set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=aFcI
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=aFc
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if file_readable(s:sx)
   exe "source " . fnameescape(s:sx)
