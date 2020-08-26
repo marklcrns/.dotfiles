@@ -9,14 +9,14 @@ git clone https://github.com/marklcrns/.dotfiles ~/.dotfiles
 ## Distribute Dotfiles
 
 ```bash
-cd ~/Projects/.dotfile
+cd ~/.dotfile
 ./bin/tools/dotfiles/dotdist -VD -r .dotfilesrc . $HOME
 ```
 
 ## Packages Installation
 
 ```bash
-cd ~/Projects/.dotfile
+cd ~/.dotfile
 ./scripts/install/install.sh
 ```
 
