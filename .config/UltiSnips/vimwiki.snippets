@@ -276,10 +276,10 @@ week_after = datetime.strftime(base + timedelta(7), '%Y-%m-%d')
 
 # Meta
 title = f"title: To-do list for {fn_date}"
+subtitle = f"subtitle: {weekdays[str(base.weekday())]} to-do list. Managed by Taskwarrior and Taskwiki"
 author = "author: Mark Lucernas"
 date = f"date: {fn_date}"
-summary = f"summary: {weekdays[str(base.weekday())]} to-do list. Managed by Taskwarrior and Taskwiki."
-meta = f"---\n{title}\n{author}\n{date}\n{summary}\n---\n\n\n"
+meta = f"---\n{title}\n{subtitle}\n{author}\n{date}\n---\n\n\n"
 # Task warrior filters
 proj = "project:Todo"
 sched = f"scheduled:{today}"
@@ -783,7 +783,7 @@ snippet 'iff' "Mathjax if and only if sign" i
 \iff
 endsnippet
 
-snippet 'pm' "Mathjax plus minus sign" i
+snippet '+-' "Mathjax plus minus sign" i
 \pm
 endsnippet
 
@@ -1320,218 +1320,5 @@ for column in range(0, int(size[0])):
 # removes unnecessary backslashes and wraps with LaTeX matrix wrapper
 snip.rv = begin + result[:-6] + end
 `
-endsnippet
-
-
-# ==========Math Note taking snippets========== #
-snippet tprob "Video lecture Timestamp math problem" bA
-- Problem ${1:1} (${2:1:00})
-* $$3$
-$0
-endsnippet
-
-# Usage: [3-5]?vidlec
-snippet '([3-5])?vidlec' "Math video lecture snippet" brA
-`!p
-header_ct = match.group(1)
-
-if not header_ct:
-	header_ct = 3
-else:
-	header_ct = int(header_ct)
-
-snip.rv = header_ct * "#"
-` Video Lecture$1
-
-	- [VIDEO$1: $2]($3)
-
-`!p
-header_ct = match.group(1)
-
-if not header_ct:
-	header_ct = 4
-else:
-	header_ct = int(header_ct) + 1
-
-snip.rv = header_ct * "#"
-` Video Lecture$1 Notes
-
-$0
-endsnippet
-
-# ==========MATH 141 Note taking snippets========== #
-snippet mathtemp "Vimwiki ECON 121 document template" b
----
-title: MATH 141 Chapter ${1:0} Notes
-author: ${2:Mark Lucernas}
-date: `date '+%Y-%m-%d'`
-summary: $3
----
-
-# Chapter $1: $3
-
-## $1.1 $4
-
-## $1.2 $5
-
-## $1.3 $6
-
-## $1.4 $7
-
-## $1.5 $8
-
-
-<br>
-
-# Resources
-
-endsnippet
-
-
-# ==========CISC 190 Note taking snippets========== #
-snippet cisctemp "Vimwiki CISC 190 Module document template" b
----
-title: CISC 190 Module ${1:0}
-author: ${2:Mark Lucernas}
-date: `date '+%Y-%m-%d'`
-summary: Module $1 notes and exercises
----
-
-
-# Module $1: $0
-
-## Notes
-
-	- [Module $1](../notes/m-$1) -- Chapter
-
-## Homeworks
-
-### Read and Try
-
-### Technical Interview Practice
-
-### Explain
-
-### Reflect
-
-endsnippet
-
-snippet ciscntemp "Vimwiki CISC 160 notes template" b
----
-title: CISC 190 Module ${1:0}
-author: ${2:Mark Lucernas}
-date: `date '+%Y-%m-%d'`
-summary: $3
----
-
-
-# Module $1: $4
-
-## Chapter $5: $6
-
-### $5.1
-
-### $5.2
-
-### $5.3
-
-### $5.4
-
-
-<br>
-
-# Resources
-
-	- [Chapter $5: $6](file:../../../../files/spring-2020/CISC-190/module-$1/java_book_mediaComp_ch-$5.pdf)
-
-endsnippet
-
-
-# ==========CISC 191 Note taking snippets========== #
-snippet cisctemp "Vimwiki CISC 191 Module document template" b
----
-title: CISC 190 Week ${1:0}
-author: ${2:Mark Lucernas}
-date: `date '+%Y-%m-%d'`
-summary: Week $1 notes and activities
----
-
-
-# Week $1
-
-## Notes
-
-	- [Week $1](../notes/w-$1) -- Chapter
-
-endsnippet
-
-snippet ciscntemp "Vimwiki CISC 191 notes template" bA
----
-title: CISC 190 Week Notes ${1:0}
-author: ${2:Mark Lucernas}
-date: `date '+%Y-%m-%d'`
-summary: $3
----
-
-
-# Week $1
-
-## Chapter $5: $6
-
-### $5.1
-
-### $5.2
-
-### $5.3
-
-### $5.4
-
-
-<br>
-
-# Resources
-
-endsnippet
-
-
-# ==========ECON 121 Note taking snippets========== #
-snippet econtemp "Vimwiki ECON 121 document template" b
----
-title: ECON 121 Chapter ${1:0} Notes
-author: ${2:Mark Lucernas}
-date: `date '+%Y-%m-%d'`
-summary: $3
----
-
-
-# Chapter $1: $4
-
-## $1.1 $0
-
-
-### $1.1.1
-
-
-### $1.1.2
-
-
-## $1.2
-
-
-### $1.2.1
-
-
-### $1.2.2
-
-
-<br>
-
-# Resources
-
-Text Books
-
-	- Microeconomics: _Principles, Applications, and Tools_ 10th ed (eText).
-		* Authors: O'Sullivan/Sheffrin/Perez
-
 endsnippet
 
