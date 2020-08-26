@@ -23,13 +23,6 @@ if curl_install "https://raw.githubusercontent.com/creationix/nvm/master/install
   nvm alias default $LATESTNPM
 fi
 
-# Yarn (Needs to go before APT_PACKAGES_PACKAGE_MANAGER installation)
-# Alternative
-curl_install "https://yarnpkg.com/install.sh | bash"
-# Not working
-# curl_install "https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"
-# echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-
 apt_bulk_install "${APT_PACKAGES_PACKAGE_MANAGER[@]}"
 npm_bulk_install "${NPM_PACKAGES_PACKAGE_MANAGER[@]}"
 
@@ -40,4 +33,9 @@ npm config set prefix "${HOME}/.npm-global"
 
 # Update npm to latest version
 npm install -g npm@latest
+
+# Yarn (Needs to go before APT_PACKAGES_PACKAGE_MANAGER installation)
+curl_install "https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+apt_install "yarn" 1
 

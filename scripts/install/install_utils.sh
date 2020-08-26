@@ -180,13 +180,13 @@ curl_install() {
     fi
   else
     # Execute installation
-    if eval "curl -sSO ${from}"; then
+    if eval "curl -sS ${from}"; then
       ok "Curl '${from}' successful!"
-      successful_packages="${successful_packages}\nCurl '${from}' -> '${to}' SUCCESSFUL"
+      successful_packages="${successful_packages}\nCurl '${from}' SUCCESSFUL"
       return 0
     else
       error "Curl '${from}' -> '${to}' FAILED"
-      failed_packages="${failed_packages}\nCurl '${from}' -> '${to}' FAILED"
+      failed_packages="${failed_packages}\nCurl '${from}' FAILED"
       return 1
     fi
   fi

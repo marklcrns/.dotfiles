@@ -193,7 +193,7 @@ skipped_count=0
 failed_count=0
 
 echolog
-echolog "${UL_NC}Successful Package Installations${NC}"
+echolog "${UL_NC}Successful Installations${NC}"
 echolog
 while IFS= read -r package; do
   if [[ -n ${package} ]]; then
@@ -204,7 +204,7 @@ while IFS= read -r package; do
 done < <(echo -e "${successful_packages}") # Process substitution for outside variables
 
 echolog
-echolog "${UL_NC}Skipped Package Installations${NC}"
+echolog "${UL_NC}Skipped Installations${NC}"
 echolog
 while IFS= read -r package; do
   if [[ -n ${package} ]]; then
@@ -215,7 +215,7 @@ while IFS= read -r package; do
 done < <(echo -e "${skipped_packages}") # Process substitution for outside variables
 
 echolog
-echolog "${UL_NC}Failed Package Installations${NC}"
+echolog "${UL_NC}Failed Installations${NC}"
 echolog
 while IFS= read -r package; do
   if [[ -n ${package} ]]; then
@@ -226,10 +226,10 @@ while IFS= read -r package; do
 done < <(echo -e "${failed_packages}") # Process substitution for outside variables
 
 echolog
-echolog "Successful packages:\t${successful_count}"
-echolog "Skipped packages:\t${skipped_count}"
-echolog "failed packages:\t${failed_count}"
-echolog "${BO_NC}Total packages:\t\t${total_count}"
+echolog "Successful installations:\t${successful_count}"
+echolog "Skipped installations:\t${skipped_count}"
+echolog "failed installations:\t${failed_count}"
+echolog "${BO_NC}Total installations:\t\t${total_count}"
 
 finish 'PERSONAL INSTALLATION COMPLETE!'
 
