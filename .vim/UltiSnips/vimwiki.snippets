@@ -1,3 +1,6 @@
+# TODO: Create dynamic placeholders generator with python interpolation
+#				https://github.com/SirVer/ultisnips/blob/master/doc/examples/tabstop-generation/README.md
+
 # A valid snippet should starts with:
 #
 #		snippet trigger_word [ "description" [ options ] ]
@@ -151,7 +154,7 @@ snippet itag "In-line HTML tag <>" wA
 <$1>${0:${VISUAL}}</$1>
 endsnippet
 
-snippet (.+)?fen "Fenced code block" rbA
+snippet '(.+)?fen' "Fenced code block" rbA
 \`\`\``!p snip.rv = "" if match.group(1) == None else match.group(1)`
 ${0:${VISUAL}}
 \`\`\`
@@ -306,7 +309,7 @@ snip.rv = result`
 
 endsnippet
 
-snippet (\d+)meds "Description" rbA
+snippet '(\d+)meds' "Description" rbA
 `!p
 from datetime import datetime, timedelta
 # parse date filename
@@ -330,7 +333,7 @@ tomorrow = datetime.strftime(base + timedelta(1), '%Y-%m-%d')
 * [ ] `!p snip.rv = create_meds_task("1 Famotidine 1daily", init_time, 400)`
 endsnippet
 
-snippet due "Description" rw
+snippet due "Description" w
 `!p
 from datetime import datetime, timedelta
 # parse date filename
@@ -405,7 +408,7 @@ for line in lines: # Loop over lines
 snip.rv = result`
 endsnippet
 
-snippet t(\d+) "Markdown table" rbA
+snippet 't(\d+)' "Markdown table" rbA
 `!p
 num = match.group(1) # number of table columns
 
@@ -729,16 +732,16 @@ endsnippet
 # Auto exponent/superscript
 # Matches any number of digits, words, or outside of enclosing brackets
 # or parenthesis character followed by '^' using negative lookbehind
-snippet '(?<=\d+|\w+|\(.*\)|\[.*\]|\{.*\})\^' "Mathjax auto exponent/superscript" ir
-^{$1}$0
-endsnippet
+# snippet '(?<=\d+|\w+|\(.*\)|\[.*\]|\{.*\})\^' "Mathjax auto exponent/superscript" ir
+# ^{$1}$0
+# endsnippet
 
 # Auto subscript
 # Matches any number of digits, words, or outside of enclosing brackets
 # or parenthesis character followed by '_' using negative lookbehind
-snippet '(?<=\d+|\w+|\(.*\)|\[.*\]|\{.*\})_' "Mathjax auto subscript" ir
-_{$1}$0
-endsnippet
+# snippet '(?<=\d+|\w+|\(.*\)|\[.*\]|\{.*\})_' "Mathjax auto subscript" ir
+# _{$1}$0
+# endsnippet
 
 snippet sqrt "Mathjax square root" iA
 \sqrt{${1:${VISUAL}}}$0
@@ -775,7 +778,7 @@ endsnippet
 # Symbols
 # ============================================================
 
-snippet (\d+|[a-kx-z])deg "Mathjax degrees symbol" irA
+snippet '(\d+|[a-kx-z])deg' "Mathjax degrees symbol" irA
 `!p snip.rv = match.group(1)`^{\circ}
 endsnippet
 
@@ -783,7 +786,7 @@ snippet pi "Mathjax pi symbol" iw
 \pi
 endsnippet
 
-snippet (\d+)pi "Mathjax auto pi symbol" irA
+snippet '(\d+)pi' "Mathjax auto pi symbol" irA
 `!p snip.rv = match.group(1)`\pi
 endsnippet
 
@@ -1150,67 +1153,67 @@ snippet col# "Mathjax text color" iA
 endsnippet
 
 # FIXED: Fix bug on recycling previous match groups on multiple snippet calls
-# snippet '(\d+|\\)?(sin|cos|tan|csc|sec|cot)\(' "Mathjax trig functions" riA
-# `!p snip.rv = ("" if match.group(1) == None else match.group(1)) + "\\" + match.group(2)`($1)$0
-# endsnippet
+snippet '(\d+|\\)?(sin|cos|tan|csc|sec|cot)' "Mathjax trig functions" ri
+`!p snip.rv = ("" if match.group(1) == None else match.group(1)) + "\\" + match.group(2)`($1)$0
+endsnippet
 
-# snippet '(\d+)?(sin|cos|tan|csc|sec|cot)(\d+)' "Mathjax sine raise to n function" riA
-# `!p snip.rv = ("" if match.group(2) == None else match.group(1)) + "\\" + match.group(2) + "^{" + match.group(3) + "}"`($1)$0
-# endsnippet
+snippet '(\d+)?(sin|cos|tan|csc|sec|cot)(\d+)' "Mathjax sine raise to n function" riA
+`!p snip.rv = ("" if match.group(2) == None else match.group(1)) + "\\" + match.group(2) + "^{" + match.group(3) + "}"`($1)$0
+endsnippet
 
-# snippet '(\d+)?(sin|cos|tan|csc|sec|cot)-' "Mathjax trig arc-functions" riA
-# `!p snip.rv = ("" if match.group(1) == None else match.group(1)) + "\\" + match.group(2)`^{-1}($1)$0
-# endsnippet
+snippet '(\d+)?(sin|cos|tan|csc|sec|cot)-' "Mathjax trig arc-functions" riA
+`!p snip.rv = ("" if match.group(1) == None else match.group(1)) + "\\" + match.group(2)`^{-1}($1)$0
+endsnippet
 
 # HARD CODE WORKAROUND
 # Basic trig function
-snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)sin' "Mathjax sine function" ir
-\sin($1)$0
-endsnippet
-
-snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)cos' "Mathjax cosine function" ir
-\cos($1)$0
-endsnippet
-
-snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)tan' "Mathjax tangent function" ir
-\tan($1)$0
-endsnippet
-
-snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)sec' "Mathjax secant function" ir
-\sec($1)$0
-endsnippet
-
-snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)csc' "Mathjax cosecant function" ir
-\csc($1)$0
-endsnippet
-
-snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)cot' "Mathjax cotangent function" ir
-\cot($1)$0
-endsnippet
-
-snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)-sin' "Mathjax arc-sine function" ir
-\sin^{-1}($1)$0
-endsnippet
-
-snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)-cos' "Mathjax arc-cosine function" ir
-\cos^{-1}($1)$0
-endsnippet
-
-snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)-tan' "Mathjax arc-tangent function" ir
-\tan^{-1}($1)$0
-endsnippet
-
-snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)-csc' "Mathjax arc-cosecant function" ir
-\csc^{-1}($1)$0
-endsnippet
-
-snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)-sec' "Mathjax arc-secant function" ir
-\sec^{-1}($1)$0
-endsnippet
-
-snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)-cot' "Mathjax arc-cotangent function" ir
-\cot^{-1}($1)$0
-endsnippet
+# snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)sin' "Mathjax sine function" ir
+# \sin($1)$0
+# endsnippet
+# 
+# snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)cos' "Mathjax cosine function" ir
+# \cos($1)$0
+# endsnippet
+# 
+# snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)tan' "Mathjax tangent function" ir
+# \tan($1)$0
+# endsnippet
+# 
+# snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)sec' "Mathjax secant function" ir
+# \sec($1)$0
+# endsnippet
+# 
+# snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)csc' "Mathjax cosecant function" ir
+# \csc($1)$0
+# endsnippet
+# 
+# snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)cot' "Mathjax cotangent function" ir
+# \cot($1)$0
+# endsnippet
+# 
+# snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)-sin' "Mathjax arc-sine function" ir
+# \sin^{-1}($1)$0
+# endsnippet
+# 
+# snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)-cos' "Mathjax arc-cosine function" ir
+# \cos^{-1}($1)$0
+# endsnippet
+# 
+# snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)-tan' "Mathjax arc-tangent function" ir
+# \tan^{-1}($1)$0
+# endsnippet
+# 
+# snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)-csc' "Mathjax arc-cosecant function" ir
+# \csc^{-1}($1)$0
+# endsnippet
+# 
+# snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)-sec' "Mathjax arc-secant function" ir
+# \sec^{-1}($1)$0
+# endsnippet
+# 
+# snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)-cot' "Mathjax arc-cotangent function" ir
+# \cot^{-1}($1)$0
+# endsnippet
 
 
 # Matrices, absolute value and parenthises
