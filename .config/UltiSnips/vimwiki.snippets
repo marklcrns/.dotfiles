@@ -673,6 +673,14 @@ snippet xtit "Mathjax text italic" wA
 \textit{${1:${VISUAL}}}$0
 endsnippet
 
+snippet __ "Mathjax underline" w
+\underline{${1:${VISUAL}}}$0
+endsnippet
+
+snippet nl "Mathjax empty line" bA
+~\\\\
+endsnippet
+
 # Usage: n==, where n is the number of equations stack
 snippet '(\d+)==' "KaTex block align equations" brA
 \begin{aligned}
@@ -736,7 +744,7 @@ snippet sqrt "Mathjax square root" iA
 \sqrt{${1:${VISUAL}}}$0
 endsnippet
 
-snippet '(\d+)rt' "Mathjax root of n" irA
+snippet '(\d+|n|x|y|z)rt' "Mathjax root of n" ir
 \sqrt[`!p snip.rv = match.group(1)`]{$1}$0
 endsnippet
 
