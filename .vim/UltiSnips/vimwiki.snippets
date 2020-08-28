@@ -1,5 +1,5 @@
 # TODO: Create dynamic placeholders generator with python interpolation
-#				https://github.com/SirVer/ultisnips/blob/master/doc/examples/tabstop-generation/README.md
+# https://github.com/SirVer/ultisnips/blob/master/doc/examples/tabstop-generation/README.md
 
 # A valid snippet should starts with:
 #
@@ -264,7 +264,7 @@ endsnippet
 # Prepend "!" to include "until" filter set to week_after.
 # Prepend "#" to use taskwiki Preset Headers instead of Viewport
 # Prepend "&" to generate nested todo (Must use Preset Headers to nest filters)
-snippet '([!#&]+)?todo' "To-do list template" rbA
+snippet '([!#&]+)todo' "To-do list template" rbA
 `!p
 from datetime import datetime, timedelta
 # parse date filename
@@ -729,6 +729,7 @@ endsnippet
 # Exponents, Superscript, Subscript
 # ============================================================
 
+# TODO: Fix lookbehind fixed witdh pattern error
 # Auto exponent/superscript
 # Matches any number of digits, words, or outside of enclosing brackets
 # or parenthesis character followed by '^' using negative lookbehind
@@ -1153,18 +1154,19 @@ snippet col# "Mathjax text color" iA
 endsnippet
 
 # FIXED: Fix bug on recycling previous match groups on multiple snippet calls
-snippet '(\d+|\\)?(sin|cos|tan|csc|sec|cot)' "Mathjax trig functions" ri
-`!p snip.rv = ("" if match.group(1) == None else match.group(1)) + "\\" + match.group(2)`($1)$0
-endsnippet
+# snippet '(\d+|\\)?(sin|cos|tan|csc|sec|cot)' "Mathjax trig functions" ri
+# `!p snip.rv = ("" if match.group(1) == None else match.group(1)) + "\\" + match.group(2)`($1)$0
+# endsnippet
+# 
+# snippet '(\d+)?(sin|cos|tan|csc|sec|cot)(\d+)' "Mathjax sine raise to n function" riA
+# `!p snip.rv = ("" if match.group(2) == None else match.group(1)) + "\\" + match.group(2) + "^{" + match.group(3) + "}"`($1)$0
+# endsnippet
+# 
+# snippet '(\d+)?(sin|cos|tan|csc|sec|cot)-' "Mathjax trig arc-functions" riA
+# `!p snip.rv = ("" if match.group(1) == None else match.group(1)) + "\\" + match.group(2)`^{-1}($1)$0
+# endsnippet
 
-snippet '(\d+)?(sin|cos|tan|csc|sec|cot)(\d+)' "Mathjax sine raise to n function" riA
-`!p snip.rv = ("" if match.group(2) == None else match.group(1)) + "\\" + match.group(2) + "^{" + match.group(3) + "}"`($1)$0
-endsnippet
-
-snippet '(\d+)?(sin|cos|tan|csc|sec|cot)-' "Mathjax trig arc-functions" riA
-`!p snip.rv = ("" if match.group(1) == None else match.group(1)) + "\\" + match.group(2)`^{-1}($1)$0
-endsnippet
-
+# TODO: Fix lookbehind fixed witdh pattern error
 # HARD CODE WORKAROUND
 # Basic trig function
 # snippet '(((?<=\d{1,5})|(?<=\s)|(?<=)|(?<=}))|\\)sin' "Mathjax sine function" ir
