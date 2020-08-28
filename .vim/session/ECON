@@ -7,13 +7,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +16 school/md/fall-2020/ECON-120/index.md
-badd +4 school/md/fall-2020/ECON-120/chapters/index.md
-badd +12 school/md/fall-2020/ECON-120/chapters/chapter-1.md
-badd +12 school/md/spring-2020/ECON-121/notes/ch-1.md
+badd +13 school/md/fall-2020/ECON-120/chapters/index.md
+badd +13 school/md/fall-2020/ECON-120/chapters/chapter-1.md
 argglobal
 %argdel
-edit school/md/spring-2020/ECON-121/notes/ch-1.md
+edit school/md/fall-2020/ECON-120/chapters/chapter-1.md
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -29,24 +27,19 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 16 - ((9 * winheight(0) + 10) / 20)
+let s:l = 17 - ((16 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-16
-let s:c = 75 - ((69 * winwidth(0) + 40) / 80)
-if s:c > 0
-  exe 'normal! ' . s:c . '|zs' . 75 . '|'
-else
-  normal! 075|
-endif
+17
+normal! 0
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
 unlet! s:wipebuf
-set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=aFc
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=aFcI
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if file_readable(s:sx)
   exe "source " . fnameescape(s:sx)

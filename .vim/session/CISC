@@ -9,7 +9,7 @@ endif
 set shortmess=aoO
 badd +125 school/md/fall-2020/CISC-192/chapters/chapter-1/notes.md
 badd +13 school/md/fall-2020/CISC-192/chapters/chapter-2/index.md
-badd +336 school/md/fall-2020/CISC-192/chapters/chapter-2/notes.md
+badd +486 school/md/fall-2020/CISC-192/chapters/chapter-2/notes.md
 argglobal
 %argdel
 edit school/md/fall-2020/CISC-192/chapters/chapter-2/notes.md
@@ -28,11 +28,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 434 - ((16 * winheight(0) + 14) / 28)
+let s:l = 418 - ((11 * winheight(0) + 19) / 38)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-434
+418
 normal! 0
 lcd ~/Docs/wiki
 tabnext 1
