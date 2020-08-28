@@ -194,7 +194,7 @@ for dotfile in ${DOTFILES_LIST[@]}; do
   source_file="${dotfile}"
   target_file="${DOTFILES_REPO}/${source_stripped}"
 
-  detect_changes "${source_file}" "${target_file}" changes changes_count files_count
+  detect_change "${source_file}" "${target_file}" changes changes_count files_count
   detect_delete "${target_file}" "${source_file}" delete delete_count
 
   # Initialize counters if none
@@ -354,7 +354,7 @@ for dotfile in ${DOTFILES_LIST[@]}; do
   source_file="${dotfile}"
   target_file="${DOTFILES_REPO}/${source_stripped}"
 
-  detect_changes "${source_file}" "${target_file}" changes changes_count files_count 1
+  detect_change "${source_file}" "${target_file}" changes changes_count files_count 1
   if [[ -z "${NO_DELETE}" ]]; then
     detect_delete "${target_file}" "${source_file}" delete delete_count files_count 1
   fi

@@ -9,7 +9,7 @@
 #
 ################################# Functions ###################################
 #
-# detect_changes()     = Compare two files or directory (recursively) for file
+# detect_change()     = Compare two files or directory (recursively) for file
 #                        changes with `cmp` byte by byte and return a passed in
 #                        `__changes_list` string, appending `__source` path if
 #                        changes has been detected.
@@ -65,7 +65,7 @@ fi
 # $6 = Pass in integer '1' to turn on IS_QUITE
 #
 # Returns $3, $4, $5 variable args with new values from execution.
-detect_changes() {
+detect_change() {
   local __source=$1
   local __target=$2
   local __changes_list=$3
