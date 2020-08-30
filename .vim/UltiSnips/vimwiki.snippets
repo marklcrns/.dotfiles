@@ -173,23 +173,23 @@ snippet br "Markdown breakline" w
 endsnippet
 
 snippet l "Link tag"
-[${1:${VISUAL}}]($0)
+- [🌎 ${1:${VISUAL}}]($0)
 endsnippet
 
 snippet + "Vimwiki link tag" w
-[+${1:${VISUAL}}]($0)
+- [↪ ${1:${VISUAL}}]($0)
 endsnippet
 
 snippet v "Linkt tag for videos" w
-[\`${1:${VISUAL}}]($0)
+- [🎬 ${1:${VISUAL}}]($0)
 endsnippet
 
 snippet f "File Link tag" w
-[*${1:${VISUAL}}](file:../../../$0)
+- [⬇ ${1:${VISUAL}}](file:../../../$0)
 endsnippet
 
 snippet vf "Open file link into vim" w
-[*${1:${VISUAL}}](vfile:../../../$0)
+- [⬇ ${1:${VISUAL}}](vfile:../../../$0)
 endsnippet
 
 snippet img "Image link" w
@@ -197,7 +197,7 @@ snippet img "Image link" w
 endsnippet
 
 snippet al "Markdown anchor link" w
-[#${1:${VISUAL}}](${0:file}#${1:anchor-link})
+- [⚓ ${1:${VISUAL}}](${0:file}#${1:anchor-link})
 endsnippet
 
 snippet anc "Html anchor" bA
@@ -235,7 +235,7 @@ snippet meta "Meta deta template" b
 title: ${1:(INSERT TITLE)}
 subtitle: ${2:(INSERT SUBTITLE)}
 author: ${3:Mark Lucernas}
-date: `date '+%Y-%m-%d'`
+date: `date +'%b %m, %Y'`
 ---
 
 
@@ -247,13 +247,20 @@ snippet temp "Vimwiki document template" b
 title: ${1:(INSERT TITLE)}
 subtitle: ${2:(INSERT SUBTITLE)}
 author: ${3:Mark Lucernas}
-date: `date '+%Y-%m-%d'`
+date: `date +'%b %m, %Y'`
 ---
 
 
 # $0
 
 
+<br>
+
+# Resources
+
+endsnippet
+
+snippet res "Vimwiki document resources header" b
 <br>
 
 # Resources
@@ -274,14 +281,15 @@ flags = match.group(1) if match.group(1) != None else ""
 # get today, and day after tomorrow's date in string
 base = datetime(int(date[0]), int(date[1]), int(date[2]))
 today = datetime.strftime(base, '%Y-%m-%d')
+today_verbose = datetime.strftime(base, '%b %m, %Y')
 tomorrow = datetime.strftime(base + timedelta(1), '%Y-%m-%d')
 week_after = datetime.strftime(base + timedelta(7), '%Y-%m-%d')
 
 # Meta
-title = f"title: To-do list for {fn_date}"
+title = f"title: To-do list"
 subtitle = f"subtitle: {weekdays[str(base.weekday())]} to-do list. Managed by Taskwarrior and Taskwiki"
 author = "author: Mark Lucernas"
-date = f"date: {fn_date}"
+date = f"date: {today_verbose}"
 meta = f"---\n{title}\n{subtitle}\n{author}\n{date}\n---\n\n\n"
 # Task warrior filters
 proj = "project:Todo"
