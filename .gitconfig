@@ -12,7 +12,8 @@
   default = current
 [credential]
   helper = cache --timeout=28800
-
+[core]
+  excludesfile = ~/.gitignore_global
 # Resources:
 #   https://www.grzegorowski.com/using-vim-or-neovim-nvim-as-a-git-mergetool
 #   https://coderwall.com/p/qbtnsw/use-fugitive-as-git-mergetool
