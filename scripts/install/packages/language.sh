@@ -10,14 +10,15 @@ APT_PACKAGES_LANGUAGE=(
   "python3-pip"
   "python3-venv"
   # Java
+  "default-jre"
+  "default-jdk"
   "openjdk-8-jdk"
   "openjdk-8-jre"
   "openjdk-11-jdk"
   "openjdk-11-jre"
   "openjdk-13-jdk"
   "openjdk-13-jre"
-  "default-jre"
-  "default-jdk"
+  "maven"
 )
 
 PIP3_PACKAGES_LANGUAGES=(
