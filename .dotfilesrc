@@ -9,6 +9,7 @@ DOTFILES_LIST=(
   "${DOTFILES_LOCAL}/.bash_aliases"
   "${DOTFILES_LOCAL}/.bash_profile"
   "${DOTFILES_LOCAL}/.bashrc"
+  "${DOTFILES_LOCAL}/.config/alacritty/alacritty.yml"
   "${DOTFILES_LOCAL}/.config/ranger/"
   "${DOTFILES_LOCAL}/.config/zathura/"
   "${DOTFILES_LOCAL}/.ctags"
