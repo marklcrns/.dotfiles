@@ -2,7 +2,6 @@
 
 APT_PACKAGES_PACKAGE_MANAGER=(
   "npm"
-  "yarn;update"
 )
 
 NPM_PACKAGES_PACKAGE_MANAGER=(
@@ -14,15 +13,6 @@ echolog
 echolog "${UL_NC}Installing Package Manager Packages${NC}"
 echolog
 
-# NVM/NodeJS
-if curl_install "https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash"; then
-  LATESTNPM=`nvm ls-remote | tail -1 | sed 's/^.*\(v[0-9\.]\)/\1/'`
-  ## install latest npm
-  nvm install $LATESTNPM
-  nvm use $LATESTNPM
-  nvm alias default $LATESTNPM
-fi
-
 apt_bulk_install "${APT_PACKAGES_PACKAGE_MANAGER[@]}"
 npm_bulk_install "${NPM_PACKAGES_PACKAGE_MANAGER[@]}"
 
@@ -33,6 +23,22 @@ npm config set prefix "${HOME}/.npm-global"
 
 # Update npm to latest version
 npm install -g npm@latest
+
+# NVM/NodeJS
+if curl_install "https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash"; then
+  # source bashrc or zshrc
+  if [[ -n ${BASH_VERSION} ]]; then
+    source ~/.bashrc
+  elif [[ -n ${ZSH_VERSION} ]]; then
+    source ~/.zshrc
+  fi
+  # Install latest nvm and set to default
+  export LATEST_NPM="$(nvm ls-remote | tail -1 | sed 's/^.*\(v[0-9\.]\)/\1/')"
+  ## install latest npm
+  nvm install ${LATEST_NPM}
+  nvm use ${LATEST_NPM}
+  nvm alias default ${LATEST_NPM}
+fi
 
 # Yarn (Needs to go before APT_PACKAGES_PACKAGE_MANAGER installation)
 curl_install "https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"

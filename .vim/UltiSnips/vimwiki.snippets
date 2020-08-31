@@ -173,23 +173,23 @@ snippet br "Markdown breakline" w
 endsnippet
 
 snippet l "Link tag"
-- [🌎 ${1:${VISUAL}}]($0)
+[🌎 ${1:${VISUAL}}]($0)
 endsnippet
 
 snippet + "Vimwiki link tag" w
-- [↪ ${1:${VISUAL}}]($0)
+[↪ ${1:${VISUAL}}]($0)
 endsnippet
 
 snippet v "Linkt tag for videos" w
-- [🎬 ${1:${VISUAL}}]($0)
+[🎬 ${1:${VISUAL}}]($0)
 endsnippet
 
 snippet f "File Link tag" w
-- [⬇ ${1:${VISUAL}}](file:../../../$0)
+[⬇ ${1:${VISUAL}}](file:../../../$0)
 endsnippet
 
 snippet vf "Open file link into vim" w
-- [⬇ ${1:${VISUAL}}](vfile:../../../$0)
+[⬇ ${1:${VISUAL}}](vfile:../../../$0)
 endsnippet
 
 snippet img "Image link" w
@@ -197,7 +197,7 @@ snippet img "Image link" w
 endsnippet
 
 snippet al "Markdown anchor link" w
-- [⚓ ${1:${VISUAL}}](${0:file}#${1:anchor-link})
+[⚓ ${1:${VISUAL}}](${0:file}#${1:anchor-link})
 endsnippet
 
 snippet anc "Html anchor" bA
@@ -373,7 +373,7 @@ endsnippet
 # Usage: [wrap]?table, optional wrapper char for each table cell
 # Note: Lines should trail '&' char for splitting. Only until second to last.
 # Ref: http://vimcasts.org/episodes/ultisnips-visual-placeholder/
-snippet '(.+)?tab' "Description" rb
+snippet '(.+)?atab' "Markdown Table Builder" rbA
 `!p
 # Fetch visual selected text
 text = snip.v.text

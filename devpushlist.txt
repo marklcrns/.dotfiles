@@ -3,3 +3,4 @@
 ~/Projects/Dev/github-projects/web-dev-projects/100-Days-Webpage-Challenge;https://github.com/marklcrns/100-Days-Webpage-Challenge
 ~/Projects/Dev/github-projects/web-dev-projects/surprise;https://github.com/marklcrns/surprise
 ~/Projects/Dev/github-projects/javascript-template-codes;https://github.com/marklcrns/javascript-template-codes
+~/Projects/Dev/eclipse-workspace/the-game-of-generals;https://github.com/marklcrns/the-game-of-generals
