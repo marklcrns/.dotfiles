@@ -14,8 +14,8 @@ APT_PACKAGES_MISC=(
   "lolcat"
   "fortune"
   "sl"
-  "taskwarrior"
-  "timewarrior"
+  "sysbench"
+  "stress"
 )
 
 echolog

@@ -17,6 +17,8 @@ APT_PACKAGES_TOOLS=(
   "texlive"
   "r-base"
   "inotify-tools"
+  "taskwarrior"
+  "timewarrior"
 )
 
 APT_PACKAGES_TOOLS_CTAGS_DEPENDENCIES=(

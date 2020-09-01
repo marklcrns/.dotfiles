@@ -779,12 +779,7 @@ setjavaopenjdkhome() {
     sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}/jre/," ~/.profile || \
     echo "export JAVA_HOME=${JDK_HOME}/jre/" | tee -a ~/.profile
 
-  # source profile
-  if [[ -n ${BASH_VERSION} ]]; then
-    . ~/.profile
-  elif [[ -n ${ZSH_VERSION} ]]; then
-    . ~/.zprofile
-  fi
+  source ~/.profile
 }
 
 setjavaoraclejdkhome() {
@@ -800,12 +795,7 @@ setjavaoraclejdkhome() {
     sed -i "s,JRE_HOME=.*,JRE_HOME=${JDK_HOME}/jre," ~/.profile || \
     echo "export JRE_HOME=${JDK_HOME}/jre" | tee -a ~/.profile
 
-  # source profile
-  if [[ -n ${BASH_VERSION} ]]; then
-    . ~/.profile
-  elif [[ -n ${ZSH_VERSION} ]]; then
-    . ~/.zprofile
-  fi
+  source. ~/.profile
 }
 
 alias openjdk8="export JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64 && setjavaopenjdkhome"

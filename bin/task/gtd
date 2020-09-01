@@ -19,7 +19,7 @@ set -e
 # Command configuration
 if [[ $(grep -i microsoft /proc/version) ]]; then
   # Export somewhere: WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
-  GTD_HOME="${GTD_HOME:-"/mnt/c/Users/${WIN_USERNAME}/Documents/.gtd"}"
+  GTD_HOME="${GTD_HOME:-"/mnt/c/Users/${WIN_USERNAME}/.gtd"}"
   SPEAK_CMD="${SPEAK_CMD:-"cd ${GTD_HOME}/espeak; cmd.exe /c start"}"
 else
   GTD_HOME="${GTD_HOME:-"$HOME/.gtd"}"

@@ -7,188 +7,32 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +28 school/md/fall-2020/CISC-192/chapters/chapter-2/notes.md
-badd +51 docs/md/index.md
-badd +309 docs/md/emojis.md
-badd +14 school/md/fall-2020/index.md
-badd +27 docs/md/tmux/commands.md
-badd +18 docs/md/bash/index.md
-badd +20 school/md/fall-2020/BUSE-120/index.md
-badd +15 docs/md/ydiff/usage.md
-badd +211 docs/md/bash/scripting/array.md
-badd +103 school/md/spring-2020/MATH-141/index.md
-badd +150 FAR\ 4
-badd +7 README.md
-badd +397 docs/md/git/basic.md
-badd +13 school/md/spring-2020/CISC-190/modules/module_0.md
-badd +40 school/md/spring-2020/CISC-190/modules/module_1.md
-badd +18 school/md/summer-2020/CISC-191/modules/week-2/index.md
-badd +13 wiki/md/diary/2020-08-20.md
-badd +1 school/md/fall-2020/BUSE-120/modules/module-1/index.md
-badd +1 docs/md/vim/plugins/junegunn/fzf.md
-badd +1 wiki/school/md/fall-2020/ECON-120/index.md
-badd +1 docs/md/desktop-apps/alacritty/configs.md
-badd +1 docs/md/tmux/mappings.md
-badd +1 docs/md/git/usage.md
-badd +1 wiki/school/md/index.md
-badd +1 docs/md/bash/scripting/variable.md
-badd +1 wiki/school/md/summer-2020/CISC-191/modules/week-3/notes/index.md
-badd +1 docs/md/git-lfs/installation.md
-badd +1 school/md/spring-2020/MATH-141/notes/ch-6.md
-badd +1 templates/README.md
-badd +1 docs/md/bash/scripting/index.md
-badd +1 docs/md/git-lfs/index.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-3/notes/big-o-notation/index.md
-badd +1 school/md/spring-2020/ECON-120/index.md
-badd +1 docs/md/tmux/index.md
-badd +1 school/md/fall-2020/BUSE-120/modules/module-1/notes.md
-badd +1 school/md/spring-2020/MATH-141/notes/ch-2.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-4/notes/sets-and-maps/index.md
-badd +1 school/md/spring-2020/CISC-190/modules/module_4.md
-badd +1 wiki/school/md/fall-2020/CISC-192/chapters/chapter-1/index.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-2/notes/w-2.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-5/notes/multi-threading-tutorial.md
-badd +1 wiki/school/md/fall-2020/BUSE-120/modules/index.md
-badd +1 school/md/spring-2020/CISC-190/notes/m-6.md
-badd +1 school/md/spring-2020/CISC-190/modules/module_3.md
-badd +1 school/md/spring-2020/CISC-190/notes/m-5.md
-badd +1 school/md/spring-2020/CISC-190/notes/m-4.md
-badd +1 school/md/spring-2020/CISC-190/notes/m-1.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-5/index.md
-badd +1 school/md/summer-2020/ENGL-205/readings/the-warehouse/index.md
-badd +1 school/md/spring-2020/MATH-141/notes/ch-7.md
-badd +1 wiki/school/md/summer-2020/index.md
-badd +1 school/md/spring-2020/MATH-141/notes/ch-4.md
-badd +1 school/md/summer-2020/ENGL-205/readings/the-unite-states-of-paranoia/index.md
-badd +1 school/md/summer-2020/ENGL-205/readings/index.md
-badd +1 docs/md/vim/plugins/junegunn/vim-easy-align.md
-badd +1 wiki/school/md/fall-2020/MATH-150/index.md
-badd +1 school/md/spring-2020/MATH-141/notes/ch-5.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-7/notes/lambda_stream.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-6/notes/networking/index.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-7/notes/javafx.md
-badd +1 school/md/spring-2020/CISC-190/modules/module_6.md
-badd +1 docs/md/docker.md
-badd +1 docs/md/bash/scripting/extras.md
-badd +1 docs/md/bash/scripting/if-else.md
-badd +1 wiki/school/md/summer-2020/CISC-191/modules/week-3/notes/recursion/index.md
-badd +1 docs/md/ydiff/installation.md
-badd +1 school/md/spring-2020/MATH-141/notes/ch-3.md
-badd +1 wiki/school/md/summer-2020/CISC-191/modules/week-6/index.md
-badd +1 docs/md/mysql/index.md
-badd +1 school/md/fall-2020/BUSE-120/modules/module-2/notes.md
-badd +1 docs/md/bash/scripting/out-streams.md
-badd +1 wiki/school/md/fall-2020/CISC-192/chapters/chapter-1/notes.md
-badd +1 docs/md/bash/mount.md
-badd +1 docs/md/vim/plugins/index.md
-badd +1 docs/md/desktop-apps/alacritty/index.md
-badd +1 wiki/school/md/summer-2020/CISC-191/modules/week-6/notes/index.md
-badd +1 wiki/school/md/summer-2020/CISC-191/modules/week-3/index.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-5/graded_discussion.md
-badd +1 docs/md/ydiff/index.md
-badd +1 docs/md/bash/scripting/loops.md
-badd +1 wiki/school/md/summer-2020/CISC-191/index.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-7/notes/index.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-6/notes/database/index.md
-badd +1 docs/md/desktop-apps/alacritty/installation.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-4/notes/list/index.md
-badd +1 wiki/school/md/summer-2020/CISC-191/modules/index.md
-badd +1 school/md/spring-2020/CISC-190/notes/m-2.md
-badd +1 school/md/summer-2020/ENGL-205/index.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-1/index.md
-badd +1 docs/md/vim/commands/index.md
-badd +1 school/md/summer-2020/ENGL-205/readings/the-warehouse/essay.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-3/notes/big-o-notation/big_o_notation_java_collections.md
-badd +1 school/md/spring-2020/CISC-190/modules/module_8.md
-badd +1 wiki/md/index.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-5/notes/index.md
-badd +1 wiki/school/md/summer-2020/CISC-191/modules/week-6/lab.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-5/lab.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-1/notes/index.md
-badd +1 school/md/fall-2020/CISC-192/chapters/chapter-2/index.md
-badd +1 docs/md/vim/plugins/vimwiki/vimwiki.md
-badd +1 school/md/spring-2020/index.md
-badd +1 school/md/fall-2020/ECON-120/chapters/index.md
-badd +1 docs/md/wsl/docker.md
-badd +1 school/md/spring-2020/CISC-190/notes/m-3.md
-badd +1 school/md/spring-2020/CISC-190/index.md
-badd +1 docs/md/bash/scripting/flags.md
-badd +1 wiki/md/diary/diary.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-3/notes/sorting-algorithms/index.md
-badd +1 docs/md/vim/index.md
-badd +1 wiki/school/md/fall-2020/MATH-150/chapters/index.md
-badd +1 docs/md/taskwarrior/index.md
-badd +1 docs/md/git/index.md
-badd +1 wiki/school/md/summer-2020/CISC-191/modules/week-4/index.md
-badd +1 school/md/spring-2020/ECON-121/index.md
-badd +1 docs/md/bash/scripting/arguments.md
-badd +1 docs/md/vim/plugins/itchyny/calendar.md
-badd +1 wiki/school/md/summer-2020/CISC-191/modules/week-7/index.md
-badd +1 school/md/spring-2020/CISC-190/modules/module_7.md
-badd +1 school/md/spring-2020/CISC-190/modules/module_2.md
-badd +1 wiki/school/md/fall-2020/CISC-192/index.md
-badd +1 wiki/school/md/summer-2020/CISC-191/modules/week-4/notes/generics-and-collections/employee_records.md
-badd +1 wiki/school/md/fall-2020/CISC-192/chapters/index.md
-badd +1 docs/md/bash/scripting/string.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-3/notes/search-algorithms/index.md
-badd +1 docs/md/git/advanced.md
-badd +1 school/md/fall-2020/BUSE-120/modules/module-2/index.md
-badd +1 school/md/spring-2020/CISC-190/notes/m-7.md
-badd +1 school/md/summer-2020/CISC-191/modules/week-4/notes/streams/index.md
-badd +1 wiki/school/md/fall-2020/MATH-150/chapters/chapter-2.md
-badd +1 school/md/spring-2020/MATH-141/notes/ch-1.md
+badd +11 school/md/fall-2020/CISC-192/chapters/index.md
 argglobal
 %argdel
-edit FAR\ 4
+edit school/md/fall-2020/CISC-192/chapters/index.md
 set splitbelow splitright
-wincmd _ | wincmd |
-split
-1wincmd k
-wincmd w
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe '1resize ' . ((&lines * 19 + 17) / 35)
-exe '2resize ' . ((&lines * 11 + 17) / 35)
 argglobal
-setlocal fdm=manual
-setlocal fde=0
+setlocal fdm=expr
+setlocal fde=Foldexpr_markdown(v:lnum)
 setlocal fmr={{{,}}}
 setlocal fdi=#
 setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 150 - ((3 * winheight(0) + 9) / 19)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-150
-normal! 03|
-lcd ~/Docs/wiki/wiki
-wincmd w
-argglobal
-if bufexists("~/Docs/wiki/school/md/fall-2020/BUSE-120/modules/module-1/index.md") | buffer ~/Docs/wiki/school/md/fall-2020/BUSE-120/modules/module-1/index.md | else | edit ~/Docs/wiki/school/md/fall-2020/BUSE-120/modules/module-1/index.md | endif
-setlocal fdm=syntax
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=99
-setlocal fml=1
-setlocal fdn=20
-setlocal nofen
-let s:l = 13 - ((9 * winheight(0) + 5) / 11)
+let s:l = 13 - ((12 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 13
 normal! 0
-lcd ~/Docs/wiki/wiki
-wincmd w
-exe '1resize ' . ((&lines * 19 + 17) / 35)
-exe '2resize ' . ((&lines * 11 + 17) / 35)
+lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
