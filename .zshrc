@@ -142,7 +142,7 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 
 # Edit line in vim with ctrl-o:
 autoload edit-command-line; zle -N edit-command-line
-bindkey '^o' edit-command-line
+bindkey '^e' edit-command-line
 
 export KEYTIMEOUT=1
 

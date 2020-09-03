@@ -660,7 +660,7 @@ snippet $$ "Mathjax in-line" wA
 $${1:${VISUAL}}$
 endsnippet
 
-snippet @@ "Mathjax text" wA
+snippet @@ "Mathjax text" iA
 \text{${1:${VISUAL}}}$0
 endsnippet
 
@@ -787,8 +787,12 @@ endsnippet
 # Symbols
 # ============================================================
 
-snippet '(\d+|[a-kx-z])deg' "Mathjax degrees symbol" irA
+snippet '(\d+|[a-kx-z])deg' "Mathjax auto degrees symbol" irA
 `!p snip.rv = match.group(1)`^{\circ}
+endsnippet
+
+snippet deg "Mathjax degrees symbol" w
+\circ
 endsnippet
 
 snippet pi "Mathjax pi symbol" iw
@@ -828,7 +832,7 @@ snippet del "Mathjax delta symbol" i
 endsnippet
 
 snippet Del "Mathjax triangle delta symbol" i
-\Delta
+\Delta{$1}$0
 endsnippet
 
 snippet mu "Mathjax mu greek symbol" i
@@ -839,7 +843,7 @@ snippet eps "Mathjax epsilon symbol" i
 \epsilon
 endsnippet
 
-snippet vareps "Mathjax varepsilon symbol" i
+snippet vep "Mathjax varepsilon symbol" i
 \varepsilon
 endsnippet
 
@@ -891,7 +895,47 @@ snippet != "Mathjax not equals to" w
 \neq
 endsnippet
 
-snippet ooo "Mathjax infinity" wA
+snippet '(\\|,),' "Matjax thin space" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\,\\,'
+elif prefix == ',':
+	snip.rv = '\\,'
+`
+endsnippet
+
+snippet '(\\|!)!' "Matjax thin negative space" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\!\\!'
+elif prefix == '!':
+	snip.rv = '\\!'
+`
+endsnippet
+
+snippet '(\\|:):' "Matjax medium space" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\:\\:'
+elif prefix == ':':
+	snip.rv = '\\:'
+`
+endsnippet
+
+snippet '(\\|;);' "Matjax large space" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\;\\;'
+elif prefix == ';':
+	snip.rv = '\\;'
+`
+endsnippet
+
+snippet oo "Mathjax infinity" i
 \infty
 endsnippet
 
@@ -959,7 +1003,6 @@ snippet 'd**' "Mathjax diagonal dots" wA
 \ddots
 endsnippet
 
-priority 100
 snippet -> "to" i
 \to
 endsnippet
@@ -1032,6 +1075,10 @@ snippet unrar "Mathjax underset rightarrow" w
 \underset{$1}\rightarrow$0
 endsnippet
 
+snippet ' "Mathjax prime" i
+^{\prime}
+endsnippet
+
 snippet ~ "Mathjax ~" w
 \sim
 endsnippet
@@ -1100,7 +1147,6 @@ snippet <> "hokje" iA
 \diamond
 endsnippet
 
-priority 300
 snippet dint "integral" wA
 \int_{${1:-\infty}}^{${2:\infty}} ${3:${VISUAL}} $0
 endsnippet
@@ -1113,7 +1159,7 @@ snippet taylor "taylor" w
 \sum_{${1:k}=${2:0}}^{${3:\infty}} ${4:c_$1} (x-a)^$1 $0
 endsnippet
 
-snippet lim "limit" w
+snippet lim "limit" i
 \lim_{${1:n} \to ${2:\infty}}
 endsnippet
 
