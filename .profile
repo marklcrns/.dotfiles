@@ -45,22 +45,6 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   export PATH=$PATH:"/mnt/c/Program Files/Oracle/VirtualBox"
 fi
 
-# Remove duplicates in $PATH
-# Ref: https://unix.stackexchange.com/a/40973
-if [ -n "$PATH" ]; then
-  old_PATH=$PATH:; PATH=
-  while [ -n "$old_PATH" ]; do
-    x=${old_PATH%%:*}       # the first remaining entry
-    case $PATH: in
-      *:"$x":*) ;;          # already there
-      *) PATH=$PATH:$x;;    # not there yet
-    esac
-    old_PATH=${old_PATH#*:}
-  done
-  PATH=${PATH#:}
-  unset old_PATH x
-fi
-
 # ==================== RC FILES GLOBAL VARIABLES ==================== #
 
 export DOTFILESRC="${HOME}/.dotfilesrc"
@@ -85,6 +69,11 @@ export TLDR_PARAM='blue'
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
 export JRE_HOME=/usr/lib/jvm/jdk1.8.0_251/jre
 
+if [[ -e "/opt/gradle/latest" ]]; then
+  export GRADLE_HOME=/opt/gradle/latest
+  export PATH=${GRADLE_HOME}/bin:${PATH}
+fi
+
 # For WSL Configs ONLY
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
   export BROWSER="/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
@@ -108,6 +97,22 @@ fi
 # SOURCING FILES NEEDS TO GO IN BASHRC OR ZSHRC TO PREVENT SOME ISSUES
 
 # ==================== MISC ==================== #
+
+# Remove duplicates in $PATH
+# Ref: https://unix.stackexchange.com/a/40973
+if [ -n "$PATH" ]; then
+  old_PATH=$PATH:; PATH=
+  while [ -n "$old_PATH" ]; do
+    x=${old_PATH%%:*}       # the first remaining entry
+    case $PATH: in
+      *:"$x":*) ;;          # already there
+      *) PATH=$PATH:$x;;    # not there yet
+    esac
+    old_PATH=${old_PATH#*:}
+  done
+  PATH=${PATH#:}
+  unset old_PATH x
+fi
 
 # if running bash, display custom graphics
 if [[ -n "$BASH_VERSION" ]]; then

@@ -31,6 +31,21 @@
 # https://github.com/gillescastel/latex-snippets/blob/master/tex.snippets
 
 global !p
+# TODO: FIX with pre_expand
+def expand_placeholders(snip):
+	# Create annonymous snippet body from unexpanded snip.rv to be expanded
+	anon_snippet_body = ""
+	start = snip.snippet_start[0]
+	for i in range(snip.snippet_start[0], snip.snippet_end[0]):
+		# Append current line into annonymous snippet
+		anon_snippet_body += snip.buffer[i] + "\n" if i != snip.snippet_end[0] else ""
+		# Erase current unexpanded line
+		snip.buffer[i] = ''
+
+	snip.cursor.set(start, 0)
+	# Expand annonymous snippet
+	snip.expand_anon(anon_snippet_body)
+
 # Mathjax matrix
 boundaries = {
 	"b": ["[", "]"],
@@ -267,6 +282,8 @@ snippet res "Vimwiki document resources header" b
 
 endsnippet
 
+# pre_expand "snip.expand_anon(snip.buffer[snip.line])"
+post_jump "expand_placeholders(snip)"
 # Creates Todo list with Task Warrior.
 # Prepend "!" to include "until" filter set to week_after.
 # Prepend "#" to use taskwiki Preset Headers instead of Viewport
@@ -311,9 +328,11 @@ else:
 if "!" in flags:
 	result += " " + until
 
+# Add empty checkbox
+result += "\n* [ ] $0"
+
 # Output
 snip.rv = result`
-* [ ] $0
 
 endsnippet
 
@@ -357,6 +376,7 @@ snippet cbox "Todo checkbox" bA
 * [ ] $0
 endsnippet
 
+post_jump "expand_placeholders(snip)"
 snippet '(\d+)t' "Markdown table (n)t" brA
 `!p
 t_column_ct = int(match.string[0:-1])
@@ -935,7 +955,15 @@ elif prefix == ';':
 `
 endsnippet
 
-snippet oo "Mathjax infinity" i
+snippet ubr "Mathjax underbrace" i
+\underbrace{${1:${VISUAL}}}$0
+endsnippet
+
+snippet obr "Mathjax overbrace" i
+\overbrace{$1}$0
+endsnippet
+
+snippet inf "Mathjax infinity" i
 \infty
 endsnippet
 
@@ -1075,8 +1103,16 @@ snippet unrar "Mathjax underset rightarrow" w
 \underset{$1}\rightarrow$0
 endsnippet
 
-snippet ' "Mathjax prime" i
+snippet ' "Mathjax first derivative" i
 ^{\prime}
+endsnippet
+
+snippet " "Mathjax second derivative" i
+^{\prime \prime}
+endsnippet
+
+snippet "' "Mathjax third derivative" i
+^{\prime \prime \prime}
 endsnippet
 
 snippet ~ "Mathjax ~" w
@@ -1310,6 +1346,7 @@ snippet Vmat "Mathjax in-line double absolute values matrix" wbA
 \begin{Vmatrix} $0 \end{Vmatrix}
 endsnippet
 
+post_jump "expand_placeholders(snip)"
 # Usage: "i((l or r)or(b))n,nm", where `i` (optional) is the in-line trigger
 # either `l or r` (optional) as separators, `b` (optional) as the boundary type
 # , and `n,n` as the matrix size (rows, column). No spaces and ignore
@@ -1389,3 +1426,9 @@ snip.rv = begin + result[:-6] + end
 `
 endsnippet
 
+
+pre_expand "snip.buffer[snip.line] = ' '*4; snip.cursor.set(snip.line, 4)"
+snippet d
+def $1():
+	$0
+endsnippet
