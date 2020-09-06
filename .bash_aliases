@@ -189,15 +189,16 @@ alias openrepo=browsegithubrepo
 # Check if in git repo: https://stackoverflow.com/questions/2180270/check-if-current-directory-is-a-git-repository
 export CONF_REPO_LIST="\
   ${DOTFILES}
+  ${HOME}/.config/nvim
+  ${HOME}/.config/nvim-config
+  ${HOME}/.pandoc
+  ${HOME}/.task
+  ${HOME}/.timewarrior
+  ${HOME}/.tmuxinator
   ${HOME}/Docs/wiki
   ${HOME}/Docs/wiki/wiki
   ${HOME}/Projects/references
-  ${HOME}/.config/nvim
-  ${HOME}/.config/nvim-config
-  ${HOME}/.tmuxinator
-  ${HOME}/.timewarrior
-  ${HOME}/.task
-  ${HOME}/.pandoc
+  ${HOME}/scripts
   "
 
 printallconfrepo() {

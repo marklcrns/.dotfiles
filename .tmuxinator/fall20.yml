@@ -6,27 +6,33 @@ name: school
 root: ~/
 
 windows:
-  - CISC:
+  - ASEM:
       layout: 36df,142x51,0,0[142x41,0,0,49,142x9,0,42{71x9,0,42,54,70x9,72,42,55}]
       panes:
-        - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad CISC"
+        - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad ASEM"
         - cd ~/Docs/wiki && clear
-        - cd ~/Docs/wiki/school/files/fall-2020/CISC-192 && clear
-  - MATH:
-      layout: 36df,142x51,0,0[142x41,0,0,49,142x9,0,42{71x9,0,42,54,70x9,72,42,55}]
-      panes:
-        - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad MATH"
-        - cd ~/Docs/wiki && clear
-        - cd ~/Docs/wiki/school/files/fall-2020/MATH-150 && clear
-  - ECON:
-      layout: 36df,142x51,0,0[142x41,0,0,49,142x9,0,42{71x9,0,42,54,70x9,72,42,55}]
-      panes:
-        - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad ECON"
-        - cd ~/Docs/wiki && clear
-        - cd ~/Docs/wiki/school/files/fall-2020/ECON-120 && clear
+        - cd ~/Docs/wiki/school/files/fall-2020/CISC-211 && clear
   - BUSE:
       layout: 36df,142x51,0,0[142x41,0,0,49,142x9,0,42{71x9,0,42,54,70x9,72,42,55}]
       panes:
         - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad BUSE"
         - cd ~/Docs/wiki && clear
         - cd ~/Docs/wiki/school/files/fall-2020/BUSE-120 && clear
+  - CISC:
+      layout: 36df,142x51,0,0[142x41,0,0,49,142x9,0,42{71x9,0,42,54,70x9,72,42,55}]
+      panes:
+        - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad CISC"
+        - cd ~/Docs/wiki && clear
+        - cd ~/Docs/wiki/school/files/fall-2020/CISC-192 && clear
+  - ECON:
+      layout: 36df,142x51,0,0[142x41,0,0,49,142x9,0,42{71x9,0,42,54,70x9,72,42,55}]
+      panes:
+        - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad ECON"
+        - cd ~/Docs/wiki && clear
+        - cd ~/Docs/wiki/school/files/fall-2020/ECON-120 && clear
+  - MATH:
+      layout: 36df,142x51,0,0[142x41,0,0,49,142x9,0,42{71x9,0,42,54,70x9,72,42,55}]
+      panes:
+        - cd ~/Docs/wiki && clear && nvim -c "Startify|SLoad MATH"
+        - cd ~/Docs/wiki && clear
+        - cd ~/Docs/wiki/school/files/fall-2020/MATH-150 && clear

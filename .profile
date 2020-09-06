@@ -12,23 +12,29 @@
 
 # Personal bin and its subdirectories
 if [ -d "$HOME/bin" ] ; then
-  # Excludes plugins directory in ~/bin
-  for d in $(find ${HOME}/bin \( -type d -name "plugins" -prune \) -o -type d); do
+  for d in $(find ${HOME}/bin -type d); do
     export PATH="$d":$PATH
   done
 fi
 
-# Personal local bin dir
+# local bin dir
 if [ -d "$HOME/.local/bin" ] ; then
   export PATH="$HOME/.local/bin":$PATH
+fi
+
+# Personal scripts and its subdirectories
+if [ -d "$HOME/scripts" ] ; then
+  # Excludes scripting-utils directory
+  # Ref: https://stackoverflow.com/a/15736463/11850077
+  for d in $(find "${HOME}/scripts" -type d -not -path "*scripting-utils*"); do
+    export PATH="$d":$PATH
+  done
 fi
 
 # Cargo bin
 export PATH=$PATH:$HOME/.cargo/bin
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH=$PATH:$HOME/.rvm/bin
-# Rclonesync-V2 PATH
-export PATH=$PATH:$HOME/bin/plugins/rclonesync-V2
 # Emacs bin
 export PATH=$PATH:$HOME/emacs.d/bin
 # Global npm modules path
@@ -39,10 +45,6 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   # $PATHS
   export PATH=$PATH:"/mnt/c/Program Files/Mozilla Firefox/"
   export PATH=$PATH:"/mnt/c/Program Files (x86)/Google/Chrome/Application"
-  # NetBeans
-  export PATH=$PATH:/opt/netbeans/bin/
-  # VirtualBox Windows path
-  export PATH=$PATH:"/mnt/c/Program Files/Oracle/VirtualBox"
 fi
 
 # ==================== RC FILES GLOBAL VARIABLES ==================== #

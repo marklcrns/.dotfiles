@@ -2,14 +2,15 @@ let SessionLoad = 1
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
-cd ~/Projects/.dotfiles/scripts/install
+cd ~/Docs/wiki
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
 badd +24 packages.sh
-badd +180 ubuntu_20.04.sh
+badd +1 ubuntu_20.04.sh
 badd +69 install_utils.sh
+badd +0 ~/Projects/.dotfiles/scripts/install/install_utils.sh
 argglobal
 %argdel
 $argadd ubuntu_20.04.sh
@@ -29,11 +30,11 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 69 + 70) / 141)
-exe '2resize ' . ((&lines * 18 + 20) / 41)
-exe 'vert 2resize ' . ((&columns * 71 + 70) / 141)
-exe '3resize ' . ((&lines * 18 + 20) / 41)
-exe 'vert 3resize ' . ((&columns * 71 + 70) / 141)
+exe 'vert 1resize ' . ((&columns * 60 + 61) / 122)
+exe '2resize ' . ((&lines * 11 + 14) / 28)
+exe 'vert 2resize ' . ((&columns * 61 + 61) / 122)
+exe '3resize ' . ((&lines * 12 + 14) / 28)
+exe 'vert 3resize ' . ((&columns * 61 + 61) / 122)
 argglobal
 setlocal fdm=syntax
 setlocal fde=0
@@ -43,13 +44,12 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 180 - ((18 * winheight(0) + 18) / 37)
+let s:l = 1 - ((0 * winheight(0) + 12) / 24)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-180
+1
 normal! 0
-lcd ~/Projects/.dotfiles
 wincmd w
 argglobal
 if bufexists("~/Projects/.dotfiles/scripts/install/install_utils.sh") | buffer ~/Projects/.dotfiles/scripts/install/install_utils.sh | else | edit ~/Projects/.dotfiles/scripts/install/install_utils.sh | endif
@@ -61,13 +61,12 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 69 - ((11 * winheight(0) + 9) / 18)
+let s:l = 1 - ((0 * winheight(0) + 5) / 11)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-69
+1
 normal! 0
-lcd ~/Projects/.dotfiles
 wincmd w
 argglobal
 if bufexists("~/Projects/.dotfiles/scripts/install/install_utils.sh") | buffer ~/Projects/.dotfiles/scripts/install/install_utils.sh | else | edit ~/Projects/.dotfiles/scripts/install/install_utils.sh | endif
@@ -79,19 +78,18 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 68 - ((10 * winheight(0) + 9) / 18)
+let s:l = 1 - ((0 * winheight(0) + 6) / 12)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-68
+1
 normal! 0
-lcd ~/Projects/.dotfiles
 wincmd w
-exe 'vert 1resize ' . ((&columns * 69 + 70) / 141)
-exe '2resize ' . ((&lines * 18 + 20) / 41)
-exe 'vert 2resize ' . ((&columns * 71 + 70) / 141)
-exe '3resize ' . ((&lines * 18 + 20) / 41)
-exe 'vert 3resize ' . ((&columns * 71 + 70) / 141)
+exe 'vert 1resize ' . ((&columns * 60 + 61) / 122)
+exe '2resize ' . ((&lines * 11 + 14) / 28)
+exe 'vert 2resize ' . ((&columns * 61 + 61) / 122)
+exe '3resize ' . ((&lines * 12 + 14) / 28)
+exe 'vert 3resize ' . ((&columns * 61 + 61) / 122)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

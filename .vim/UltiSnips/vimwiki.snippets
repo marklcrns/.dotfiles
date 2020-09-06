@@ -36,9 +36,10 @@ def expand_placeholders(snip):
 	# Create annonymous snippet body from unexpanded snip.rv to be expanded
 	anon_snippet_body = ""
 	start = snip.snippet_start[0]
-	for i in range(snip.snippet_start[0], snip.snippet_end[0]):
+	end = snip.snippet_end[0]
+	for i in range(start, end + 1):
 		# Append current line into annonymous snippet
-		anon_snippet_body += snip.buffer[i] + "\n" if i != snip.snippet_end[0] else ""
+		anon_snippet_body += snip.buffer[i] + "\n" if i != end else ""
 		# Erase current unexpanded line
 		snip.buffer[i] = ''
 
@@ -212,7 +213,7 @@ snippet img "Image link" w
 endsnippet
 
 snippet al "Markdown anchor link" w
-[⚓ ${1:${VISUAL}}](${0:file}#${1:anchor-link})
+[⚓ ${1:${VISUAL}}](${2:file}#${3:anchor-link})$0
 endsnippet
 
 snippet anc "Html anchor" bA
@@ -625,6 +626,12 @@ snippet term "Word or phrase definition" bA
 - $0
 endsnippet
 
+snippet iterm "Word or phrase definition in-line" bA
+<a name="$1">**${2:${VISUAL}}**</a>
+
+- $0
+endsnippet
+
 # Usage: &name-of-link&alink
 snippet '&?([A-Za-z- ]+)\&(t)?alink' "Word or pharse definition auto" wrA
 [`!p
@@ -634,8 +641,12 @@ snip.rv = match.group(1).replace("-", " ")
 `})$0
 endsnippet
 
-# Usage: &terminology name&term or **Terminology name**&term
-snippet '&?(\*\*)?([^.*\[\]#]+)(\*\*)?&term$' "Word or pharse definition auto" wrA
+# Usage:
+# &terminology name&term
+# Termininology name&iterm
+# **Terminology name**&term
+# **terminology name**&iterm
+snippet '&?(\*\*)?([^.*\[\]#&]+)(\*\*)?&(i)?term$' "Word or pharse definition auto" wrA
 <a name="`!p
 term = match.group(2)
 text = ""
@@ -656,15 +667,12 @@ if any((c in parenthesis) for c in term):
 else:
   text = term
 
-snip.rv = text.replace(" ", "-").lower()
-`-term">**`!p
-snip.rv = match.group(2).capitalize()
-`$1**</a>`!p
-if match.group(1) and match.group(3):
-  snip.rv = ""
-else:
-  snip.rv = "\n\n- $0"
-`
+# Anchor link with '-term' appended to name
+snip.rv = text.replace(" ", "-").lower() + '-term">**'``!p
+# Capitalize term
+snip.rv = match.group(2).capitalize()`$1**</a>`!p
+# if '&iterm' make inline else the term definition in new line in markdown list
+snip.rv = " - " if match.group(4) else "\n\n- "`$0
 endsnippet
 
 
@@ -735,10 +743,9 @@ snip.rv = "\\" if match.group(1) == None else "\\" + match.group(1)
 `frac{${1:${VISUAL}}}{$2}$0
 endsnippet
 
-# TODO: Usage?
-snippet '(((-)?\d+)|((-)?\d+)((\^|_)(\{.*\}|(-)?\d+).*)|((-)?\d+)?((\\)([A-Za-z]+)(\{.*\}|(-)?\d+)).*)/' "Mathjax tab auto fraction" wr
-\\frac{`!p snip.rv = match.group(1)`}{$1}$0
-endsnippet
+# snippet '(((-)?\d+)|((-)?\d+)((\^|_)(\{.*\}|(-)?\d+).*)|((-)?\d+)?((\\)([A-Za-z]+)(\{.*\}|(-)?\d+)).*)/' "Mathjax tab auto fraction" wr
+# \\frac{`!p snip.rv = match.group(1)`}{$1}$0
+# endsnippet
 
 snippet '^.*\)/' "Mathjax () auto fraction" wrA
 `!p
@@ -1103,15 +1110,15 @@ snippet unrar "Mathjax underset rightarrow" w
 \underset{$1}\rightarrow$0
 endsnippet
 
-snippet ' "Mathjax first derivative" i
+snippet ' "Mathjax prime" i
 ^{\prime}
 endsnippet
 
-snippet " "Mathjax second derivative" i
+snippet " "Mathjax double prime" i
 ^{\prime \prime}
 endsnippet
 
-snippet "' "Mathjax third derivative" i
+snippet "' "Mathjax tripple prime" i
 ^{\prime \prime \prime}
 endsnippet
 

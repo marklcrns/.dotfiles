@@ -33,7 +33,6 @@ DOTFILES_LIST=(
   "${DOTFILES_LOCAL}/.zprofile"
   "${DOTFILES_LOCAL}/.zshenv"
   "${DOTFILES_LOCAL}/.zshrc"
-  "${DOTFILES_LOCAL}/bin/"
 )
 
 # WSL specific configs
