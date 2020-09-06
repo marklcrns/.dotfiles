@@ -10,6 +10,7 @@ APT_PACKAGES_ESSENTIAL=(
   "wget"
   "zip"
   "unzip"
+  "unar"
   "git"
   "vim"
   "gnupg2"
