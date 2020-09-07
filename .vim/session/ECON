@@ -28,12 +28,12 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 136 - ((19 * winheight(0) + 10) / 20)
+let s:l = 136 - ((17 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 136
-normal! 05|
+normal! 0
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

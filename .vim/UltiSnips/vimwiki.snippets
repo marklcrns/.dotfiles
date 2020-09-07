@@ -251,7 +251,7 @@ snippet meta "Meta deta template" b
 title: ${1:(INSERT TITLE)}
 subtitle: ${2:(INSERT SUBTITLE)}
 author: ${3:Mark Lucernas}
-date: `date +'%b %m, %Y'`
+date: `date +'%b %d, %Y'`
 ---
 
 
@@ -263,7 +263,7 @@ snippet temp "Vimwiki document template" b
 title: ${1:(INSERT TITLE)}
 subtitle: ${2:(INSERT SUBTITLE)}
 author: ${3:Mark Lucernas}
-date: `date +'%b %m, %Y'`
+date: `date +'%b %d, %Y'`
 ---
 
 
@@ -299,7 +299,7 @@ flags = match.group(1) if match.group(1) != None else ""
 # get today, and day after tomorrow's date in string
 base = datetime(int(date[0]), int(date[1]), int(date[2]))
 today = datetime.strftime(base, '%Y-%m-%d')
-today_verbose = datetime.strftime(base, '%b %m, %Y')
+today_verbose = datetime.strftime(base, '%b %d, %Y')
 tomorrow = datetime.strftime(base + timedelta(1), '%Y-%m-%d')
 week_after = datetime.strftime(base + timedelta(7), '%Y-%m-%d')
 
