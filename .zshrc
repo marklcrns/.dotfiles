@@ -262,7 +262,7 @@ codi() {
     hi VertSplit ctermbg=NONE |\
     hi NonText ctermfg=0 |\
     Codi $syntax" "$@"
-  }
+}
 
 # Taskwarrior add emojis
 # Ref: http://jessachandler.com/2018/03/setup-task-and-time-warrior/

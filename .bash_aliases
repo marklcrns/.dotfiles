@@ -796,13 +796,13 @@ setjavaoraclejdkhome() {
     sed -i "s,JRE_HOME=.*,JRE_HOME=${JDK_HOME}/jre," ~/.profile || \
     echo "export JRE_HOME=${JDK_HOME}/jre" | tee -a ~/.profile
 
-  source. ~/.profile
+  source ~/.profile
 }
 
 alias openjdk8="export JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64 && setjavaopenjdkhome"
 alias openjdk11="export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64 && setjavaopenjdkhome"
 alias openjdk13="export JDK_HOME=/usr/lib/jvm/java-13-openjdk-amd64 && setjavaopenjdkhome"
-alias oraclejdk8="export JDK_HOME=/usr/lib/jvm/jdk1.8.0_251 && setjavaoraclejdkhome"
+alias oraclejdk8="export JDK_HOME=/usr/lib/jvm/jdk1.8.0_261 && setjavaoraclejdkhome"
 alias oraclejdk11="export JDK_HOME=/usr/lib/jvm/jdk-11.0.7 && setjavaoraclejdkhome"
 alias oraclejdk14="export JDK_HOME=/usr/lib/jvm/jdk-14.0.1 && setjavaoraclejdkhome"
 
