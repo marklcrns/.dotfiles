@@ -31,23 +31,30 @@
 # https://github.com/gillescastel/latex-snippets/blob/master/tex.snippets
 
 global !p
-# TODO: FIX with pre_expand
-def expand_placeholders(snip):
-	# Create annonymous snippet body from unexpanded snip.rv to be expanded
+# Make all multi-line jump placeholder strings jumpable. Used with `post_jump`
+def post_jump_expand_ph(snip):
+	# Create annonymous snippet body
 	anon_snippet_body = ""
+	# Get start and end line number of expanded snippet
 	start = snip.snippet_start[0]
 	end = snip.snippet_end[0]
 	for i in range(start, end + 1):
 		# Append current line into annonymous snippet
-		anon_snippet_body += snip.buffer[i] + "\n" if i != end else ""
-		# Erase current unexpanded line
-		snip.buffer[i] = ''
+		anon_snippet_body += snip.buffer[i]
+		# Append new line if still not the end of snippet line
+		anon_snippet_body += "" if i == end else "\n"
 
-	snip.cursor.set(start, 0)
-	# Expand annonymous snippet
+	# Delete old expanded snippet line till second to last snippet line
+	for i in range(start, end):
+		del snip.buffer[start]
+
+	# Empty last old expanded snippet line while preserving line
+	snip.buffer[start] = ''
+
+	# Expand new annonymous snippet
 	snip.expand_anon(anon_snippet_body)
 
-# Mathjax matrix
+# Mathjax matrix dictionary
 boundaries = {
 	"b": ["[", "]"],
 	"B": ["{", "}"],
@@ -55,7 +62,6 @@ boundaries = {
 	"v": ["|", "|"],
 	"V": ["||", "||"]
 }
-
 weekdays = {
 	"0": "Monday",
 	"1": "Tuesday",
@@ -283,12 +289,11 @@ snippet res "Vimwiki document resources header" b
 
 endsnippet
 
-# pre_expand "snip.expand_anon(snip.buffer[snip.line])"
-post_jump "expand_placeholders(snip)"
 # Creates Todo list with Task Warrior.
 # Prepend "!" to include "until" filter set to week_after.
 # Prepend "#" to use taskwiki Preset Headers instead of Viewport
 # Prepend "&" to generate nested todo (Must use Preset Headers to nest filters)
+post_jump "post_jump_expand_ph(snip)"
 snippet '([!#&]+)todo' "To-do list template" rbA
 `!p
 from datetime import datetime, timedelta
@@ -319,22 +324,24 @@ result = ""
 # Taskwiki Preset headers '||' or Viewport '|'
 task_header = " || " if "#" in flags else " | "
 task_filter = proj + " " + sched + " " + due
-# Full or side todo list
-if "&" in flags:
-	result += "## ${1:Side Tasks}" + task_header + "+${2:side}"
-else:
+# Append main task snippet into result
+if "#" in flags:
 	result += meta + "# Daily To-do" + task_header + task_filter
+# Append side task snippet into result if '&' flag was given
+if "&" in flags:
+	if "#" in flags:
+		result += "\n\n"
+	result += "## ${1:Side Tasks}" + task_header + "+${2:side}"
 
-# Until filter
+# Append until filter if '!' flag was given (defaults to a week after)
 if "!" in flags:
 	result += " " + until
 
 # Add empty checkbox
-result += "\n* [ ] $0"
+result += "\n* [ ] $0\n"
 
 # Output
 snip.rv = result`
-
 endsnippet
 
 snippet '(\d+)meds' "Description" rbA
@@ -377,7 +384,7 @@ snippet cbox "Todo checkbox" bA
 * [ ] $0
 endsnippet
 
-post_jump "expand_placeholders(snip)"
+post_jump "post_jump_expand_ph(snip)"
 snippet '(\d+)t' "Markdown table (n)t" brA
 `!p
 t_column_ct = int(match.string[0:-1])
@@ -1353,11 +1360,11 @@ snippet Vmat "Mathjax in-line double absolute values matrix" wbA
 \begin{Vmatrix} $0 \end{Vmatrix}
 endsnippet
 
-post_jump "expand_placeholders(snip)"
 # Usage: "i((l or r)or(b))n,nm", where `i` (optional) is the in-line trigger
 # either `l or r` (optional) as separators, `b` (optional) as the boundary type
 # , and `n,n` as the matrix size (rows, column). No spaces and ignore
 # parenthesis, and can't have both separators and boundary together.
+post_jump "post_jump_expand_ph(snip)"
 snippet '\b(i)?(((l)?(r)?)(b|B|v|V|p?))(\d+,\d+)m' "Mathjax matrix" wrA
 `!p
 inline = match.group(1)
@@ -1433,9 +1440,3 @@ snip.rv = begin + result[:-6] + end
 `
 endsnippet
 
-
-pre_expand "snip.buffer[snip.line] = ' '*4; snip.cursor.set(snip.line, 4)"
-snippet d
-def $1():
-	$0
-endsnippet
