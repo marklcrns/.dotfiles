@@ -1333,31 +1333,31 @@ snippet 'big{}' "Mathjax big {}" biwr
 endsnippet
 
 snippet abs "Mathjax absolute value" i
-\left | $0 \right |
+\left | ${1:${VISUAL}} \right |$0
 endsnippet
 
-snippet dabs "Mathjax absolute value" i
-\left \| $0 \right \|
+snippet dabs "Mathjax double absolute value" i
+\left \| ${1:${VISUAL}} \right \|$0
 endsnippet
 
 snippet bmat "Mathjax in-line brackets matrix" wbA
-\begin{bmatrix} $0 \end{bmatrix}
+\begin{bmatrix} ${1:${VISUAL}} \end{bmatrix}$0
 endsnippet
 
 snippet Bmat "Mathjax in-line curly braces matrix" wbA
-\begin{Bmatrix} $0 \end{Bmatrix}
+\begin{Bmatrix} ${1:${VISUAL}} \end{Bmatrix}$0
 endsnippet
 
 snippet pmat "Mathjax in-line parenthesis matrix" wbA
-\begin{pmatrix} $0 \end{pmatrix}
+\begin{pmatrix} ${1:${VISUAL}} \end{pmatrix}$0
 endsnippet
 
 snippet vmat "Mathjax in-line determinant matrix" wbA
-\begin{vmatrix} $0 \end{vmatrix}
+\begin{vmatrix} ${1:${VISUAL}} \end{vmatrix}$0
 endsnippet
 
 snippet Vmat "Mathjax in-line double absolute values matrix" wbA
-\begin{Vmatrix} $0 \end{Vmatrix}
+\begin{Vmatrix} ${1:${VISUAL}} \end{Vmatrix}$0
 endsnippet
 
 # Usage: "i((l or r)or(b))n,nm", where `i` (optional) is the in-line trigger

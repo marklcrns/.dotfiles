@@ -9,10 +9,9 @@ endif
 set shortmess=aoO
 badd +24 school/md/fall-2020/MATH-150/chapters/index.md
 badd +16 school/md/fall-2020/MATH-150/chapters/chapter-2/index.md
-badd +173 school/md/fall-2020/MATH-150/chapters/chapter-2/ch-2-8.md
+badd +77 school/md/fall-2020/MATH-150/chapters/chapter-2/ch-2-8.md
 argglobal
 %argdel
-edit school/md/fall-2020/MATH-150/chapters/chapter-2/ch-2-8.md
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -20,20 +19,16 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-setlocal fdm=expr
-setlocal fde=Foldexpr_markdown(v:lnum)
+enew
+file magit:///home/markl/Docs/wiki/
+setlocal fdm=manual
+setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=99
+setlocal fdl=1
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 171 - ((11 * winheight(0) + 14) / 28)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-171
-normal! 0
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
