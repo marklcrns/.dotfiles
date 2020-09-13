@@ -110,6 +110,8 @@ clearjunk() {
 
 alias trash="cd ~/.Trash"
 
+alias rm='trash-put -h; echo "\n\nUse \\\rm to use the built-in rm command"; false'
+
 # Binaries
 alias open='xdg-open'
 alias ls='exa'

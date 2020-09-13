@@ -43,6 +43,10 @@
 [color]
   ui = auto
 
+# Performance boost for large repositories
+[feature]
+  manyFiles = true
+
 [include]
   path = ~/.gitconfig.d/gitalias.txt
 # Ref:
