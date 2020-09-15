@@ -22,7 +22,7 @@ Using my [dotfiles scripts](https://github.com/marklcrns/scripts/tree/master/too
 
 ```bash
 # clone scripts
-git clone https://github.com/marklcrns/scripts $HOME
+git clone https://github.com/marklcrns/scripts $HOME/scripts
 
 cd ~/.dotfiles
 
