@@ -67,16 +67,16 @@ background_opacity: 0.95
 
 font:
   normal:
-    family: "SauceCodePro NF"
+    family: "SauceCodePro Nerd Font"
     style: Regular
   bold:
-    family: "SauceCodePro NF"
+    family: "SauceCodePro Nerd Font"
     style: Bold
   italic:
-    family: "SauceCodePro NF"
+    family: "SauceCodePro Nerd Font"
     style: Italic
   bold_italic:
-    family: "SauceCodePro NF"
+    family: "SauceCodePro Nerd Font"
     style: Bold Italic
 
   # Point size
