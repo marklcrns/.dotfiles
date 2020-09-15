@@ -779,8 +779,12 @@ setjavaopenjdkhome() {
   sudo update-alternatives --set javac "${JDK_HOME}/bin/javac"
   # replace JAVA_HOME with $JDK_HOME path if exist, else append
   grep -q 'JAVA_HOME=' ~/.profile && \
-    sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}/jre/," ~/.profile || \
-    echo "export JAVA_HOME=${JDK_HOME}/jre/" | tee -a ~/.profile
+    sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}," ~/.profile || \
+    echo "export JAVA_HOME=${JDK_HOME}" | tee -a ~/.profile
+
+  # Empty JRE_HOME variable if exist
+  grep -q 'JRE_HOME=' ~/.profile && \
+    sed -i "s,JRE_HOME=.*,JRE_HOME=," ~/.profile
 
   source ~/.profile
 }
@@ -788,12 +792,12 @@ setjavaopenjdkhome() {
 setjavaoraclejdkhome() {
   sudo update-alternatives --set java "${JDK_HOME}/bin/java"
   sudo update-alternatives --set javac "${JDK_HOME}/bin/javac"
-  # replace JAVA_HOME with $JDK_HOME path if exist, else append
+  # Replace JAVA_HOME with $JDK_HOME path if exist, else append
   grep -q 'JAVA_HOME=' ~/.profile && \
     sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}," ~/.profile || \
     echo "export JAVA_HOME=${JDK_HOME}" | tee -a ~/.profile
 
-  # replace JRE_HOME with $JDK_HOME/jre path if exist, else append
+  # Replace JRE_HOME with $JDK_HOME/jre path if exist, else append
   grep -q 'JRE_HOME=' ~/.profile && \
     sed -i "s,JRE_HOME=.*,JRE_HOME=${JDK_HOME}/jre," ~/.profile || \
     echo "export JRE_HOME=${JDK_HOME}/jre" | tee -a ~/.profile
