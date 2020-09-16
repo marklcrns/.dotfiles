@@ -795,26 +795,22 @@ endsnippet
 # Exponents, Superscript, Subscript
 # ============================================================
 
-# TODO: Fix lookbehind fixed witdh pattern error
 # Auto exponent/superscript
 # Matches any number of digits, words, or outside of enclosing brackets
 # or parenthesis character followed by '^' using negative lookbehind
-# snippet '(?<=\d+|\w+|\(.*\)|\[.*\]|\{.*\})\^' "Mathjax auto exponent/superscript" ir
-# ^{$1}$0
-# endsnippet
+snippet '(?<=[a-gA-Gu-zU-Z0-9]|\)|\}|\])\^' "Mathjax auto exponent/superscript" irA
+^{$1}$0
+endsnippet
 
-# Auto subscript
-# Matches any number of digits, words, or outside of enclosing brackets
-# or parenthesis character followed by '_' using negative lookbehind
-# snippet '(?<=\d+|\w+|\(.*\)|\[.*\]|\{.*\})_' "Mathjax auto subscript" ir
-# _{$1}$0
-# endsnippet
+snippet _ "Mathjax subscript" i
+_{$1}$0
+endsnippet
 
 snippet sqrt "Mathjax square root" iA
 \sqrt{${1:${VISUAL}}}$0
 endsnippet
 
-snippet '(\d+|n|x|y|z)rt' "Mathjax root of n" ir
+snippet 'sqrt(\d+|n|x|y|z)' "Mathjax root of n" irA
 \sqrt[`!p snip.rv = match.group(1)`]{$1}$0
 endsnippet
 
@@ -831,25 +827,17 @@ snippet lne "Mathjax natural log e" i
 endsnippet
 
 snippet ln "Mathjax natural log" i
-\ln
-endsnippet
-
-snippet sr "Mathjax ^2" i
-^2
-endsnippet
-
-snippet cb "Mathjax ^3" i
-^3
+\ln{$1}$0
 endsnippet
 
 # Symbols
 # ============================================================
 
-snippet '(\d+|[a-kx-z])deg' "Mathjax auto degrees symbol" irA
-`!p snip.rv = match.group(1)`^{\circ}
+snippet '(?<=[a-gA-Gu-zU-Z0-9])deg' "Mathjax auto degrees symbol" irA
+^{\circ}
 endsnippet
 
-snippet deg "Mathjax degrees symbol" w
+snippet oo "Mathjax degrees symbol" w
 \circ
 endsnippet
 
