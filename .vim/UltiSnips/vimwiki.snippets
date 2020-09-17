@@ -796,9 +796,8 @@ endsnippet
 # ============================================================
 
 # Auto exponent/superscript
-# Matches any number of digits, words, or outside of enclosing brackets
-# or parenthesis character followed by '^' using negative lookbehind
-snippet '(?<=[a-gA-Gu-zU-Z0-9]|\)|\}|\])\^' "Mathjax auto exponent/superscript" irA
+# Matches ^ followed by pattern of charactersk using negative lookbehind
+snippet '((?<=[a-gA-Gu-zU-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))\^' "Mathjax auto exponent/superscript" irA
 ^{$1}$0
 endsnippet
 
@@ -806,7 +805,7 @@ snippet _ "Mathjax subscript" i
 _{$1}$0
 endsnippet
 
-snippet sqrt "Mathjax square root" iA
+snippet sqrt "Mathjax square root" i
 \sqrt{${1:${VISUAL}}}$0
 endsnippet
 

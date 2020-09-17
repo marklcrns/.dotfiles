@@ -27,11 +27,8 @@ alias docs='cd ~/Docs'
 alias proj='cd ~/Projects'
 alias dev='cd ~/Projects/Dev'
 alias ref='cd ~/Projects/references'
-# non-WSL aliases
-if [[ -z "$(grep -i microsoft /proc/version)" ]]; then
-  alias ddev='cd ~/Dropbox/Dev'
-  alias drop='cd ~/Dropbox'
-fi
+alias drop='cd ~/Dropbox'
+alias dropd='cd ~/Dropbox/Dev'
 
 # live browser server
 # alias live='http-server'
@@ -834,7 +831,7 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   alias gdrv="cd /mnt/c/Users/${WIN_USERNAME}/Google Drive"
   alias odrv="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive"
   alias drop="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox"
-  alias dropdev="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox/Dev"
+  alias dropd="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox/Dev"
   alias windev="cd /mnt/c/Users/${WIN_USERNAME}/Projects/Dev"
   alias winbin="cd /mnt/c/bin"
 
