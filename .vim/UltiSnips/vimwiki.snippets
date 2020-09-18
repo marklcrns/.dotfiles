@@ -223,7 +223,7 @@ snippet i "Image link" w
 endsnippet
 
 snippet a "Markdown anchor link" w
-[⚓ ${1:${VISUAL}}](${2:file}#${3:anchor-link})$0
+[⚓ ${1:${VISUAL}}](${2:file}#${1/([0-9.,]+)?(\w+)\s*/\l$2_/g})$0
 endsnippet
 
 snippet '#(.*)&a' "Convert anchor name ref into valid html id" irA
@@ -313,7 +313,7 @@ endsnippet
 # Prepend "&" to generate nested todo (will automatically use Preset Header for parent header)
 # Prepend "&&" to generate nested todo only
 post_jump "post_jump_expand_ph(snip)"
-snippet '([!#&]+)?td' "To-do list template" rbA
+snippet '([!#&0-9]+)?td' "To-do list template" rbA
 `!p
 from datetime import datetime, timedelta
 # parse date filename
@@ -348,16 +348,19 @@ if "&&" not in flags:
 	result += meta + "# Daily To-do" + task_header + task_filter
 # Append side task snippet into result if '&' flag was given
 if "&" in flags:
-	if "&&" not in flags:
-		result += "\n\n"
-	result += "## ${1:Side Tasks}" + " | " + "+${2:side}"
+	# Extract multiplier
+	mult = [int(c) for c in flags if c.isdigit()]
+	mult = mult[0] if mult else 1
+	for i in range(1, (mult * 2) + 1, 2):
+		if "&&" not in flags:
+			result += "\n\n"
+		result += "## ${" + str(i) + ":Side Task " + str(i) +  "}" + " | " + "+${" + str(i + 1) + ":side} " + sched + " " + due
+		# Add empty checkbox
+		result += "\n* [ ] $0"
 
 # Append until filter if '!' flag was given (defaults to a week after)
 if "!" in flags:
 	result += " " + until
-
-# Add empty checkbox
-result += "\n* [ ] $0\n"
 
 # Output
 snip.rv = result`

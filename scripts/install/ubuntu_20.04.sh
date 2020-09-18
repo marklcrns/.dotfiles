@@ -120,12 +120,10 @@ if [[ -z "${SKIP_CONFIRM}" ]]; then
 fi
 
 DOWNLOADS_DIR="${HOME}/Downloads"
-TRASH_DIR="${HOME}/.Trash"
 PACKAGES="${SCRIPTDIR}/packages"
 
 [[ ! -d "${HOME}/Projects" ]] && mkdir -p "${HOME}/Projects"
 [[ ! -d "${HOME}/Downloads" ]] && mkdir -p "${DOWNLOADS_DIR}"
-[[ ! -d "${HOME}/.Trash" ]] && mkdir -p "${TRASH_DIR}"
 
 cd ${DOWNLOADS_DIR}
 

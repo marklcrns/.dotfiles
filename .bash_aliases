@@ -63,50 +63,6 @@ touched() {
     nvim -- "$1"
   }
 
-# Move junk files to ~/.Trash
-# Resources: https://stackoverflow.com/a/23659385/11850077
-# When iterating through commands, DON'T for get the semi-colon before the
-# closing brackets
-junk() {
-  for item in "$@" ; do echo "Trashing: $item" ; mv "$item" ~/.Trash/; done;
-  }
-
-# With sudo permission
-sudojunk() {
-  for item in "$@" ; do echo "Trashing: $item" ; sudo mv "$item" ~/.Trash/; done;
-  }
-
-# Resources
-# prompt: https://stackoverflow.com/a/1885534/11850077
-# params: https://stackoverflow.com/a/23659385/11850077
-clearjunk() {
-  JUNK_COUNTER=0
-  [[ $(ls -a ~/.Trash | wc -l) -eq 0 ]] && \
-    echo "Trash empty!" && return 1
-
-  for item in ~/.Trash/*
-  do
-    echo "$item"
-    JUNK_COUNTER=$((JUNK_COUNTER + 1))
-  done
-
-  echo "Proceed deleting all $JUNK_COUNTER files? (Y/y)"
-  read REPLY
-  if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-    printf "${RED}Aborting...${NC}\n"
-    [[ "$0" = "$BASH_SOURCE" ]] && return 1
-  fi
-
-  for item in ~/.Trash/*
-  do
-    rm -rf "$item"
-  done
-
-  echo "All $JUNK_COUNTER items in ~/.Trash were permanently deleted"
-}
-
-alias trash="cd ~/.Trash"
-
 alias rm='trash-put -h; echo "\n\nUse \\\rm to use the built-in rm command"; false'
 
 # Binaries
