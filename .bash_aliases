@@ -747,8 +747,8 @@ setjavaoraclejdkhome() {
   sudo update-alternatives --set javac "${JDK_HOME}/bin/javac"
   # Replace JAVA_HOME with $JDK_HOME path if exist, else append
   grep -q 'JAVA_HOME=' ~/.profile && \
-    sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}," ~/.profile || \
-    echo "export JAVA_HOME=${JDK_HOME}" | tee -a ~/.profile
+    sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}/bin," ~/.profile || \
+    echo "export JAVA_HOME=${JDK_HOME}/bin" | tee -a ~/.profile
 
   # Replace JRE_HOME with $JDK_HOME/jre path if exist, else append
   grep -q 'JRE_HOME=' ~/.profile && \
@@ -762,7 +762,7 @@ alias openjdk8="export JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64 && setjavaopen
 alias openjdk11="export JDK_HOME=/usr/lib/jvm/java-11-openjdk-amd64 && setjavaopenjdkhome"
 alias openjdk13="export JDK_HOME=/usr/lib/jvm/java-13-openjdk-amd64 && setjavaopenjdkhome"
 alias oraclejdk8="export JDK_HOME=/usr/lib/jvm/jdk1.8.0_261 && setjavaoraclejdkhome"
-alias oraclejdk11="export JDK_HOME=/usr/lib/jvm/jdk-11.0.7 && setjavaoraclejdkhome"
+alias oraclejdk11="export JDK_HOME=/usr/lib/jvm/jdk-11.0.8 && setjavaoraclejdkhome"
 alias oraclejdk14="export JDK_HOME=/usr/lib/jvm/jdk-14.0.1 && setjavaoraclejdkhome"
 
 # gtd shell script
@@ -788,7 +788,7 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
   alias odrv="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive"
   alias drop="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox"
   alias dropd="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox/Dev"
-  alias windev="cd /mnt/c/Users/${WIN_USERNAME}/Projects/Dev"
+  alias winproj="cd /mnt/c/Users/${WIN_USERNAME}/Projects/"
   alias winbin="cd /mnt/c/bin"
 
   # Secure files Aliases
