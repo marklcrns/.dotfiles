@@ -26,7 +26,7 @@ fi
 if [ -d "$HOME/scripts" ] ; then
   # Excludes scripting-utils directory
   # Ref: https://stackoverflow.com/a/15736463/11850077
-  for d in $(find "${HOME}/scripts" -type d -not -path "*scripting-utils*"); do
+  for d in $(find "${HOME}/scripts" -type d -not -path "*.git*" -not -path "*scripting-utils*"); do
     export PATH="$d":$PATH
   done
 fi
