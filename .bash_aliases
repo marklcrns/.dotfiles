@@ -720,8 +720,16 @@ alias rsync="rclone sync -vvP ${RCLONE_ARGS}"
 alias rcdevrmt="rclone sync ~/Projects/Dev GoogleDrive:Dev --backup-dir GoogleDrive:$(date '+%Y-%m-%d').Dev.bak -vvP ${RCLONE_ARGS}"
 alias rcrmtdev="rclone sync GoogleDrive:Dev ~/Projects/Dev --backup-dir $(date '+%Y-%m-%d').Dev.bak -vvP ${RCLONE_ARGS}"
 
+
+MY_ENV_FILE='/etc/profile.d/myenvvars.sh'
+
 # Switch JDK version
 setjavaopenjdkhome() {
+  if [[ ! -e ${JDK_HOME} ]]; then
+    echo "'${JDK_HOME}' does not exist"
+    return 1
+  fi
+
   if [[ "$(echo $JDK_HOME | grep "java-8")" ]]; then
     # For jdk 8
     sudo update-alternatives --set java "${JDK_HOME}/jre/bin/java"
@@ -730,32 +738,56 @@ setjavaopenjdkhome() {
     sudo update-alternatives --set java "${JDK_HOME}/bin/java"
   fi
   sudo update-alternatives --set javac "${JDK_HOME}/bin/javac"
-  # replace JAVA_HOME with $JDK_HOME path if exist, else append
-  grep -q 'JAVA_HOME=' /etc/environment && \
-    sudo sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}," /etc/environment || \
-    echo "export JAVA_HOME=${JDK_HOME}" | sudo tee -a /etc/environment > /dev/null
+
+  # Set JAVA_HOME AND JRE_HOME environment variables
+  if [[ ! -e ${MY_ENV_FILE} ]]; then
+    sudo touch /etc/profile.d/myenvvars.sh
+  fi
+
+  # Replace JAVA_HOME with $JDK_HOME path if exist, else append
+  if grep -q 'JAVA_HOME=' ${MY_ENV_FILE}; then
+    sudo sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}," ${MY_ENV_FILE}
+  else
+    echo "export JAVA_HOME=${JDK_HOME}" | sudo tee -a ${MY_ENV_FILE} > /dev/null
+  fi
 
   # Empty JRE_HOME variable if exist
-  grep -q 'JRE_HOME=' /etc/environment && \
-    sudo sed -i "s,JRE_HOME=.*,JRE_HOME=," /etc/environment
+  if grep -q 'JRE_HOME=' ${MY_ENV_FILE}; then
+    sudo sed -i "s,JRE_HOME=.*,JRE_HOME=," ${MY_ENV_FILE}
+  fi
 
-  source ~/.profile
+  source ${MY_ENV_FILE}
 }
 
 setjavaoraclejdkhome() {
+  if [[ ! -e ${JDK_HOME} ]]; then
+    echo "'${JDK_HOME}' does not exist"
+    return 1
+  fi
+
   sudo update-alternatives --set java "${JDK_HOME}/bin/java"
   sudo update-alternatives --set javac "${JDK_HOME}/bin/javac"
+
+  # Set JAVA_HOME AND JRE_HOME environment variables
+  if [[ ! -e ${MY_ENV_FILE} ]]; then
+    sudo touch /etc/profile.d/myenvvars.sh
+  fi
+
   # Replace JAVA_HOME with $JDK_HOME path if exist, else append
-  grep -q 'JAVA_HOME=' /etc/environment && \
-    sudo sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}/bin," /etc/environment || \
-    echo "export JAVA_HOME=${JDK_HOME}/bin" | sudo tee -a /etc/environment > /dev/null
+  if grep -q 'JAVA_HOME=' ${MY_ENV_FILE}; then
+    sudo sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}/bin," ${MY_ENV_FILE}
+  else
+    echo "export JAVA_HOME=${JDK_HOME}/bin" | sudo tee -a ${MY_ENV_FILE} > /dev/null
+  fi
 
   # Replace JRE_HOME with $JDK_HOME/jre path if exist, else append
-  grep -q 'JRE_HOME=' /etc/environment && \
-    sudo sed -i "s,JRE_HOME=.*,JRE_HOME=${JDK_HOME}/jre," /etc/environment || \
-    echo "export JRE_HOME=${JDK_HOME}/jre" | sudo tee -a /etc/environment > /dev/null
+  if grep -q 'JRE_HOME=' ${MY_ENV_FILE}; then
+    sudo sed -i "s,JRE_HOME=.*,JRE_HOME=${JDK_HOME}/jre," ${MY_ENV_FILE}
+  else
+    echo "export JRE_HOME=${JDK_HOME}/jre" | sudo tee -a ${MY_ENV_FILE} > /dev/null
+  fi
 
-  source ~/.profile
+  source ${MY_ENV_FILE}
 }
 
 alias openjdk8="export JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64 && setjavaopenjdkhome"

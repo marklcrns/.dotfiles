@@ -13,6 +13,7 @@ badd +13 school/md/fall-2020/MATH-150/chapters/chapter-3/index.md
 badd +74 school/md/fall-2020/MATH-150/chapters/chapter-3/ch-3-4.md
 argglobal
 %argdel
+edit school/md/fall-2020/MATH-150/chapters/chapter-3/ch-3-4.md
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -20,16 +21,20 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-enew
-file magit:///home/markl/Docs/wiki/
-setlocal fdm=manual
-setlocal fde=0
+setlocal fdm=expr
+setlocal fde=Foldexpr_markdown(v:lnum)
 setlocal fmr={{{,}}}
 setlocal fdi=#
-setlocal fdl=1
+setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
-setlocal nofen
+setlocal fen
+let s:l = 74 - ((9 * winheight(0) + 10) / 21)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+74
+normal! 0
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
