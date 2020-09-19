@@ -68,9 +68,6 @@ export TLDR_DESCRIPTION='green'
 export TLDR_CODE='red'
 export TLDR_PARAM='blue'
 
-export JAVA_HOME=/usr/lib/jvm/jdk-11.0.8/bin
-export JRE_HOME=/usr/lib/jvm/jdk-11.0.8/jre
-
 if [[ -e "/opt/gradle/latest" ]]; then
   export GRADLE_HOME=/opt/gradle/latest
   export PATH=${GRADLE_HOME}/bin:${PATH}
