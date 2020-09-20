@@ -51,6 +51,7 @@ alias rm='rm -v'
 alias cp='cp -v'
 alias mkdir='mkdir -v'
 alias rmdir='rmdir -v'
+alias clear='clear -x' # keep buffer when clearing
 
 # Resources: https://unix.stackexchange.com/a/125386
 mkcdir () {

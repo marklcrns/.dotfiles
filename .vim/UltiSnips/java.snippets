@@ -31,7 +31,7 @@ def get_java_package(filepath):
 		src_end_index = filepath.index('src/') + 4 # Get the end index of src/
 	except ValueError:
 		return # Return nothing if no src file directory
-	return 'package ' + package_path.replace('/', '.')[src_end_index:-1] + ';\n'
+	return 'package ' + package_path.replace('/', '.')[src_end_index:-1] + ';'
 endglobal
 
 # Must be in root folder for auto package detect to work. Use vim-rooter
@@ -48,7 +48,7 @@ endsnippet
 snippet temp "Java class template" bA
 /**
  * @author Mark Lucernas
- * Date: `date '+%Y-%m-%d'`
+ * Date: `date +'%b %d, %Y'`
  */
 public class `!p snip.rv = fn.rstrip('.java')` {$0}
 endsnippet
@@ -63,7 +63,7 @@ snip.rv = get_java_package(package_path)`
 
 /**
  * @author Mark Lucernas
- * Date: `date '+%Y-%m-%d'`
+ * Date: `date +'%b %d, %Y'`
  */
 public class `!p snip.rv = fn.rstrip('.java')` {
 
@@ -84,7 +84,7 @@ snip.rv = get_java_package(package_path)`
 
 /**
  * @author Mark Lucernas
- * Date: `date '+%Y-%m-%d'`
+ * Date: `date +'%b %d, %Y'`
  */
 public class `!p snip.rv = fn.rstrip('.java')` {
 	public static void main(String[] args) {
@@ -103,7 +103,7 @@ snip.rv = get_java_package(package_path)`
 
 /**
  * @author Mark Lucernas
- * Date: `date '+%Y-%m-%d'`
+ * Date: `date +'%b %d, %Y'`
  */
 public interface `!p snip.rv = fn.rstrip('.java')` {
 	$0
@@ -120,7 +120,7 @@ snip.rv = get_java_package(package_path)`
 
 /**
  * @author Mark Lucernas
- * Date: `date '+%Y-%m-%d'`
+ * Date: `date +'%b %d, %Y'`
  */
 public abstract class `!p snip.rv = fn.rstrip('.java')` {
 	$0
@@ -137,7 +137,7 @@ snip.rv = get_java_package(package_path)`
 
 /**
  * @author Mark Lucernas
- * Date: `date '+%Y-%m-%d'`
+ * Date: `date +'%b %d, %Y'`
  */
 public enum `!p snip.rv = fn.rstrip('.java')` {
 	$0
@@ -191,7 +191,7 @@ endsnippet
 snippet head "Java javadoc header" bA
 /**
  * @author Mark Lucernas
- * Date: `date '+%Y-%m-%d'`
+ * Date: `date +'%b %d, %Y'`
  */
 endsnippet
 
