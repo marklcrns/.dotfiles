@@ -388,13 +388,13 @@ if "&" in flags:
 	for i in range(1, (mult * 2) + 1, 2):
 		side_task_header = "## ${" + str(i) + ":Side}"
 		side_task_filter = " | +${" + str(i) + "/(\w+)\s*/\L$1\E/g} " + sched + " " + due
+		side_task_separator = "\n" if "&&" not in flags else ""
 
-		if "&&" not in flags:
-			result += "\n"
-
+		result += side_task_separator
 		result += side_task_header
 		result += side_task_filter + "\n"
-		result += task_checkbox + "$" + str(i + 1) + "\n"
+		result += task_checkbox + "$" + str(i + 1)
+		result += side_task_separator
 
 # weekly and monthly tasks
 if "!" in flags:
@@ -912,7 +912,7 @@ snippet 'iff' "Mathjax if and only if sign" i
 \iff
 endsnippet
 
-snippet '+-' "Mathjax plus minus sign" i
+snippet '(\+-|-\+)' "Mathjax plus minus sign" irA
 \pm
 endsnippet
 
