@@ -7,15 +7,14 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +18 core/src/dev/marklcrns/generals/MainGame.java
-badd +9 core/src/dev/marklcrns/generals/engine/board/Board.java
-badd +44 ~/.vim/UltiSnips/java.snippets
-badd +11 core/src/dev/marklcrns/generals/engine/board/BoardBuilder.java
+badd +14 core/src/dev/marklcrns/generals/engine/board/Board.java
+badd +4 core/src/dev/marklcrns/generals/engine/board/pieces/Piece.java
+badd +19 core/src/dev/marklcrns/generals/engine/board/Move.java
+badd +22 core/src/dev/marklcrns/generals/engine/board/BoardBuilder.java
 argglobal
 %argdel
-$argadd core/src/dev/marklcrns/generals/MainGame.java
 $argadd core/src/dev/marklcrns/generals/engine/board/Board.java
-edit core/src/dev/marklcrns/generals/MainGame.java
+edit core/src/dev/marklcrns/generals/engine/board/Board.java
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -31,11 +30,13 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 13 - ((12 * winheight(0) + 22) / 44)
+9
+normal! zo
+let s:l = 14 - ((13 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-13
+14
 normal! 0
 lcd /mnt/c/Users/markl/Projects/java/eclipse-workspace/Generals
 tabnext 1

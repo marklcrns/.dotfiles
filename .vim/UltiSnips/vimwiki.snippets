@@ -31,6 +31,8 @@
 # https://github.com/gillescastel/latex-snippets/blob/master/tex.snippets
 
 global !p
+from datetime import datetime, timedelta, date
+
 # Make all multi-line jump placeholder strings jumpable. Used with `post_jump`
 def post_jump_expand_ph(snip):
 	# Create annonymous snippet body
@@ -53,6 +55,27 @@ def post_jump_expand_ph(snip):
 
 	# Expand new annonymous snippet
 	snip.expand_anon(anon_snippet_body)
+
+# Gets next day of the week. Returns today's date if, say '6' was passed in, and
+# today is sunday.
+# Sample usage: get_next_week_date(6), will return the date of next "Sunday"
+# https://stackoverflow.com/a/8801197/11850077
+def get_next_week_date(week_date):
+	day = date.today()
+	while day.weekday() != week_date:
+		day += timedelta(1)
+	return day
+
+# https://stackoverflow.com/a/13565185/11850077
+def get_last_day_of_month(ref_date):
+	end = ref_date.replace(day=28) + timedelta(days=4)  # this will never fail
+	end = end - timedelta(days=end.day)
+	return end
+
+# https://stackoverflow.com/a/59199379/11850077
+def get_start_of_next_month(ref_date):
+    start = (ref_date.replace(day=1) + timedelta(days=32)).replace(day=1)
+    return start
 
 # Mathjax matrix dictionary
 boundaries = {
@@ -223,7 +246,7 @@ snippet i "Image link" w
 endsnippet
 
 snippet a "Markdown anchor link" w
-[⚓ ${1:${VISUAL}}](${2:file}#${1/([0-9.,]+)?(\w+)\s*/\l$2_/g})$0
+[⚓ ${1:${VISUAL}}](${2:file}#${1/([0-9.,]+)?(\w+)\s*/\L$2_\E/g})$0
 endsnippet
 
 snippet '#(.*)&a' "Convert anchor name ref into valid html id" irA
@@ -308,59 +331,95 @@ snippet res "Vimwiki document resources header" b
 endsnippet
 
 # Creates Todo list with Task Warrior.
-# Prepend "!" to include "until" filter set to week_after.
-# Prepend "#" to use taskwiki Preset Headers instead of Viewport
-# Prepend "&" to generate nested todo (will automatically use Preset Header for parent header)
-# Prepend "&&" to generate nested todo only
+# Prepend "!" to include weekly and monthly todos
+# Prepend "@" to include overdue todos
+# Prepend "&" to generate nested todo
+# Prepend "&&" to generate nested todo ONLY
 post_jump "post_jump_expand_ph(snip)"
-snippet '([!#&0-9]+)?td' "To-do list template" rbA
+snippet '([!@&0-9]+)?td' "To-do list template" rbA
 `!p
-from datetime import datetime, timedelta
 # parse date filename
 fn_date = fn.rstrip('.md')
-date = fn_date.split("-")
+fn_date = fn_date.split("-")
 flags = match.group(1) if match.group(1) != None else ""
-# get today, and day after tomorrow's date in string
-base = datetime(int(date[0]), int(date[1]), int(date[2]))
-today = datetime.strftime(base, '%Y-%m-%d')
-today_verbose = datetime.strftime(base, '%b %d, %Y')
-tomorrow = datetime.strftime(base + timedelta(1), '%Y-%m-%d')
-week_after = datetime.strftime(base + timedelta(7), '%Y-%m-%d')
+
+# Date strings
+date_format = '%Y-%m-%d'
+date_format_verbose = '%b %d, %Y'
+base = datetime(int(fn_date[0]), int(fn_date[1]), int(fn_date[2]))
+today = datetime.strftime(base, date_format)
+today_verbose = datetime.strftime(base, date_format_verbose)
+end_of_day = datetime.strftime(base + timedelta(1), date_format) + "T23:59:59"
+end_of_week = (get_next_week_date(6)).strftime(date_format) + "T23:59:59"
+end_of_month = get_last_day_of_month(base).strftime(date_format) + "T23:59:59"
 
 # Meta
-title = f"title: To-do list"
+title = f"title: TODO list"
 subtitle = f"subtitle: {weekdays[str(base.weekday())]} to-do list. Managed by Taskwarrior and Taskwiki"
 author = "author: Mark Lucernas"
 date = f"date: {today_verbose}"
 meta = f"---\n{title}\n{subtitle}\n{author}\n{date}\n---\n\n\n"
+
 # Task warrior filters
 proj = "project:Todo"
 sched = f"scheduled:{today}"
-due = f"due:{tomorrow}"
-until = f"until:{week_after}"
+due = f"due:{end_of_day}"
 
 result = ""
-# Taskwiki Preset headers '||' or Viewport '|'
-task_header = " || " if "#" in flags or "&" in flags else " | "
-task_filter = proj + " " + sched + " " + due
-# Append main task snippet into result
+task_checkbox = "* [ ] "
+
+# Main task header
 if "&&" not in flags:
-	result += meta + "# Daily To-do" + task_header + task_filter
+	todo_header = meta + "# Daily TODOs || " + proj + "\n"
+	main_task_header = "## Main"
+	main_task_filter = " | +main " + sched + " " + due
+	# Append main task sud header
+	result += todo_header + "\n"
+	result += main_task_header
+	result += main_task_filter + "\n"
+	result += task_checkbox + "$0" + "\n"
+
 # Append side task snippet into result if '&' flag was given
 if "&" in flags:
-	# Extract multiplier
+	# Extract multiplier from flag if any
 	mult = [int(c) for c in flags if c.isdigit()]
 	mult = mult[0] if mult else 1
-	for i in range(1, (mult * 2) + 1, 2):
-		if "&&" not in flags:
-			result += "\n\n"
-		result += "## ${" + str(i) + ":Side Task " + str(i) +  "}" + " | " + "+${" + str(i + 1) + ":side} " + sched + " " + due
-		# Add empty checkbox
-		result += "\n* [ ] $0"
 
-# Append until filter if '!' flag was given (defaults to a week after)
+	for i in range(1, (mult * 2) + 1, 2):
+		side_task_header = "## ${" + str(i) + ":Side}"
+		side_task_filter = " | +${" + str(i) + "/(\w+)\s*/\L$1\E/g} " + sched + " " + due
+
+		if "&&" not in flags:
+			result += "\n"
+
+		result += side_task_header
+		result += side_task_filter + "\n"
+		result += task_checkbox + "$" + str(i + 1) + "\n"
+
+# weekly and monthly tasks
 if "!" in flags:
-	result += " " + until
+	result += "\n"
+	end_of_week_header = "## Weekly"
+	end_of_week_filter = " | +WEEK " + f"due:{end_of_week}"
+	end_of_month_header = "## Monthly"
+	end_of_month_filter = " | +MONTH " + f"due:{end_of_month}"
+	# Append weekly todo
+	result += end_of_week_header
+	result += end_of_week_filter + "\n"
+	# Separator
+	result += "\n"
+	# Append monthly todo
+	result += end_of_month_header
+	result += end_of_month_filter + "\n"
+
+# Overdue
+if "@" in flags:
+	result += "\n"
+	overdue_task_header = "## Overdue"
+	overdue_task_filter = " | +OVERDUE"
+	# Append all todos
+	result += overdue_task_header
+	result += overdue_task_filter + "\n"
 
 # Output
 snip.rv = result`
@@ -368,7 +427,6 @@ endsnippet
 
 snippet '(\d+)meds' "Description" rbA
 `!p
-from datetime import datetime, timedelta
 # parse date filename
 fn_date = fn.rstrip('.md')
 date = fn_date.split("-")
@@ -392,7 +450,6 @@ endsnippet
 
 snippet due "Description" w
 `!p
-from datetime import datetime, timedelta
 # parse date filename
 fn_date = fn.rstrip('.md')
 date = fn_date.split("-")
