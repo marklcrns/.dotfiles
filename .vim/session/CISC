@@ -9,11 +9,10 @@ endif
 set shortmess=aoO
 badd +8 school/md/fall-2020/CISC-192/chapters/index.md
 badd +11 school/md/fall-2020/CISC-192/chapters/chapter-4/index.md
-badd +28 school/md/fall-2020/CISC-192/chapters/chapter-4/notes.md
-badd +22 docs/md/index.md
+badd +534 school/md/fall-2020/CISC-192/chapters/chapter-4/notes.md
 argglobal
 %argdel
-edit docs/md/index.md
+edit school/md/fall-2020/CISC-192/chapters/chapter-4/notes.md
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -29,11 +28,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 9 - ((8 * winheight(0) + 25) / 50)
+let s:l = 537 - ((22 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-9
+537
 normal! 0
 lcd ~/Docs/wiki
 tabnext 1

@@ -869,7 +869,7 @@ snippet sqrt "Mathjax square root" i
 \sqrt{${1:${VISUAL}}}$0
 endsnippet
 
-snippet 'sqrt(\d+|n|x|y|z)' "Mathjax root of n" irA
+snippet 'sqrt(\d+|n|x|y|z)' "Mathjax root of n" ir
 \sqrt[`!p snip.rv = match.group(1)`]{$1}$0
 endsnippet
 
@@ -1192,11 +1192,11 @@ snippet ' "Mathjax prime" i
 ^{\prime}
 endsnippet
 
-snippet " "Mathjax double prime" i
+snippet '' "Mathjax double prime" i
 ^{\prime \prime}
 endsnippet
 
-snippet "' "Mathjax tripple prime" i
+snippet " "Mathjax tripple prime" i
 ^{\prime \prime \prime}
 endsnippet
 
@@ -1328,11 +1328,29 @@ snippet col# "Mathjax text color" iA
 {\color{#${1:ff0000}}{${2:${VISUAL}}}}$0
 endsnippet
 
-snippet '(\d+)?(sin|cos|tan|csc|sec|cot)(\d+[a-zA-Z0-9]*|[a-zA-Z]+)?' "Mathjax trig functions" r
+snippet '(\d+)?(a|A)?(sin|cos|tan|csc|sec|cot)(\d+[a-zA-Z0-9]*|[a-zA-Z]+)?' "Mathjax trig functions" r
 `!p
 mult = "" if match.group(1) == None else match.group(1)
-expo = "" if match.group(3) == None else "^{" + match.group(3) + "}"
-snip.rv = mult + "\\" + match.group(2) + expo
+expo = "" if match.group(4) == None else "^{" + match.group(4) + "}"
+
+# arc
+if match.group(2) == 'a':
+	arc = "arc"
+	neg = ""
+# arc negative
+elif match.group(2) == 'A':
+	arc = ""
+	# Combine arc negative and exponent if expo exist
+	if expo:
+		expo = ""
+		neg = "^{(-1 \\cdot " + match.group(4) + ")}"
+	else:
+		neg = "^{-1}"
+else:
+	arc = ""
+	neg = ""
+
+snip.rv = mult + "\\" + arc + match.group(3) + neg + expo
 `{$1}$0
 endsnippet
 
