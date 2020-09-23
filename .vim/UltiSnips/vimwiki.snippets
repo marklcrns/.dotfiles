@@ -277,11 +277,11 @@ snippet kbd "Markdown key bindings tag" wA
 <kbd>${1:${VISUAL}}</kbd>$0
 endsnippet
 
-snippet mbo "Markdown Bold tag" wA
+snippet ** "Markdown Bold tag" wA
 **${1:${VISUAL}}**$0
 endsnippet
 
-snippet mit "Markdown Italic tag" wA
+snippet __ "Markdown Italic tag" wA
 _${1:${VISUAL}}_$0
 endsnippet
 
@@ -400,9 +400,9 @@ if "&" in flags:
 if "!" in flags:
 	result += "\n"
 	end_of_week_header = "## Weekly"
-	end_of_week_filter = " | +WEEK " + f"due:{end_of_week}"
+	end_of_week_filter = " | +weekly " + f"due:{end_of_week}"
 	end_of_month_header = "## Monthly"
-	end_of_month_filter = " | +MONTH " + f"due:{end_of_month}"
+	end_of_month_filter = " | +monthly " + f"due:{end_of_month}"
 	# Append weekly todo
 	result += end_of_week_header
 	result += end_of_week_filter + "\n"
@@ -712,18 +712,6 @@ else:
 `
 endsnippet
 
-snippet term "Word or phrase definition" bA
-<a name="$1">**${2:${VISUAL}}**</a>
-
-- $0
-endsnippet
-
-snippet iterm "Word or phrase definition in-line" bA
-<a name="$1">**${2:${VISUAL}}**</a>
-
-- $0
-endsnippet
-
 # Usage: &name-of-link&alink
 snippet '&?([A-Za-z- ]+)\&(t)?alink' "Word or pharse definition auto" wrA
 [`!p
@@ -733,40 +721,84 @@ snip.rv = match.group(1).replace("-", " ")
 `})$0
 endsnippet
 
-# Usage:
-# &terminology name&term
+# USAGE
 # Termininology name&iterm
 # **Terminology name**&term
 # **terminology name**&iterm
-snippet '&?(\*\*)?([^.*\[\]#&]+)(\*\*)?&(i)?term$' "Word or pharse definition auto" wrA
-<a name="`!p
-term = match.group(2)
+#
+# In-line flag:
+# &terminology name&term -- in-line definition
+# terminology name&iterm -- same line definition
+#
+# Abbreviation flag:
+# terminology name&aterm
+# &terminology name&aterm
+#
+# Capitalization flags:
+# terminology name&cterm -- capitalize
+# &terminology name&tterm -- titlelize
+#
+# Mixed flags:
+# terminology name&iaterm -- same line definition with abbrev
+# terminology name&iacterm -- capitalized same line definition with abbrev
+# a, i, c or t flags are interchangeable
+post_jump "post_jump_expand_ph(snip)"
+snippet '(&)?(\*\*)?([^.*\[\]#&]+)(\*\*)?&([ia(t|c)]{1,3})?term$' "Word or phrase definition auto" wrA
+`!p
+orig_term = match.group(3)
+flags = match.group(5)
 text = ""
 copy = True
-# check if theres parenthesis
+# Check if theres parenthesis and exclude its contents from anchor link
 parenthesis = set('()')
-if any((c in parenthesis) for c in term):
-	for i in range(0, len(term) - 1):
-		if ((term[i] == "(" or term[i + 1] == "(") and copy == True):
+if any((c in parenthesis) for c in orig_term):
+	for i in range(0, len(orig_term) - 1):
+		if ((orig_term[i] == "(" or orig_term[i + 1] == "(") and copy == True):
 			copy = False
 			continue
-		elif (term[i] == ")" and copy == False):
+		elif (orig_term[i] == ")" and copy == False):
 			copy = True
 			continue
 
 		if copy == True:
-			text += term[i]
+			text += orig_term[i]
 else:
-  text = term
+  text = orig_term
 
 # Anchor link with '-term' appended to name
-snip.rv = text.replace(" ", "-").lower() + '-term">**'``!p
-# Capitalize term
-snip.rv = match.group(2).capitalize()`$1**</a>`!p
-# if '&iterm' make inline else the term definition in new line in markdown list
-snip.rv = " - " if match.group(4) else "\n\n- "`$0
-endsnippet
+anchor = "<a name=\"" + text.replace(" ", "-").lower() + "-term\">"
+# Flags
+if flags:
+	# Abbreviation
+	if 'a' in flags:
+		# Credits: https://stackoverflow.com/a/41191867/11850077
+		abbrev = (" (${1:" + ''.join([s[0] for s in orig_term.split()]).upper() + "})")
+	else:
+		abbrev = ""
+	# In-line
+	if match.group(1):	# In-line definition. If term sandwhiched by '&'
+		end = "$0"
+	elif 'i' in flags:				# Same line definition
+		end = " - $0<br>"
+	else:
+		end = "\n\n- $0"				# Multi-line definition
+	# Capitalizations
+	if 'c' in flags:					# Capitalize term
+		term = orig_term.capitalize()
+	elif 't' in flags:				# Titlelize term
+		term = orig_term.title()
+	else:
+		term = orig_term
+else:
+	abbrev = ""
+	if match.group(1):	# In-line definition. If term sandwhiched by '&'
+		end = "$0"
+	else:
+		end = "\n\n- $0"
+	term = orig_term
 
+snip.rv = anchor + "**" + term + abbrev + "**</a>" + end`
+endsnippet
 
 # ====================Mathjax Snippets with Mathjax====================
 
@@ -780,8 +812,12 @@ snippet $$ "Mathjax in-line" wA
 $${1:${VISUAL}}$
 endsnippet
 
+snippet '(?<!\\)\$([0-9,]+(\.[0-9]+)?)\s(?!\$)' "Mathjax auto currency" rwA
+`!p snip.rv = "\$" + match.group(1) + " "`
+endsnippet
+
 snippet @@ "Mathjax text" iA
-\text{${1:${VISUAL}}}$0
+\text{ ${1:${VISUAL}} }$0
 endsnippet
 
 snippet xsbo "Mathjax symbol bold" wA
@@ -1000,23 +1036,24 @@ snippet != "Mathjax not equals to" w
 \neq
 endsnippet
 
-snippet '(\\|,),' "Matjax thin space" rw
-`!p
-prefix = match.group(1)
-if prefix == '\\':
-	snip.rv = '\\,\\,'
-elif prefix == ',':
-	snip.rv = '\\,'
-`
-endsnippet
 
-snippet '(\\|!)!' "Matjax thin negative space" rw
+snippet '(\\|!)!' "Matjax small negative space" rw
 `!p
 prefix = match.group(1)
 if prefix == '\\':
 	snip.rv = '\\!\\!'
 elif prefix == '!':
 	snip.rv = '\\!'
+`
+endsnippet
+
+snippet '(\\|,),' "Matjax small space" rw
+`!p
+prefix = match.group(1)
+if prefix == '\\':
+	snip.rv = '\\,\\,'
+elif prefix == ',':
+	snip.rv = '\\,'
 `
 endsnippet
 
@@ -1337,10 +1374,10 @@ expo = "" if match.group(4) == None else "^{" + match.group(4) + "}"
 if match.group(2) == 'a':
 	arc = "arc"
 	neg = ""
-# arc negative
+# inverse
 elif match.group(2) == 'A':
 	arc = ""
-	# Combine arc negative and exponent if expo exist
+	# Combine inverse and exponent if expo exist
 	if expo:
 		expo = ""
 		neg = "^{(-1 \\cdot " + match.group(4) + ")}"
