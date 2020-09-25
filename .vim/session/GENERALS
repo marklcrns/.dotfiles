@@ -7,10 +7,13 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +74 build.gradle
+badd +11 core/src/com/markl/game/Generals.java
+badd +23 core/src/com/markl/game/engine/board/Tile.java
+badd +12 core/src/com/markl/game/engine/board/pieces/Board.java
 argglobal
 %argdel
-edit build.gradle
+$argadd core/src/com/markl/game/Generals.java
+edit core/src/com/markl/game/engine/board/pieces/Board.java
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -26,13 +29,14 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 73 - ((30 * winheight(0) + 19) / 39)
+10
+normal! zo
+let s:l = 17 - ((16 * winheight(0) + 18) / 36)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-73
+17
 normal! 0
-lcd /mnt/c/Users/markl/Projects/java/eclipse-workspace/Generals
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
