@@ -7,20 +7,27 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +11 core/src/com/markl/game/Generals.java
-badd +23 core/src/com/markl/game/engine/board/Tile.java
-badd +12 core/src/com/markl/game/engine/board/pieces/Board.java
+badd +23 core/src/main/java/com/markl/game/engine/board/Board.java
+badd +9 core/src/test/java/com/markl/game/engine/board/BoardTest.java
 argglobal
 %argdel
-$argadd core/src/com/markl/game/Generals.java
-edit core/src/com/markl/game/engine/board/pieces/Board.java
+$argadd core/src/main/java/com/markl/game/engine/board/Board.java
+$argadd core/src/test/java/com/markl/game/engine/board/BoardTest.java
+edit core/src/test/java/com/markl/game/engine/board/BoardTest.java
 set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
+exe 'vert 1resize ' . ((&columns * 103 + 103) / 206)
+exe 'vert 2resize ' . ((&columns * 102 + 103) / 206)
 argglobal
+if bufexists("core/src/test/java/com/markl/game/engine/board/BoardTest.java") | buffer core/src/test/java/com/markl/game/engine/board/BoardTest.java | else | edit core/src/test/java/com/markl/game/engine/board/BoardTest.java | endif
 setlocal fdm=syntax
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -29,20 +36,42 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-10
+17
 normal! zo
-let s:l = 17 - ((16 * winheight(0) + 18) / 36)
+let s:l = 14 - ((13 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-17
+14
 normal! 0
+lcd /mnt/c/Users/markl/Projects/java/eclipse-workspace/Generals
+wincmd w
+argglobal
+if bufexists("/mnt/c/Users/markl/Projects/java/eclipse-workspace/Generals/core/src/test/java/com/markl/game/engine/board/BoardTest.java") | buffer /mnt/c/Users/markl/Projects/java/eclipse-workspace/Generals/core/src/test/java/com/markl/game/engine/board/BoardTest.java | else | edit /mnt/c/Users/markl/Projects/java/eclipse-workspace/Generals/core/src/test/java/com/markl/game/engine/board/BoardTest.java | endif
+setlocal fdm=syntax
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=99
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+let s:l = 32 - ((31 * winheight(0) + 27) / 54)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+32
+normal! 0
+lcd /mnt/c/Users/markl/Projects/java/eclipse-workspace/Generals
+wincmd w
+exe 'vert 1resize ' . ((&columns * 103 + 103) / 206)
+exe 'vert 2resize ' . ((&columns * 102 + 103) / 206)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
 unlet! s:wipebuf
-set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=aFcI
+set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=aFc
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if file_readable(s:sx)
   exe "source " . fnameescape(s:sx)

@@ -25,13 +25,15 @@
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
 global !p
-
 def get_java_package(filepath):
 	try:
-		src_end_index = filepath.index('src/') + 4 # Get the end index of src/
+		if 'java/' in filepath:
+			end_index =  filepath.index('java/') + 5 # Get the end index of java/
+		else:
+			end_index = filepath.index('src/') + 4 # Get the end index of src/
 	except ValueError:
 		return # Return nothing if no src file directory
-	return 'package ' + package_path.replace('/', '.')[src_end_index:-1] + ';'
+	return 'package ' + package_path.replace('/', '.')[end_index:-1] + ';'
 endglobal
 
 # Must be in root folder for auto package detect to work. Use vim-rooter
@@ -214,13 +216,13 @@ snip.rv = f"for (int {var} = 0; {var} < $1; {var}++) " + "{\n\t$0\n}"
 `
 endsnippet
 
-snippet pln "Java System.out.println" wA
-System.out.println(${0:${VISUAL}});
+snippet pln "Java System.out.println" b
+System.out.println(${1:${VISUAL}});$0
 endsnippet
 
-snippet dpln "Java debug System.out.println" wA
+snippet dpln "Java debug System.out.println" b
 ////////// TODO: DELETE ME LATER //////////
-System.out.println(${0:${VISUAL}});
+System.out.println(${1:${VISUAL}});$0
 endsnippet
 
 snippet psf "Java private static final field" bA
