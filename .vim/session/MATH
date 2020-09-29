@@ -10,10 +10,10 @@ set shortmess=aoO
 badd +21 school/md/fall-2020/MATH-150/index.md
 badd +29 school/md/fall-2020/MATH-150/chapters/index.md
 badd +16 school/md/fall-2020/MATH-150/chapters/chapter-3/index.md
-badd +0 school/md/fall-2020/MATH-150/chapters/chapter-3/ch-3-6.md
+badd +174 school/md/fall-2020/MATH-150/chapters/chapter-3/ch-3-6.md
 argglobal
 %argdel
-edit school/md/fall-2020/MATH-150/chapters/chapter-3/ch-3-6.md
+edit school/md/fall-2020/MATH-150/index.md
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -29,12 +29,12 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 153 - ((4 * winheight(0) + 14) / 28)
+let s:l = 25 - ((15 * winheight(0) + 14) / 28)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-153
-normal! 03|
+25
+normal! 0
 lcd ~/Docs/wiki
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
