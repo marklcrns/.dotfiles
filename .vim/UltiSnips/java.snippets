@@ -25,25 +25,26 @@
 # Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
 
 global !p
-def get_java_package(filepath):
+import os, re
+
+def get_java_package():
+	root = os.getcwd()										  # get root dir
+	rel_path = re.sub(root, '', path)				# strip root dir from abs filepath
+	rel_dir_path = re.sub(fn, '', rel_path) # strip current buffer filename from path
+
 	try:
-		if 'java/' in filepath:
-			end_index =  filepath.index('java/') + 5 # Get the end index of java/
+		if 'java/' in rel_dir_path:
+			end_index =  rel_dir_path.index('java/') + 5 # Get the end index of java/
 		else:
-			end_index = filepath.index('src/') + 4 # Get the end index of src/
+			end_index = rel_dir_path.index('src/') + 4 # Get the end index of src/
 	except ValueError:
 		return # Return nothing if no src file directory
-	return 'package ' + package_path.replace('/', '.')[end_index:-1] + ';'
+	return 'package ' + rel_dir_path.replace('/', '.')[end_index:-1] + ';'
 endglobal
 
 # Must be in root folder for auto package detect to work. Use vim-rooter
 snippet pac "Java package header" b
-`!p
-import os, re
-root = os.getcwd()
-rel_path = re.sub(root + '/src/', '', path)
-package_path = re.sub(fn, '', rel_path)
-snip.rv = get_java_package(package_path)`
+`!p snip.rv = get_java_package()`
 endsnippet
 
 
@@ -56,12 +57,7 @@ public class `!p snip.rv = fn.rstrip('.java')` {$0}
 endsnippet
 
 snippet ctemp "Java basic class template with constructor" bA
-`!p
-import os, re
-root = os.getcwd()
-rel_path = re.sub(root + '/src/', '', path)
-package_path = re.sub(fn, '', rel_path)
-snip.rv = get_java_package(package_path)`
+`!p snip.rv = get_java_package()`
 
 /**
  * @author Mark Lucernas
@@ -77,12 +73,7 @@ public class `!p snip.rv = fn.rstrip('.java')` {
 endsnippet
 
 snippet mtemp "Java basic template with main method" bA
-`!p
-import os, re
-root = os.getcwd()
-rel_path = re.sub(root + '/src/', '', path)
-package_path = re.sub(fn, '', rel_path)
-snip.rv = get_java_package(package_path)`
+`!p snip.rv = get_java_package()`
 
 /**
  * @author Mark Lucernas
@@ -96,12 +87,7 @@ public class `!p snip.rv = fn.rstrip('.java')` {
 endsnippet
 
 snippet itemp "Java basic interface template" bA
-`!p
-import os, re
-root = os.getcwd()
-rel_path = re.sub(root + '/src/', '', path)
-package_path = re.sub(fn, '', rel_path)
-snip.rv = get_java_package(package_path)`
+`!p snip.rv = get_java_package()`
 
 /**
  * @author Mark Lucernas
@@ -113,12 +99,7 @@ public interface `!p snip.rv = fn.rstrip('.java')` {
 endsnippet
 
 snippet atemp "Java basic abstract class template" bA
-`!p
-import os, re
-root = os.getcwd()
-rel_path = re.sub(root + '/src/', '', path)
-package_path = re.sub(fn, '', rel_path)
-snip.rv = get_java_package(package_path)`
+`!p snip.rv = get_java_package()`
 
 /**
  * @author Mark Lucernas
@@ -130,12 +111,7 @@ public abstract class `!p snip.rv = fn.rstrip('.java')` {
 endsnippet
 
 snippet etemp "Java enum class template" bA
-`!p
-import os, re
-root = os.getcwd()
-rel_path = re.sub(root + '/src/', '', path)
-package_path = re.sub(fn, '', rel_path)
-snip.rv = get_java_package(package_path)`
+`!p snip.rv = get_java_package()`
 
 /**
  * @author Mark Lucernas
@@ -147,12 +123,7 @@ public enum `!p snip.rv = fn.rstrip('.java')` {
 endsnippet
 
 snippet customtemp "java basic Class template" bA
-`!p
-import os, re
-root = os.getcwd()
-rel_path = re.sub(root + '/src/', '', path)
-package_path = re.sub(fn, '', rel_path)
-snip.rv = get_java_package(package_path)`
+`!p snip.rv = get_java_package()`
 
 /**
  * ${1:Class description...}

@@ -1,6 +1,3 @@
-# TODO: Create dynamic placeholders generator with python interpolation
-# https://github.com/SirVer/ultisnips/blob/master/doc/examples/tabstop-generation/README.md
-
 # A valid snippet should starts with:
 #
 #		snippet trigger_word [ "description" [ options ] ]
@@ -31,6 +28,28 @@
 # https://github.com/gillescastel/latex-snippets/blob/master/tex.snippets
 
 global !p
+import os, re
+
+def get_wiki_files_dir():
+	root = os.getcwd()
+	rel_path = re.sub(root, '', path)			# strip root dir from abs filepath
+	files_path = re.sub(fn, '', rel_path) # remove current buffer file from path
+	subdir_count = 0
+
+	try:
+		if 'md/' in files_path:
+			file_index_end =  files_path.index('md/') + 2 # Get the end index of 'md' dir
+			stripped_path = files_path[file_index_end:]		# Strip trailing path from after 'md' dir
+			# Count how deep current buffer dir relative to 'md' dir or stripped path
+			for i in stripped_path:
+				if i == '/':
+					subdir_count += 1
+	except ValueError:
+		return # Return nothing if no 'md' dir
+
+	# return path to 'files/' dir relative to current buffer dir
+	return "../" * subdir_count + "files/"
+
 from datetime import datetime, timedelta, date
 
 # Make all multi-line jump placeholder strings jumpable. Used with `post_jump`
@@ -234,15 +253,15 @@ snippet v "Video link" w
 endsnippet
 
 snippet f "File Link" w
-[⬇ ${1:${VISUAL}}](file:../../../$2)$0
+[⬇ ${1:${VISUAL}}](file:`!p snip.rv = get_wiki_files_dir()`$2)$0
 endsnippet
 
 snippet vf "vfile link" w
-[⬇ ${1:${VISUAL}}](vfile:../../../$2)$0
+[⬇ ${1:${VISUAL}}](vfile:`!p snip.rv = get_wiki_files_dir()`$2)$0
 endsnippet
 
 snippet i "Image link" w
-![${1:${VISUAL}}]($2)$0
+![${1:${VISUAL}}](`!p snip.rv = get_wiki_files_dir()`$2)$0
 endsnippet
 
 snippet a "Markdown anchor link" w
@@ -868,7 +887,6 @@ endsnippet
 # snippet '(((-)?\d+)|((-)?\d+)((\^|_)(\{.*\}|(-)?\d+).*)|((-)?\d+)?((\\)([A-Za-z]+)(\{.*\}|(-)?\d+)).*)/' "Mathjax tab auto fraction" wr
 # \\frac{`!p snip.rv = match.group(1)`}{$1}$0
 # endsnippet
-
 snippet '^.*\)/' "Mathjax () auto fraction" wrA
 `!p
 stripped = match.string[:-1]
@@ -888,7 +906,7 @@ endsnippet
 
 # Auto exponent/superscript
 # Matches ^ followed by pattern of charactersk using negative lookbehind
-snippet '((?<=[a-gA-Gu-zU-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))\^' "Mathjax auto exponent/superscript" irA
+snippet '((?<=[a-zA-Z0-9]|\)|\}|\])|(?<=sin|cos|tan|csc|sec|cot))\^' "Mathjax auto exponent/superscript" irA
 ^{$1}$0
 endsnippet
 
@@ -905,7 +923,7 @@ snippet 'sqrt(\d+|n|x|y|z)' "Mathjax root of n" ir
 endsnippet
 
 # Logarthmic function
-snippet '(log|ln)([0-9a-zA-Z]{1,5})?' "Mathjax Logarithmic function" rw
+snippet '(log|ln)([a-zA-Z0-9]{1,5})?' "Mathjax Logarithmic function" rw
 `!p
 log = match.group(1)
 base = "_{" + match.group(2) + "}" if match.group(2) else ""
@@ -915,7 +933,7 @@ endsnippet
 # Symbols
 # ============================================================
 
-snippet '(?<=[a-gA-Gu-zU-Z0-9])deg' "Mathjax auto degrees symbol" irA
+snippet '(?<=[a-zA-Z0-9])deg' "Mathjax auto degrees symbol" irA
 ^{\circ}
 endsnippet
 
@@ -923,12 +941,15 @@ snippet oo "Mathjax degrees symbol" w
 \circ
 endsnippet
 
-snippet pi "Mathjax pi symbol" iw
-\pi
-endsnippet
-
-snippet '(\d+)pi' "Mathjax auto pi symbol" irA
-`!p snip.rv = match.group(1)`\pi
+snippet '([a-zA-Z0-9]+|\s|)pi' "Mathjax auto pi symbol" r
+`!p
+if match.group(1) == " ":
+	result = "\pi"
+elif match.group(1) == "":
+	result = "\pi"
+else:
+	result = match.group(1) + " \pi"
+snip.rv = result`
 endsnippet
 
 snippet 'iff' "Mathjax if and only if sign" i
@@ -937,6 +958,10 @@ endsnippet
 
 snippet '(\+-|-\+)' "Mathjax plus minus sign" irA
 \pm
+endsnippet
+
+snippet ang "Mathjax theta symbol" i
+\angle{$1}$0
 endsnippet
 
 snippet the "Mathjax theta symbol" i
@@ -1160,43 +1185,75 @@ snippet << "<<" i
 \ll
 endsnippet
 
-snippet uar "Mathjax uparrow" w
-\uparrow
+snippet Ua "Mathjax double lined uparrow" w
+\Uparrow
 endsnippet
 
-snippet dar "Mathjax downarrow" w
-\downarrow
+snippet Da "Mathjax double lined downarrow" w
+\Downarrow
 endsnippet
 
-snippet udar "Mathjax updownarrow" w
-\updownarrow
+snippet Uda "Mathjax double lined updownarrow" w
+\Updownarrow
 endsnippet
 
-snippet lar "Mathjax leftarrow" w
-\leftarrow
+snippet La "Mathjax double lined leftarrow" w
+\Leftarrow
 endsnippet
 
-snippet rar "Mathjax rightarrow" w
-\rightarrow
+snippet Ra "Mathjax double lined rightarrow" w
+\Rightarrow
 endsnippet
 
-snippet lrar "Mathjax leftrightarrow" w
-\leftrightarrow
+snippet Lra "Mathjax double lined leftrightarrow" w
+\Leftrightarrow
 endsnippet
 
-snippet Llar "Mathjax long leftarrow" w
+snippet Lal "Mathjax double lined long leftarrow" w
 \Longleftarrow
 endsnippet
 
-snippet Lrar "Mathjax long rightarrow" w
+snippet Ral "Mathjax double lined long rightarrow" w
 \Longrightarrow
 endsnippet
 
-snippet Llrar "Mathjax long leftrightarrow" w
+snippet Lral "Mathjax double lined long leftrightarrow" w
 \Longleftrightarrow
 endsnippet
 
-snippet ovlar "Mathjax overset left" w
+snippet da "Mathjax single lined downarrow" w
+\downarrow
+endsnippet
+
+snippet uda "Mathjax single lined updownarrow" w
+\updownarrow
+endsnippet
+
+snippet la "Mathjax single lined leftarrow" w
+\leftarrow
+endsnippet
+
+snippet ra "Mathjax single lined rightarrow" w
+\rightarrow
+endsnippet
+
+snippet lra "Mathjax single lined leftrightarrow" w
+\leftrightarrow
+endsnippet
+
+snippet lal "Mathjax long single lined leftarrow" w
+\longleftarrow
+endsnippet
+
+snippet ral "Mathjax long single lined rightarrow" w
+\longrightarrow
+endsnippet
+
+snippet lral "Mathjax long single lined leftrightarrow" w
+\Longleftrightarrow
+endsnippet
+
+snippet ovla "Mathjax overset left" w
 \overset{$1}\leftarrow$0
 endsnippet
 
@@ -1352,29 +1409,29 @@ snippet col# "Mathjax text color" iA
 {\color{#${1:ff0000}}{${2:${VISUAL}}}}$0
 endsnippet
 
-snippet '(\d+)?(a|A)?(sin|cos|tan|csc|sec|cot)(\d+[a-zA-Z0-9]*|[a-zA-Z]+)?' "Mathjax trig functions" r
+snippet '(\d+)?(a)?((sin|cos|tan|csc|sec|cot)h?)(\d+[a-zA-Z0-9]*|[a-zA-Z]+|-)?' "Mathjax trig functions" r
 `!p
+# Constants
 mult = "" if match.group(1) == None else match.group(1)
-expo = "" if match.group(4) == None else "^{" + match.group(4) + "}"
-
-# arc
+# Arc functions
 if match.group(2) == 'a':
 	arc = "arc"
-	neg = ""
-# inverse
-elif match.group(2) == 'A':
-	arc = ""
-	# Combine inverse and exponent if expo exist
-	if expo:
-		expo = ""
-		neg = "^{(-1 \\cdot " + match.group(4) + ")}"
-	else:
-		neg = "^{-1}"
 else:
 	arc = ""
-	neg = ""
+# Apply sech and csch workaround to trig function
+if (match.group(3) == "sech" or match.group(3) == "csch"):
+	trig = "operatorname{" + match.group(3) + "}"
+else:
+	trig = match.group(3)
+# Negative functions
+if match.group(5) == None:
+	expo = ""
+elif match.group(5) == "-":
+	expo = "^{-1}"
+else:
+	expo = "^{" + match.group(5) + "}"
 
-snip.rv = mult + "\\" + arc + match.group(3) + neg + expo
+snip.rv = mult + "\\" + arc + trig + expo
 `{$1}$0
 endsnippet
 
@@ -1425,11 +1482,11 @@ snippet lrs "Mathjax left right []" i
 \left [ ${1:${VISUAL}} \right ]$0
 endsnippet
 
-snippet lra "Mathjax absolute value" i
+snippet lrabs "Mathjax absolute value" i
 \left | ${1:${VISUAL}} \right |$0
 endsnippet
 
-snippet lrda "Mathjax double absolute value" i
+snippet lrdabs "Mathjax double absolute value" i
 \left \| ${1:${VISUAL}} \right \|$0
 endsnippet
 

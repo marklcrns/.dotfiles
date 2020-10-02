@@ -7,13 +7,13 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +21 school/md/fall-2020/MATH-150/index.md
-badd +29 school/md/fall-2020/MATH-150/chapters/index.md
-badd +16 school/md/fall-2020/MATH-150/chapters/chapter-3/index.md
-badd +174 school/md/fall-2020/MATH-150/chapters/chapter-3/ch-3-6.md
+badd +29 school/md/fall-2020/MATH-150/index.md
+badd +32 school/md/fall-2020/MATH-150/chapters/index.md
+badd +6 school/md/fall-2020/MATH-150/chapters/chapter-3/index.md
+badd +92 school/md/fall-2020/MATH-150/chapters/chapter-3/ch-3-11.md
 argglobal
 %argdel
-edit school/md/fall-2020/MATH-150/index.md
+edit school/md/fall-2020/MATH-150/chapters/chapter-3/ch-3-11.md
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -29,11 +29,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 25 - ((15 * winheight(0) + 14) / 28)
+let s:l = 175 - ((13 * winheight(0) + 9) / 19)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-25
+175
 normal! 0
 lcd ~/Docs/wiki
 tabnext 1
