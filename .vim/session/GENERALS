@@ -9,10 +9,10 @@ endif
 set shortmess=aoO
 badd +499 core/src/main/java/com/markl/game/engine/board/Move.java
 badd +43 core/src/test/java/com/markl/game/engine/board/MoveTest.java
-badd +1 core/src/main/java/com/markl/game/Generals.java
+badd +27 core/src/main/java/com/markl/game/Generals.java
 argglobal
 %argdel
-edit core/src/main/java/com/markl/game/Generals.java
+edit core/src/test/java/com/markl/game/engine/board/MoveTest.java
 set splitbelow splitright
 wincmd t
 set winminheight=0
@@ -28,11 +28,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 24 - ((23 * winheight(0) + 18) / 36)
+let s:l = 65 - ((49 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-24
+65
 normal! 0
 lcd /mnt/c/Users/markl/Projects/java/eclipse-workspace/Generals-2.0
 tabnext 1
