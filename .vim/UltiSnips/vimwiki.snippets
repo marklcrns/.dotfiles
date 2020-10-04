@@ -421,9 +421,9 @@ if "&" in flags:
 # weekly and monthly tasks
 if "!" in flags:
 	end_of_week_header = "## Weekly"
-	end_of_week_filter = " | +weekly " + f"due:{end_of_week}"
+	end_of_week_filter = " | +weekly +PENDING " + f"due:{end_of_week}"
 	end_of_month_header = "## Monthly"
-	end_of_month_filter = " | +monthly " + f"due:{end_of_month}"
+	end_of_month_filter = " | +monthly +PENDING " + f"due:{end_of_month}"
 	# Append weekly todo
 	result += "\n"
 	result += end_of_week_header
