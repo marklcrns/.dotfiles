@@ -387,11 +387,11 @@ due = f"due:{end_of_day}"
 result = ""
 task_checkbox = "* [ ] "
 
-# Main task header
+# Daily task header
 if "&&" not in flags:
-	todo_header = meta + "# Daily TODOs || " + proj + "\n"
-	main_task_header = "## Main"
-	main_task_filter = " | +main " + sched + " " + due
+	todo_header = meta + "# TODOs || " + proj + "\n"
+	main_task_header = "## Daily"
+	main_task_filter = " | +daily " + sched + " " + due
 	# Append main task sud header
 	result += todo_header + "\n"
 	result += main_task_header

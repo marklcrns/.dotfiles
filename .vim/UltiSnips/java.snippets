@@ -50,8 +50,10 @@ endsnippet
 
 snippet temp "Java class template" bA
 /**
+ * TODO Class Description.
+ *
  * @author Mark Lucernas
- * Date: `date +'%b %d, %Y'`
+ * Created on `date +'%m/%d/%Y'.`
  */
 public class `!p snip.rv = fn.rstrip('.java')` {$0}
 endsnippet
@@ -60,8 +62,10 @@ snippet ctemp "Java basic class template with constructor" bA
 `!p snip.rv = get_java_package()`
 
 /**
+ * TODO Class Description.
+ *
  * @author Mark Lucernas
- * Date: `date +'%b %d, %Y'`
+ * Created on `date +'%m/%d/%Y'.`
  */
 public class `!p snip.rv = fn.rstrip('.java')` {
 
@@ -76,8 +80,10 @@ snippet mtemp "Java basic template with main method" bA
 `!p snip.rv = get_java_package()`
 
 /**
+ * TODO Class Description.
+ *
  * @author Mark Lucernas
- * Date: `date +'%b %d, %Y'`
+ * Created on `date +'%m/%d/%Y'.`
  */
 public class `!p snip.rv = fn.rstrip('.java')` {
 	public static void main(String[] args) {
@@ -90,8 +96,10 @@ snippet itemp "Java basic interface template" bA
 `!p snip.rv = get_java_package()`
 
 /**
+ * TODO Class Description.
+ *
  * @author Mark Lucernas
- * Date: `date +'%b %d, %Y'`
+ * Created on `date +'%m/%d/%Y'.`
  */
 public interface `!p snip.rv = fn.rstrip('.java')` {
 	$0
@@ -102,8 +110,10 @@ snippet atemp "Java basic abstract class template" bA
 `!p snip.rv = get_java_package()`
 
 /**
+ * TODO Class Description.
+ *
  * @author Mark Lucernas
- * Date: `date +'%b %d, %Y'`
+ * Created on `date +'%m/%d/%Y'.`
  */
 public abstract class `!p snip.rv = fn.rstrip('.java')` {
 	$0
@@ -114,8 +124,10 @@ snippet etemp "Java enum class template" bA
 `!p snip.rv = get_java_package()`
 
 /**
+ * TODO Class Description.
+ *
  * @author Mark Lucernas
- * Date: `date +'%b %d, %Y'`
+ * Created on `date +'%m/%d/%Y'.`
  */
 public enum `!p snip.rv = fn.rstrip('.java')` {
 	$0
@@ -126,7 +138,7 @@ snippet customtemp "java basic Class template" bA
 `!p snip.rv = get_java_package()`
 
 /**
- * ${1:Class description...}
+ * ${1:Class description.}
  *
  * @author${2:Mark Lucernas}
  */
@@ -163,8 +175,10 @@ endsnippet
 
 snippet head "Java javadoc header" bA
 /**
+ * TODO Class Description.
+ *
  * @author Mark Lucernas
- * Date: `date +'%b %d, %Y'`
+ * Created on `date +'%m/%d/%Y'.`
  */
 endsnippet
 
@@ -196,8 +210,22 @@ snippet dpln "Java debug System.out.println" b
 System.out.println(${1:${VISUAL}});$0
 endsnippet
 
-snippet psf "Java private static final field" bA
+snippet prsf "Java private static final field" bA
 private static final $0;
+endsnippet
+
+snippet pusf "Java public static final field" bA
+public static final $0;
+endsnippet
+
+snippet pus "Java public static" b
+public static $0;
+endsnippet
+
+snippet pusv "Java public static void" b
+public static void ${1:${VISUAL}}($2) {
+	$0
+}
 endsnippet
 
 snippet try "Java try-catch block" bw
@@ -208,12 +236,3 @@ try {
 }
 endsnippet
 
-snippet ps "Java public static" b
-public static 
-endsnippet
-
-snippet psv "Java public static void" b
-public static void ${1:${VISUAL}}($2) {
-	$0
-}
-endsnippet
