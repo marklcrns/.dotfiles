@@ -7,10 +7,7 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +13 core/src/main/java/com/markl/game/ui/GoG.java
-badd +1 core/src/main/java/com/markl/game/ui/screen/GameScreen.java
-badd +60 core/src/main/java/com/markl/game/engine/board/BoardUtils.java
-badd +34 core/src/main/java/com/markl/game/ui/board/TileUI.java
+badd +12 core/src/main/java/com/markl/game/ui/screen/GameScreen.java
 argglobal
 %argdel
 edit core/src/main/java/com/markl/game/ui/screen/GameScreen.java
@@ -29,17 +26,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-24
-normal! zo
-60
-normal! zo
-66
-normal! zo
-let s:l = 74 - ((25 * winheight(0) + 24) / 48)
+let s:l = 18 - ((17 * winheight(0) + 21) / 42)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-74
+18
 normal! 0
 lcd /mnt/c/Users/markl/Projects/java/eclipse-workspace/Generals-2.0
 tabnext 1

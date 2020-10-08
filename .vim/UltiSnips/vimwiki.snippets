@@ -368,7 +368,7 @@ date_format_verbose = '%b %d, %Y'
 base = datetime(int(fn_date[0]), int(fn_date[1]), int(fn_date[2]))
 today = datetime.strftime(base, date_format)
 today_verbose = datetime.strftime(base, date_format_verbose)
-end_of_day = datetime.strftime(base + timedelta(1), date_format) + "T23:59:59"
+end_of_day = datetime.strftime(base, date_format) + "T23:59:59"
 end_of_week = (get_next_week_date(6)).strftime(date_format) + "T23:59:59"
 end_of_month = get_last_day_of_month(base).strftime(date_format) + "T23:59:59"
 
