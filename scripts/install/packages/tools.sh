@@ -19,6 +19,8 @@ APT_PACKAGES_TOOLS=(
   "inotify-tools"
   "taskwarrior"
   "timewarrior"
+  "mutt"
+  "neomutt"
 )
 
 APT_PACKAGES_TOOLS_CTAGS_DEPENDENCIES=(
