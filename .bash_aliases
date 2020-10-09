@@ -42,7 +42,7 @@ alias bsync-proxy='browser-sync start --proxy 127.0.0.1:8000 --files "*"'
 # Flask
 alias flask='FLASK_APP=application.py FLASK_ENV=development FLASK_DEBUG=1 python -m flask run'
 
-# Python env
+# Python
 alias envactivate='source env/bin/activate'
 
 # Make native commands verbose
@@ -103,8 +103,8 @@ alias rmdebs='find . -name "debug.log" -type f; find . -name "debug.log" -type f
 alias rmlogs='find . -name "*.log" -type f; find . -name "*.log" -type f -delete'
 
 # Yank and pasting current working directory system clipboard
-alias ypath='pwd | cs clipboard && clear; echo "Current path copied to clipboard"'
-alias cdypath='cd "`vs clipboard`" && clear'
+alias yp='pwd | cs clipboard && clear; echo "Current path copied to clipboard"'
+alias cdp='cd "`vs clipboard`" && clear'
 
 # Update dotfiles backup repository
 DOTFILES="${HOME}/.dotfiles"
