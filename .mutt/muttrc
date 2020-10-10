@@ -17,8 +17,8 @@ set envelope_from = yes
 # Authentication
 set imap_user = 'marklcrns@gmail.com'
 set smtp_url = "smtps://marklcrns@gmail.com@smtp.gmail.com:465/"
-set imap_pass = `gpg -d ~/.mutt/.pass.gpg | awk '/GMail:/ {print $2}'`
-set smtp_pass = `gpg -d ~/.mutt/.pass.gpg | awk '/GMail:/ {print $2}'`
+set imap_pass = `gpg -d ~/.mutt/.pass.gpg | awk '/Gmail:/ {print $2}'`
+set smtp_pass = `gpg -d ~/.mutt/.pass.gpg | awk '/Gmail:/ {print $2}'`
 # set smtp_authenticators = ""
 set signature= "~/.signature"
 set ssl_starttls=yes
