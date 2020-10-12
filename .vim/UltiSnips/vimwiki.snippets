@@ -265,7 +265,7 @@ snippet i "Image link" w
 endsnippet
 
 snippet a "Markdown anchor link" w
-[⚓ ${1:${VISUAL}}](${2:file}#${1/([0-9.,]+)?(\w+)\s*/\L$2_\E/g})$0
+[⚓ ${1:${VISUAL}}](${2:file}#${1/([0-9.,]+)?(\w+)\s*/\L$2-\E/g})$0
 endsnippet
 
 snippet '#(.*)&a' "Convert anchor name ref into valid html id" irA
