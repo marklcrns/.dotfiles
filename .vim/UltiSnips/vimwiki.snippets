@@ -391,7 +391,7 @@ task_checkbox = "* [ ] "
 if "&&" not in flags:
 	todo_header = meta + "# TODOs || " + proj + "\n"
 	main_task_header = "## Daily"
-	main_task_filter = " | +daily " + sched + " " + due
+	main_task_filter = " | +daily -OVERDUE " + sched + " " + due
 	# Append main task sud header
 	result += todo_header + "\n"
 	result += main_task_header
@@ -407,7 +407,7 @@ if "&" in flags:
 
 	for i in range(1, (mult * 2) + 1, 2):
 		side_task_header = "## ${" + str(i) + ":Side}"
-		side_task_filter = " | +${" + str(i) + "/(\w+)\s*/\L$1\E/g} " + sched + " " + due
+		side_task_filter = " | +${" + str(i) + "/(\w+)\s*/\L$1\E/g} -OVERDUE " + sched + " " + due
 
 		result += side_task_header
 		result += side_task_filter + "\n"
@@ -421,9 +421,9 @@ if "&" in flags:
 # weekly and monthly tasks
 if "!" in flags:
 	end_of_week_header = "## Weekly"
-	end_of_week_filter = " | +weekly +PENDING " + f"due:{end_of_week}"
+	end_of_week_filter = " | +weekly +PENDING -OVERDUE " + f"due:{end_of_week}"
 	end_of_month_header = "## Monthly"
-	end_of_month_filter = " | +monthly +PENDING " + f"due:{end_of_month}"
+	end_of_month_filter = " | +monthly +PENDING -OVERDUE " + f"due:{end_of_month}"
 	# Append weekly todo
 	result += "\n"
 	result += end_of_week_header

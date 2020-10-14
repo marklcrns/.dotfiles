@@ -7,11 +7,9 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +47 core/src/main/java/com/markl/game/ui/board/TileUI.java
-badd +77 core/src/main/java/com/markl/game/ui/screen/GameScreen.java
+badd +19 core/src/main/java/com/markl/game/ui/screen/GameScreen.java
 argglobal
 %argdel
-$argadd core/src/main/java/com/markl/game/ui/board/TileUI.java
 edit core/src/main/java/com/markl/game/ui/screen/GameScreen.java
 set splitbelow splitright
 wincmd t
@@ -28,11 +26,11 @@ setlocal fdl=99
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 77 - ((25 * winheight(0) + 25) / 51)
+let s:l = 23 - ((13 * winheight(0) + 10) / 21)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-77
+23
 normal! 0
 lcd /mnt/c/Users/markl/Projects/java/eclipse-workspace/Generals-2.0
 tabnext 1
