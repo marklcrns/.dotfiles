@@ -352,7 +352,7 @@ endsnippet
 # Creates Todo list with Task Warrior.
 # Prepend "!" to include weekly and monthly todos
 # Prepend "@" to include overdue todos
-# Prepend "&" to generate nested todo
+# Prepend "&" to generate nested side todo templates
 # Prepend "&&" to generate nested todo ONLY
 post_jump "post_jump_expand_ph(snip)"
 snippet '([!@&0-9]+)?td' "To-do list template" rbA
@@ -389,13 +389,20 @@ task_checkbox = "* [ ] "
 
 # Daily task header
 if "&&" not in flags:
-	todo_header = meta + "# TODOs || " + proj + "\n"
-	main_task_header = "## Daily"
-	main_task_filter = " | +daily -OVERDUE " + sched + " " + due
-	# Append main task sud header
-	result += todo_header + "\n"
-	result += main_task_header
-	result += main_task_filter + "\n"
+	main_header = meta + "# TODOs || " + proj + "\n"
+	result += main_header + "\n"
+
+# Overdue
+	if "@" in flags:
+		overdue_task_header = "## Overdue"
+		overdue_task_filter = " | +OVERDUE"
+		result += overdue_task_header
+		result += overdue_task_filter + "\n\n"
+
+	daily_task_header = "## Daily"
+	daily_task_filter = " | +daily -OVERDUE " + sched + " " + due
+	result += daily_task_header
+	result += daily_task_filter + "\n"
 	result += task_checkbox + "$0" + "\n"
 
 # Append side task snippet into result if '&' flag was given
@@ -408,7 +415,6 @@ if "&" in flags:
 	for i in range(1, (mult * 2) + 1, 2):
 		side_task_header = "## ${" + str(i) + ":Side}"
 		side_task_filter = " | +${" + str(i) + "/(\w+)\s*/\L$1\E/g} -OVERDUE " + sched + " " + due
-
 		result += side_task_header
 		result += side_task_filter + "\n"
 		result += task_checkbox + "$" + str(i + 1)
@@ -419,7 +425,7 @@ if "&" in flags:
 			result += "\n"
 
 # weekly and monthly tasks
-if "!" in flags:
+if "!" in flags and "&&" not in flags:
 	end_of_week_header = "## Weekly"
 	end_of_week_filter = " | +weekly +PENDING -OVERDUE " + f"due:{end_of_week}"
 	end_of_month_header = "## Monthly"
@@ -432,15 +438,6 @@ if "!" in flags:
 	# Append monthly todo
 	result += end_of_month_header
 	result += end_of_month_filter + "\n"
-
-# Overdue
-if "@" in flags:
-	overdue_task_header = "## Overdue"
-	overdue_task_filter = " | +OVERDUE"
-	# Append all todos
-	result += "\n"
-	result += overdue_task_header
-	result += overdue_task_filter + "\n"
 
 # Output
 snip.rv = result`
