@@ -35,11 +35,13 @@ def get_wiki_files_dir():
 	rel_path = re.sub(root, '', path)			# strip root dir from abs filepath
 	files_path = re.sub(fn, '', rel_path) # remove current buffer file from path
 	subdir_count = 0
+	wiki_path = ''
 
 	try:
 		if 'md/' in files_path:
 			file_index_end =  files_path.index('md/') + 2 # Get the end index of 'md' dir
 			stripped_path = files_path[file_index_end:]		# Strip trailing path from after 'md' dir
+			wiki_path = files_path[file_index_end + 1:]
 			# Count how deep current buffer dir relative to 'md' dir or stripped path
 			for i in stripped_path:
 				if i == '/':
@@ -48,7 +50,7 @@ def get_wiki_files_dir():
 		return # Return nothing if no 'md' dir
 
 	# return path to 'files/' dir relative to current buffer dir
-	return "../" * subdir_count + "files/"
+	return "../" * subdir_count + "files/" + wiki_path
 
 from datetime import datetime, timedelta, date
 
