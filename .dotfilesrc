@@ -31,7 +31,6 @@ DOTFILES_LIST=(
   "${DOTFILES_LOCAL}/.tmux/vim_tmux_pipenv_workaround.sh"
   "${DOTFILES_LOCAL}/.tmux/wsl_statusline.conf"
   "${DOTFILES_LOCAL}/.tmux/wsl_tmux_statusline.sh"
-  "${DOTFILES_LOCAL}/.vim/"
   "${DOTFILES_LOCAL}/.zprofile"
   "${DOTFILES_LOCAL}/.zshenv"
   "${DOTFILES_LOCAL}/.zshrc"
