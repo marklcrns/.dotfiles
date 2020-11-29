@@ -126,7 +126,7 @@ failed_packages=""
 skipped_packages=""
 
 # Apt update and upgrade
-if ! sudo apt update && sudo apt upgrade -y; then
+if ! sudo apt update && sudo apt full-upgrade -y; then
   error "Apt update and upgrade failed" 1
 fi
 
