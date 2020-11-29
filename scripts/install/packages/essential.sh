@@ -21,6 +21,5 @@ echolog
 echolog "${UL_NC}Installing Essential Packages${NC}"
 echolog
 
-apt_add_repo "universe"
 apt_bulk_install "${APT_PACKAGES_ESSENTIAL[@]}"
 

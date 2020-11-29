@@ -152,6 +152,7 @@ fi
 ESSENTIAL_PACKAGES="${PACKAGES}/essential.sh"
 
 if [[ -f "${ESSENTIAL_PACKAGES}" ]]; then
+  apt_add_repo "universe"
   source "${ESSENTIAL_PACKAGES}"
 else
   error "${ESSENTIAL_PACKAGES} not found"
@@ -330,8 +331,8 @@ done < <(echo -e "${failed_packages}") # Process substitution for outside variab
 
 echolog
 echolog "Successful installations:\t${successful_count}"
-echolog "Skipped installations:\t${skipped_count}"
-echolog "failed installations:\t${failed_count}"
+echolog "Skipped installations:\t\t${skipped_count}"
+echolog "failed installations:\t\t${failed_count}"
 echolog "${BO_NC}Total installations:\t\t${total_count}"
 
 finish 'INSTALLATION COMPLETE!'
