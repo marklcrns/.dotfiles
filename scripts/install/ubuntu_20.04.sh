@@ -138,7 +138,7 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
 fi
 
 # Apt update and upgrade
-if ! sudo apt update && sudo apt upgrade -y; then
+if ! (sudo apt update && sudo apt upgrade -y); then
   error "Apt update and upgrade failed" 1
 fi
 
