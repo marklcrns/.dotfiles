@@ -227,6 +227,9 @@ fi
 # fi
 
 apt_install "wiringpi"
+# Upgrade wiringpi to latest version
+wget -P /tmp https://project-downloads.drogon.net/wiringpi-latest.deb
+sudo dpkg -i /tmp/wiringpi-latest.deb
 
 #################### Browser ####################
 
