@@ -12,7 +12,6 @@ APT_PACKAGES_ESSENTIAL=(
   "unzip"
   "unar"
   "git"
-  "vim"
   "gnupg2"
   "net-tools"
 )
