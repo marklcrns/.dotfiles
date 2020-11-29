@@ -140,6 +140,8 @@ else
   error "${ESSENTIAL_PACKAGES} not found"
 fi
 
+apt_install "xrdp"
+
 #################### Languages ####################
 
 # LANGUAGE_PACKAGES="${PACKAGES}/language.sh"
@@ -149,6 +151,10 @@ fi
 # else
 #   error "${LANGUAGE_PACKAGES} not found"
 # fi
+
+# Set python3 as default python
+sudo rm /usr/bin/python
+sudo ln -s python3 python
 
 #################### Package Managers ####################
 
@@ -219,6 +225,8 @@ fi
 # else
 #   error "${TOOLS_PACKAGES} not found"
 # fi
+
+apt_install "wiringpi"
 
 #################### Browser ####################
 
