@@ -154,7 +154,7 @@ apt_install "xrdp"
 
 # Set python3 as default python
 sudo rm /usr/bin/python
-sudo ln -s python3 python
+sudo ln -s /usr/bin/python3 /usr/bin/python
 
 #################### Package Managers ####################
 
