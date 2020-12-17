@@ -178,8 +178,10 @@ fi
 
 #################### Dotfiles ####################
 
-# Distribute dotfiles into $HOME
-${DOTFILES_ROOT}/bin/tools/dotfiles/dotdist -v -r "${DOTFILES_ROOT}/.dotfilesrc" "${DOTFILES_ROOT}" "${HOME}"
+git clone https://github.com/marklcrns/scripts $HOME/scripts
+cd ~/.dotfiles
+# Distribute all dotfiles from `~/.dotfiles` into `$HOME` directory
+$HOME/scripts/tools/dotfiles/dotdist -VD -r .dotfilesrc . $HOME
 
 # Source .profile
 source ${HOME}/.profile
