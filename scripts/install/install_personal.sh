@@ -132,10 +132,8 @@ fi
 ############### Text Editors ##################
 
 # Personal neovim config files
-git_clone "https://github.com/marklcrns/ThinkVim" "${HOME}/.config/nvim/"
-# Install nvim configs dependencies
-if cd ${HOME}/.config/nvim; then
-  ${HOME}/.config/nvim/scripts/install.sh
+if git_clone "https://github.com/marklcrns/nvim-config" "${HOME}/.config/nvim/"; then
+  make
 fi
 
 # Clone Vimwiki wikis
@@ -144,17 +142,10 @@ fi
 git_clone "https://github.com/marklcrns/wiki" "${HOME}/Docs/wiki" && \
   git_clone "https://github.com/marklcrns/wiki-wiki" "${HOME}/Docs/wiki/wiki"
 
-# Kite
-# bash -c "$(wget -q -O - https://linux.kite.com/dls/linux/current)"
-
-# C/C++ Language server
-apt_install "ccls"
-
 #################### Session Manager ####################
 
 # Tmuxinator
 git_clone "https://github.com/marklcrns/.tmuxinator" "${HOME}/.tmuxinator"
-
 
 #################### Misc ####################
 
@@ -176,10 +167,6 @@ if git_clone "https://github.com/marklcrns/.task" "${HOME}/.task"; then
   fi
 fi
 
-# Personal pandoc configurations
-git_clone "https://github.com/marklcrns/pandoc-goodies" "${HOME}/.pandoc"
-
-
 #################### Dotfiles ####################
 
 git clone https://github.com/marklcrns/scripts $HOME/scripts
@@ -189,7 +176,6 @@ $HOME/scripts/tools/dotfiles/dotdist -VD -r .dotfilesrc . $HOME
 
 # Source .profile
 source ${HOME}/.profile
-
 
 #################################################################### WRAP UP ###
 
