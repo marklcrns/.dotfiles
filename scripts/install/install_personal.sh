@@ -176,6 +176,10 @@ if git_clone "https://github.com/marklcrns/.task" "${HOME}/.task"; then
   fi
 fi
 
+# Personal pandoc configurations
+git_clone "https://github.com/marklcrns/pandoc-goodies" "${HOME}/.pandoc"
+
+
 #################### Dotfiles ####################
 
 git clone https://github.com/marklcrns/scripts $HOME/scripts

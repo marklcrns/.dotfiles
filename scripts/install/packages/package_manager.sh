@@ -45,3 +45,6 @@ curl_install "https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 apt_install "yarn" 1
 
+# Cargo
+curl_install "https://sh.rustup.rs | sh"
+

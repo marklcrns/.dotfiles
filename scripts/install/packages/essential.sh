@@ -22,3 +22,9 @@ echolog
 
 apt_bulk_install "${APT_PACKAGES_ESSENTIAL[@]}"
 
+# Git-lfs
+if curl_install "https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash"; then
+  apt_install "git-lfs"
+  git lfs install
+fi
+

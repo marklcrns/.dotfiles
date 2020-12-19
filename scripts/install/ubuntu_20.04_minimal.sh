@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Installer script for Linux and WSL 2 Ubuntu 20.04 Focal Fossa
+# Minimal installer script for Linux and WSL 2 Ubuntu 20.04 Focal Fossa
 #
 # Store .dotfiles repo in ~/Projects/.dotfiles
 #
@@ -160,16 +160,6 @@ else
   error "${ESSENTIAL_PACKAGES} not found"
 fi
 
-#################### Languages ####################
-
-LANGUAGE_PACKAGES="${PACKAGES}/language.sh"
-
-if [[ -f "${LANGUAGE_PACKAGES}" ]]; then
-  source "${LANGUAGE_PACKAGES}"
-else
-  error "${LANGUAGE_PACKAGES} not found"
-fi
-
 #################### Package Managers ####################
 
 PACKAGE_MANAGER_PACKAGES="${PACKAGES}/package_manager.sh"
@@ -238,56 +228,6 @@ if [[ -f "${TOOLS_PACKAGES}" ]]; then
   source "${TOOLS_PACKAGES}"
 else
   error "${TOOLS_PACKAGES} not found"
-fi
-
-#################### Browser ####################
-
-BROWSER_PACKAGES="${PACKAGES}/browser.sh"
-
-if [[ -f "${BROWSER_PACKAGES}" ]]; then
-  source "${BROWSER_PACKAGES}"
-else
-  error "${BROWSER_PACKAGES} not found"
-fi
-
-#################### Server ####################
-
-SERVER_PACKAGES="${PACKAGES}/server.sh"
-
-if [[ -f "${SERVER_PACKAGES}" ]]; then
-  source "${SERVER_PACKAGES}"
-else
-  error "${SERVER_PACKAGES} not found"
-fi
-
-#################### Virtual Machine/Containers ####################
-
-VIRTUAL_MACHINE_PACKAGES="${PACKAGES}/virtual_machine.sh"
-
-if [[ -f "${VIRTUAL_MACHINE_PACKAGES}" ]]; then
-  source "${VIRTUAL_MACHINE_PACKAGES}"
-else
-  error "${VIRTUAL_MACHINE_PACKAGES} not found"
-fi
-
-#################### Misc ####################
-
-MISC_PACKAGES="${PACKAGES}/misc.sh"
-
-if [[ -f "${MISC_PACKAGES}" ]]; then
-  source "${MISC_PACKAGES}"
-else
-  error "${MISC_PACKAGES} not found"
-fi
-
-#################### Desktop Apps ####################
-
-DESKTOP_APPS_PACKAGES="${PACKAGES}/desktop_apps.sh"
-
-if [[ -f "${DESKTOP_APPS_PACKAGES}" ]]; then
-  source "${DESKTOP_APPS_PACKAGES}"
-else
-  error "${DESKTOP_APPS_PACKAGES} not found"
 fi
 
 

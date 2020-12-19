@@ -1,13 +1,5 @@
 #!/bin/bash
 
-APT_PACKAGES_TEXT_EDITOR=(
-  "neovim"
-  "python3-neovim"
-  # Dependencies
-  "yad"
-  "zenity"
-)
-
 NPM_PACKAGES_TEXT_EDITOR=(
   "neovim"
   "eslint"
@@ -15,21 +7,14 @@ NPM_PACKAGES_TEXT_EDITOR=(
   "prettier"
 )
 
-PIP3_PACKAGES_TEXT_EDITOR_NEOVIM=(
-  "wheel"
-  "neovim"
-  "tasklib"
-  "send2trash"
-  "vim-vint"
-  "flake8"
-  "pylint"
-  "autopep8"
-)
-
 echolog
 echolog "${UL_NC}Installing Text Editors Packages${NC}"
 echolog
 
-apt_bulk_install "${APT_PACKAGES_TEXT_EDITOR[@]}"
+if apt_add_repo "ppa:neovim-ppa/unstable" 2; then
+  apt_install "neovim" 1
+fi
+
 npm_bulk_install 1 "${NPM_PACKAGES_TEXT_EDITOR[@]}"
+pip_install 3 "neovim"
 

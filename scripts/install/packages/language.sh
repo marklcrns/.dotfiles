@@ -19,13 +19,15 @@ APT_PACKAGES_LANGUAGE=(
   "openjdk-13-jdk"
   "openjdk-13-jre"
   "maven"
+  # R
+  "r-base"
 )
 
 PIP3_PACKAGES_LANGUAGES=(
   "wheel"
-  "notebook"
   "Send2Trash"
   "pipenv"
+  "virtualenv"
 )
 
 echolog
