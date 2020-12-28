@@ -19,7 +19,7 @@ alias aptpurge='sudo apt purge --auto-remove'
 alias aptclean='sudo apt clean; sudo apt autoclean; sudo apt autoremove'
 
 # Update all packages
-alias aptupdate='sudo apt update && sudo apt upgrade -y'
+alias updateall='sudo apt update && sudo apt upgrade -y'
 
 # Directory Aliases
 alias down='cd ~/Downloads'
