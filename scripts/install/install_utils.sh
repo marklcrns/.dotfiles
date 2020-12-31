@@ -377,8 +377,8 @@ pip_bulk_install() {
 }
 
 npm_install() {
-  package=$1
-  is_global=$2
+  is_global=$1
+  package=$2
 
   # Check if package exists in npm repository
   if npm search ${package} | grep -q "^No matches found"; then
@@ -427,7 +427,7 @@ npm_install() {
 npm_bulk_install() {
   is_global=$1
 
-  if [[ -n ${is_global} ]]; then
+  if [[ ${is_global} -eq 1 ]]; then
     shift
   fi
 
@@ -437,7 +437,7 @@ npm_bulk_install() {
   if [[ -n "${packages}" ]]; then
     for package in ${packages[@]}; do
       warning "Installing npm ${package} package..."
-      npm_install "${package}" ${is_global}
+      npm_install ${is_global} "${package}"
     done
   else
     error "${FUNCNAME[0]}: Array not found" 1
