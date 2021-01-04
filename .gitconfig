@@ -11,7 +11,7 @@
 [push]
   default = current
 [credential]
-  helper = cache --timeout=28800
+	helper = store
 [core]
   excludesfile = ~/.gitignore_global
 # Resources:

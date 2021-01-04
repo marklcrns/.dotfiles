@@ -5,7 +5,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# config files
+# Config files
 alias vimrc='nvim ~/.vim/.vimrc'
 alias tmuxconf='nvim ~/.tmux.conf'
 alias bashrc='nvim ~/.bashrc'
@@ -17,9 +17,8 @@ alias myalias='nvim ~/.bash_aliases'
 alias aptpurge='sudo apt purge --auto-remove'
 # Clean apt packages
 alias aptclean='sudo apt clean; sudo apt autoclean; sudo apt autoremove'
-
 # Update all packages
-alias updateall='sudo apt update && sudo apt upgrade -y'
+alias aptupdate='sudo apt update && sudo apt upgrade -y'
 
 # Directory Aliases
 alias down='cd ~/Downloads'
@@ -29,9 +28,6 @@ alias dev='cd ~/Projects/Dev'
 alias ref='cd ~/Projects/references'
 alias drop='cd ~/Dropbox'
 alias dropd='cd ~/Dropbox/Dev'
-
-# live browser server
-# alias live='http-server'
 
 # tutorial https://www.youtube.com/watch?v=L9zfMeB2Zcc&app=desktop
 alias bsync='browser-sync start --server --files "*"'
@@ -81,10 +77,10 @@ alias v='xclip -o'
 alias cs='xclip -selection'
 alias vs='xclip -o -selection'
 
-# emacs
-alias enw='emacs -nw'
+# leetcode-cli
+alias lc='leetcode'
 
-# taskwarrior
+# Taskwarrior
 alias tw='task'
 alias twl='task list'
 
