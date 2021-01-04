@@ -98,10 +98,6 @@ alias rmdebs='find . -name "debug.log" -type f; find . -name "debug.log" -type f
 # Remove .log files recursively (will also list all .log files before removal)
 alias rmlogs='find . -name "*.log" -type f; find . -name "*.log" -type f -delete'
 
-# Yank and pasting current working directory system clipboard
-alias yp='pwd | cs clipboard && clear; echo "Current path copied to clipboard"'
-alias cdp='cd "`vs clipboard`" && clear'
-
 # Update dotfiles backup repository
 DOTFILES="${HOME}/.dotfiles"
 
@@ -865,7 +861,6 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
     output=$(pwd | sed -e "$regex1" -e "$regex2" -e "$regex3" -re "$regex4")
     printf "%s" "$output"
   }
-alias winypath="winpath | xclip -selection clipboard && printf '%s\n...win path copied' '$output'"
 
   # cd to Windows path string arg
   # Resources:
@@ -881,6 +876,15 @@ alias winypath="winpath | xclip -selection clipboard && printf '%s\n...win path 
       cd "$output"
     fi
   }
+
+  # Yank and pasting UNIX current working directory to system clipboard.
+  # Requires xclip.
+  alias yp='pwd | tr -d "\n" | cs clipboard && echo "Current UNIX path yanked to clipboard" || echo "ERROR: Path not yanked!"'
+  alias cdp='cd "`vs clipboard`" && clear'
+  # Yank and pasting Windows current working directory to system clipboard.
+  # Requires xclip.
+  alias wyp="winpath | xclip -selection clipboard && echo 'Current Windows path yanked to clipboard' || echo 'ERROR: Path not yanked!'"
+  alias wcdp="cdwinpath"
 
   # Nameserver workaround for WSL2
   alias backupns='cat /etc/resolv.conf > ~/nameserver.txt'
