@@ -19,7 +19,6 @@ DOTFILES_LIST=(
   "${DOTFILES_LOCAL}/.gitconfig.d/gitalias.txt"
   "${DOTFILES_LOCAL}/.gitignore_global"
   "${DOTFILES_LOCAL}/.gtd/"
-  "${DOTFILES_LOCAL}/.lc/"
   "${DOTFILES_LOCAL}/.mutt/.pass.gpg"
   "${DOTFILES_LOCAL}/.mutt/color.muttrc"
   "${DOTFILES_LOCAL}/.mutt/mailcap"

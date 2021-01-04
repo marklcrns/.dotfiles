@@ -3,6 +3,8 @@
   name = Mark Lucernas
 [github]
   user = marklcrns
+[init]
+  defaultBranch = main
 [filter "lfs"]
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f
@@ -11,7 +13,7 @@
 [push]
   default = current
 [credential]
-	helper = store
+  helper = store
 [core]
   excludesfile = ~/.gitignore_global
 # Resources:
