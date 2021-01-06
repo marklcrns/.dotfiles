@@ -443,3 +443,56 @@ npm_bulk_install() {
     error "${FUNCNAME[0]}: Array not found" 1
   fi
 }
+
+pkg_install() {
+  package=$1
+  is_update=$2
+
+  # Check if already installed
+  if pkg search "${package}" | grep "installed" &> /dev/null; then
+    ok "Pkg ${package} package already installed"
+    skipped_packages="${skipped_packages}\nApt ${package} SKIPPED"
+    return 0
+  fi
+  # pkg upgrade if is_update
+  if [[ ${is_update} -eq 1 ]]; then
+      if pkg upgrade -y; then
+        ok "Pkg upgrade successful!"
+      else
+        error "Pkg upgrade failed"
+      fi
+    fi
+  fi
+  # Execute installation
+  if eval "pkg install ${package} -y"; then
+    ok "Pkg ${package} package installation successful!"
+    successful_packages="${successful_packages}\nApt ${package} SUCCESSFUL"
+    return 0
+  else
+    error "Pkg ${package} package installation failed"
+    failed_packages="${failed_packages}\nPkg ${package} FAILED"
+    return 1
+  fi
+}
+
+# if apt package is appended with ';update', will `apt update` first before
+# installation
+pkg_bulk_install() {
+  packages=("$@")
+
+  # Loop over packages array and apt_install
+  if [[ -n "${packages}" ]]; then
+    for package in ${packages[@]}; do
+      if echo "${package}" | grep -q ";update"; then
+        package="$(echo ${package} | sed "s,;update,,")"
+        warning "Installing pkg ${package} package..."
+        pkg_install "${package}" 1
+      else
+        warning "Installing pkg ${package} package..."
+        pkg_install "${package}"
+      fi
+    done
+  else
+    error "${FUNCNAME[0]}: Array not found" 1
+  fi
+}

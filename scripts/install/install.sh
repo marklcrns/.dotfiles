@@ -25,4 +25,7 @@ elif lsb_release -i | grep "Raspbian" &> /dev/null; then
       error "${SCRIPTDIR}/raspbian_buster.sh not found"
     fi
   fi
+elif uname -o | grep "Android" $> /dev/null; then
+  echo "Installing packages for Android"
+  ${SCRIPTDIR}/android.sh
 fi
