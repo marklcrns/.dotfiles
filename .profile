@@ -41,7 +41,7 @@ export PATH=$PATH:$HOME/emacs.d/bin
 export PATH=$PATH:$HOME/.npm-global/bin
 
 # WSL profile
-if [[ "$(grep -i microsoft /proc/version)" ]]; then
+if grep -i "microsoft" /proc/version &> /dev/null; then
   # $PATHS
   export PATH=$PATH:"/mnt/c/Program Files/Mozilla Firefox/"
   export PATH=$PATH:"/mnt/c/Program Files (x86)/Google/Chrome/Application"
@@ -74,7 +74,7 @@ if [[ -e "/opt/gradle/latest" ]]; then
 fi
 
 # For WSL Configs ONLY
-if [[ "$(grep -i microsoft /proc/version)" ]]; then
+if grep -i "microsoft" /proc/version &> /dev/null; then
   export BROWSER="/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
 
   # Enable Vagrant access outisde of WSL.

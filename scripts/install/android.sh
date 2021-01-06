@@ -197,7 +197,8 @@ chsh -s /bin/bash
 #################### Dotfiles ####################
 
 # Personal Neovim config files
-if git_clone --branch "termux" "https://github.com/marklcrns/nvim-config" "${HOME}/.config/nvim/"; then
+if git_clone "https://github.com/marklcrns/nvim-config" "${HOME}/.config/nvim/"; then
+  git checkout termux
   make
 fi
 

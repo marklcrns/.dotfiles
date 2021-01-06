@@ -816,7 +816,7 @@ alias rmallmodattr="rmzone && rmdattr"
 alias rmlock='find . -name ".~lock.*" && find . -name ".~lock.*" -delete'
 
 # WSL aliases
-if [[ "$(grep -i microsoft /proc/version)" ]]; then
+if grep -i "microsoft" /proc/version &> /dev/null; then
   # Directory Aliases
   alias winhome="cd /mnt/c/Users/${WIN_USERNAME}"
   alias windocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents"
