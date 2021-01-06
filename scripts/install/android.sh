@@ -194,6 +194,45 @@ fi
 chsh -s /bin/bash
 
 
+#################### Dotfiles ####################
+
+# Personal Neovim config files
+if git_clone --branch "termux" "https://github.com/marklcrns/nvim-config" "${HOME}/.config/nvim/"; then
+  make
+fi
+
+# Clone Vimwiki wikis
+[[ -d "${HOME}/Docs/wiki" ]] && rm -rf ~/Docs/wiki
+[[ ! -d "${HOME}/Docs" ]] && mkdir -p "${HOME}/Docs"
+git_clone "https://github.com/marklcrns/wiki" "${HOME}/Docs/wiki" && \
+  git_clone "https://github.com/marklcrns/wiki-wiki" "${HOME}/Docs/wiki/wiki"
+
+# Personal Timewarrior configuration files
+git_clone "https://github.com/marklcrns/.timewarrior" "${HOME}/.timewarrior"
+
+pip3 install --user git+git://github.com/tbabej/tasklib@develop
+if git_clone "https://github.com/marklcrns/.task" "${HOME}/.task"; then
+  # Create .taskrc symlink into $HOME
+  [[ -e "${HOME}/.taskrc" ]] && rm "${HOME}/.taskrc"
+  ln -s "${HOME}/.task/.taskrc" "${HOME}/.taskrc"
+
+  # Install taskwarrior_time_tracking_hook and symlink into ~/.task/hooks
+  if pip_install 3 "taskwarrior-time-tracking-hook"; then
+    [[ -e "${HOME}/.task/hooks/on-modify.timetracking" ]] && rm "${HOME}/.task/hooks/on-modify.timetracking"
+    ln -s `which taskwarrior_time_tracking_hook` "${HOME}/.task/hooks/on-modify.timetracking"
+  fi
+fi
+
+if git clone https://github.com/marklcrns/scripts $HOME/scripts; then
+  cd ~/.dotfiles
+  # Distribute all dotfiles from `~/.dotfiles` into `$HOME` directory
+  $HOME/scripts/tools/dotfiles/dotdist -VD -r .dotfilesrc . $HOME
+
+  # Source .profile
+  source ${HOME}/.profile
+fi
+
+
 #################################################################### WRAP UP ###
 
 total_count=0

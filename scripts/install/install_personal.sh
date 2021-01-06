@@ -169,13 +169,14 @@ fi
 
 #################### Dotfiles ####################
 
-git clone https://github.com/marklcrns/scripts $HOME/scripts
-cd ~/.dotfiles
-# Distribute all dotfiles from `~/.dotfiles` into `$HOME` directory
-$HOME/scripts/tools/dotfiles/dotdist -VD -r .dotfilesrc . $HOME
+if git clone https://github.com/marklcrns/scripts $HOME/scripts; then
+  cd ~/.dotfiles
+  # Distribute all dotfiles from `~/.dotfiles` into `$HOME` directory
+  $HOME/scripts/tools/dotfiles/dotdist -VD -r .dotfilesrc . $HOME
 
-# Source .profile
-source ${HOME}/.profile
+  # Source .profile
+  source ${HOME}/.profile
+fi
 
 #################################################################### WRAP UP ###
 
