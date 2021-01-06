@@ -456,11 +456,10 @@ pkg_install() {
   fi
   # pkg upgrade if is_update
   if [[ ${is_update} -eq 1 ]]; then
-      if pkg upgrade -y; then
-        ok "Pkg upgrade successful!"
-      else
-        error "Pkg upgrade failed"
-      fi
+    if pkg upgrade -y; then
+      ok "Pkg upgrade successful!"
+    else
+      error "Pkg upgrade failed"
     fi
   fi
   # Execute installation
