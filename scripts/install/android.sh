@@ -200,6 +200,7 @@ chsh -s /bin/bash
 
 # Personal Neovim config files
 if git_clone "https://github.com/marklcrns/nvim-config" "${HOME}/.config/nvim/"; then
+  cd ~/.config/nvim
   git checkout termux
   make
 fi

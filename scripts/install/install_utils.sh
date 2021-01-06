@@ -358,10 +358,12 @@ pip_install() {
 }
 
 pip_bulk_install() {
-  pip_version=$1
-
-  if [[ -n ${pip_version} ]]; then
+  # If no pip version provided, default to 3
+  if [[ $1 -gt 0 ]]; then
+    pip_version=$1
     shift
+  else
+    pip_version=3
   fi
 
   packages=("$@")
