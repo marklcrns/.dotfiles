@@ -77,6 +77,10 @@ alias v='xclip -o'
 alias cs='xclip -selection'
 alias vs='xclip -o -selection'
 
+# alias for opening nvim on fzf selection
+alias nvimfzf='nvim "$(fzf)"'
+alias vimfzf='vim "$(fzf)"'
+
 # leetcode-cli
 alias lc='leetcode'
 

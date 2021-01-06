@@ -185,13 +185,10 @@ if [[ -f ~/.fzf.bash ]]; then
 
   # alt-c options will open preview window for tree
   export FZF_ALT_C_OPTS="--preview 'tree -c {} | head -200'"
-
-  # alias for opening nvim on fzf selection
-  alias nvimfzf='nvim "$(fzf)"'
-  alias vimfzf='vim "$(fzf)"'
 fi
 
-. /usr/share/autojump/autojump.sh
+[[ ! -f /usr/share/autojump/autojump.sh ]] || \
+  . /usr/share/autojump/autojump.sh
 
 # Codi
 # Usage: codi [filetype] [filename]

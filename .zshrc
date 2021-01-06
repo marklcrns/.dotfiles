@@ -241,10 +241,6 @@ if [[ -f ~/.fzf.zsh ]]; then
 
   # alt-c options will open preview window for tree
   export FZF_ALT_C_OPTS="--preview 'tree -c {} | head -200'"
-
-  # alias for opening nvim on fzf selection
-  alias nvimfzf='nvim "$(fzf)"'
-  alias vimfzf='vim "$(fzf)"'
 fi
 
 [[ ! -f /usr/share/autojump/autojump.zsh ]] || \
