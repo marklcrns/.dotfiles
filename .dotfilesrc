@@ -37,6 +37,10 @@ DOTFILES_LIST=(
   "${DOTFILES_LOCAL}/bin/"
 )
 
+DOTFILES_IGNORE_LIST=(
+  "${DOTFILES_LOCAL}/bin/pandoc"
+)
+
 # WSL specific configs
 if [[ "$(grep -i microsoft /proc/version)" ]]; then
   # Append to DOTFILES_LIST
