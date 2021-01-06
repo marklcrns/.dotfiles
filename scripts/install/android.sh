@@ -167,6 +167,7 @@ PIP_GLOBAL_PACKAGES=(
   "wheel"
   "neovim"
   "virtualenv"
+  "trash-cli"
 )
 
 NPM_GLOBAL_PACKAGES=(

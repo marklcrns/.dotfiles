@@ -25,9 +25,10 @@ APT_PACKAGES_LANGUAGE=(
 
 PIP3_PACKAGES_LANGUAGES=(
   "wheel"
-  "Send2Trash"
   "pipenv"
   "virtualenv"
+  "Send2Trash"
+  "trash-cli"
 )
 
 echolog
