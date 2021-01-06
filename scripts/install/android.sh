@@ -158,6 +158,7 @@ PKG_ESSENTIALS_PACKAGES=(
 PKG_MISC_PACKAGES=(
   "bat"
   "exa"
+  "rclone"
   "taskwarrior"
   "timewarrior"
   "cmatrix"
@@ -225,6 +226,7 @@ if git_clone "https://github.com/marklcrns/.task" "${HOME}/.task"; then
   fi
 fi
 
+# Script files to distribute dotfiles
 if git clone https://github.com/marklcrns/scripts $HOME/scripts; then
   cd ~/.dotfiles
   # Distribute all dotfiles from `~/.dotfiles` into `$HOME` directory
@@ -232,6 +234,12 @@ if git clone https://github.com/marklcrns/scripts $HOME/scripts; then
 
   # Source .profile
   source ${HOME}/.profile
+fi
+
+# Credentials for taskwarrior, calendar.vim, and rclone cloud accounts
+if git clone https://github.com/marklcrns/.secret $home/.secret; then
+  cd ~/.secret
+  ./setup.sh
 fi
 
 

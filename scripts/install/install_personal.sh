@@ -178,6 +178,13 @@ if git clone https://github.com/marklcrns/scripts $HOME/scripts; then
   source ${HOME}/.profile
 fi
 
+# Credentials for taskwarrior, calendar.vim, and rclone cloud accounts
+if git clone https://github.com/marklcrns/.secret $home/.secret; then
+  cd ~/.secret
+  ./setup.sh
+fi
+
+
 #################################################################### WRAP UP ###
 
 total_count=0
