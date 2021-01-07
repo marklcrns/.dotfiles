@@ -185,8 +185,8 @@ fi
 # https://github.com/junegunn/fzf/wiki/configuring-shell-key-bindings
 # https://www.youtube.com/watch?v=qgg5jhi_els
 # https://remysharp.com/2018/08/23/cli-improved
-if [[ -f ~/.fzf.zsh ]]; then
-  source ~/.fzf.zsh
+if [[ -f ~/.fzf.zsh ]] || hash fzf; then
+  [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
   # use ~~ as the trigger sequence instead of the default **
   #export FZF_COMPLETION_TRIGGER='~~'
 
