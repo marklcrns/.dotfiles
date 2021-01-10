@@ -148,7 +148,7 @@ export CONF_REPO_LIST="\
   ${HOME}/.timewarrior/
   ${HOME}/.tmuxinator/
   ${HOME}/.vim/UltiSnips/
-  ${HOME}/.vim/session/
+  ${HOME}/.vim/sessions/
   ${HOME}/Docs/wiki/
   ${HOME}/Docs/wiki/wiki/
   ${HOME}/Projects/references/

@@ -117,9 +117,9 @@ fi
 # Requires neofetch or screenfetch, figlet and/or lolcat
 # Ref: https://stackoverflow.com/a/677212
 if [[ -n "$BASH_VERSION" ]]; then
-  if hash neofetch >/dev/null; then
+  if type neofetch >/dev/null; then
     neofetch
-  elif hash screenfetch >/dev/null; then
+  elif type screenfetch >/dev/null; then
     screenfetch
   fi
   if hash fortune 2>/dev/null && hash lolcat &>/dev/null; then
