@@ -138,6 +138,9 @@ fi
 
 PKG_ESSENTIALS_PACKAGES=(
   "build-essential"
+  "gnupg"
+  "wget"
+  "curl"
   "git"
   "git-lfs"
   "man"
@@ -181,7 +184,7 @@ pip_bulk_install 3 "${PIP_GLOBAL_PACKAGES[@]}"
 npm_bulk_install 1 "${NPM_GLOBAL_PACKAGES[@]}"
 
 
-############### Shell ################
+############### zsh ################
 
 pkg_install "zsh"
 
@@ -194,6 +197,26 @@ fi
 
 # Make sure bash is still default login shell
 chsh -s /bin/bash
+
+
+############### pandoc ################
+
+# Ref: https://github.com/termux/termux-packages/issues/372#issuecomment-727065323
+wget https://github.com/arm4rpi/pandoc-arm/releases/download/v0.1/pandoc-2.9.2-aarch64-static.tar.gz
+tar xf pandoc-2.9.2-aarch64-static.tar.gz
+mv pandoc $PREFIX/bin
+
+
+############### r-base ################
+
+# Ref: https://github.com/termux/termux-packages/issues/3230#issuecomment-455404697
+wget https://its-pointless.github.io/pointless.gpg
+apt-key add pointless.gpg
+
+wget https://its-pointless.github.io/setup-pointless-repo.sh
+bash setup-pointless-repo.sh
+
+pkg_install "r-base"
 
 
 #################### Dotfiles ####################
