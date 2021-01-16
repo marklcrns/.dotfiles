@@ -38,6 +38,10 @@ APT_PACKAGES_TOOLS_PANDOC_DEPENDENCIES=(
   "texlive"
 )
 
+PIP3_PACKAGES_MISC=(
+  "glances"
+  "thefuck"
+)
 
 echolog
 echolog "${UL_NC}Installing Misc Packages${NC}"
@@ -47,8 +51,7 @@ echolog
 apt_add_repo "bashtop-monitor/bashtop" 1
 apt_install "bashtop" 1
 
-# Glances
-pip_install 3 "glances"
+pip_bulk_install 3 "${PIP3_PACKAGES_MISC[@]}"
 
 apt_bulk_install "${APT_PACKAGES_MISC[@]}"
 
