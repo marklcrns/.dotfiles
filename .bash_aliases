@@ -143,7 +143,6 @@ export CONF_REPO_LIST="\
   ${DOTFILES}
   ${HOME}/.config/nvim/
   ${HOME}/.lc/
-  ${HOME}/.task/
   ${HOME}/.timewarrior/
   ${HOME}/.tmuxinator/
   ${HOME}/.vim/UltiSnips/

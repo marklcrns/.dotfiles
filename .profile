@@ -91,6 +91,16 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
   export WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
 fi
 
+# thefuck https://github.com/nvbn/thefuck
+export THEFUCK_RULES='sudo:no_command'
+export THEFUCK_EXCLUDE_RULES='git_pull:git_push'
+export THEFUCK_REQUIRE_CONFIRMATION='true'
+export THEFUCK_WAIT_COMMAND=10
+export THEFUCK_NO_COLORS='false'
+export THEFUCK_PRIORITY='no_command=9999:apt_get=100'
+export THEFUCK_HISTORY_LIMIT='2000'
+export THEFUCK_NUM_CLOSE_MATCHES='5'
+
 # ==================== SOURCING FILES ==================== #
 
 # SOURCING FILES NEEDS TO GO IN BASHRC OR ZSHRC TO PREVENT SOME ISSUES
