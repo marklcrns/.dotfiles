@@ -150,6 +150,7 @@ PKG_ESSENTIALS_PACKAGES=(
   "htop"
   "neofetch"
   "python"
+  "python2"
   "nodejs"
   "nvim"
   "tmux"
@@ -176,6 +177,7 @@ PIP_GLOBAL_PACKAGES=(
 
 NPM_GLOBAL_PACKAGES=(
   "neovim"
+  "leetcode-cli"
 )
 
 pkg_bulk_install "${PKG_ESSENTIALS_PACKAGES[@]}"
