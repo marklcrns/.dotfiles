@@ -151,6 +151,7 @@ PKG_ESSENTIALS_PACKAGES=(
   "neofetch"
   "python"
   "python2"
+  "yarn"
   "nodejs"
   "nvim"
   "tmux"
