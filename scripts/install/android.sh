@@ -143,6 +143,7 @@ PKG_ESSENTIALS_PACKAGES=(
   "curl"
   "git"
   "git-lfs"
+  "openssh"
   "man"
   "zip"
   "unzip"
