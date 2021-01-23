@@ -22,7 +22,7 @@ alias aptupdate='sudo apt update && sudo apt upgrade -y'
 
 # Directory Aliases
 alias down='cd ~/Downloads'
-alias docs='cd ~/Docs'
+alias docs='cd ~/Documents'
 alias proj='cd ~/Projects'
 alias dev='cd ~/Projects/Dev'
 alias ref='cd ~/Projects/references'
@@ -95,7 +95,7 @@ alias fnr=find_and_replace
 alias wiki='nvim -c VimwikiUISelect'
 alias diary='nvim -c VimwikiDiaryIndex'
 alias dtoday='nvim -c "call DToday()"'
-alias wikidocs='cd ~/Docs/wiki'
+alias wikidocs='cd ~/Documents/wiki'
 
 # Remove debug.log files recursively (will also list all debug files before removal)
 alias rmdebs='find . -name "debug.log" -type f; find . -name "debug.log" -type f -delete'
@@ -147,8 +147,8 @@ export CONF_REPO_LIST="\
   ${HOME}/.tmuxinator/
   ${HOME}/.vim/UltiSnips/
   ${HOME}/.vim/sessions/
-  ${HOME}/Docs/wiki/
-  ${HOME}/Docs/wiki/wiki/
+  ${HOME}/Documents/wiki/
+  ${HOME}/Documents/wiki/wiki/
   ${HOME}/Projects/references/
   ${HOME}/scripts/
   "
@@ -669,8 +669,8 @@ checkremotechanges() {
 # TODO:
 syncallrepo() {
   CURRENT_DIR_SAVE=$(pwd)
-  cd ~/Docs/wiki && checkremotechanges
-  cd ~/Docs/wiki/wiki && checkremotechanges
+  cd ~/Documents/wiki && checkremotechanges
+  cd ~/Documents/wiki/wiki && checkremotechanges
   cd ~/.config/nvim && checkremotechanges
   cd ~/Projects/references && checkremotechanges
   cd ~/.tmuxinator && checkremotechanges
