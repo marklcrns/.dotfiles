@@ -879,10 +879,6 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
     fi
   }
 
-  # Yank and pasting UNIX current working directory to system clipboard.
-  # Requires xclip.
-  alias yp='pwd | tr -d "\n" | cs clipboard && echo "Current UNIX path yanked to clipboard" || echo "ERROR: Path not yanked!"'
-  alias cdp='cd "`vs clipboard`" && clear'
   # Yank and pasting Windows current working directory to system clipboard.
   # Requires xclip.
   alias wyp="winpath | xclip -selection clipboard && echo 'Current Windows path yanked to clipboard' || echo 'ERROR: Path not yanked!'"
@@ -898,3 +894,7 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
   alias on="gtd -pts"
 fi
 
+# Yank and pasting UNIX current working directory to system clipboard.
+# Requires xclip.
+alias yp='pwd | tr -d "\n" | cs clipboard && echo "Current UNIX path yanked to clipboard" || echo "ERROR: Path not yanked!"'
+alias cdp='cd "`vs clipboard`" && clear'
