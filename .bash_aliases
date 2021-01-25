@@ -148,7 +148,6 @@ export CONF_REPO_LIST="\
   ${HOME}/.vim/UltiSnips/
   ${HOME}/.vim/sessions/
   ${HOME}/Documents/wiki/
-  ${HOME}/Documents/wiki/wiki/
   ${HOME}/Projects/references/
   ${HOME}/scripts/
   "
