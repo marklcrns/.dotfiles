@@ -145,10 +145,7 @@ export CONF_REPO_LIST="\
   ${HOME}/.lc/
   ${HOME}/.timewarrior/
   ${HOME}/.tmuxinator/
-  ${HOME}/.vim/UltiSnips/
-  ${HOME}/.vim/sessions/
   ${HOME}/Documents/wiki/
-  ${HOME}/Projects/references/
   ${HOME}/scripts/
   "
 
