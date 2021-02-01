@@ -83,6 +83,13 @@ alias vimfzf='vim "$(fzf)"'
 
 # leetcode-cli
 alias lc='leetcode'
+alias lcgen='leetcode show -gxe -l java'
+alias lcse='leetcode show -gxe -q eL -l java'
+alias lcsE='leetcode show -gxe -q EL -l java'
+alias lcsm='leetcode show -gxe -q mL -l java'
+alias lcsM='leetcode show -gxe -q ML -l java'
+alias lcsh='leetcode show -gxe -q hL -l java'
+alias lcsH='leetcode show -gxe -q HL -l java'
 
 # Taskwarrior
 alias tw='task'

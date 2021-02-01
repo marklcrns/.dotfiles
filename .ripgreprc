@@ -2,8 +2,8 @@
 --ignore
 --hidden
 --no-heading
+--no-follow
 --smart-case
---follow
 --glob=!.git/*
 --glob=!*.class
 --glob=!**/node_modules/*
