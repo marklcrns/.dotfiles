@@ -101,6 +101,14 @@ export THEFUCK_PRIORITY='no_command=9999:apt_get=100'
 export THEFUCK_HISTORY_LIMIT='2000'
 export THEFUCK_NUM_CLOSE_MATCHES='5'
 
+# Ref: https://unix.stackexchange.com/a/139787
+# Ref: https://www.topbug.net/blog/2016/09/27/make-gnu-less-more-powerful/
+if [[ -e "/usr/share/source-highlight/src-hilite-lesspipe.sh" ]]; then
+	export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+	export LESS=' -R '
+	alias lessh='LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s" less -M '
+fi
+
 # ==================== SOURCING FILES ==================== #
 
 # SOURCING FILES NEEDS TO GO IN BASHRC OR ZSHRC TO PREVENT SOME ISSUES

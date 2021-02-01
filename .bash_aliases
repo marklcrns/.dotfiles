@@ -50,15 +50,13 @@ alias rmdir='rmdir -v'
 alias clear='clear -x' # keep buffer when clearing
 
 # Resources: https://unix.stackexchange.com/a/125386
-mkcdir () {
-  mkdir -pv -- "$1" &&
-    cd -P -- "$1"
-  }
+mkcd () {
+	mkdir -pv -- "$1" && cd -P -- "$1"
+}
 
 touched() {
-  touch -- "$1" &&
-    nvim -- "$1"
-  }
+	touch -- "$1" && nvim -- "$1"
+}
 
 alias rm='trash-put -h; echo "\n\nUse \\\rm to use the built-in rm command"; false'
 
@@ -113,11 +111,11 @@ alias rmlogs='find . -name "*.log" -type f; find . -name "*.log" -type f -delete
 DOTFILES="${HOME}/.dotfiles"
 
 dotfilespush() {
-  CURRENT_DIR_SAVE=$(pwd)
-  cd ${DOTFILES}
-  git add . && git commit
-  git push --all
-  cd ${CURRENT_DIR_SAVE}
+	CURRENT_DIR_SAVE=$(pwd)
+	cd ${DOTFILES}
+	git add . && git commit
+	git push --all
+	cd ${CURRENT_DIR_SAVE}
 }
 
 alias dotf="cd ${DOTFILES}"
@@ -138,7 +136,7 @@ alias commit='git commit'
 alias commitall='git add . && git commit'
 
 browsegithubrepo() {
-  open `git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//'`| head -n 1 &
+	open `git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//'`| head -n 1 &
 }
 alias openrepo=browsegithubrepo
 
@@ -147,78 +145,79 @@ alias openrepo=browsegithubrepo
 # Check repo for all repo changes: https://stackoverflow.com/a/24775215/11850077
 # Check if in git repo: https://stackoverflow.com/questions/2180270/check-if-current-directory-is-a-git-repository
 export CONF_REPO_LIST="\
-  ${DOTFILES}
-  ${HOME}/.config/nvim/
-  ${HOME}/.lc/
-  ${HOME}/.timewarrior/
-  ${HOME}/.tmuxinator/
-  ${HOME}/Documents/wiki/
-  ${HOME}/scripts/
-  "
+	${DOTFILES}
+	${HOME}/.cache/vim/session/
+	${HOME}/.config/nvim/
+	${HOME}/.lc/
+	${HOME}/.timewarrior/
+	${HOME}/.tmuxinator/
+	${HOME}/Documents/wiki/
+	${HOME}/scripts/
+"
 
 printallconfrepo() {
-  echo ${CONF_REPO_LIST}
+	echo ${CONF_REPO_LIST}
 }
 
 pushrepo() {
-  # Check if in git repo
-  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && return 1
-  # Check for git repo changes
-  CHANGES=$(git status --porcelain)
-  BRANCH_NAME=$(git symbolic-ref --short -q HEAD)
-  REMOTE_HEAD=$(git log --decorate --oneline | grep "origin/${BRANCH_NAME}")
-  # Add, commit and push if has changes
-  if [[ -n ${CHANGES} ]]; then
-    printf "${YELLOW}Changes detected in $(pwd). Pushing changes...${NC}\n"
-    echo "2.." && sleep .5
-    echo "1." && sleep .5
-    git add . && git commit
-    git push --all
-    # If Authentication failed, push until successful or interrupted
-    while [[ ${?} -eq 128 ]]; do
-      git push --all
-    done
-  elif [[ ! "${REMOTE_HEAD}" == *"HEAD ->"* ]]; then
-    # if HEAD ahead of remote or has something to push. push repo.
-    git push --all
-    while [[ ${?} -eq 128 ]]; do
-      git push --all
-    done
-  else
-    echo "No changes detected in $(pwd). Skipping..."
-  fi
+	# Check if in git repo
+	[[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && return 1
+	# Check for git repo changes
+	CHANGES=$(git status --porcelain)
+	BRANCH_NAME=$(git symbolic-ref --short -q HEAD)
+	REMOTE_HEAD=$(git log --decorate --oneline | grep "origin/${BRANCH_NAME}")
+	# Add, commit and push if has changes
+	if [[ -n ${CHANGES} ]]; then
+		printf "${YELLOW}Changes detected in $(pwd). Pushing changes...${NC}\n"
+		echo "2.." && sleep .5
+		echo "1." && sleep .5
+		git add . && git commit
+		git push --all
+		# If Authentication failed, push until successful or interrupted
+		while [[ ${?} -eq 128 ]]; do
+			git push --all
+		done
+	elif [[ ! "${REMOTE_HEAD}" == *"HEAD ->"* ]]; then
+		# if HEAD ahead of remote or has something to push. push repo.
+		git push --all
+		while [[ ${?} -eq 128 ]]; do
+			git push --all
+		done
+	else
+		echo "No changes detected in $(pwd). Skipping..."
+	fi
 }
 
 pullrepo() {
-  # Check if in git repo
-  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && return 1
-  # Check for git repo changes
-  CHANGES=$(git status --porcelain --untracked-files=no)
-  # Pull if no changes
-  if [[ -n ${CHANGES} ]]; then
-    printf "${RED}Changes detected in $(pwd) files. Skipping...${NC}\n"
-  else
-    echo "$(pwd). Pulling from remote"
-    git pull --all
-    # If Authentication failed, push until successful or interrupted
-    while [[ ${?} -eq 128 ]]; do
-      git push --all
-    done
-  fi
+	# Check if in git repo
+	[[ ! -d ".git" ]] && echo "$(pwd) not a git repo. root" && return 1
+	# Check for git repo changes
+	CHANGES=$(git status --porcelain --untracked-files=no)
+	# Pull if no changes
+	if [[ -n ${CHANGES} ]]; then
+		printf "${RED}Changes detected in $(pwd) files. Skipping...${NC}\n"
+	else
+		echo "$(pwd). Pulling from remote"
+		git pull --all
+		# If Authentication failed, push until successful or interrupted
+		while [[ ${?} -eq 128 ]]; do
+			git push --all
+		done
+	fi
 }
 
 statusrepo() {
-  # Check if in git repo
-  [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && return
-  # Check for git repo changes
-  CHANGES=$(git status --porcelain)
-  # Git status if has changes
-  if [[ -n ${CHANGES} ]]; then
-    printf "${YELLOW}Changes detected in $(pwd).${NC}\n"
-    git status
-  else
-    echo "No changes detected in $(pwd)."
-  fi
+	# Check if in git repo
+	[[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && return
+	# Check for git repo changes
+	CHANGES=$(git status --porcelain)
+	# Git status if has changes
+	if [[ -n ${CHANGES} ]]; then
+		printf "${YELLOW}Changes detected in $(pwd).${NC}\n"
+		git status
+	else
+		echo "No changes detected in $(pwd)."
+	fi
 }
 
 # NOTE: Aliases with '\n' must be string literal, while double quoting all
@@ -255,74 +254,74 @@ DEV_PUSH_LIST_PATH=${DOTFILES}/${DEV_PUSH_LIST_FILE}
 # }
 
 createalldevrepolists() {
-  CURRENT_DIR_SAVE=$(pwd)
-  # Get all dev repo and store in $DEV_REPO_LIST_PATH
-  # Convert home path to ~ and truncate .git
-  regex1="s,.*(/Projects/.*)/.git$,~\1,"
+	CURRENT_DIR_SAVE=$(pwd)
+	# Get all dev repo and store in $DEV_REPO_LIST_PATH
+	# Convert home path to ~ and truncate .git
+	regex1="s,.*(/Projects/.*)/.git$,~\1,"
 
-  # Create devpulllist.txt
-  find ${DEV_REPO_DIR} -name ".git" | \
-    sed -r "${regex1}" > ${DEV_PULL_LIST_PATH}
+	# Create devpulllist.txt
+	find ${DEV_REPO_DIR} -name ".git" | \
+		sed -r "${regex1}" > ${DEV_PULL_LIST_PATH}
 
-  # Create devpushlist.txt
-  find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*" | \
-    sed -r "${regex1}" > ${DEV_PUSH_LIST_PATH}
+	# Create devpushlist.txt
+	find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*" | \
+		sed -r "${regex1}" > ${DEV_PUSH_LIST_PATH}
 
-  # Append repo links in pull list
-  for line in $(cat ${DEV_PULL_LIST_PATH}); do
-    GIT_REPO_PATH=$line
-    # cd into repo
-    ABS_PATH=`echo ${GIT_REPO_PATH} | sed -r "s,~,${HOME},"`
-    cd ${ABS_PATH}
-    # Get repo github link
-    GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
-    # Append repo absolute path its github link in dev_repo_list.txt
-    sed -i "s|^${GIT_REPO_PATH}$|${GIT_REPO_PATH};${GIT_REPO_LINK}|" ${DEV_PULL_LIST_PATH}
-  done
+	# Append repo links in pull list
+	for line in $(cat ${DEV_PULL_LIST_PATH}); do
+		GIT_REPO_PATH=$line
+		# cd into repo
+		ABS_PATH=`echo ${GIT_REPO_PATH} | sed -r "s,~,${HOME},"`
+		cd ${ABS_PATH}
+		# Get repo github link
+		GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
+		# Append repo absolute path its github link in dev_repo_list.txt
+		sed -i "s|^${GIT_REPO_PATH}$|${GIT_REPO_PATH};${GIT_REPO_LINK}|" ${DEV_PULL_LIST_PATH}
+	done
 
-  # Append repo links in push list
-  for line in $(cat ${DEV_PUSH_LIST_PATH}); do
-    GIT_REPO_PATH=$line
-    # cd into repo
-    ABS_PATH=`echo ${GIT_REPO_PATH} | sed -r "s,~,${HOME},"`
-    cd ${ABS_PATH}
-    # Get repo github link
-    GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
-    # Append repo absolute path its github link in dev_repo_list.txt
-    sed -i "s|^${GIT_REPO_PATH}$|${GIT_REPO_PATH};${GIT_REPO_LINK}|" ${DEV_PUSH_LIST_PATH}
-  done
+	# Append repo links in push list
+	for line in $(cat ${DEV_PUSH_LIST_PATH}); do
+		GIT_REPO_PATH=$line
+		# cd into repo
+		ABS_PATH=`echo ${GIT_REPO_PATH} | sed -r "s,~,${HOME},"`
+		cd ${ABS_PATH}
+		# Get repo github link
+		GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
+		# Append repo absolute path its github link in dev_repo_list.txt
+		sed -i "s|^${GIT_REPO_PATH}$|${GIT_REPO_PATH};${GIT_REPO_LINK}|" ${DEV_PUSH_LIST_PATH}
+	done
 
-  [[ -f ${DEV_PULL_LIST_PATH} ]] && \
-    echo "Created ${DEV_PULL_LIST_PATH}" && cat ${DEV_PULL_LIST_PATH}
+	[[ -f ${DEV_PULL_LIST_PATH} ]] && \
+		echo "Created ${DEV_PULL_LIST_PATH}" && cat ${DEV_PULL_LIST_PATH}
 
-  [[ -f ${DEV_PUSH_LIST_PATH} ]] && \
-    echo "Created ${DEV_PUSH_LIST_PATH}" && cat ${DEV_PUSH_LIST_PATH}
+	[[ -f ${DEV_PUSH_LIST_PATH} ]] && \
+		echo "Created ${DEV_PUSH_LIST_PATH}" && cat ${DEV_PUSH_LIST_PATH}
 
-  cd ${CURRENT_DIR_SAVE}
+	cd ${CURRENT_DIR_SAVE}
 }
 
 printdevrepolists() {
-  echo $DEV_PULL_LIST_PATH
-  cat $DEV_PULL_LIST_PATH
-  echo
-  echo $DEV_PUSH_LIST_PATH
-  cat $DEV_PUSH_LIST_PATH
+	echo $DEV_PULL_LIST_PATH
+	cat $DEV_PULL_LIST_PATH
+	echo
+	echo $DEV_PUSH_LIST_PATH
+	cat $DEV_PUSH_LIST_PATH
 }
 
 printalldevrepo() {
-  # Print all current dev pull repos
-  PULL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git")"
-  # Truncate .git from output
-  regex1="s,(.*)/.git$,\1,"
-  PULL_DEV_REPO="$(echo ${PULL_DEV_REPO} | sed -r ${regex1})"
-  echo ${PULL_DEV_REPO}
+	# Print all current dev pull repos
+	PULL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git")"
+	# Truncate .git from output
+	regex1="s,(.*)/.git$,\1,"
+	PULL_DEV_REPO="$(echo ${PULL_DEV_REPO} | sed -r ${regex1})"
+	echo ${PULL_DEV_REPO}
 
-  # Print all current dev push repos
-  PUSH_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*")"
-  # Truncate .git from output
-  regex1="s,(.*)/.git$,\1,"
-  PUSH_DEV_REPO="$(echo ${PUSH_DEV_REPO} | sed -r ${regex1})"
-  echo ${PUSH_DEV_REPO}
+	# Print all current dev push repos
+	PUSH_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*")"
+	# Truncate .git from output
+	regex1="s,(.*)/.git$,\1,"
+	PUSH_DEV_REPO="$(echo ${PUSH_DEV_REPO} | sed -r ${regex1})"
+	echo ${PUSH_DEV_REPO}
 }
 
 # Resources:
@@ -332,303 +331,303 @@ printalldevrepo() {
 # Delete lines with forward slashes in file: https://stackoverflow.com/a/25173311
 # TODO: un-DRY code
 checkalldevrepos() {
-  CURRENT_DIR_SAVE=$(pwd)
-  # Cat dev repo lists content into a variable
-  PULL_DEV_LIST="$(cat ${DEV_PULL_LIST_PATH})" || return 1
-  PUSH_DEV_LIST="$(cat ${DEV_PUSH_LIST_PATH})" || return 1
-  # Find all dev repos and strip .git and home path substring and append ~/
-  regex1="s,.*(/Projects/.*)/.git$,~\1,"
-  PULL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" | sed -r "${regex1}")"
-  PUSH_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*" | sed -r "${regex1}")"
+	CURRENT_DIR_SAVE=$(pwd)
+	# Cat dev repo lists content into a variable
+	PULL_DEV_LIST="$(cat ${DEV_PULL_LIST_PATH})" || return 1
+	PUSH_DEV_LIST="$(cat ${DEV_PUSH_LIST_PATH})" || return 1
+	# Find all dev repos and strip .git and home path substring and append ~/
+	regex1="s,.*(/Projects/.*)/.git$,~\1,"
+	PULL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" | sed -r "${regex1}")"
+	PUSH_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*" | sed -r "${regex1}")"
 
-  echo "Checking untracked dev PULL repos..."
-  for repo in $(echo ${PULL_DEV_REPO} | sed "s/\n/ /g")
-  do
-    ABS_REPO_PATH=`echo ${repo} | sed -r "s,~,${HOME},"`
-    # check if repo in dev list
-    if [[ ! ${PULL_DEV_LIST} == *"${repo}"* ]]; then
-      printf "    ${RED}${repo} Untracked from dev list${NC}\n"
-      # Prompt for action
-      echo "Do you want to add ${repo} in ${DEV_PULL_LIST_FILE}? (Y/y)"
-      echo "or type (delete) to permanently delete repo..."
-      read REPLY
-      if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-        # Get absolute path and cd in
-        cd ${ABS_REPO_PATH}
-        # Get repo github link
-        GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
-        # Append repo absolute path and link in devpushlist.txt
-        echo "${repo};${GIT_REPO_LINK}" >> ${DEV_PULL_LIST_PATH}
-        printf "${GREEN}${ABS_REPO_PATH} Added${NC}\n\n"
-      elif [[ "$REPLY" =~ ^(Delete|delete|DELETE) ]]; then
-        rm -rf ${ABS_REPO_PATH}
-        printf "${RED}${ABS_REPO_PATH} Deleted${NC}\n\n"
-      fi
-    else
-      echo "${repo}"
-    fi
-  done
+	echo "Checking untracked dev PULL repos..."
+	for repo in $(echo ${PULL_DEV_REPO} | sed "s/\n/ /g")
+	do
+		ABS_REPO_PATH=`echo ${repo} | sed -r "s,~,${HOME},"`
+		# check if repo in dev list
+		if [[ ! ${PULL_DEV_LIST} == *"${repo}"* ]]; then
+			printf "    ${RED}${repo} Untracked from dev list${NC}\n"
+			# Prompt for action
+			echo "Do you want to add ${repo} in ${DEV_PULL_LIST_FILE}? (Y/y)"
+			echo "or type (delete) to permanently delete repo..."
+			read REPLY
+			if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+				# Get absolute path and cd in
+				cd ${ABS_REPO_PATH}
+				# Get repo github link
+				GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
+				# Append repo absolute path and link in devpushlist.txt
+				echo "${repo};${GIT_REPO_LINK}" >> ${DEV_PULL_LIST_PATH}
+				printf "${GREEN}${ABS_REPO_PATH} Added${NC}\n\n"
+			elif [[ "$REPLY" =~ ^(Delete|delete|DELETE) ]]; then
+				rm -rf ${ABS_REPO_PATH}
+				printf "${RED}${ABS_REPO_PATH} Deleted${NC}\n\n"
+			fi
+		else
+			echo "${repo}"
+		fi
+	done
 
-  echo "Checking untracked dev PUSH repos..."
-  for repo in $(echo ${PUSH_DEV_REPO} | sed "s/\n/ /g")
-  do
-    ABS_REPO_PATH=`echo ${repo} | sed -r "s,~,${HOME},"`
-    # check if repo in dev list
-    if [[ ! ${PUSH_DEV_LIST} == *"${repo}"* ]]; then
-      printf "    ${RED}${repo} Untracked from dev list${NC}\n"
-      # Prompt for action
-      echo "Do you want to add ${repo} in ${DEV_PUSH_LIST_FILE}? (Y/y)"
-      echo "or type (delete) to permanently delete repo..."
-      read REPLY
-      if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-        # Get absolute path and cd in
-        cd ${ABS_REPO_PATH}
-        # Get repo github link
-        GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
-        # Append repo absolute path and link in devpushlist.txt
-        echo "${repo};${GIT_REPO_LINK}" >> ${DEV_PUSH_LIST_PATH}
-        printf "${GREEN}${ABS_REPO_PATH} Added${NC}\n\n"
-      elif [[ "$REPLY" =~ ^(Delete|delete|DELETE) ]]; then
-        rm -rf ${ABS_REPO_PATH}
-        printf "${RED}${ABS_REPO_PATH} Deleted${NC}\n\n"
-      fi
-    else
-      echo "${repo}"
-    fi
-  done
+	echo "Checking untracked dev PUSH repos..."
+	for repo in $(echo ${PUSH_DEV_REPO} | sed "s/\n/ /g")
+	do
+		ABS_REPO_PATH=`echo ${repo} | sed -r "s,~,${HOME},"`
+		# check if repo in dev list
+		if [[ ! ${PUSH_DEV_LIST} == *"${repo}"* ]]; then
+			printf "    ${RED}${repo} Untracked from dev list${NC}\n"
+			# Prompt for action
+			echo "Do you want to add ${repo} in ${DEV_PUSH_LIST_FILE}? (Y/y)"
+			echo "or type (delete) to permanently delete repo..."
+			read REPLY
+			if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+				# Get absolute path and cd in
+				cd ${ABS_REPO_PATH}
+				# Get repo github link
+				GIT_REPO_LINK="$(git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//')"
+				# Append repo absolute path and link in devpushlist.txt
+				echo "${repo};${GIT_REPO_LINK}" >> ${DEV_PUSH_LIST_PATH}
+				printf "${GREEN}${ABS_REPO_PATH} Added${NC}\n\n"
+			elif [[ "$REPLY" =~ ^(Delete|delete|DELETE) ]]; then
+				rm -rf ${ABS_REPO_PATH}
+				printf "${RED}${ABS_REPO_PATH} Deleted${NC}\n\n"
+			fi
+		else
+			echo "${repo}"
+		fi
+	done
 
-  echo
-  # Re-cat dev pull list for changes
-  PULL_DEV_LIST="$(cat ${DEV_PULL_LIST_PATH})"
-  # Re-cat dev push list for changes
-  PUSH_DEV_LIST="$(cat ${DEV_PUSH_LIST_PATH})"
+	echo
+	# Re-cat dev pull list for changes
+	PULL_DEV_LIST="$(cat ${DEV_PULL_LIST_PATH})"
+	# Re-cat dev push list for changes
+	PUSH_DEV_LIST="$(cat ${DEV_PUSH_LIST_PATH})"
 
-  echo "Checking uncloned repo from dev PULL list..."
-  for line in $(echo ${PULL_DEV_LIST} | sed "s/\n/ /g")
-  do
-    # Get repo path from line
-    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
-    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
-    GIT_LINK="$(cut -d';' -f2 <<< "$line" )"
-    # Check if repo path in dev repos
-    if [[ ! ${PULL_DEV_REPO} == *"${REPO_PATH}"* ]]; then
-      printf "    ${YELLOW}${REPO_PATH} Missing${NC}\n"
-      # Prompt for action
-      echo "Do you want to clone ${GIT_LINK}? (Y/y)"
-      echo "or type (remove) to remove repo from dev list..."
-      read REPLY
-      if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-        mkdir -p ${ABS_REPO_PATH}
-        git clone ${GIT_LINK} ${ABS_REPO_PATH} && \
-          printf "${GREEN}${GIT_LINK} Cloned${NC}\n\n"
+	echo "Checking uncloned repo from dev PULL list..."
+	for line in $(echo ${PULL_DEV_LIST} | sed "s/\n/ /g")
+	do
+		# Get repo path from line
+		REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+		ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+		GIT_LINK="$(cut -d';' -f2 <<< "$line" )"
+		# Check if repo path in dev repos
+		if [[ ! ${PULL_DEV_REPO} == *"${REPO_PATH}"* ]]; then
+			printf "    ${YELLOW}${REPO_PATH} Missing${NC}\n"
+			# Prompt for action
+			echo "Do you want to clone ${GIT_LINK}? (Y/y)"
+			echo "or type (remove) to remove repo from dev list..."
+			read REPLY
+			if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+				mkdir -p ${ABS_REPO_PATH}
+				git clone ${GIT_LINK} ${ABS_REPO_PATH} && \
+					printf "${GREEN}${GIT_LINK} Cloned${NC}\n\n"
 
-      elif [[ "$REPLY" =~ ^(Remove|remove|REMOVE) ]]; then
-        sed -i "\|${line}|d" ${DEV_PULL_LIST_PATH}
-        printf "${RED}${REPO_PATH} Removed from dev list${NC}\n\n"
-      fi
-    else
-      echo "${REPO_PATH}"
-    fi
-  done
+			elif [[ "$REPLY" =~ ^(Remove|remove|REMOVE) ]]; then
+				sed -i "\|${line}|d" ${DEV_PULL_LIST_PATH}
+				printf "${RED}${REPO_PATH} Removed from dev list${NC}\n\n"
+			fi
+		else
+			echo "${REPO_PATH}"
+		fi
+	done
 
-  echo "Checking uncloned repo from dev PUSH list..."
-  for line in $(echo ${PUSH_DEV_LIST} | sed "s/\n/ /g")
-  do
-    # Get repo path from line
-    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
-    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
-    GIT_LINK="$(cut -d';' -f2 <<< "$line" )"
-    # Check if repo path in dev repos
-    if [[ ! ${PUSH_DEV_REPO} == *"${REPO_PATH}"* ]]; then
-      printf "    ${YELLOW}${REPO_PATH} Missing${NC}\n"
-      # Prompt for action
-      echo "Do you want to clone ${GIT_LINK}? (Y/y)"
-      echo "or type (remove) to remove repo from dev list..."
-      read REPLY
-      if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-        mkdir -p ${ABS_REPO_PATH}
-        git clone ${GIT_LINK} ${ABS_REPO_PATH} && \
-          printf "${GREEN}${GIT_LINK} Cloned${NC}\n\n"
+	echo "Checking uncloned repo from dev PUSH list..."
+	for line in $(echo ${PUSH_DEV_LIST} | sed "s/\n/ /g")
+	do
+		# Get repo path from line
+		REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+		ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+		GIT_LINK="$(cut -d';' -f2 <<< "$line" )"
+		# Check if repo path in dev repos
+		if [[ ! ${PUSH_DEV_REPO} == *"${REPO_PATH}"* ]]; then
+			printf "    ${YELLOW}${REPO_PATH} Missing${NC}\n"
+			# Prompt for action
+			echo "Do you want to clone ${GIT_LINK}? (Y/y)"
+			echo "or type (remove) to remove repo from dev list..."
+			read REPLY
+			if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+				mkdir -p ${ABS_REPO_PATH}
+				git clone ${GIT_LINK} ${ABS_REPO_PATH} && \
+					printf "${GREEN}${GIT_LINK} Cloned${NC}\n\n"
 
-      elif [[ "$REPLY" =~ ^(Remove|remove|REMOVE) ]]; then
-        sed -i "\|${line}|d" ${DEV_PUSH_LIST_PATH}
-        printf "${RED}${REPO_PATH} Removed from dev list${NC}\n\n"
-      fi
-    else
-      echo "${REPO_PATH}"
-    fi
-  done
-  # Go back to initial directory
-  cd ${CURRENT_DIR_SAVE}
+			elif [[ "$REPLY" =~ ^(Remove|remove|REMOVE) ]]; then
+				sed -i "\|${line}|d" ${DEV_PUSH_LIST_PATH}
+				printf "${RED}${REPO_PATH} Removed from dev list${NC}\n\n"
+			fi
+		else
+			echo "${REPO_PATH}"
+		fi
+	done
+	# Go back to initial directory
+	cd ${CURRENT_DIR_SAVE}
 }
 
 clonealldevrepo() {
-  CURRENT_DIR_SAVE=$(pwd)
-  if [[ ! -f  ${DEV_PULL_LIST_PATH} ]]; then
-    printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
-    return 1
-  elif [[ ! -s "${DEV_PULL_LIST_PATH}" ]]; then
-    printf "${YELLOW}${DEV_PULL_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
-    return 1
-  fi
+	CURRENT_DIR_SAVE=$(pwd)
+	if [[ ! -f  ${DEV_PULL_LIST_PATH} ]]; then
+		printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
+		return 1
+	elif [[ ! -s "${DEV_PULL_LIST_PATH}" ]]; then
+		printf "${YELLOW}${DEV_PULL_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
+		return 1
+	fi
 
-  while read line && [[ -n $line ]]; do
-    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
-    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
-    GIT_LINK="$(cut -d';' -f2 <<< "$line" )"
+	while read line && [[ -n $line ]]; do
+		REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+		ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+		GIT_LINK="$(cut -d';' -f2 <<< "$line" )"
 
-    # Clone repo if repo dir exist
-    if [[ ! -d ${ABS_REPO_PATH} ]]; then
-      mkdir -p ${ABS_REPO_PATH}
-      printf "${ABS_REPO_PATH} does not exist.\n"
-      printf "${YELLOW}Cloning ${GIT_LINK}...${NC}\n"
-      git clone ${GIT_LINK} ${ABS_REPO_PATH}
-      # If Authentication failed, clone until successful or interrupted
-      while [[ ${?} -eq 128 ]]; do
-        git clone ${GIT_LINK} ${ABS_REPO_PATH}
-      done
-      # Remove directory if repo exists but not .git repo, then clone repo
-    elif [[ ! -d "${ABS_REPO_PATH}/.git" ]]; then
-      printf "${ABS_REPO_PATH}/.git does not exist.\n"
-      printf "${RED}Removing ${ABS_REPO_PATH}...\n"
-      rm -rf ${ABS_REPO_PATH} && \
-        printf "${YELLOW}Cloning ${GIT_LINK}...${NC}\n" && \
-        git clone ${GIT_LINK} ${ABS_REPO_PATH}
+		# Clone repo if repo dir exist
+		if [[ ! -d ${ABS_REPO_PATH} ]]; then
+			mkdir -p ${ABS_REPO_PATH}
+			printf "${ABS_REPO_PATH} does not exist.\n"
+			printf "${YELLOW}Cloning ${GIT_LINK}...${NC}\n"
+			git clone ${GIT_LINK} ${ABS_REPO_PATH}
+			# If Authentication failed, clone until successful or interrupted
+			while [[ ${?} -eq 128 ]]; do
+				git clone ${GIT_LINK} ${ABS_REPO_PATH}
+			done
+			# Remove directory if repo exists but not .git repo, then clone repo
+		elif [[ ! -d "${ABS_REPO_PATH}/.git" ]]; then
+			printf "${ABS_REPO_PATH}/.git does not exist.\n"
+			printf "${RED}Removing ${ABS_REPO_PATH}...\n"
+			rm -rf ${ABS_REPO_PATH} && \
+				printf "${YELLOW}Cloning ${GIT_LINK}...${NC}\n" && \
+				git clone ${GIT_LINK} ${ABS_REPO_PATH}
 
-      # If Authentication failed, clone until successful or interrupted
-      while [[ ${?} -eq 128 ]]; do
-        printf "${YELLOW}Cloning ${GIT_LINK}...${NC}\n"
-        git clone ${GIT_LINK} ${ABS_REPO_PATH}
-      done
-    fi
-  done < ${DEV_PULL_LIST_PATH}
+			# If Authentication failed, clone until successful or interrupted
+			while [[ ${?} -eq 128 ]]; do
+				printf "${YELLOW}Cloning ${GIT_LINK}...${NC}\n"
+				git clone ${GIT_LINK} ${ABS_REPO_PATH}
+			done
+		fi
+	done < ${DEV_PULL_LIST_PATH}
 
-  printf "${GREEN}Dev repo cloning complete!${NC}\n"
-  cd ${CURRENT_DIR_SAVE}
+	printf "${GREEN}Dev repo cloning complete!${NC}\n"
+	cd ${CURRENT_DIR_SAVE}
 }
 
 removealldevrepo() {
-  CURRENT_DIR_SAVE=$(pwd)
-  if [[ ! -f  ${DEV_PULL_LIST_PATH} ]]; then
-    printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
-    return 1
-  elif [[ ! -s "${DEV_PULL_LIST_PATH}" ]]; then
-    printf "${YELLOW}${DEV_PULL_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
-    return 1
-  fi
+	CURRENT_DIR_SAVE=$(pwd)
+	if [[ ! -f  ${DEV_PULL_LIST_PATH} ]]; then
+		printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
+		return 1
+	elif [[ ! -s "${DEV_PULL_LIST_PATH}" ]]; then
+		printf "${YELLOW}${DEV_PULL_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
+		return 1
+	fi
 
-  while read line && [[ -n $line ]]; do
-    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
-    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
-    GIT_LINK="$(cut -d';' -f2 <<< "$line" )"
+	while read line && [[ -n $line ]]; do
+		REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+		ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+		GIT_LINK="$(cut -d';' -f2 <<< "$line" )"
 
-    # Remove directory if repo exists but not .git repo
-    if [[ ! -d "${ABS_REPO_PATH}/.git" ]]; then
-      printf "${RED}${ABS_REPO_PATH}/.git does not exist.\n"
-      printf "\tSkipping ${ABS_REPO_PATH}...${NC}\n"
-    elif [[ -d "${ABS_REPO_PATH}" ]]; then
-      printf "${RED}Removing ${ABS_REPO_PATH}...${NC}\n"
-      rm -rf ${ABS_REPO_PATH}
-    fi
-  done < ${DEV_PULL_LIST_PATH}
+		# Remove directory if repo exists but not .git repo
+		if [[ ! -d "${ABS_REPO_PATH}/.git" ]]; then
+			printf "${RED}${ABS_REPO_PATH}/.git does not exist.\n"
+			printf "\tSkipping ${ABS_REPO_PATH}...${NC}\n"
+		elif [[ -d "${ABS_REPO_PATH}" ]]; then
+			printf "${RED}Removing ${ABS_REPO_PATH}...${NC}\n"
+			rm -rf ${ABS_REPO_PATH}
+		fi
+	done < ${DEV_PULL_LIST_PATH}
 
-  printf "${GREEN}Dev repo removal complete!${NC}\n"
-  cd ${CURRENT_DIR_SAVE}
+	printf "${GREEN}Dev repo removal complete!${NC}\n"
+	cd ${CURRENT_DIR_SAVE}
 }
 
 pushalldevrepo() {
-  CURRENT_DIR_SAVE=$(pwd)
-  if [[ ! -f  ${DEV_PUSH_LIST_PATH} ]]; then
-    printf "${RED}${DEV_PUSH_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
-    return 1
-  elif [[ ! -s "${DEV_PUSH_LIST_PATH}" ]]; then
-    printf "${YELLOW}${DEV_PUSH_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
-    return 1
-  fi
+	CURRENT_DIR_SAVE=$(pwd)
+	if [[ ! -f  ${DEV_PUSH_LIST_PATH} ]]; then
+		printf "${RED}${DEV_PUSH_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
+		return 1
+	elif [[ ! -s "${DEV_PUSH_LIST_PATH}" ]]; then
+		printf "${YELLOW}${DEV_PUSH_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
+		return 1
+	fi
 
-  # Loop variation 1: Works well with `wait` command
-  for line in $(cat ${DEV_PUSH_LIST_PATH}); do
-    # continue of line is empty String
-    [[ -z $line ]] && continue
-    # Wait until another git commit finish processing if exist
-    if [[ -n $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}') ]]; then
-      wait $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}')
-    fi
-    # Convert line to abs PATH
-    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
-    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
-    # Go to a Dev repo then push
-    cd ${ABS_REPO_PATH}
-    pushrepo
-  done
-  cd ${CURRENT_DIR_SAVE}
+	# Loop variation 1: Works well with `wait` command
+	for line in $(cat ${DEV_PUSH_LIST_PATH}); do
+		# continue of line is empty String
+		[[ -z $line ]] && continue
+		# Wait until another git commit finish processing if exist
+		if [[ -n $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}') ]]; then
+			wait $(ps -fc | grep "git commit$" | head -n 1 | awk '{print $2}')
+		fi
+		# Convert line to abs PATH
+		REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+		ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+		# Go to a Dev repo then push
+		cd ${ABS_REPO_PATH}
+		pushrepo
+	done
+	cd ${CURRENT_DIR_SAVE}
 }
 
 pullalldevrepo() {
-  CURRENT_DIR_SAVE=$(pwd)
-  if [[ ! -f  ${DEV_PULL_LIST_PATH} ]]; then
-    printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
-    return 1
-  elif [[ ! -s "${DEV_PULL_LIST_PATH}" ]]; then
-    printf "${YELLOW}${DEV_PULL_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
-    return 1
-  fi
+	CURRENT_DIR_SAVE=$(pwd)
+	if [[ ! -f  ${DEV_PULL_LIST_PATH} ]]; then
+		printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
+		return 1
+	elif [[ ! -s "${DEV_PULL_LIST_PATH}" ]]; then
+		printf "${YELLOW}${DEV_PULL_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
+		return 1
+	fi
 
-  # Loop variation 2: Ensures no leadiing line
-  while read line && [[ -n $line ]]; do
-    # Convert line to abs PATH
-    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
-    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
-    # Go to a Dev repo then pull
-    cd ${ABS_REPO_PATH}
-    pullrepo
-  done < ${DEV_PULL_LIST_PATH}
-  cd ${CURRENT_DIR_SAVE}
+	# Loop variation 2: Ensures no leadiing line
+	while read line && [[ -n $line ]]; do
+		# Convert line to abs PATH
+		REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+		ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+		# Go to a Dev repo then pull
+		cd ${ABS_REPO_PATH}
+		pullrepo
+	done < ${DEV_PULL_LIST_PATH}
+	cd ${CURRENT_DIR_SAVE}
 }
 
 forcepullalldevrepo() {
-  CURRENT_DIR_SAVE=$(pwd)
-  if [[ ! -f  ${DEV_PULL_LIST_PATH} ]]; then
-    printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
-    return 1
-  elif [[ ! -s "${DEV_PULL_LIST_PATH}" ]]; then
-    printf "${YELLOW}${DEV_PULL_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
-    return 1
-  fi
+	CURRENT_DIR_SAVE=$(pwd)
+	if [[ ! -f  ${DEV_PULL_LIST_PATH} ]]; then
+		printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
+		return 1
+	elif [[ ! -s "${DEV_PULL_LIST_PATH}" ]]; then
+		printf "${YELLOW}${DEV_PULL_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
+		return 1
+	fi
 
-  # Loop variation 2: Ensures no leadiing line
-  while read line && [[ -n $line ]]; do
-    # Convert line to abs PATH
-    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
-    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
-    # Go to a Dev repo then force pull
-    cd ${ABS_REPO_PATH}
-    forcepullrepo
-  done < ${DEV_PULL_LIST_PATH}
-  cd ${CURRENT_DIR_SAVE}
+	# Loop variation 2: Ensures no leadiing line
+	while read line && [[ -n $line ]]; do
+		# Convert line to abs PATH
+		REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+		ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+		# Go to a Dev repo then force pull
+		cd ${ABS_REPO_PATH}
+		forcepullrepo
+	done < ${DEV_PULL_LIST_PATH}
+	cd ${CURRENT_DIR_SAVE}
 }
 
 statusdevpushrepo() {
-  CURRENT_DIR_SAVE=$(pwd)
-  if [[ ! -f  ${DEV_PUSH_LIST_PATH} ]]; then
-    printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
-    return 1
-  elif [[ ! -s "${DEV_PUSH_LIST_PATH}" ]]; then
-    printf "${YELLOW}${DEV_PUSH_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
-    return 1
-  fi
+	CURRENT_DIR_SAVE=$(pwd)
+	if [[ ! -f  ${DEV_PUSH_LIST_PATH} ]]; then
+		printf "${RED}${DEV_PULL_LIST_FILE} in ${DOTFILES} does not exist${NC}\n"
+		return 1
+	elif [[ ! -s "${DEV_PUSH_LIST_PATH}" ]]; then
+		printf "${YELLOW}${DEV_PUSH_LIST_FILE} in ${DOTFILES} is empty${NC}\n"
+		return 1
+	fi
 
-  # Loop variation 2: Ensures no leadiing line
-  while read line && [[ -n $line ]]; do
-    # Convert line to abs PATH
-    REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
-    ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
-    # Go to a Dev repo then git status
-    cd ${ABS_REPO_PATH}
-    git remote update
-    checkremotechanges
-  done < ${DEV_PUSH_LIST_PATH}
-  cd ${CURRENT_DIR_SAVE}
+	# Loop variation 2: Ensures no leadiing line
+	while read line && [[ -n $line ]]; do
+		# Convert line to abs PATH
+		REPO_PATH="$(cut -d';' -f1 <<< "$line" )"
+		ABS_REPO_PATH=`echo ${REPO_PATH} | sed -r "s,~,${HOME},"`
+		# Go to a Dev repo then git status
+		cd ${ABS_REPO_PATH}
+		git remote update
+		checkremotechanges
+	done < ${DEV_PUSH_LIST_PATH}
+	cd ${CURRENT_DIR_SAVE}
 }
 
 alias gpushdev=pushalldevrepo
@@ -646,43 +645,43 @@ alias grmdev=removealldevrepo
 # Resources: https://stackoverflow.com/a/3278427
 # NOTE: Needs to run `git fetch` or `git remote update` first before running.
 checkremotechanges() {
-  CHANGES=$(git status --porcelain)
-  UPSTREAM=${1:-'@{u}'}
-  LOCAL=$(git rev-parse @)
-  REMOTE=$(git rev-parse "$UPSTREAM")
-  BASE=$(git merge-base @ "$UPSTREAM")
+	CHANGES=$(git status --porcelain)
+	UPSTREAM=${1:-'@{u}'}
+	LOCAL=$(git rev-parse @)
+	REMOTE=$(git rev-parse "$UPSTREAM")
+	BASE=$(git merge-base @ "$UPSTREAM")
 
-  if [[ $LOCAL = $REMOTE ]]; then   # Check if no changes
-    echo "$(pwd) Up-to-date"
-  elif [[ $LOCAL = $BASE ]]; then   # Check if needs to pull
-    echo "$(pwd) Repo need to pull"
-    # pullrepo
-  elif [[ $REMOTE = $BASE ]]; then  # Check if need to push
-    echo "$(pwd) Repo need to push"
-    # pushrepo
-  else                              # Repo diverted. Need to merge
-    printf "${RED} $(pwd) Repo diverged${NC}\n"
-  fi
+	if [[ $LOCAL = $REMOTE ]]; then   # Check if no changes
+		echo "$(pwd) Up-to-date"
+	elif [[ $LOCAL = $BASE ]]; then   # Check if needs to pull
+		echo "$(pwd) Repo need to pull"
+		# pullrepo
+	elif [[ $REMOTE = $BASE ]]; then  # Check if need to push
+		echo "$(pwd) Repo need to push"
+		# pushrepo
+	else                              # Repo diverted. Need to merge
+		printf "${RED} $(pwd) Repo diverged${NC}\n"
+	fi
 
-  if [[ -n ${CHANGES} ]]; then      # Check for uncommited changes
-    echo "$(pwd) Repo need to commit"
-  fi
+	if [[ -n ${CHANGES} ]]; then      # Check for uncommited changes
+		echo "$(pwd) Repo need to commit"
+	fi
 }
 
 # TODO:
 syncallrepo() {
-  CURRENT_DIR_SAVE=$(pwd)
-  cd ~/Documents/wiki && checkremotechanges
-  cd ~/Documents/wiki/wiki && checkremotechanges
-  cd ~/.config/nvim && checkremotechanges
-  cd ~/Projects/references && checkremotechanges
-  cd ~/.tmuxinator && checkremotechanges
-  dotupdate && \
-    CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
-    [[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && dotdist
+	CURRENT_DIR_SAVE=$(pwd)
+	cd ~/Documents/wiki && checkremotechanges
+	cd ~/Documents/wiki/wiki && checkremotechanges
+	cd ~/.config/nvim && checkremotechanges
+	cd ~/Projects/references && checkremotechanges
+	cd ~/.tmuxinator && checkremotechanges
+	dotupdate && \
+		CHANGE_STATUS=$(checkremotechanges) && echo ${CHANGE_STATUS} && \
+		[[ "${CHANGE_STATUS}" == *"Repo need to pull"* ]] && dotdist
 
-  printf "${GREEN}All repo synced${NC}\n"
-  cd ${CURRENT_DIR_SAVE}
+	printf "${GREEN}All repo synced${NC}\n"
+	cd ${CURRENT_DIR_SAVE}
 }
 
 # Web Servers
@@ -728,77 +727,77 @@ MY_ENV_FILE='/etc/profile.d/jdk_environment.sh'
 
 # Switch JDK version
 setjavaopenjdkhome() {
-  if [[ ! -e ${JDK_HOME} ]]; then
-    echo "'${JDK_HOME}' does not exist"
-    return 1
-  fi
+	if [[ ! -e ${JDK_HOME} ]]; then
+		echo "'${JDK_HOME}' does not exist"
+		return 1
+	fi
 
-  # remove active java from $PATH - https://unix.stackexchange.com/a/108876
-  export PATH=$(echo "$PATH" | sed -e "s,$JAVA_HOME/bin,,")
+	# remove active java from $PATH - https://unix.stackexchange.com/a/108876
+	export PATH=$(echo "$PATH" | sed -e "s,$JAVA_HOME/bin,,")
 
-  if [[ "$(echo $JDK_HOME | grep "java-8")" ]]; then
-    # For jdk 8
-    sudo update-alternatives --set java "${JDK_HOME}/jre/bin/java"
-  else
-    # For jdk 11 and higher
-    sudo update-alternatives --set java "${JDK_HOME}/bin/java"
-  fi
-  sudo update-alternatives --set javac "${JDK_HOME}/bin/javac"
+	if [[ "$(echo $JDK_HOME | grep "java-8")" ]]; then
+		# For jdk 8
+		sudo update-alternatives --set java "${JDK_HOME}/jre/bin/java"
+	else
+		# For jdk 11 and higher
+		sudo update-alternatives --set java "${JDK_HOME}/bin/java"
+	fi
+	sudo update-alternatives --set javac "${JDK_HOME}/bin/javac"
 
-  # Set JAVA_HOME AND JRE_HOME environment variables
-  if [[ ! -e ${MY_ENV_FILE} ]]; then
-    sudo touch ${MY_ENV_FILE}
-  fi
+	# Set JAVA_HOME AND JRE_HOME environment variables
+	if [[ ! -e ${MY_ENV_FILE} ]]; then
+		sudo touch ${MY_ENV_FILE}
+	fi
 
-  # Replace JAVA_HOME with $JDK_HOME path if exist, else append
-  if grep -q 'JAVA_HOME=' ${MY_ENV_FILE}; then
-    sudo sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}," ${MY_ENV_FILE}
-  else
-    echo "export JAVA_HOME=${JDK_HOME}" | sudo tee -a ${MY_ENV_FILE} > /dev/null
-  fi
+	# Replace JAVA_HOME with $JDK_HOME path if exist, else append
+	if grep -q 'JAVA_HOME=' ${MY_ENV_FILE}; then
+		sudo sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}," ${MY_ENV_FILE}
+	else
+		echo "export JAVA_HOME=${JDK_HOME}" | sudo tee -a ${MY_ENV_FILE} > /dev/null
+	fi
 
-  # Add $JAVA_HOME/bin to $PATH
-  if grep -q 'PATH=' ${MY_ENV_FILE}; then
-    sudo sed -i "s,PATH=.*,PATH=\$PATH:\$JAVA_HOME/bin," ${MY_ENV_FILE}
-  else
-    echo 'export PATH=$PATH:$JAVA_HOME/bin' | sudo tee -a ${MY_ENV_FILE} > /dev/null
-  fi
+	# Add $JAVA_HOME/bin to $PATH
+	if grep -q 'PATH=' ${MY_ENV_FILE}; then
+		sudo sed -i "s,PATH=.*,PATH=\$PATH:\$JAVA_HOME/bin," ${MY_ENV_FILE}
+	else
+		echo 'export PATH=$PATH:$JAVA_HOME/bin' | sudo tee -a ${MY_ENV_FILE} > /dev/null
+	fi
 
-  source ${MY_ENV_FILE}
+	source ${MY_ENV_FILE}
 }
 
 setjavaoraclejdkhome() {
-  if [[ ! -e ${JDK_HOME} ]]; then
-    echo "'${JDK_HOME}' does not exist"
-    return 1
-  fi
+	if [[ ! -e ${JDK_HOME} ]]; then
+		echo "'${JDK_HOME}' does not exist"
+		return 1
+	fi
 
-  # remove active java from $PATH - https://unix.stackexchange.com/a/108876
-  export PATH=$(echo "$PATH" | sed -e "s,:$JAVA_HOME/bin,,")
+	# remove active java from $PATH - https://unix.stackexchange.com/a/108876
+	export PATH=$(echo "$PATH" | sed -e "s,:$JAVA_HOME/bin,,")
 
-  sudo update-alternatives --set java "${JDK_HOME}/bin/java"
-  sudo update-alternatives --set javac "${JDK_HOME}/bin/javac"
+	sudo update-alternatives --set java "${JDK_HOME}/bin/java"
+	sudo update-alternatives --set javac "${JDK_HOME}/bin/javac"
 
-  # Set JAVA_HOME AND JRE_HOME environment variables
-  if [[ ! -e ${MY_ENV_FILE} ]]; then
-    sudo touch ${MY_ENV_FILE}
-  fi
+	# Set JAVA_HOME AND JRE_HOME environment variables
+	if [[ ! -e ${MY_ENV_FILE} ]]; then
+		sudo touch ${MY_ENV_FILE}
+	fi
 
-  # Replace JAVA_HOME with $JDK_HOME path if exist, else append
-  if grep -q 'JAVA_HOME=' ${MY_ENV_FILE}; then
-    sudo sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}," ${MY_ENV_FILE}
-  else
-    echo "export JAVA_HOME=${JDK_HOME}" | sudo tee -a ${MY_ENV_FILE} > /dev/null
-  fi
+	# Replace JAVA_HOME with $JDK_HOME path if exist, else append
+	if grep -q 'JAVA_HOME=' ${MY_ENV_FILE}; then
+		sudo sed -i "s,JAVA_HOME=.*,JAVA_HOME=${JDK_HOME}," ${MY_ENV_FILE}
+	else
+		echo "export JAVA_HOME=${JDK_HOME}" | sudo tee -a ${MY_ENV_FILE} > /dev/null
+	fi
 
-  # Add $JAVA_HOME/bin to $PATH
-  if grep -q 'PATH=' ${MY_ENV_FILE}; then
-    sudo sed -i "s,PATH=.*,PATH=\$PATH:\$JAVA_HOME/bin," ${MY_ENV_FILE}
-  else
-    echo 'export PATH=$PATH:$JAVA_HOME/bin' | sudo tee -a ${MY_ENV_FILE} > /dev/null
-  fi
+	# Add $JAVA_HOME/bin to $PATH
+	if grep -q 'PATH=' ${MY_ENV_FILE}; then
+		sudo sed -i "s,PATH=.*,PATH=\$PATH:\$JAVA_HOME/bin," ${MY_ENV_FILE}
+	else
+		echo 'export PATH=$PATH:$JAVA_HOME/bin' | sudo tee -a ${MY_ENV_FILE} > /dev/null
+	fi
 
-  source ${MY_ENV_FILE}
+	source ${MY_ENV_FILE}
 }
 
 alias openjdk8="export JDK_HOME=/usr/lib/jvm/java-8-openjdk-amd64 && setjavaopenjdkhome"
@@ -822,79 +821,79 @@ alias rmlock='find . -name ".~lock.*" && find . -name ".~lock.*" -delete'
 
 # WSL aliases
 if grep -i "microsoft" /proc/version &> /dev/null; then
-  # Directory Aliases
-  alias winhome="cd /mnt/c/Users/${WIN_USERNAME}"
-  alias windocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents"
-  alias wintrade="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive/Trading/Stocks"
-  alias windown="cd /mnt/c/Users/${WIN_USERNAME}/Downloads"
-  alias gdrv="cd /mnt/c/Users/${WIN_USERNAME}/Google Drive"
-  alias odrv="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive"
-  alias drop="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox"
-  alias dropd="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox/Dev"
-  alias winproj="cd /mnt/c/Users/${WIN_USERNAME}/Projects/"
-  alias winbin="cd /mnt/c/bin"
+	# Directory Aliases
+	alias winhome="cd /mnt/c/Users/${WIN_USERNAME}"
+	alias windocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents"
+	alias wintrade="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive/Trading/Stocks"
+	alias windown="cd /mnt/c/Users/${WIN_USERNAME}/Downloads"
+	alias gdrv="cd /mnt/c/Users/${WIN_USERNAME}/Google Drive"
+	alias odrv="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive"
+	alias drop="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox"
+	alias dropd="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox/Dev"
+	alias winproj="cd /mnt/c/Users/${WIN_USERNAME}/Projects/"
+	alias winbin="cd /mnt/c/bin"
 
-  # Secure files Aliases
-  alias secenter="cd /mnt/c/Users/${WIN_USERNAME}; cmd.exe /C Secure.bat; cd ./Secure"
-  alias seclock="cd /mnt/c/Users/${WIN_USERNAME}; cmd.exe /c Secure.bat"
-  alias sec="cd /mnt/c/Users/${WIN_USERNAME}/Secure"
-  alias secfiles="cd /mnt/c/Users/${WIN_USERNAME}/Secure"
-  alias secdocs="cd /mnt/c/Users/${WIN_USERNAME}/Secure/EDocs"
-  alias secpersonal="cd /mnt/c/Users/${WIN_USERNAME}/Secure/Personal"
-  alias secbrowse="cd /mnt/c/Users/${WIN_USERNAME}/Secure; explorer.exe .; cd -"
+	# Secure files Aliases
+	alias secenter="cd /mnt/c/Users/${WIN_USERNAME}; cmd.exe /C Secure.bat; cd ./Secure"
+	alias seclock="cd /mnt/c/Users/${WIN_USERNAME}; cmd.exe /c Secure.bat"
+	alias sec="cd /mnt/c/Users/${WIN_USERNAME}/Secure"
+	alias secfiles="cd /mnt/c/Users/${WIN_USERNAME}/Secure"
+	alias secdocs="cd /mnt/c/Users/${WIN_USERNAME}/Secure/EDocs"
+	alias secpersonal="cd /mnt/c/Users/${WIN_USERNAME}/Secure/Personal"
+	alias secbrowse="cd /mnt/c/Users/${WIN_USERNAME}/Secure; explorer.exe .; cd -"
 
-  # Running Windows executable
-  alias cmd='cmd.exe /C'
-  alias pows='powershell.exe /C'
-  alias explore='explorer.exe'
+	# Running Windows executable
+	alias cmd='cmd.exe /C'
+	alias pows='powershell.exe /C'
+	alias explore='explorer.exe'
 
-  # Windows installed browsers
-  alias ffox='firefox.exe'
-  alias gchrome='chrome.exe'
+	# Windows installed browsers
+	alias ffox='firefox.exe'
+	alias gchrome='chrome.exe'
 
-  # Yank currant path and convert to windows path
-  # Resources:
-  # Sed substitute uppercase lowercase: https://stackoverflow.com/questions/4569825/sed-one-liner-to-convert-all-uppercase-to-lowercase
-  # Printf: https://linuxconfig.org/bash-printf-syntax-basics-with-examples
-  # Access last returned value: https://askubuntu.com/questions/324423/how-to-access-the-last-return-value-in-bash
-  winpath() {
-    regex1='s/\//\\/g'
-    regex2='s/~/\\\\wsl$\\Ubuntu\\home\\marklcrns/g'
-    regex3='s/\\home/\\\\wsl$\\Ubuntu\\home/g'
-    regex4='s/^\\mnt\\(\w)/\U\1:/g'
+	# Yank currant path and convert to windows path
+	# Resources:
+	# Sed substitute uppercase lowercase: https://stackoverflow.com/questions/4569825/sed-one-liner-to-convert-all-uppercase-to-lowercase
+	# Printf: https://linuxconfig.org/bash-printf-syntax-basics-with-examples
+	# Access last returned value: https://askubuntu.com/questions/324423/how-to-access-the-last-return-value-in-bash
+	winpath() {
+		regex1='s/\//\\/g'
+		regex2='s/~/\\\\wsl$\\Ubuntu\\home\\marklcrns/g'
+		regex3='s/\\home/\\\\wsl$\\Ubuntu\\home/g'
+		regex4='s/^\\mnt\\(\w)/\U\1:/g'
 
-    output=$(pwd | sed -e "$regex1" -e "$regex2" -e "$regex3" -re "$regex4")
-    printf "%s" "$output"
-  }
+		output=$(pwd | sed -e "$regex1" -e "$regex2" -e "$regex3" -re "$regex4")
+		printf "%s" "$output"
+	}
 
-  # cd to Windows path string arg
-  # Resources:
-  # https://stackoverflow.com/questions/7131670/make-a-bash-alias-that-takes-a-parameter
-  cdwinpath() {
-    if [[ $# -eq 0 ]] ; then
-      printf "%s" "Missing Windows path string arg"
-    else
-      regex1='s/\\/\//g'
-      regex2='s/\(\w\):/\/mnt\/\L\1/g'
+	# cd to Windows path string arg
+	# Resources:
+	# https://stackoverflow.com/questions/7131670/make-a-bash-alias-that-takes-a-parameter
+	cdwinpath() {
+		if [[ $# -eq 0 ]] ; then
+			printf "%s" "Missing Windows path string arg"
+		else
+			regex1='s/\\/\//g'
+			regex2='s/\(\w\):/\/mnt\/\L\1/g'
 
-      output=$(printf "%s" "$1" | sed -e "$regex1" -e "$regex2")
-      cd "$output"
-    fi
-  }
+			output=$(printf "%s" "$1" | sed -e "$regex1" -e "$regex2")
+			cd "$output"
+		fi
+	}
 
-  # Yank and pasting Windows current working directory to system clipboard.
-  # Requires xclip.
-  alias wyp="winpath | xclip -selection clipboard && echo 'Current Windows path yanked to clipboard' || echo 'ERROR: Path not yanked!'"
-  alias wcdp="cdwinpath"
+	# Yank and pasting Windows current working directory to system clipboard.
+	# Requires xclip.
+	alias wyp="winpath | xclip -selection clipboard && echo 'Current Windows path yanked to clipboard' || echo 'ERROR: Path not yanked!'"
+	alias wcdp="cdwinpath"
 
-  # Nameserver workaround for WSL2
-  alias backupns='cat /etc/resolv.conf > ~/nameserver.txt'
-  alias setns='echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf'
-  alias restorens='cat ~/nameserver.txt | sudo tee /etc/resolv.conf'
-  alias printns='cat /etc/resolv.conf'
+	# Nameserver workaround for WSL2
+	alias backupns='cat /etc/resolv.conf > ~/nameserver.txt'
+	alias setns='echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf'
+	alias restorens='cat ~/nameserver.txt | sudo tee /etc/resolv.conf'
+	alias printns='cat /etc/resolv.conf'
 
-  # gtd shell script for WSL
-  alias on="gtd -pts"
+	# gtd shell script for WSL
+	alias on="gtd -pts"
 fi
 
 # Yank and pasting UNIX current working directory to system clipboard.
