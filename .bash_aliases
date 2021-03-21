@@ -834,18 +834,18 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
 	alias winbin="cd /mnt/c/bin"
 
 	# Secure files Aliases
-	alias secenter="cd /mnt/c/Users/${WIN_USERNAME}; cmd.exe /C Secure.bat; cd ./Secure"
-	alias seclock="cd /mnt/c/Users/${WIN_USERNAME}; cmd.exe /c Secure.bat"
-	alias sec="cd /mnt/c/Users/${WIN_USERNAME}/Secure"
-	alias secfiles="cd /mnt/c/Users/${WIN_USERNAME}/Secure"
-	alias secdocs="cd /mnt/c/Users/${WIN_USERNAME}/Secure/EDocs"
-	alias secpersonal="cd /mnt/c/Users/${WIN_USERNAME}/Secure/Personal"
-	alias secbrowse="cd /mnt/c/Users/${WIN_USERNAME}/Secure; explorer.exe .; cd -"
+	alias secenter="cd /mnt/c/Users/${WIN_USERNAME}/Documents; cmd.exe /C Secure.bat; cd ./Secure"
+	alias seclock="cd /mnt/c/Users/${WIN_USERNAME}/Documents; cmd.exe /c Secure.bat"
+	alias sec="cd /mnt/c/Users/${WIN_USERNAME}/Documents/Secure"
+	alias secfiles="cd /mnt/c/Users/${WIN_USERNAME}/Documents/Secure"
+	alias secdocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents/Secure/EDocs"
+	alias secpersonal="cd /mnt/c/Users/${WIN_USERNAME}/Documents/Secure/Personal"
+	alias secbrowse="cd /mnt/c/Users/${WIN_USERNAME}/Documents/Secure; explorer.exe .; cd -"
 
 	# Running Windows executable
 	alias cmd='cmd.exe /C'
 	alias pows='powershell.exe /C'
-	alias explore='explorer.exe'
+	alias exp='explorer.exe'
 
 	# Windows installed browsers
 	alias ffox='firefox.exe'
