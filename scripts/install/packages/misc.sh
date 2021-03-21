@@ -82,10 +82,10 @@ fi
 
 # R-Pandoc
 if command -v R; then
-  if curl_install "https://get.haskellstack.org/ | sh"; then
+  if curl_install "https://get.haskellstack.org/"; then
     apt_bulk_install "${APT_PACKAGES_TOOLS_PANDOC_DEPENDENCIES[@]}"
     if git_clone "https://github.com/cdupont/R-pandoc.git" "${DOWNLOADS_DIR}/R-pandoc"; then
-      cd "${DOWNLOADS_DIR}R-pandoc" && stack install
+      cd "${DOWNLOADS_DIR}/R-pandoc" && stack install
     fi
   fi
 fi
