@@ -129,6 +129,17 @@ if [[ "$(grep -i microsoft /proc/version)" ]]; then
 fi
 
 
+#################### Dotfiles ####################
+
+if git clone https://github.com/marklcrns/scripts $HOME/scripts; then
+  cd ~/.dotfiles
+  # Distribute all dotfiles from `~/.dotfiles` into `$HOME` directory
+  $HOME/scripts/tools/dotfiles/dotdist -VD -r .dotfilesrc . $HOME
+
+  # Source .profile
+  source ${HOME}/.profile
+fi
+
 ############### Text Editors ##################
 
 # Personal neovim config files
@@ -165,17 +176,6 @@ if git_clone "https://github.com/marklcrns/.task" "${HOME}/.task"; then
     [[ -e "${HOME}/.task/hooks/on-modify.timetracking" ]] && rm "${HOME}/.task/hooks/on-modify.timetracking"
     ln -s `which taskwarrior_time_tracking_hook` "${HOME}/.task/hooks/on-modify.timetracking"
   fi
-fi
-
-#################### Dotfiles ####################
-
-if git clone https://github.com/marklcrns/scripts $HOME/scripts; then
-  cd ~/.dotfiles
-  # Distribute all dotfiles from `~/.dotfiles` into `$HOME` directory
-  $HOME/scripts/tools/dotfiles/dotdist -VD -r .dotfilesrc . $HOME
-
-  # Source .profile
-  source ${HOME}/.profile
 fi
 
 # Credentials for taskwarrior, calendar.vim, and rclone cloud accounts

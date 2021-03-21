@@ -262,7 +262,7 @@ fi
 
 #################### Virtual Machine/Containers ####################
 
-VIRTUAL_MACHINE_PACKAGES="${PACKAGES}/virtual_machine.sh"
+# VIRTUAL_MACHINE_PACKAGES="${PACKAGES}/virtual_machine.sh"
 
 if [[ -f "${VIRTUAL_MACHINE_PACKAGES}" ]]; then
   source "${VIRTUAL_MACHINE_PACKAGES}"
@@ -282,7 +282,7 @@ fi
 
 #################### Desktop Apps ####################
 
-DESKTOP_APPS_PACKAGES="${PACKAGES}/desktop_apps.sh"
+# DESKTOP_APPS_PACKAGES="${PACKAGES}/desktop_apps.sh"
 
 if [[ -f "${DESKTOP_APPS_PACKAGES}" ]]; then
   source "${DESKTOP_APPS_PACKAGES}"

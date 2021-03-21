@@ -169,7 +169,7 @@ curl_install() {
       return 1
     fi
     # Execute installation
-    if eval "curl -sS ${from} -o ${to}"; then
+    if eval "curl -sSL ${from} -o ${to}"; then
       ok "Curl '${from}' -> '${to}' successful!"
       successful_packages="${successful_packages}\nCurl '${from}' -> '${to}' SUCCESSFUL"
       return 0
@@ -180,7 +180,7 @@ curl_install() {
     fi
   else
     # Execute installation
-    if eval "curl -sS ${from}"; then
+    if eval "curl -sSL ${from}"; then
       ok "Curl '${from}' successful!"
       successful_packages="${successful_packages}\nCurl '${from}' SUCCESSFUL"
       return 0
@@ -333,12 +333,13 @@ pip_install() {
   else
     which_pip="$(which "pip${pip_version}")"
   fi
-  # Check if package exists in pip repository
-  if ! eval "pip${pip_version} search ${package} &> /dev/null"; then
-    error "${package} package not found in pip repository"
-    failed_packages="${failed_packages}\nPip${pip_version} ${package} for '${which_pip}' FAILED. Package not found"
-    return 1
-  fi
+  # pip search temporarily disabled
+  # # Check if package exists in pip repository
+  # if ! eval "pip${pip_version} search ${package} &> /dev/null"; then
+  #   error "${package} package not found in pip repository"
+  #   failed_packages="${failed_packages}\nPip${pip_version} ${package} for '${which_pip}' FAILED. Package not found"
+  #   return 1
+  # fi
   # Check if already installed
   if eval "pip${pip_version} list | grep -F ${package} &> /dev/null"; then
     ok "Pip${pip_version} ${package} already installed"

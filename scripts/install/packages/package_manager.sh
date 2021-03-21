@@ -11,6 +11,14 @@ echolog
 
 # Install Node.js via nvm
 if curl_install "https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash"; then
+
+# source bashrc or zshrc
+  if [[ -n ${BASH_VERSION} ]]; then
+    source ~/.bashrc
+  elif [[ -n ${ZSH_VERSION} ]]; then
+    source ~/.zshrc
+  fi
+
   # Source nvm script
   source $NVM_DIR/nvm.sh
 

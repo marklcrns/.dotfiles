@@ -37,7 +37,7 @@ echolog
 
 # Python2 (Needs to go before python3 installation)
 if apt_install "python" && apt_install "python-dev"; then
-  curl_install "https://bootstrap.pypa.io/get-pip.py" "${DOWNLOADS_DIR}/get-pip.py"
+  curl_install "https://bootstrap.pypa.io/pip/2.7/get-pip.py" "${DOWNLOADS_DIR}/get-pip.py"
   sudo python2 ${DOWNLOADS_DIR}/get-pip.py
 fi
 

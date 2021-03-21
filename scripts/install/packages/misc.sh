@@ -40,7 +40,6 @@ APT_PACKAGES_TOOLS_PANDOC_DEPENDENCIES=(
 
 PIP3_PACKAGES_MISC=(
   "glances"
-  "thefuck"
 )
 
 echolog

@@ -9,7 +9,7 @@ if lsb_release -i | grep "Ubuntu" &> /dev/null; then
   if lsb_release -c | grep "focal" &> /dev/null; then
     echo "Installing packages for Ubuntu 20.04 Focal Fossa"
     if [[ -f "${SCRIPTDIR}/ubuntu_20.04.sh" ]]; then
-      ${SCRIPTDIR}/ubuntu_20.04.sh
+      ${SCRIPTDIR}/ubuntu_20.04.sh -D
     else
       error "${SCRIPTDIR}/ubuntu_20.04.sh not found"
     fi
@@ -20,7 +20,7 @@ elif lsb_release -i | grep "Raspbian" &> /dev/null; then
   if lsb_release -c | grep "buster" &> /dev/null; then
     echo "Installing packages for Raspbian buster"
     if [[ -f "${SCRIPTDIR}/raspbian_buster.sh" ]]; then
-      ${SCRIPTDIR}/raspbian_buster.sh
+      ${SCRIPTDIR}/raspbian_buster.sh -D
     else
       error "${SCRIPTDIR}/raspbian_buster.sh not found"
     fi
