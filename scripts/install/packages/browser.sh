@@ -2,12 +2,14 @@
 
 # Browser Packages
 
+
+APT_PACKAGES_BROWSER_APPLICATION=(
+  "firefox"
+)
+
 echolog
 echolog "${UL_NC}Installing Browser Packages${NC}"
 echolog
 
-# Google Chrome
-if wget "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"; then
-  sudo apt install ./google-chrome-stable_current_amd64.deb -y
-fi
+apt_bulk_install "${APT_PACKAGES_BROWSER_APPLICATION[@]}"
 
