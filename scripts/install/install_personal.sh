@@ -160,22 +160,11 @@ git_clone "https://github.com/marklcrns/.tmuxinator" "${HOME}/.tmuxinator"
 
 #################### Misc ####################
 
-# Taskwarrior & Timewarrior
-pip install --user git+git://github.com/tbabej/tasklib@develop
-pip3 install --user git+git://github.com/tbabej/tasklib@develop
 # Personal Timewarrior configuration files
 git_clone "https://github.com/marklcrns/.timewarrior" "${HOME}/.timewarrior"
 # Taskwarrior hooks
 if git_clone "https://github.com/marklcrns/.task" "${HOME}/.task"; then
-  # Create .taskrc symlink into $HOME
-  [[ -e "${HOME}/.taskrc" ]] && rm "${HOME}/.taskrc"
-  ln -s "${HOME}/.task/.taskrc" "${HOME}/.taskrc"
-
-  # Install taskwarrior_time_tracking_hook and symlink into ~/.task/hooks
-  if pip_install 3 "taskwarrior-time-tracking-hook"; then
-    [[ -e "${HOME}/.task/hooks/on-modify.timetracking" ]] && rm "${HOME}/.task/hooks/on-modify.timetracking"
-    ln -s `which taskwarrior_time_tracking_hook` "${HOME}/.task/hooks/on-modify.timetracking"
-  fi
+  cd ${HOME}/.task && ./scripts/install.sh
 fi
 
 # Credentials for taskwarrior, calendar.vim, and rclone cloud accounts
