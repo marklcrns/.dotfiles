@@ -7,3 +7,12 @@ if ! grep -i "microsoft" /proc/version &> /dev/null; then
   emulate zsh
 fi
 
+# Mimic Bash `fg N` command replaces Zsh `fg %N`.
+# Ref: https://stackoverflow.com/a/32614814
+fg() {
+  if [[ $# -eq 1 && $1 = - ]]; then
+    builtin fg %-
+  else
+    builtin fg %"$@"
+  fi
+}

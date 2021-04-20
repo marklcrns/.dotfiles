@@ -13,12 +13,11 @@ alias zshrc='nvim ~/.zshrc'
 alias nvimrc='cd ~/.config/nvim'
 alias myalias='nvim ~/.bash_aliases'
 
-# Completely remove apt package and its configuration
+# Apt package management
 alias aptpurge='sudo apt purge --auto-remove'
-# Clean apt packages
 alias aptclean='sudo apt clean; sudo apt autoclean; sudo apt autoremove'
-# Update all packages
 alias aptupdate='sudo apt update && sudo apt upgrade -y'
+alias aptinstall='sudo apt install -y'
 
 # Directory Aliases
 alias down='cd ~/Downloads'

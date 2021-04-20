@@ -12,8 +12,6 @@
   required = true
 [push]
   default = current
-[pull]
-  ff = only
 [credential]
   helper = store
 [core]
