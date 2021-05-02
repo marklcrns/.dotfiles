@@ -8,3 +8,4 @@ if [ -f "$HOME/.profile" ]; then
   . "$HOME/.bashrc"
 fi
 
+. "$HOME/.cargo/env"
