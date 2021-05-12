@@ -855,39 +855,53 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
   alias gchrome='chrome.exe'
 
   # Yank currant path and convert to windows path
-  # Resources:
-  # Sed substitute uppercase lowercase: https://stackoverflow.com/questions/4569825/sed-one-liner-to-convert-all-uppercase-to-lowercase
-  # Printf: https://linuxconfig.org/bash-printf-syntax-basics-with-examples
-  # Access last returned value: https://askubuntu.com/questions/324423/how-to-access-the-last-return-value-in-bash
   winpath() {
-    regex1='s/\//\\/g'
-    regex2='s/~/\\\\wsl$\\Ubuntu\\home\\marklcrns/g'
-    regex3='s/\\home/\\\\wsl$\\Ubuntu\\home/g'
-    regex4='s/^\\mnt\\(\w)/\U\1:/g'
-
-    output=$(pwd | sed -e "$regex1" -e "$regex2" -e "$regex3" -re "$regex4")
-    printf "%s" "$output"
+    printf "%s" "$(wslpath -w "`pwd`")"
   }
-
-  # cd to Windows path string arg
-  # Resources:
-  # https://stackoverflow.com/questions/7131670/make-a-bash-alias-that-takes-a-parameter
-  cdwinpath() {
-    if [[ $# -eq 0 ]] ; then
-      printf "%s" "Missing Windows path string arg"
-    else
-      regex1='s/\\/\//g'
-      regex2='s/\(\w\):/\/mnt\/\L\1/g'
-
-      output=$(printf "%s" "$1" | sed -e "$regex1" -e "$regex2")
-      cd "$output"
-    fi
-  }
-
-  # Yank and pasting Windows current working directory to system clipboard.
-  # Requires xclip.
+  # Yank current path and convert to Windows path. Requires xclip
   alias wyp="winpath | xclip -selection clipboard && echo 'Current Windows path yanked to clipboard' || echo 'ERROR: Path not yanked!'"
-  alias wcdp="cdwinpath"
+
+  # DEPRECATED: For reference only
+  # # cd to Windows path string literal
+  # cdwinpath() {
+  #   if [[ $# -eq 0 ]] ; then
+  #     echo "Missing Windows path string arg"
+  #     return
+  #   fi
+  # 
+  #   cd $(wslpath -ua "$*")
+  # }
+  # # Windows path only cd
+  # alias wcd="cdwinpath"
+
+  # Ref: https://gist.github.com/Gordin/67c9f5e995f4b625adf485eb791dea3e
+  # Use builtin cd if possible, else treat as Windows path.
+  cd() {
+    # Check if no arguments to make just typing cd<Enter> work
+    # Also check if the first argument starts with a - and let cd handle it
+    if [ $# -eq 0 ] || [[ $1 == -* ]]
+    then
+      builtin cd $@
+      return
+    fi
+    # If path exists, just cd into it
+    # (also, using $* and not $@ makes it so you don't have to escape spaces any more)
+    if [[ -d "$*" ]]
+    then
+      builtin cd "$*"
+      return
+    else
+      # Try converting from Windows to absolute Linux path and try again
+      WSLP=$(wslpath -ua "$*")
+      if [[ -d "$WSLP" ]]
+      then
+        builtin cd "$WSLP"
+        return
+      fi
+    fi
+    # If both options don't work, just let the builtin cd handle it
+    builtin cd "$*"
+  }
 
   # Nameserver workaround for WSL2
   alias backupns='cat /etc/resolv.conf > ~/nameserver.txt'
