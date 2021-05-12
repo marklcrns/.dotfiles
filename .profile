@@ -1,12 +1,12 @@
 # ~/.profile: executed by the command interpreter for login shells.
-# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
+# This file is not read by bash, if ~/.bash_profile or ~/.bash_login
 # exists.
 # see /usr/share/doc/bash/examples/startup-files for examples.
 # the files are located in the bash-doc package.
 
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
-#umask 022
+# umask 022
 
 # ==================== PATH VARIABLES ==================== #
 
@@ -111,16 +111,6 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
   export WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
 fi
 
-# thefuck https://github.com/nvbn/thefuck
-export THEFUCK_RULES='sudo:no_command'
-export THEFUCK_EXCLUDE_RULES='git_pull:git_push'
-export THEFUCK_REQUIRE_CONFIRMATION='true'
-export THEFUCK_WAIT_COMMAND=10
-export THEFUCK_NO_COLORS='false'
-export THEFUCK_PRIORITY='no_command=9999:apt_get=100'
-export THEFUCK_HISTORY_LIMIT='2000'
-export THEFUCK_NUM_CLOSE_MATCHES='5'
-
 # Ref: https://unix.stackexchange.com/a/139787
 # Ref: https://www.topbug.net/blog/2016/09/27/make-gnu-less-more-powerful/
 if [[ -e "/usr/share/source-highlight/src-hilite-lesspipe.sh" ]]; then
@@ -166,5 +156,3 @@ if [[ -n "$BASH_VERSION" ]]; then
     fortune
   fi
 fi
-
-. "$HOME/.cargo/env"
