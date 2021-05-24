@@ -60,11 +60,16 @@ touched() {
 alias rm='trash-put -h; echo "\n\nUse \\\rm to use the built-in rm command"; false'
 
 # Binaries
-alias open='xdg-open'
-alias ls='exa'
-alias l='exa -l'
-alias la='exa -la'
-alias fd='fdfind'
+if command -v xdg-open &> /dev/null; then
+  alias open='xdg-open'
+fi
+if command -v exa &> /dev/null; then
+  alias ls='exa'
+  alias la='exa -la'
+fi
+if command -v fdfind &> /dev/null; then
+  alias fd='fdfind'
+fi
 
 # xclip shortcuts
 # use pipe before the alias command to work with xclip

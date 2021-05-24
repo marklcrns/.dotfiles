@@ -8,4 +8,4 @@ if [ -f "$HOME/.profile" ]; then
   . "$HOME/.bashrc"
 fi
 
-. "$HOME/.cargo/env"
+if [ -e /home/markl/.nix-profile/etc/profile.d/nix.sh ]; then . /home/markl/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
