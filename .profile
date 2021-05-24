@@ -145,14 +145,14 @@ fi
 # Requires neofetch or screenfetch, figlet and/or lolcat
 # Ref: https://stackoverflow.com/a/677212
 if [[ -n "$BASH_VERSION" ]]; then
-  if type neofetch >/dev/null; then
+  if type neofetch &> /dev/null; then
     neofetch
-  elif type screenfetch >/dev/null; then
+  elif type screenfetch &> /dev/null; then
     screenfetch
   fi
-  if hash fortune 2>/dev/null && hash lolcat &>/dev/null; then
+  if hash fortune &> /dev/null && hash lolcat &>/dev/null; then
     fortune | lolcat
-  elif hash fortune 2>/dev/null; then
+  elif hash fortune &> /dev/null; then
     fortune
   fi
 fi
