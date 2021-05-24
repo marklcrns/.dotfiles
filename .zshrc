@@ -305,4 +305,6 @@ export NVM_DIR="$HOME/.nvm"
 
 [ -s "$HOME/.cargo/env" ] && \. "$HOME/.cargo/env"
 
-eval "$(direnv hook zsh)"
+if hash direnv &> /dev/null; then
+  eval "$(direnv hook bash)"
+fi
