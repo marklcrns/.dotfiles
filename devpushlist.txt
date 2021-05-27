@@ -4,3 +4,7 @@
 ~/Projects/Dev/my-repos/java/eclipse-workspace/java-game-of-generals;https://github.com/marklcrns/java-game-of-generals.git
 ~/Projects/Dev/my-repos/web-dev-projects/surprise;https://github.com/marklcrns//surprise
 ~/Projects/Dev/my-repos/web-dev-projects/100-Days-Webpage-Challenge;https://github.com/marklcrns//100-Days-Webpage-Challenge
+~/Projects/Dev/my-repos/makefiles;https://github.com/marklcrns/makefiles.git
+~/Projects/Dev/my-repos/marklcrns;https://github.com/marklcrns/marklcrns
+~/Projects/Dev/my-repos/java/eclipse-workspace/Generals-2.0;https://github.com/marklcrns/Generals-2.0
+~/Projects/Dev/my-repos/.secret;https://github.com/marklcrns/.secret
