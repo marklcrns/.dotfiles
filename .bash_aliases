@@ -909,9 +909,9 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
   }
 
   # Nameserver workaround for WSL2
-  alias backupns='cat /etc/resolv.conf > ~/nameserver.txt'
+  alias backupns='cat /etc/resolv.conf > /tmp/nameserver.bak'
   alias setns='echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf'
-  alias restorens='cat ~/nameserver.txt | sudo tee /etc/resolv.conf'
+  alias restorens='cat /tmp/nameserver.bak | sudo tee /etc/resolv.conf'
   alias printns='cat /etc/resolv.conf'
 
   # gtd shell script for WSL
