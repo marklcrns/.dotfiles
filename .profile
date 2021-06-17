@@ -33,6 +33,8 @@ fi
 
 # Cargo bin
 export PATH=$PATH:$HOME/.cargo/bin
+# Haskel-platform cabal bin
+export PATH=$PATH:$HOME/.cabal/bin
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH=$PATH:$HOME/.rvm/bin
 # Emacs bin
