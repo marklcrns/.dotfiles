@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export DOTFILES_BACKUP_DIR="${HOME}/.dotfiles.bak"
 export DOTFILES_BACKUP_LIMIT=10
@@ -20,6 +20,7 @@ DOTFILES_LIST=(
   "${DOTFILES_LOCAL}/.gitconfig.d/gitalias.txt"
   "${DOTFILES_LOCAL}/.gitignore_global"
   "${DOTFILES_LOCAL}/.gtd/"
+  "${DOTFILES_LOCAL}/.hushlogin"
   "${DOTFILES_LOCAL}/.mutt/.pass.gpg"
   "${DOTFILES_LOCAL}/.mutt/color.muttrc"
   "${DOTFILES_LOCAL}/.mutt/mailcap"
