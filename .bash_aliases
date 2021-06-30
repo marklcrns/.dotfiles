@@ -16,7 +16,7 @@ alias myalias='nvim ~/.bash_aliases'
 # Apt package management
 alias aptpurge='sudo apt purge --auto-remove'
 alias aptclean='sudo apt clean; sudo apt autoclean; sudo apt autoremove'
-alias aptupdate='sudo apt update && sudo apt upgrade -y'
+alias aptupdate='sudo apt update --fix-missing && sudo apt upgrade -y'
 alias aptinstall='sudo apt install -y'
 
 # Directory Aliases
