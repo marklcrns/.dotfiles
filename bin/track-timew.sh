@@ -1,15 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # save as ~/bin/track-timew.sh
 # note that ~/bin/ must be in PATH
+
+CACHE_PAUSED='/tmp/track-timew-paused.txt'
 
 resume ()
 {
   timew || timew continue
+  task $(cat "${CACHE_PAUSED}") start
 }
 
 pause ()
 {
   timew && timew stop
+  task +ACTIVE uuids > "${CACHE_PAUSED}"
+  task $(cat "${CACHE_PAUSED}") stop
 }
 
 clean ()
@@ -18,6 +23,7 @@ clean ()
   # could use perl to make this a lot simpler because perl does non
   # greedy too.
   for entry in $(timew summary :ids | grep -o '@.*' | sed -E 's/(^@[[:digit:]]+[[:space:]]+)/\1 |/' | sed -E 's/([[:digit:]]+:[[:digit:]]+:[[:digit:]]+ )/| \1/' | sed 's/|.*|//' | sed -E 's/[[:space:]]{2,}/ /' | cut -d ' ' -f 1,4 | grep -E '0:0[01]:..' | cut -d ' ' -f 1 | tr '\n' ' '); do timew delete "$entry"; done
+  rm -f "${CACHE_PAUSED}"
 }
 
 usage ()
@@ -65,3 +71,4 @@ do
       ;;
   esac
 done
+
