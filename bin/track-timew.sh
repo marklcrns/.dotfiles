@@ -8,6 +8,7 @@ resume ()
 {
   timew || timew continue
   task $(cat "${CACHE_PAUSED}") start
+  task status:pending +ACTIVE uuids > "${CACHE_PAUSED}"
 }
 
 pause ()
