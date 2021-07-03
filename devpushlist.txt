@@ -8,3 +8,10 @@
 ~/Projects/Dev/my-repos/marklcrns;https://github.com/marklcrns/marklcrns
 ~/Projects/Dev/my-repos/java/eclipse-workspace/Generals-2.0;https://github.com/marklcrns/Generals-2.0
 ~/Projects/Dev/my-repos/.secret;https://github.com/marklcrns/.secret
+~/Projects/Dev/my-repos/sieve-of-eratosthenes;https://github.com/marklcrns/sieve-of-eratosthenes
+~/Projects/Dev/my-repos/ez-install;https://github.com/marklcrns/ez-install
+~/Projects/Dev/my-repos/vim-smartq;https://github.com/marklcrns/vim-smartq
+~/Projects/Dev/my-repos/bash-common;https://github.com/marklcrns/bash-common
+~/Projects/Dev/forked-repos/cisc187-sp21-fire24;https://github.com/marklcrns/cisc187-sp21-fire24
+~/Projects/Dev/my-repos/discrete-math;https://github.com/marklcrns/discrete-math
+~/Projects/Dev/my-repos/BigInt;https://github.com/marklcrns/BigInt.git
