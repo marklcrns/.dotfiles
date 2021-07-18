@@ -47,6 +47,7 @@ DOTFILES_IGNORE_LIST=(
 if grep -i "microsoft" /proc/version &> /dev/null; then
   # Append to DOTFILES_LIST
   DOTFILES_LIST_WSL=(
+    "/usr/local/bin/cronstart.sh"
     "${DOTFILES_LOCAL}/.config/mimeapps.list"
     "${DOTFILES_LOCAL}/.local/share/applications/firefox-windows.desktop"
     "${DOTFILES_LOCAL}/.local/share/applications/google-chrome-windows.desktop"
