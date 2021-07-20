@@ -76,35 +76,33 @@ if [[ -e "/opt/gradle/latest" ]]; then
 fi
 
 # For WSL Configs ONLY
+# Pulse audio fix resources:
+#   Setting up pulseaudio in windows    - https://github.com/microsoft/WSL/issues/5816#issuecomment-682242686
+#   Reinstall pulseaudio in wsl2 ubuntu - https://unix.stackexchange.com/a/465734
+#   Setting proper host ip              - https://github.com/microsoft/WSL/issues/5816#issuecomment-760613983
+#   Remove pulse configs                - https://github.com/microsoft/WSL/issues/5816#issuecomment-755409888
+#   Editing /etc/pulse/default.pa       - https://github.com/microsoft/WSL/issues/5816#issuecomment-713702166
 if grep -i "microsoft" /proc/version &> /dev/null; then
-  export BROWSER="/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
-
   # Enable Vagrant access outisde of WSL.
   export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
   export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/mnt/c/vagrant"
 
-  HOST_IP=$(host `hostname` | grep 192. | tail -1 | awk '{ print $NF }' | tr -d '\r')
-  export DISPLAY=$HOST_IP:0.0
-  export PULSE_SERVER=tcp:$HOST_IP
+  # Works with windows pulse server
+  # HOST_IP=$(host `hostname` | grep 192. | tail -1 | awk '{ print $NF }' | tr -d '\r')
+  # Faster than using hostname
+  HOST_IP=$(ip route | awk '/^default/{print $3; exit}')
 
   # Workaround for WSL/WSL2 X Server not working
-  if grep -qE "(Microsoft|WSL)" /proc/version &>/dev/null; then
+  if grep -q "WSL2" /proc/version &>/dev/null; then
+    # WSL2
+    export DISPLAY=$HOST_IP:0.0
+    export PULSE_SERVER=tcp:$HOST_IP
+  else
     #WSL1
     export DISPLAY="${DISPLAY:-localhost:0.0}"
     export PULSE_SERVER="${PULSE_SERVER:-tcp:127.0.0.1}"
-  elif grep -q "microsoft" /proc/version &>/dev/null; then
-    # WSL2
-    HOST_IP=$(host `hostname` | grep 192. | tail -1 | awk '{ print $NF }' | tr -d '\r')
-    export DISPLAY=$HOST_IP:0.0
-    export PULSE_SERVER=tcp:$HOST_IP
-
-    # Pulse audio fix resources:
-    #   Setting up pulseaudio in windows    - https://github.com/microsoft/WSL/issues/5816#issuecomment-682242686
-    #   Reinstall pulseaudio in wsl2 ubuntu - https://unix.stackexchange.com/a/465734
-    #   Setting proper host ip              - https://github.com/microsoft/WSL/issues/5816#issuecomment-760613983
-    #   Remove pulse configs                - https://github.com/microsoft/WSL/issues/5816#issuecomment-755409888
-    #   Editing /etc/pulse/default.pa       - https://github.com/microsoft/WSL/issues/5816#issuecomment-713702166
   fi
+
   export NO_AT_BRIDGE=1
   export LIBGL_ALWAYS_INDIRECT=1
 
