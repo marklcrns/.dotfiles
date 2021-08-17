@@ -103,6 +103,7 @@ plugins=(
   vi-mode
   zsh-autosuggestions
   zsh-syntax-highlighting
+  fzf
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -196,7 +197,6 @@ fi
 # https://www.youtube.com/watch?v=qgg5jhi_els
 # https://remysharp.com/2018/08/23/cli-improved
 if [[ -f ~/.fzf.zsh ]]; then
-  source ~/.fzf.zsh
   # use ~~ as the trigger sequence instead of the default **
   #export FZF_COMPLETION_TRIGGER='~~'
 
