@@ -133,11 +133,23 @@ alias dotcma="cd ${DOTFILES} && git add . && git commit"
 alias dotp=dotfilespush
 
 # GitHub
+alias lfsstore="git-lfs-store"
 alias gh='open https://github.com'
 alias gist='open https://gist.github.com'
 alias insigcommit='git add . && git commit -m "Insignificant commit" && git push'
 alias commit='git commit'
 alias commitall='git add . && git commit'
+
+# Recursively store files over the given size in current dir into git-lfs
+# Default size = 100 (MiB)
+git-lfs-store() {
+  local size=${1:-100}
+  if ! [[ $size =~ '^[0-9]+$' ]] ; then
+    echo "ERROR: Invalid size" >&2; exit 1
+  fi
+
+  find * -type f -size +${size}M -exec git lfs track --filename '{}' +
+}
 
 browsegithubrepo() {
   open `git remote -v | grep fetch | awk '{print $2}' | sed 's/git@/http:\/\//' | sed 's/com:/com\//'`| head -n 1 &
