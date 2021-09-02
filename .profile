@@ -49,10 +49,6 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
   export PATH=$PATH:"/mnt/c/Program Files (x86)/Google/Chrome/Application"
 fi
 
-# ==================== RC FILES GLOBAL VARIABLES ==================== #
-
-export DOTFILESRC="${HOME}/.dotfilesrc"
-
 # ==================== OTHER GLOBAL VARIABLES ==================== #
 
 # Ripgrep global flags
@@ -121,6 +117,11 @@ if [[ -e "/usr/share/source-highlight/src-hilite-lesspipe.sh" ]]; then
 	export LESS=' -R '
 	alias lessh='LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s" less -M '
 fi
+
+# ==================== CUSTOM GLOBAL VARIABLES ==================== #
+
+export DOTFILESRC="${HOME}/.dotfilesrc"
+export WIKI_HOME="${HOME}/Documents/my-wiki"
 
 # ==================== SOURCING FILES ==================== #
 

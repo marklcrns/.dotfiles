@@ -15,3 +15,6 @@
 ~/Projects/Dev/forked-repos/cisc187-sp21-fire24;https://github.com/marklcrns/cisc187-sp21-fire24
 ~/Projects/Dev/my-repos/discrete-math;https://github.com/marklcrns/discrete-math
 ~/Projects/Dev/my-repos/BigInt;https://github.com/marklcrns/BigInt.git
+~/Projects/Dev/my-repos/web-dev-projects/real-estate;https://github.com/marklcrns/real-estate-webpage.git
+~/Projects/Dev/my-repos/marklcrns.github.io;https://github.com/marklcrns/marklcrns.github.io.git
+~/Projects/Dev/my-repos/nerd-font-patcher;https://github.com/marklcrns/nerd-font-patcher.git

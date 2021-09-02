@@ -104,7 +104,7 @@ alias fnr=find_and_replace
 alias wiki='nvim -c VimwikiUISelect'
 alias diary='nvim -c VimwikiDiaryIndex'
 alias dtoday='nvim -c "call DToday()"'
-alias wikidocs='cd ~/Documents/wiki'
+alias wikidocs="cd ${WIKI_HOME}"
 
 # Remove debug.log files recursively (will also list all debug files before removal)
 alias rmdebs='find . -name "debug.log" -type f; find . -name "debug.log" -type f -delete'
@@ -870,6 +870,10 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
   # Windows installed browsers
   alias ffox='firefox.exe'
   alias gchrome='chrome.exe'
+
+  if command -v wsl-open &> /dev/null; then
+    alias open='wsl-open'
+  fi
 
   # Yank currant path and convert to windows path
   winpath() {
