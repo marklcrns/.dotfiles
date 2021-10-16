@@ -164,7 +164,6 @@ export CONF_REPO_LIST="\
   ${DOTFILES}
   ${HOME}/.cache/vim/session/
   ${HOME}/.config/nvim/
-  ${HOME}/.lc/
   ${HOME}/.task/
   ${HOME}/.timewarrior/
   ${HOME}/.tmuxinator/
