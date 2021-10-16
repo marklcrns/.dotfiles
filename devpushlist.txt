@@ -18,3 +18,4 @@
 ~/Projects/Dev/my-repos/web-dev-projects/real-estate;https://github.com/marklcrns/real-estate-webpage.git
 ~/Projects/Dev/my-repos/marklcrns.github.io;https://github.com/marklcrns/marklcrns.github.io.git
 ~/Projects/Dev/my-repos/nerd-font-patcher;https://github.com/marklcrns/nerd-font-patcher.git
+~/Projects/Dev/my-repos/ez-install/common;https://github.com/marklcrns/common
