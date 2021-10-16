@@ -247,6 +247,7 @@ git_clone() {
     error "Missing git repo link"
     return 1
   fi
+
   # If output/destination file is given, else use regular curl
   if [[ -n "${to}" ]]; then
     # Check destination directory validity
@@ -333,6 +334,7 @@ pip_install() {
   else
     which_pip="$(which "pip${pip_version}")"
   fi
+
   # pip search temporarily disabled
   # # Check if package exists in pip repository
   # if ! eval "pip${pip_version} search ${package} &> /dev/null"; then
@@ -340,6 +342,7 @@ pip_install() {
   #   failed_packages="${failed_packages}\nPip${pip_version} ${package} for '${which_pip}' FAILED. Package not found"
   #   return 1
   # fi
+
   # Check if already installed
   if eval "pip${pip_version} list | grep -F ${package} &> /dev/null"; then
     ok "Pip${pip_version} ${package} already installed"

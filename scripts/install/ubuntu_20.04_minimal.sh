@@ -160,6 +160,16 @@ else
   error "${ESSENTIAL_PACKAGES} not found"
 fi
 
+#################### Languages ####################
+
+LANGUAGE_PACKAGES="${PACKAGES}/language.sh"
+
+if [[ -f "${LANGUAGE_PACKAGES}" ]]; then
+  source "${LANGUAGE_PACKAGES}"
+else
+  error "${LANGUAGE_PACKAGES} not found"
+fi
+
 #################### Package Managers ####################
 
 PACKAGE_MANAGER_PACKAGES="${PACKAGES}/package_manager.sh"

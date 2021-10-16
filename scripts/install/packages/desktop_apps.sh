@@ -2,7 +2,6 @@
 
 APT_PACKAGES_DESKTOP_APPLICATION=(
   "libreoffice"
-  "flameshot"
   "gimp"
 )
 
@@ -12,7 +11,7 @@ echolog
 
 apt_bulk_install ${APT_PACKAGES_DESKTOP_APPLICATION[@]}
 
-# Peek
+Peek
 if sudo add-apt-repository ppa:peek-developers/stable -y; then
   apt_install peek
 fi

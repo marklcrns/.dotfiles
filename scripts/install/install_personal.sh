@@ -168,7 +168,7 @@ if git_clone "https://github.com/marklcrns/.task" "${HOME}/.task"; then
 fi
 
 # Credentials for taskwarrior, calendar.vim, and rclone cloud accounts
-if git clone https://github.com/marklcrns/.secret $home/.secret; then
+if git clone https://github.com/marklcrns/.secret $HOME/.secret; then
   cd ~/.secret
   ./setup.sh
 fi

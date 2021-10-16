@@ -31,7 +31,55 @@ fi
 
 ##################################################### SCRIPT MAIN EXECUTIONS ###
 
+# Confirmation
+if [[ -z "${SKIP_CONFIRM}" ]]; then
+  log "Do you wish to continue? (Y/y): \n" 1
+  ${SCRIPTDIR}/../confirm "Do you wish to continue? (Y/y): "
+  if [[ "${?}" -eq 1 ]]; then
+    abort "${SCRIPTPATH}: Aborted."
+  elif [[ "${?}" -eq 2 ]]; then
+    error "${SCRIPTPATH}: Unsupported shell"
+  fi
+fi
+
+DOWNLOADS_DIR="${HOME}/Downloads"
+PACKAGES="${SCRIPTDIR}/packages"
+
+[[ ! -d "${HOME}/Projects" ]] && mkdir -p "${HOME}/Projects"
+[[ ! -d "${HOME}/Downloads" ]] && mkdir -p "${DOWNLOADS_DIR}"
+
+cd ${DOWNLOADS_DIR}
+
+successful_packages=""
+failed_packages=""
+skipped_packages=""
+
+# Internet connection issue on apt update workaround for WSL2
+if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  cat /etc/resolv.conf > ~/nameserver.txt
+  echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+fi
+
+# Apt update and upgrade
+if ! (sudo apt update && sudo apt upgrade -y); then
+  error "Apt update and upgrade failed" 1
+fi
+
+# restore nameserver
+if [[ "$(grep -i microsoft /proc/version)" ]]; then
+  cat ~/nameserver.txt | sudo tee /etc/resolv.conf
+fi
+
+
 # START TEST COMMANDS HERE
+
+MISC_PACKAGES="${PACKAGES}/misc.sh"
+
+if [[ -f "${MISC_PACKAGES}" ]]; then
+  source "${MISC_PACKAGES}"
+else
+  error "${MISC_PACKAGES} not found"
+fi
 
 #################################################################### WRAP UP ###
 

@@ -100,3 +100,12 @@ if command -v cargo; then
   fi
 fi
 
+# Neuron
+# Ref: https://neuron.zettel.page/install
+if curl_install "https://nixos.org/nix/install | sh"; then
+  source $HOME/.nix-profile/etc/profile.d/nix.sh
+  nix-env -iA cachix -f https://cachix.org/api/v1/install
+  cachix use srid
+  nix-env -if https://github.com/srid/neuron/archive/master.tar.gz
+fi
+

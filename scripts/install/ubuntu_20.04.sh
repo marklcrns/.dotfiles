@@ -282,7 +282,7 @@ fi
 
 #################### Desktop Apps ####################
 
-# DESKTOP_APPS_PACKAGES="${PACKAGES}/desktop_apps.sh"
+DESKTOP_APPS_PACKAGES="${PACKAGES}/desktop_apps.sh"
 
 if [[ -f "${DESKTOP_APPS_PACKAGES}" ]]; then
   source "${DESKTOP_APPS_PACKAGES}"
