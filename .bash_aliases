@@ -111,6 +111,29 @@ alias rmdebs='find . -name "debug.log" -type f; find . -name "debug.log" -type f
 # Remove .log files recursively (will also list all .log files before removal)
 alias rmlogs='find . -name "*.log" -type f; find . -name "*.log" -type f -delete'
 
+# Use https://github.com/marklcrns/scripts/blob/master/tools/compressors/shrinkpdf.sh
+alias spdf="shrinkpdf"
+
+shrinkpdf() {
+  if [[ -n "${1}" ]]; then
+    local dir="${1}"
+    shift 1
+  else
+    echo "No directory provided!"
+    return 1
+  fi
+
+  if [[ -n "${2}" ]]; then
+    local name="${2}"
+    shift 1
+  else
+    local name="*.pdf"
+  fi
+
+  local flags=("${@}")
+  find ${dir} ${flags[@]} -name "${name}" -type f -exec shrinkpdf.sh {} {}.comp \; -exec mv {}.comp {} \;
+}
+
 # Update dotfiles backup repository
 DOTFILES="${HOME}/.dotfiles"
 
