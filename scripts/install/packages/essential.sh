@@ -6,6 +6,7 @@ APT_PACKAGES_ESSENTIAL=(
   "build-essential"
   "libssl-dev"
   "libffi-dev"
+  "cmake"
   "curl"
   "wget"
   "zip"
