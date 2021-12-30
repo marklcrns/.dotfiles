@@ -15,6 +15,8 @@ DOTFILES_LIST=(
   "${DOTFILES_LOCAL}/.ctags"
   "${DOTFILES_LOCAL}/.ctags.d/"
   "${DOTFILES_LOCAL}/.dotfilesrc"
+  "${DOTFILES_LOCAL}/.ez-install.d/"
+  "${DOTFILES_LOCAL}/.ez-installrc"
   "${DOTFILES_LOCAL}/.gdbinit"
   "${DOTFILES_LOCAL}/.gitconfig"
   "${DOTFILES_LOCAL}/.gitconfig.d/gitalias.txt"

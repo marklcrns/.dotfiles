@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+LOCAL_PACKAGE_ROOT_DIR="${HOME}/.ez-install.d/packages"
+

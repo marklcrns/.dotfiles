@@ -300,6 +300,8 @@ PROMPT="$addprompt $PROMPT"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+export EZ_INSTALL_HOME="${HOME}/Projects/Dev/my-repos/ez-install"
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
@@ -308,3 +310,4 @@ export NVM_DIR="$HOME/.nvm"
 if hash direnv &> /dev/null; then
   eval "$(direnv hook bash)"
 fi
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
