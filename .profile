@@ -67,7 +67,7 @@ export TLDR_CODE='red'
 export TLDR_PARAM='blue'
 
 # ez-install
-export EZ_INSTALL_HOME='~/.ez-install'
+export EZ_INSTALL_HOME="${HOME}/.ez-install"
 
 if [[ -e "/opt/gradle/latest" ]]; then
   export GRADLE_HOME=/opt/gradle/latest
