@@ -184,6 +184,9 @@ if [[ -f ~/.fzf.bash ]]; then
 
   # alt-c options will open preview window for tree
   export FZF_ALT_C_OPTS="--preview 'tree -c {} | head -200'"
+
+  # required for zsh fzf plugin
+  export FZF_BASE="$HOME/.fzf"
 fi
 
 [[ ! -f /usr/share/autojump/autojump.sh ]] || \

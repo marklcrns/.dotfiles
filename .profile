@@ -66,8 +66,8 @@ export TLDR_DESCRIPTION='green'
 export TLDR_CODE='red'
 export TLDR_PARAM='blue'
 
-# required for zsh fzf plugin
-export FZF_BASE="$HOME/.fzf"
+# ez-install
+export EZ_INSTALL_HOME='~/.ez-install'
 
 if [[ -e "/opt/gradle/latest" ]]; then
   export GRADLE_HOME=/opt/gradle/latest

@@ -251,6 +251,9 @@ if [[ -f ~/.fzf.zsh ]]; then
 
   # alt-c options will open preview window for tree
   export FZF_ALT_C_OPTS="--preview 'tree -c {} | head -200'"
+
+  # required for zsh fzf plugin
+  export FZF_BASE="$HOME/.fzf"
 fi
 
 [[ ! -f /usr/share/autojump/autojump.zsh ]] || \
@@ -299,8 +302,6 @@ PROMPT="$addprompt $PROMPT"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-export EZ_INSTALL_HOME="${HOME}/Projects/Dev/my-repos/ez-install"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
