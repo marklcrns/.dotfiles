@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ez -v \
+ez -vy \
   'build-essential#root' \
   'libffi-dev#root' \
   'libssl-dev#root' \
