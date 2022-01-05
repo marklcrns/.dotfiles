@@ -15,9 +15,9 @@ ez -v \
   'net-tools#root' \
   'shc#root' \
   'gcc#root' \
-  'python2-dev' \
-  'python3-dev' \
-  'python3-pip' \
+  'python2-dev#root' \
+  'python3-dev#root' \
+  'python3-pip#root' \
   'wheel.pip3#nodep' \
   'pipenv.pip3#nodep' \
   'virtualenv.pip3#nodep' \
