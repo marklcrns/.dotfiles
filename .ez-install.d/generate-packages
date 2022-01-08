@@ -68,7 +68,7 @@ function _main() {
     "-m npm -d nodejs browser-sync"
     "-m npm -d nodejs gulp-cli"
     "yarn"
-    "-m curl -n nvm -e -- https://raw.githubusercontent.com/creationix/nvm/master/install.sh"
+    "-m curl -n nvm -e -o '~/.nvm' -- https://raw.githubusercontent.com/creationix/nvm/master/install.sh"
     "-m local -c node nodejs"
     "-m curl -n cargo -e -- https://sh.rustup.rs"
   )
