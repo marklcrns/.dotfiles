@@ -216,7 +216,7 @@ function _main() {
   )
 
   local template_args=
-  $VERBOSE && template_args+="--verbose "
+  ! $VERBOSE && template_args+="--quiet "
   $DEBUG && template_args+="--debug "
 
   for package in "${packages[@]}"; do

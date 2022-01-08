@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ez -vy \
+ez -y \
   'build-essential#root' \
   'libffi-dev#root' \
   'libssl-dev#root' \
@@ -60,7 +60,7 @@ ez -vy \
   "neofetch#root" \
   "htop#root" \
   "neomutt#root" \
-  "rclone" \
+  "rclone#root" \
   "fzf" \
   "firefox#root" \
   "docker-stable#root" \
