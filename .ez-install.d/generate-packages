@@ -129,7 +129,7 @@ function _main() {
     "htop"
     "neomutt"
     "-m curl -n rclone -e -S https://rclone.org/install.sh"
-    "-m git -a '--depth=1' -n fzf -o '~/fzf' 'https://github.com/junegunn/fzf.git'"
+    "-m git -a '--depth=1' -n fzf -o '~/.fzf' 'https://github.com/junegunn/fzf.git'"
   )
 
   local -a _browser=(
