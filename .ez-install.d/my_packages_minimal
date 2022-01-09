@@ -22,7 +22,6 @@ ez -y \
   'pipenv.pip3#nodep' \
   'virtualenv.pip3#nodep' \
   'Send2Trash.pip3#nodep' \
-  'trash-cli.pip3#nodep' \
   'nvm' \
   'nodejs' \
   'zsh#root' \
@@ -60,6 +59,7 @@ ez -y \
   "neofetch#root" \
   "htop#root" \
   "neomutt#root" \
+  'trash-cli#root' \
   "rclone#root" \
   "fzf" \
   "firefox#root" \
