@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# 'my-neovim-rc' Post Installation
+
+source "${EZ_INSTALL_HOME}/install/init.sh"
+
+function _main() {
+  local res=0
+  cd ~/.config/nvim && make
+  res=$?
+
+  if [[ $res -eq 0 ]]; then
+    git_clone -a "--depth=1" -o "~/.config/nvim/Ultisnips" -f true -- "https://github.com/marklcrns/ultisnips-snippets"
+    res=$?
+  fi
+
+  return $res
+}
+
+res=0
+_main "${@}"
+res=$?
+
+return $res
+# Sourced by `pac-install()`, DO NOT USE `exit`. USE `return` INSTEAD

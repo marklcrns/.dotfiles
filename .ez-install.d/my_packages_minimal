@@ -22,6 +22,7 @@ ez -y \
   'pipenv.pip3#nodep' \
   'virtualenv.pip3#nodep' \
   'Send2Trash.pip3#nodep' \
+  'yarn' \
   'nvm' \
   'nodejs' \
   'zsh#root' \

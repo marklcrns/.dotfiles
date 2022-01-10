@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# 'my-taskwarrior-rc' Post Installation
+
+source "${EZ_INSTALL_HOME}/install/init.sh"
+
+function _main() {
+  cd ~/.task && ./scripts/install.sh
+  return $?
+}
+
+res=0
+_main "${@}"
+res=$?
+
+return $res
+# Sourced by `pac-install()`, DO NOT USE `exit`. USE `return` INSTEAD
