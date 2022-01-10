@@ -19,7 +19,7 @@ source "${EZ_INSTALL_HOME}/install/init.sh"
 
 function _main() {
   # Neovim
-  git_clone -a "--depth=1" -o "~/.config/nvim" -f true -- "https://github.com/marklcrns/nvim-config"
+  git_clone -a "--recurse-submodules --depth=1" -o "~/.config/nvim" -f true -- "https://github.com/marklcrns/nvim-config"
   return $?
 }
 
