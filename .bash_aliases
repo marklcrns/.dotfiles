@@ -179,25 +179,6 @@ browsegithubrepo() {
 }
 alias openrepo=browsegithubrepo
 
-# Resources:
-# Check repo existing files changes: https://stackoverflow.com/questions/5143795/how-can-i-check-in-a-bash-script-if-my-local-git-repository-has-changes
-# Check repo for all repo changes: https://stackoverflow.com/a/24775215/11850077
-# Check if in git repo: https://stackoverflow.com/questions/2180270/check-if-current-directory-is-a-git-repository
-export CONF_REPO_LIST="\
-  ${DOTFILES}
-  ${HOME}/.cache/vim/session/
-  ${HOME}/.config/nvim/
-  ${HOME}/.task/
-  ${HOME}/.timewarrior/
-  ${HOME}/.tmuxinator/
-  ${HOME}/Documents/wiki/
-  ${HOME}/scripts/
-"
-
-printallconfrepo() {
-  echo ${CONF_REPO_LIST}
-}
-
 pushrepo() {
   # Check if in git repo
   [[ ! -d ".git" ]] && echo "$(pwd) not a git repo root." && return 1
@@ -258,16 +239,6 @@ statusrepo() {
     echo "No changes detected in $(pwd)."
   fi
 }
-
-# NOTE: Aliases with '\n' must be string literal, while double quoting all
-# in-line variable references  to read all string characters, otherwise will be
-# truncated at the '\n'.
-alias gprintconf='echo "${CONF_REPO_LIST}"'
-alias gpullconf='gbulk -PV -l "${CONF_REPO_LIST}"'
-alias gfpullconf='gbulk -fPV -l "${CONF_REPO_LIST}"'
-alias gpushconf='gbulk -pV -l "${CONF_REPO_LIST}"'
-alias gfpushconf='gbulk -fpV -l "${CONF_REPO_LIST}"'
-alias gstatusconf='gbulk -sV -l "${CONF_REPO_LIST}"'
 
 # Resources:
 # Find: https://stackoverflow.com/a/15736463
