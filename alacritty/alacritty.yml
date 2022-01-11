@@ -5,8 +5,8 @@
 shell:
  program: "C:\\Windows\\System32\\wsl.exe"
 
+# Colors (Tango)
 colors:
-  # Default colors
   primary:
     background: "#1e2127"
     # background: "#2E3440"
@@ -14,25 +14,25 @@ colors:
 
   # Normal colors
   normal:
-    black: "#3B4252"
-    red: "#BF616A"
-    green: "#A3BE8C"
-    yellow: "#EBCB8B"
-    blue: "#81A1C1"
-    magenta: "#B48EAD"
-    cyan: "#88C0D0"
-    white: "#abb2bf"
+    black:   '#2e3436'
+    red:     '#cc0000'
+    green:   '#73d216'
+    yellow:  '#edd400'
+    blue:    '#3465a4'
+    magenta: '#75507b'
+    cyan:    '#06989a'
+    white:   '#d3d7cf'
 
   # Bright colors
   bright:
-    black: "#5c6370"
-    red: "#e06c75"
-    green: "#98c379"
-    yellow: "#d19a66"
-    blue: "#61afef"
-    magenta: "#c678dd"
-    cyan: "#56b6c2"
-    white: "#ECEFF4"
+    black:   '#2e3436'
+    red:     '#ef2929'
+    green:   '#8ae234'
+    yellow:  '#fce94f'
+    blue:    '#729fcf'
+    magenta: '#ad7fa8'
+    cyan:    '#34e2e2'
+    white:   '#eeeeec'
 
 # Visual Bell
 #
