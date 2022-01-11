@@ -3,37 +3,37 @@
 set -o pipefail
 set -o nounset
 
-VERBOSE=true
-DEBUG=true
+DEBUG=false
 
 function _main() {
   local -a _essentials=(
     "build-essential"
     "libffi-dev"
     "libssl-dev"
-    "cmake"
-    "curl"
-    "wget"
-    "zip"
-    "unzip"
-    "unar"
-    "git"
-    "-d git git-lfs"
-    "gnupg2"
     "net-tools"
-    "shc"
-    "gcc"
+    "-c cmake cmake"
+    "-c curl curl"
+    "-c wget wget"
+    "-c zip zip"
+    "-c unzip unzip"
+    "-c unar unar"
+    "-c git git"
+    "-d git -c git-lfs git-lfs"
+    "-c gpg gnupg"
+    "-c gpg2 gnupg2"
+    "-c shc shc"
+    "-c gcc gcc"
   )
 
   local -a _languages=(
     # Python
-    "python"
-    "python2"
-    "python2-dev"
-    "python3"
-    "python3-dev"
-    "python3-pip"
     "python3-venv"
+    "-c python python"
+    "-c python2 python2"
+    "-c python2 python2-dev"
+    "-c python3 python3"
+    "-c python3 python3-dev"
+    "-c pip3 python3-pip"
     # Java
     "default-jre"
     "default-jdk"
@@ -43,58 +43,60 @@ function _main() {
     "openjdk-11-jre"
     "openjdk-13-jdk"
     "openjdk-13-jre"
-    "maven"
+    "-c mvn maven"
     # R
-    "r-base"
+    "-c R r-base"
   )
 
   local -a _package_manager=(
-    "-m npm -d nodejs browser-sync"
-    "-m npm -d nodejs gulp-cli"
+    "-m npm -d nodejs -c browser-sync browser-sync"
+    "-m npm -d nodejs -c gulp gulp-cli"
     "yarn"
-    "-m curl -n nvm -e -o '~/.nvm' -- https://raw.githubusercontent.com/creationix/nvm/master/install.sh"
+    "-m curl -n nvm -e -o '~/.nvm' -c nvm -- https://raw.githubusercontent.com/creationix/nvm/master/install.sh"
     "-m local -c node nodejs"
-    "-m curl -n cargo -e -- https://sh.rustup.rs"
+    "-m curl -n cargo -e -c cargo -- https://sh.rustup.rs"
+    "-m curl -n nix -e -c nix -- https://nixos.org/nix/install"
   )
 
   local -a _shell=(
     "zsh"
-    "-m curl -d zsh -n oh-my-zsh -e https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
-    "-m git -a '--depth=1' -d oh-my-zsh -n zsh-autosuggestions -o '\${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions' 'https://github.com/zsh-users/zsh-autosuggestions'"
-    "-m git -a '--depth=1' -d oh-my-zsh -n zsh-syntax-highlighting -o '\${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting' 'https://github.com/zsh-users/zsh-syntax-highlighting.git'"
-    "-m git -a '--depth=1' -d oh-my-zsh -n powerlevel10k -o '~/.oh-my-zsh/themes/powerlevel10k' 'https://github.com/romkatv/powerlevel10k.git'"
+    "-m curl -d zsh -n oh-my-zsh -e -- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+    "-m git -a '--depth=1' -d oh-my-zsh -n zsh-autosuggestions -o '\${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions' -- 'https://github.com/zsh-users/zsh-autosuggestions'"
+    "-m git -a '--depth=1' -d oh-my-zsh -n zsh-syntax-highlighting -o '\${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting' -- 'https://github.com/zsh-users/zsh-syntax-highlighting.git'"
+    "-m git -a '--depth=1' -d oh-my-zsh -n powerlevel10k -o '~/.oh-my-zsh/themes/powerlevel10k' -- 'https://github.com/romkatv/powerlevel10k.git'"
   )
 
   local -a _session_manager=(
-    "tmux"
-    "tmuxinator"
-    "gawk"
-    "urlview"
-    "-m pip -d python spotify-cli-linux"
-    "-m pip2 -d python2 spotify-cli-linux"
-    "-m pip3 -d python3 spotify-cli-linux"
+    "-c tmux tmux"
+    "-c tmuxinator tmuxinator"
+    "-c gawk gawk"
+    "-c urlview urlview"
+    "-m pip -d python -c spotifycli spotify-cli-linux"
+    "-m pip2 -d python2 -c spotifycli spotify-cli-linux"
+    "-m pip3 -d python3 -c spotifycli spotify-cli-linux"
     "-m git -a '--depth=1' -d tmux -n tpm -o '~/.tmux/plugins/tpm' 'https://github.com/tmux-plugins/tpm'"
   )
 
   local -a _file_manager=(
-    "ranger"
+    "-c ranger ranger"
     "-m git -a '--depth=1' -n ranger_devicons -o '~/.config/ranger/plugins/ranger_devicons' 'https://github.com/alexanderjeurissen/ranger_devicons'"
     "caca-utils"
-    "highlight"
-    "atool"
-    "w3m"
+    "-c highlight highlight"
+    "-c atool atool"
+    "-c w3m w3m"
     "w3m-img"
-    "zathura"
-    "xdotool"
+    "-c zathura zathura"
+    "-c xdotool xdotool"
     "poppler-utils"
-    "mediainfo"
-    "mupdf"
+    "-c mediainfo mediainfo"
+    "-c mupdf mupdf"
     "mupdf-tools"
   )
 
   local -a _text_editor=(
+    "-c nvim neovim"
     "-m apt-add -n neovim-unstable ppa:neovim-ppa/unstable"
-    "-m apt -d neovim-unstable.apt-add -c nvim -n neovim-unstable neovim"
+    "-m apt -d neovim-unstable.apt-add -n neovim-unstable -c nvim neovim"
     "-m npm -d nodejs,neovim neovim"
     "-m npm -d nodejs eslint"
     "-m npm -d nodejs stylelint"
@@ -102,60 +104,59 @@ function _main() {
   )
 
   local -a _tools=(
-    "tree"
-    "xclip"
-    "xdg-utils"
-    "fd-find"
-    "mlocate"
-    "autojump"
-    "ripgrep"
-    "neofetch"
-    "htop"
-    "neomutt"
-    "trash-cli"
-    "taskwarrior"
-    "timewarrior"
-    "-m git -a '--recursive -b stable' -c task -n 'taskwarrior' 'https://github.com/GothenburgBitFactory/taskwarrior'"
-    "-m git -a '--recursive' -c task -c timew -n 'timewarrior' 'https://github.com/GothenburgBitFactory/timewarrior'"
-    "-m curl -n rclone -e -S https://rclone.org/install.sh"
-    "-m git -a '--depth=1' -n fzf -o '~/.fzf' 'https://github.com/junegunn/fzf.git'"
+    "-c tree tree"
+    "-c xclip xclip"
+    "-c xdg-open xdg-utils"
+    "-c fd fd-find"
+    "-c mlocate mlocate"
+    "-c autojump autojump"
+    "-c rg ripgrep"
+    "-c neofetch neofetch"
+    "-c htop htop"
+    "-c neomutt neomutt"
+    "-c trash-put trash-cli"
+    "-c task taskwarrior"
+    "-c timew timewarrior"
+    "-m git -a '--recursive -b stable' -n 'taskwarrior' -c task -- 'https://github.com/GothenburgBitFactory/taskwarrior'"
+    "-m git -a '--recursive' -c task -n 'timewarrior' -c timew -- 'https://github.com/GothenburgBitFactory/timewarrior'"
+    "-m curl -n rclone -e -- https://rclone.org/install.sh"
+    "-m git -a '--depth=1' -n fzf -o '~/.fzf' -c fzf -- 'https://github.com/junegunn/fzf.git'"
     # Python packages
     "-m pip -d python wheel"
-    "-m pip -d python pipenv"
-    "-m pip -d python virtualenv"
-    "-m pip -d python Send2Trash"
-    "-m pip -d python trash-cli"
+    "-m pip -d python -c pipenv pipenv"
+    "-m pip -d python -c virtualenv virtualenv"
+    "-m pip -d python -c send2trash Send2Trash"
+    "-m pip -d python -c trash-put trash-cli"
     "-m pip2 -d python2 wheel"
-    "-m pip2 -d python2 pipenv"
-    "-m pip2 -d python2 virtualenv"
-    "-m pip2 -d python2 Send2Trash"
-    "-m pip2 -d python2 trash-cli"
+    "-m pip2 -d python2 -c pipenv pipenv"
+    "-m pip2 -d python2 -c virtualenv virtualenv"
+    "-m pip2 -d python2 -c send2trash Send2Trash"
+    "-m pip2 -d python2 -c trash-put trash-cli"
     "-m pip3 -d python3 wheel"
-    "-m pip3 -d python3 pipenv"
-    "-m pip3 -d python3 virtualenv"
-    "-m pip3 -d python3 Send2Trash"
-    "-m pip3 -d python3 trash-cli"
+    "-m pip3 -d python3 -c pipenv pipenv"
+    "-m pip3 -d python3 -c virtualenv virtualenv"
+    "-m pip3 -d python3 -c send2trash Send2Trash"
+    "-m pip3 -d python3 -c trash-put trash-cli"
   )
 
   local -a _browser=(
-    "firefox"
+    "-c firefox firefox"
   )
 
   local -a _server=(
     "apache2"
     "apache2-utils"
-    "sqlite3"
+    "-c sqlite3 sqlite3"
     "libsqlite3-dev"
-    "sqlitebrowser"
+    "-c sqlitebrowser sqlitebrowser"
   )
 
   local -a _virtualization=(
+    "-c docker docker"
     # Docker dependencies
     "ca-certificates"
-    "curl"
-    "gnupg"
-    "lsb-release"
-    "-m apt -d docker-ce-cli,containerd.io -c docker -n docker-stable -u -- docker-ce"
+    "-c lsb-release lsb-release"
+    "-m apt -d docker-ce-cli,containerd.io -n docker-stable -c docker -u -- docker-ce"
     "-m apt -d ca-certificates,curl,gnupg,lsb-release docker-ce-cli"
     "containerd.io"
   )
@@ -207,15 +208,24 @@ function _main() {
 
 
   local -a packages=(
-    "${_test[@]}"
+    "${_essentials[@]}"
+    "${_languages[@]}"
+    "${_package_manager[@]}"
+    "${_shell[@]}"
+    "${_session_manager[@]}"
+    "${_file_manager[@]}"
+    "${_text_editor[@]}"
+    "${_tools[@]}"
+    "${_browser[@]}"
+    "${_server[@]}"
+    "${_virtualization[@]}"
   )
 
   local template_args=
-  ! $VERBOSE && template_args+="--quiet "
   $DEBUG && template_args+="--debug "
 
   for package in "${packages[@]}"; do
-    ${EZ_INSTALL_HOME}/generate/ez-gen --skip-confirm ${template_args} "${package}"
+    ez-gen --global --skip-confirm --skip-edit ${template_args} "${package}"
   done
 }
 
