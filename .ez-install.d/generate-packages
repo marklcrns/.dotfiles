@@ -46,6 +46,8 @@ function _main() {
     "-c mvn maven"
     # R
     "-c R r-base"
+    # C++
+    "-c ccls ccls"
   )
 
   local -a _package_manager=(
@@ -107,7 +109,7 @@ function _main() {
     "-c tree tree"
     "-c xclip xclip"
     "-c xdg-open xdg-utils"
-    "-c fd fd-find"
+    "-c fdfind fd-find"
     "-c mlocate mlocate"
     "-c autojump autojump"
     "-c rg ripgrep"
@@ -159,6 +161,29 @@ function _main() {
     "-m apt -d docker-ce-cli,containerd.io -n docker-stable -c docker -u -- docker-ce"
     "-m apt -d ca-certificates,curl,gnupg,lsb-release docker-ce-cli"
     "containerd.io"
+  )
+
+  local -a _misc=(
+    "-c colordiff colordiff"
+    "-c cmatrix cmatrix"
+    "-c cowsay cowsay"
+    "-c xcowsay xcowsay"
+    "-c figlet figlet"
+    "-c lolcat lolcat"
+    "-c fortune fortune"
+    "-c sl sl"
+    "-c sysbench sysbench"
+    "-c stress stress"
+    "-c inotify-tools inotify-tools"
+    "-c bat bat"
+    "-c pandoc pandoc"
+    "-d pandoc pandoc-data"
+    "-d pandoc texlive"
+    "-m apt-add -n bashtop ppa:bashtop-monitor/bashtop"
+    "-m apt -d bashtop.apt-add -c bashtop bashtop"
+    "-m apt-add -n lazygit ppa:lazygit-team/release"
+    "-m apt -d lazygit.apt-add -c lazygit lazygit"
+    "-c exa exa"
   )
 
   local -a _test=(
@@ -219,6 +244,7 @@ function _main() {
     "${_browser[@]}"
     "${_server[@]}"
     "${_virtualization[@]}"
+    "${_misc[@]}"
   )
 
   local template_args=

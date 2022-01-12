@@ -28,7 +28,7 @@ function _main() {
   local package_name="my-wiki"
   local executable_name=""
   local package_manager="git"
-  local destination="~/Documents/wiki"
+  local destination="~/Documents/my-wiki"
   local res=0
 
   # Get system package manager

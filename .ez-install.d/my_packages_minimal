@@ -65,3 +65,7 @@ ez -y \
   "fzf" \
   "firefox#root" \
   "docker-stable#root" \
+  "pandoc#root" \
+  "pandoc-data#root,nodep" \
+  "texlive#root,nodep" \
+  "bat#root" \
