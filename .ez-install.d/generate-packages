@@ -229,6 +229,13 @@ function _main() {
     "-m local -d test4 test4-a"
     "-m local -d test4 test4-b"
     "-m local -d test4-a,test4-b test4-b-1"
+
+    "test5-a"
+    "test5-b"
+    "test5-c"
+    "test5-d"
+    "test5-e"
+    "-d test5-a,test5-b,test5-c,test5-d,test5-e test5"
   )
 
 
@@ -246,6 +253,10 @@ function _main() {
     "${_virtualization[@]}"
     "${_misc[@]}"
   )
+
+  # local -a packages=(
+  #   "${_test[@]}"
+  # )
 
   local template_args=
   $DEBUG && template_args+="--debug "
