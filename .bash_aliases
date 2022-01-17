@@ -190,7 +190,7 @@ export CONF_REPO_LIST="\
   ${HOME}/.task/
   ${HOME}/.timewarrior/
   ${HOME}/.tmuxinator/
-  ${HOME}/Documents/wiki/
+  ${HOME}/Documents/my-wiki/
   ${HOME}/scripts/
 "
 
