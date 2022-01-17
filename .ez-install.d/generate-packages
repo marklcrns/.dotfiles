@@ -262,7 +262,7 @@ function _main() {
   $DEBUG && template_args+="--debug "
 
   for package in "${packages[@]}"; do
-    ez-gen --global --skip-confirm --skip-edit ${template_args} "${package}"
+    ez-gen --global --skip-confirm --skip-edit --no-colors ${template_args} "${package}"
   done
 }
 
@@ -270,9 +270,6 @@ res=0
 _main
 res=$?
 
-unset VERBOSE
 unset DEBUG
-unset SCRIPT_DIR
-unset PACKAGE_DIR
 
 exit $res
