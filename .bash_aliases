@@ -849,7 +849,7 @@ alias rmdattrs='find . -name "*dropbox.attrs" && find . -name "*dropbox.attrs" -
 alias rmallmodattr="rmzone && rmdattr"
 alias rmlock='find . -name ".~lock.*" && find . -name ".~lock.*" -delete'
 
-alias nvide='neovide --multiGrid --disowned'
+alias nvide='neovide --multigrid'
 
 # WSL aliases
 if grep -i "microsoft" /proc/version &> /dev/null; then
@@ -878,7 +878,7 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
   alias cmd='cmd.exe /C'
   alias pows='powershell.exe /C'
   alias exp='explorer.exe'
-  alias nvide='/mnt/c/wsl/bin/neovide.exe --wsl --disowned'
+  alias wnvide='/mnt/c/wsl/bin/neovide.exe --wsl --disowned'
 
   # Windows installed browsers
   alias ffox='firefox.exe'
@@ -887,6 +887,16 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
   if command -v wsl-open &> /dev/null; then
     alias open='wsl-open'
   fi
+
+  # Fix: ERROR: UtilConnectUnix:467: connect failed 111
+  # https://superuser.com/a/1602624
+  fix_wsl2_interop() {
+    for i in $(pstree -np -s $$ | grep -o -E '[0-9]+'); do
+      if [[ -e "/run/WSL/${i}_interop" ]]; then
+        export WSL_INTEROP=/run/WSL/${i}_interop
+      fi
+    done
+  }
 
   # Yank currant path and convert to windows path
   winpath() {
