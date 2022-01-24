@@ -54,6 +54,7 @@ function _main() {
     "-m npm -d nodejs -c browser-sync browser-sync"
     "-m npm -d nodejs -c gulp gulp-cli"
     "yarn"
+    "-m apt -d curl -c yarn -u -- yarn"
     "-m curl -n nvm -e -o '~/.nvm' -c nvm -- https://raw.githubusercontent.com/creationix/nvm/master/install.sh"
     "-m local -c node nodejs"
     "-m curl -n cargo -e -c cargo -- https://sh.rustup.rs"
@@ -106,6 +107,7 @@ function _main() {
   )
 
   local -a _tools=(
+    "-c font-manager font-manager"
     "-c tree tree"
     "-c xclip xclip"
     "-c xdg-open xdg-utils"

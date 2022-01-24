@@ -15,6 +15,7 @@ ez -y \
   'net-tools#root' \
   'shc#root' \
   'gcc#root' \
+  'font-manager#root' \
   'python2-dev#root' \
   'python3-dev#root' \
   'python3-pip#root' \
@@ -22,7 +23,7 @@ ez -y \
   'pipenv.pip3#nodep' \
   'virtualenv.pip3#nodep' \
   'Send2Trash.pip3#nodep' \
-  'yarn' \
+  'yarn.apt#root' \
   'nvm' \
   'nodejs' \
   'zsh#root' \
