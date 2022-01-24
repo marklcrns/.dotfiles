@@ -67,17 +67,17 @@ background_opacity: 0.85
 
 font:
   normal:
-    family: "SauceCodePro NF"
-    style: Regular
+    family: "OperatorMono Nerd Font"
+    style: Book
   bold:
-    family: "SauceCodePro NF"
+    family: "OperatorMono Nerd Font"
     style: Bold
   italic:
-    family: "SauceCodePro NF"
-    style: Italic
+    family: "OperatorMono Nerd Font"
+    style: "Book Italic"
   bold_italic:
-    family: "SauceCodePro NF"
-    style: Bold Italic
+    family: "OperatorMono Nerd Font"
+    style: "Bold Italic"
 
   # Point size
   size: 12.0
