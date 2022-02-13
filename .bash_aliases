@@ -744,11 +744,13 @@ alias rcsdevrmt-first-dry="rclonesync.py --verbose --first-sync --dry-run --filt
 alias rcs="rclonesync.py --verbose --filters-file ~/.rclonesyncwd/Filters"
 
 # Rclone
-alias rcopy="rclone copy -vvP ${RCLONE_ARGS}"
-alias rsync="rclone sync -vvP ${RCLONE_ARGS}"
+alias rccopy="rclone copy -vvP ${RCLONE_ARGS}"
+alias rcsync="rclone sync -vvP ${RCLONE_ARGS}"
 alias rcdevrmt="rclone sync ~/Projects/Dev GoogleDrive:Dev --backup-dir GoogleDrive:$(date '+%Y-%m-%d').Dev.bak -vvP ${RCLONE_ARGS}"
 alias rcrmtdev="rclone sync GoogleDrive:Dev ~/Projects/Dev --backup-dir $(date '+%Y-%m-%d').Dev.bak -vvP ${RCLONE_ARGS}"
 
+# Rsync
+alias rsync="sudo rsync -ahHv --stats --no-inc-recursive --delete --delete-after"
 
 MY_ENV_FILE='/etc/profile.d/jdk_environment.sh'
 
@@ -849,7 +851,7 @@ alias rmdattrs='find . -name "*dropbox.attrs" && find . -name "*dropbox.attrs" -
 alias rmallmodattr="rmzone && rmdattr"
 alias rmlock='find . -name ".~lock.*" && find . -name ".~lock.*" -delete'
 
-alias nvide='neovide --multigrid'
+alias nvide='neovide --multiGrid --disowned'
 
 # WSL aliases
 if grep -i "microsoft" /proc/version &> /dev/null; then
@@ -878,7 +880,7 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
   alias cmd='cmd.exe /C'
   alias pows='powershell.exe /C'
   alias exp='explorer.exe'
-  alias wnvide='/mnt/c/wsl/bin/neovide.exe --wsl --disowned'
+  alias nvide='/mnt/c/wsl/bin/neovide.exe --wsl --disowned'
 
   # Windows installed browsers
   alias ffox='firefox.exe'
@@ -887,16 +889,6 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
   if command -v wsl-open &> /dev/null; then
     alias open='wsl-open'
   fi
-
-  # Fix: ERROR: UtilConnectUnix:467: connect failed 111
-  # https://superuser.com/a/1602624
-  fix_wsl2_interop() {
-    for i in $(pstree -np -s $$ | grep -o -E '[0-9]+'); do
-      if [[ -e "/run/WSL/${i}_interop" ]]; then
-        export WSL_INTEROP=/run/WSL/${i}_interop
-      fi
-    done
-  }
 
   # Yank currant path and convert to windows path
   winpath() {
