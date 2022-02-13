@@ -79,6 +79,19 @@ font:
     family: "OperatorMono Nerd Font"
     style: "Bold Italic"
 
+  # normal:
+  #   family: "SauceCodePro NF"
+  #   style: Regular
+  # bold:
+  #   family: "SauceCodePro NF"
+  #   style: Bold
+  # italic:
+  #   family: "SauceCodePro NF"
+  #   style: "Italic"
+  # bold_italic:
+  #   family: "SauceCodePro NF"
+  #   style: "Bold Italic"
+
   # Point size
   size: 12.0
 

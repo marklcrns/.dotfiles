@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
-# 'neovide' Post Installation
+# 'test' Pre Installation
 
 source "${EZ_INSTALL_HOME}/install/init.sh"
 
 function _main() {
+  local forced=false
   local as_root=false
+  local output_path=""
   handle_package_args ${@}
 
-  local package="neovide"
+  local package="test"
   local package_manager="git"
 
   # function install()
@@ -37,18 +39,15 @@ function _main() {
   #   $2    Package to install.
   #   $3    Output directory for curl, wget, and git (optional, default=$HOME/Downloads).
   #
-  # Post installation:
+  # Pre installation:
   #
-  #   install() will automatically try to source neovide.post first then neovide.git.post
-  #   from either $LOCAL_PACKAGE_DIR and $PACKAGE_DIR after package installation.
-  #   $LOCAL_PACKAGE_DIR priority. Best place for cleaning up files or executing
-  #   post installation commands.
+  #   install() will automatically try to source test.pre first then test.git.pre
+  #   from either $LOCAL_PACKAGE_DIR and $PACKAGE_DIR before package installation.
+  #   $LOCAL_PACKAGE_DIR priority. Best place to download dependencies or executing
+  #   pre installation commands.
 
-  # TODO: Start post process here
-  if cd ${DESTINATION}/neovide && ~/.cargo/bin/cargo build --release; then
-    cp target/release/neovide ${HOME}/.local/bin/
-  fi
-  return $?
+  # TODO: Start pre process here
+  echo "OUTPUT_PATH: ${output_path}"
 }
 
 res=0

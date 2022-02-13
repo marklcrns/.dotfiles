@@ -5,7 +5,9 @@
 source "${EZ_INSTALL_HOME}/install/init.sh"
 
 function _main() {
+  local forced=false
   local as_root=false
+  local to=""
   handle_package_args ${@}
 
   local package="neuron"

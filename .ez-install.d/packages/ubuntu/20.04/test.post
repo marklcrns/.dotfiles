@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 
-# 'neovide' Pre Installation
+# 'test' Post Installation
 
 source "${EZ_INSTALL_HOME}/install/init.sh"
 
 function _main() {
+  local forced=false
   local as_root=false
+  local output_path=""
   handle_package_args ${@}
 
-  local package="neovide"
-  local package_manager="git"
+  local package="test"
+  local package_manager=""
 
   # function install()
   #
@@ -37,19 +39,15 @@ function _main() {
   #   $2    Package to install.
   #   $3    Output directory for curl, wget, and git (optional, default=$HOME/Downloads).
   #
-  # Pre installation:
+  # Post installation:
   #
-  #   install() will automatically try to source neovide.pre first then neovide.git.pre
-  #   from either $LOCAL_PACKAGE_DIR and $PACKAGE_DIR before package installation.
-  #   $LOCAL_PACKAGE_DIR priority. Best place to download dependencies or executing
-  #   pre installation commands.
+  #   install() will automatically try to source test.post first then test.<package_manager>.post
+  #   from either $LOCAL_PACKAGE_DIR and $PACKAGE_DIR after package installation.
+  #   $LOCAL_PACKAGE_DIR priority. Best place for cleaning up files or executing
+  #   post installation commands.
 
-  # TODO: Start pre process here
-  sudo apt install -y \
-    gcc-multilib g++-multilib cmake libssl-dev pkg-config \
-    libfreetype6-dev libasound2-dev libexpat1-dev libxcb-composite0-dev \
-    libbz2-dev libsndio-dev freeglut3-dev libxmu-dev libxi-dev libfontconfig1-dev
-  return $?
+  # TODO: Start post process here
+  echo "OUTPUT_PATH: ${output_path}"
 }
 
 res=0

@@ -164,7 +164,7 @@ if [[ -f ~/.fzf.bash ]]; then
   # up arrow: preview scroll up
   # down arrow: preview scroll down
   export FZF_DEFAULT_OPTS="--ansi --height 90% -1 --reverse --multi --inline-info
-  --preview '[[ \$(file --mime {}) =~ binary ]] &&
+    --preview '[[ \$(file --mime {}) =~ binary ]] &&
     echo {} is a binary file ||
     (bat --style=numbers --color=always {} ||
     highlight -O ansi -l {} 2> /dev/null ||

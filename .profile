@@ -107,7 +107,9 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
 
   # Export Windows username if in WSL
   # 2>/dev/null to suppress UNC paths are not supported error
-  export WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
+  export WIN_USERNAME="$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)"
+  export WIN_APPDATA="/mnt/c/Users/${WIN_USERNAME}/AppData/Roaming"
+  export WIN_HOME="/mnt/c/Users/${WIN_USERNAME}"
 fi
 
 # Ref: https://unix.stackexchange.com/a/139787
