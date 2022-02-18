@@ -2,10 +2,15 @@
 
 # 'my-neovim-rc' Post Installation
 
+set -o pipefail
+set -o nounset
+
 source "${EZ_INSTALL_HOME}/install/init.sh"
 
 function _main() {
+  local force=false
   local as_root=false
+  local output_path=""
   handle_package_args ${@}
 
   local package="my-neovim-rc"
@@ -45,7 +50,7 @@ function _main() {
   #   post installation commands.
 
   # TODO: Start post process here
-  cd ~/.config/nvim && make
+  cd ${output_path} && make
   return $?
 }
 

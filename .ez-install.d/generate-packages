@@ -3,8 +3,6 @@
 set -o pipefail
 set -o nounset
 
-DEBUG=false
-
 function _main() {
   local -a _essentials=(
     "-s build-essential"
@@ -26,6 +24,7 @@ function _main() {
     "-s -c gpg2 gnupg2"
     "-s -c shc shc"
     "-s -c gcc gcc"
+    "-s -c jq jq"
   )
 
   local -a _languages=(
@@ -72,7 +71,7 @@ function _main() {
 
   local -a _session_manager=(
     "-s -c tmux tmux"
-    "-s -c tmuxinator tmuxinator"
+    "-s -d tmux -c tmuxinator tmuxinator"
     "-s -c gawk gawk"
     "-s -c urlview urlview"
     "-m pip -d python -c spotifycli spotify-cli-linux"
@@ -122,8 +121,8 @@ function _main() {
     "-s -c trash-put trash-cli"
     "-s -c task taskwarrior"
     "-s -c timew timewarrior"
+    "-m git -a '--recursive' -n 'timewarrior' -c timew -- 'https://github.com/GothenburgBitFactory/timewarrior'"
     "-m git -a '--recursive -b stable' -n 'taskwarrior' -c task -- 'https://github.com/GothenburgBitFactory/taskwarrior'"
-    "-m git -a '--recursive' -c task -n 'timewarrior' -c timew -- 'https://github.com/GothenburgBitFactory/timewarrior'"
     "-m git -a '--depth=1' -n fzf -o '~/.fzf' -c fzf -- 'https://github.com/junegunn/fzf.git'"
     "-m curl -n rclone -e -- https://rclone.org/install.sh"
     # Python packages
@@ -191,6 +190,7 @@ function _main() {
     "-s -c bat bat"
     "-s -c pandoc pandoc"
     "-s -c exa exa"
+    "-s -c ctags universal-ctags"
   )
 
   local -a _custom_install=(
@@ -283,11 +283,8 @@ function _main() {
   #   "${_test[@]}"
   # )
 
-  local template_args=
-  $DEBUG && template_args+="--debug "
-
   for package in "${packages[@]}"; do
-    ez-gen --global --skip-confirm --skip-edit --no-colors ${template_args} "${package}"
+    ez gen --global --skip-confirm --skip-edit --debug ${package}
   done
 }
 

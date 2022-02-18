@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ez -y \
+ez install -y \
   'build-essential#root' \
   'libffi-dev#root' \
   'libssl-dev#root' \
@@ -49,7 +49,7 @@ ez -y \
   "mediainfo#root" \
   "mupdf#root" \
   "mupdf-tools#root" \
-  "neovim-unstable.apt#root" \
+  "neovim-stable.apt#root" \
   "neovim.npm#nodep" \
   "tree#root" \
   "xclip#root" \

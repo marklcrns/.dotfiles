@@ -768,7 +768,7 @@ setjavaopenjdkhome() {
   export PATH=$(echo "$PATH" | sed -e "s,$JAVA_HOME/bin,,")
 
   if [[ "$(echo $JDK_HOME | grep "java-8")" ]]; then
-    # For jdk 8
+    # For jdk 9
     sudo update-alternatives --set java "${JDK_HOME}/jre/bin/java"
   else
     # For jdk 11 and higher

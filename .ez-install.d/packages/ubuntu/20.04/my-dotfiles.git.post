@@ -2,10 +2,15 @@
 
 # 'my-dotfiles' Post Installation
 
+set -o pipefail
+set -o nounset
+
 source "${EZ_INSTALL_HOME}/install/init.sh"
 
 function _main() {
+  local force=false
   local as_root=false
+  local output_path=""
   handle_package_args ${@}
 
   local package="my-dotfiles"
@@ -44,8 +49,7 @@ function _main() {
   #   $LOCAL_PACKAGE_DIR priority. Best place for cleaning up files or executing
   #   post installation commands.
 
-  # TODO: Start post process here
-  "${HOME}/scripts/tools/dotfiles/dotdist" -VD -r "${HOME}/.dotfiles/.dotfilesrc" . "${HOME}"
+  ${HOME}/scripts/tools/dotfiles/dotdist -VD -r ${output_path}/.dotfilesrc . ${HOME}
 }
 
 res=0
