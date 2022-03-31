@@ -891,7 +891,7 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
   fi
 
   # Yank currant path and convert to windows path
-  winpath() {
+  function winpath() {
     printf "%s" "$(wslpath -w "`pwd`")"
   }
   # Yank current path and convert to Windows path. Requires xclip
@@ -912,26 +912,23 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
 
   # Ref: https://gist.github.com/Gordin/67c9f5e995f4b625adf485eb791dea3e
   # Use builtin cd if possible, else treat as Windows path.
-  cd() {
+  function cd () {
     # Check if no arguments to make just typing cd<Enter> work
     # Also check if the first argument starts with a - and let cd handle it
-    if [ $# -eq 0 ] || [[ $1 == -* ]]
-    then
+    if [ $# -eq 0 ] || [[ $1 == -* ]]; then
       builtin cd $@
       return
     fi
     # If path exists, just cd into it
     # (also, using $* and not $@ makes it so you don't have to escape spaces any more)
-    if [[ -d "$*" ]]
-    then
+    if [[ -d "$*" ]]; then
       builtin cd "$*"
       return
     else
       # Try converting from Windows to absolute Linux path and try again
-      WSLP=$(wslpath -ua "$*")
-      if [[ -d "$WSLP" ]]
-      then
-        builtin cd "$WSLP"
+      local wslpath="$(wslpath -ua "$@")"
+      if [[ -d "$wslpath" ]]; then
+        builtin cd "$wslpath"
         return
       fi
     fi
