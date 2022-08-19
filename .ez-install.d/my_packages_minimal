@@ -19,6 +19,7 @@ ez install -y \
   'python2-dev#root' \
   'python3-dev#root' \
   'python3-pip#root' \
+  'python3-venv#root' \
   'wheel.pip3#nodep' \
   'pipenv.pip3#nodep' \
   'virtualenv.pip3#nodep' \

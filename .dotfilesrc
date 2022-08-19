@@ -58,6 +58,7 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
   # Append to DOTFILES_LIST
   DOTFILES_LIST_WSL=(
     "${USERPATH}/.wslconfig"
+    "${USERPATH}/AppData/Roaming/alacritty/alacritty.yml"
     "/usr/local/bin/cronstart.sh"
     "${DOTFILES_LOCAL}/.config/mimeapps.list"
     "${DOTFILES_LOCAL}/.local/share/applications/firefox-windows.desktop"
