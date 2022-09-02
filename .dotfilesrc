@@ -29,6 +29,7 @@ DOTFILES_LIST=(
   "${DOTFILES_LOCAL}/.mutt/color.muttrc"
   "${DOTFILES_LOCAL}/.mutt/mailcap"
   "${DOTFILES_LOCAL}/.mutt/muttrc"
+  "${DOTFILES_LOCAL}/.p10k.zsh"
   "${DOTFILES_LOCAL}/.profile"
   "${DOTFILES_LOCAL}/.rclonesyncwd/Filters"
   "${DOTFILES_LOCAL}/.ripgreprc"
