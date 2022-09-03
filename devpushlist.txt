@@ -1,7 +1,7 @@
 ~/Projects/Dev/my-repos/sieve-of-eratosthenes;https://github.com/marklcrns/sieve-of-eratosthenes
-~/Projects/Dev/my-repos/web-dev-projects/100-Days-Webpage-Challenge;https://github.com/marklcrns//100-Days-Webpage-Challenge
+~/Projects/Dev/my-repos/web-dev-projects/100-Days-Webpage-Challenge;https://github.com/marklcrns/100-Days-Webpage-Challenge
 ~/Projects/Dev/my-repos/web-dev-projects/real-estate;https://github.com/marklcrns/real-estate-webpage.git
-~/Projects/Dev/my-repos/web-dev-projects/surprise;https://github.com/marklcrns//surprise
+~/Projects/Dev/my-repos/web-dev-projects/surprise;https://github.com/marklcrns/surprise
 ~/Projects/Dev/my-repos/marklcrns.github.io;https://github.com/marklcrns/marklcrns.github.io.git
 ~/Projects/Dev/my-repos/makefiles;https://github.com/marklcrns/makefiles.git
 ~/Projects/Dev/my-repos/ez-install;https://github.com/marklcrns/ez-install
@@ -22,6 +22,5 @@
 ~/Projects/Dev/my-repos/wedding-invitation;https://github.com/marklcrns/wedding-invitation.git
 ~/Projects/Dev/my-repos/lucernas-properties;https://github.com/marklcrns/lucernas-properties.git
 ~/Projects/Dev/my-repos/leetcode-solutions-java;https://github.com/marklcrns/leetcode-solutions-java
-~/Projects/Dev/my-repos/react-app;
 ~/Projects/Dev/my-repos/surprise;https://github.com/marklcrns/surprise
 ~/Projects/Dev/work-repos/plugs;https://github.com/CEC-PLC/plugs
