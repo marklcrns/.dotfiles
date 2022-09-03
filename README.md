@@ -6,13 +6,6 @@ Clone repo
 git clone https://github.com/marklcrns/.dotfiles ~/.dotfiles
 ```
 
-## Packages Installation
-
-```bash
-cd ~/.dotfiles
-./scripts/install/install.sh
-```
-
 ## Auto Distribute Dotfiles
 
 Distribute all dotfiles listed in `.dotfilesrc` (included in this repo) into
