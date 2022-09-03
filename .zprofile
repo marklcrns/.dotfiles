@@ -2,9 +2,7 @@
 # not running commands when sourcing files
 # Ref: https://superuser.com/a/187673
 if ! grep -i "microsoft" /proc/version &> /dev/null; then
-  emulate sh
-  source ${HOME}/.profile
-  emulate zsh
+  [[ -e ~/.profile ]] && emulate sh -c "source ${HOME}/.profile"
 fi
 
 # Mimic Bash `fg N` command replaces Zsh `fg %N`.

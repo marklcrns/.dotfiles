@@ -42,13 +42,6 @@ export PATH=$PATH:$HOME/emacs.d/bin
 # Global npm modules path
 export PATH=$PATH:$HOME/.npm-global/bin
 
-# WSL profile
-if grep -i "microsoft" /proc/version &> /dev/null; then
-  # $PATHS
-  export PATH=$PATH:"/mnt/c/Program Files/Mozilla Firefox/"
-  export PATH=$PATH:"/mnt/c/Program Files (x86)/Google/Chrome/Application"
-fi
-
 # ==================== OTHER GLOBAL VARIABLES ==================== #
 
 # Ripgrep global flags
@@ -82,6 +75,10 @@ fi
 #   Remove pulse configs                - https://github.com/microsoft/WSL/issues/5816#issuecomment-755409888
 #   Editing /etc/pulse/default.pa       - https://github.com/microsoft/WSL/issues/5816#issuecomment-713702166
 if grep -i "microsoft" /proc/version &> /dev/null; then
+  # $PATHS
+  export PATH=$PATH:"/mnt/c/Program Files/Mozilla Firefox/"
+  export PATH=$PATH:"/mnt/c/Program Files (x86)/Google/Chrome/Application"
+
   # Enable Vagrant access outisde of WSL.
   export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
   export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/mnt/c/vagrant"
