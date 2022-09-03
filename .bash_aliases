@@ -192,6 +192,7 @@ export CONF_REPO_LIST="\
   ${HOME}/.tmuxinator/
   ${HOME}/Documents/my-wiki/
   ${HOME}/scripts/
+  ${HOME}/.ez-install.d/
 "
 
 printallconfrepo() {
