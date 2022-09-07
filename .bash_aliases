@@ -191,6 +191,7 @@ export CONF_REPO_LIST="\
   ${HOME}/.timewarrior/
   ${HOME}/.tmuxinator/
   ${HOME}/Documents/my-wiki/
+  ${HOME}/Documents/my-neorg/
   ${HOME}/scripts/
   ${HOME}/.ez-install.d/
 "

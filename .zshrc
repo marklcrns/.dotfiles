@@ -273,15 +273,6 @@ codi() {
     Codi $syntax" "$@"
 }
 
-# Taskwarrior add emojis
-# Ref: http://jessachandler.com/2018/03/setup-task-and-time-warrior/
-# https://twitter.com/pjf/status/852466839145795584
-URGENT="2757"
-DUETOMORROW="2690"
-DUETODAY="2691"
-OVERDUE="2639"
-OK="2714"
-
 # shows if any TaskWarrior tasks are in need of attention
 function task_indicator {
   if [ `task +READY +OVERDUE count` -gt "0" ]  ; then
