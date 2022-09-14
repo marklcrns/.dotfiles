@@ -5,6 +5,9 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+alias taps='gpushconf;pushalldevrepo'
+alias reveille='gpullconf;pullalldevrepo'
+
 # Config files
 alias vimrc='nvim ~/.vim/.vimrc'
 alias tmuxconf='nvim ~/.tmux.conf'
@@ -56,8 +59,6 @@ mkcd () {
 touched() {
   touch -- "$1" && nvim -- "$1"
 }
-
-alias rm='trash-put -h; echo "\n\nUse \\\rm to use the built-in rm command"; false'
 
 # Binaries
 if command -v xdg-open &> /dev/null; then
