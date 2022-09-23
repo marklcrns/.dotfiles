@@ -893,6 +893,68 @@ if grep -i "microsoft" /proc/version &> /dev/null; then
     alias open='wsl-open'
   fi
 
+  function mount_drive() {
+    if [[ -z "${1+x}" ]]; then
+      echo "error: missing drive letter"
+      return 1
+    fi
+
+    # Check if only a letter
+    if [ ${#1} -gt 1 ]; then
+      echo "error: provide only a drive letter '${1}'"
+      return 1
+    fi
+
+    # Check if is letter
+    if [[ "${1}" =~ [^a-zA-Z] ]]; then
+      echo "error: invalid drive letter '${1}'"
+      return 1
+    fi
+
+    local drive_letter="$(echo "${1}" | awk '{print tolower($0)}')"
+
+    if ! [[ -d "/mnt/${drive_letter}" ]]; then
+      mkdir /mnt/"${drive_letter}"
+    fi
+
+    sudo mount -t drvfs "${drive_letter}:" "/mnt/${drive_letter}" && cd /mnt/"${drive_letter}"
+  }
+
+  function unmount_drive() {
+    if [[ -z "${1+x}" ]]; then
+      echo "error: missing drive letter"
+      return 1
+    fi
+
+    # Check if only a letter
+    if [ ${#1} -gt 1 ]; then
+      echo "error: provide only a drive letter '${1}'"
+      return 1
+    fi
+
+    # Check if is letter
+    if [[ "${1}" =~ [^a-zA-Z] ]]; then
+      echo "error: invalid drive letter '${1}'"
+      return 1
+    fi
+
+    local drive_letter="$(echo "${1}" | awk '{print tolower($0)}')"
+
+    sudo umount /mnt/"${drive_letter}"
+
+    local res=${?}
+
+    # 32 exit code no device mounted
+    if [[ ${res} -eq 0 ]] || [[ ${res} -eq 32 ]]; then
+      if [[ -d "/mnt/${drive_letter}" ]]; then
+        sudo rmdir /mnt/"${drive_letter}"
+      fi
+    fi
+  }
+
+  alias mount='mount_drive'
+  alias unmount='unmount_drive'
+
   # Yank currant path and convert to windows path
   function winpath() {
     printf "%s" "$(wslpath -w "`pwd`")"
