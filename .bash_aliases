@@ -193,6 +193,8 @@ export CONF_REPO_LIST="\
   ${HOME}/.tmuxinator/
   ${HOME}/Documents/my-wiki/
   ${HOME}/Documents/my-neorg/
+  ${HOME}/Documents/my-zettelkasten/
+  ${HOME}/Documents/mcwp-research/
   ${HOME}/scripts/
   ${HOME}/.ez-install.d/
 "
