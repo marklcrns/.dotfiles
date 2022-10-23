@@ -67,19 +67,35 @@ bell:
 # background_opacity: 0.85
 
 font:
-  normal:
-    family: "OperatorMono Nerd Font"
-    style: Book
-  bold:
-    family: "OperatorMono Nerd Font"
-    style: Bold
-  italic:
-    family: "OperatorMono Nerd Font"
-    style: "Book Italic"
-  bold_italic:
-    family: "OperatorMono Nerd Font"
-    style: "Bold Italic"
+  # OPERATOR MONO
+  # normal:
+  #   family: "OperatorMono Nerd Font"
+  #   style: Book
+  # bold:
+  #   family: "OperatorMono Nerd Font"
+  #   style: Bold
+  # italic:
+  #   family: "OperatorMono Nerd Font"
+  #   style: "Book Italic"
+  # bold_italic:
+  #   family: "OperatorMono Nerd Font"
+  #   style: "Bold Italic"
 
+  # SOURCE CODE PRO
+  # normal:
+  #   family: "Source Code Pro iCursive S12"
+  #   style: Regular
+  # bold:
+  #   family: "Source Code Pro iCursive S12"
+  #   style: Bold
+  # italic:
+  #   family: "Source Code Pro iCursive S12"
+  #   style: "Italic"
+  # bold_italic:
+  #   family: "Source Code Pro iCursive S12"
+  #   style: "Bold Italic"
+
+  # SAUCE CODE PRO
   # normal:
   #   family: "SauceCodePro NF"
   #   style: Regular
@@ -92,6 +108,20 @@ font:
   # bold_italic:
   #   family: "SauceCodePro NF"
   #   style: "Bold Italic"
+
+  # VictorMono
+  normal:
+    family: "VictorMono NF"
+    style: Regular
+  bold:
+    family: "VictorMono NF"
+    style: Bold
+  italic:
+    family: "VictorMono NF"
+    style: "Italic"
+  bold_italic:
+    family: "VictorMono NF"
+    style: "Bold Italic"
 
   # Point size
   size: 12.0
