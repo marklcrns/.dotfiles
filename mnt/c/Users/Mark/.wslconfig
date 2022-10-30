@@ -2,3 +2,4 @@
 memory=8GB
 processors=8
 swap=0
+guiApplications=false
