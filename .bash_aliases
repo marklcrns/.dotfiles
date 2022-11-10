@@ -187,6 +187,7 @@ alias openrepo=browsegithubrepo
 export CONF_REPO_LIST="\
   ${DOTFILES}
   ${HOME}/.cache/vim/session/
+  ${HOME}/.config/nvim/UltiSnips/
   ${HOME}/.config/nvim/
   ${HOME}/.task/
   ${HOME}/.timewarrior/
