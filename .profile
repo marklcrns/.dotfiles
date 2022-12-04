@@ -59,6 +59,9 @@ export TLDR_DESCRIPTION='green'
 export TLDR_CODE='red'
 export TLDR_PARAM='blue'
 
+# Fix for Vimwiki perl error: https://stackoverflow.com/questions/2499794/how-to-fix-a-locale-setting-warning-from-perl
+export LC_ALL=C
+
 # ez-install
 export EZ_INSTALL_HOME="${HOME}/.ez-install"
 
