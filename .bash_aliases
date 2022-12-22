@@ -163,6 +163,8 @@ alias gist='open https://gist.github.com'
 alias insigcommit='git add . && git commit -m "Insignificant commit" && git push'
 alias commit='git commit'
 alias commitall='git add . && git commit'
+# Ref: https://nickymeuleman.netlify.app/blog/delete-git-branches
+alias gdub='git fetch --prune && git branch --merged | egrep -v "(^\*|master|main|dev)" | xargs git branch -d'
 
 # Recursively store files over the given size in current dir into git-lfs
 # Default size = 100 (MiB)
