@@ -29,4 +29,5 @@ sudo apt install texlive-latex-extra
 - [graphicx](https://mirrors.ctan.org/macros/latex/required/graphics.zip) (graphics)
 - [xcolor](https://mirrors.ctan.org/macros/latex/contrib/xcolor.zip)
 - [varwidth](https://mirrors.ctan.org/macros/latex/contrib/varwidth.zip)
+- [enumitem](https://mirrors.ctan.org/macros/latex/contrib/enumitem.zip)
 
