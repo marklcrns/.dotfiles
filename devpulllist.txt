@@ -25,3 +25,5 @@
 ~/Projects/Dev/my-repos/surprise;https://github.com/marklcrns/surprise
 ~/Projects/Dev/work-repos/plugs;https://github.com/CEC-PLC/plugs
 ~/Projects/Dev/cloned-repos/material-kit-react;https://github.com/minimal-ui-kit/material-kit-react
+~/Projects/Dev/my-repos/node-js-python-encryption;https://github.com/marklcrns/node-js-python-encryption
+~/Projects/Dev/work-repos/cec-plc-plugs;https://github.com/derconnect-ucsd/cec-plc-plugs
