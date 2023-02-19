@@ -857,7 +857,7 @@ alias rmallmodattr="rmzone && rmdattr"
 alias rmlock='find . -name ".~lock.*" && find . -name ".~lock.*" -type f && find . -name ".~lock.*" && find . -name ".~lock.*" -type f -delete'
 alias rmwinjunk='find . \( -name "*Zone.*" -o -name "*dropbox.attrs" -o -name "desktop.ini" \) -type f && find . \( -name "*Zone.*" -o -name "*dropbox.attrs" -o -name "desktop.ini" \) -type f -delete'
 
-alias nvide='neovide --nofork --notabs --frame=none'
+alias nvide='neovide --multigrid --nofork --notabs --frame=none'
 
 # WSL aliases
 if grep -i "microsoft" /proc/version &>/dev/null; then
@@ -888,9 +888,9 @@ if grep -i "microsoft" /proc/version &>/dev/null; then
 	alias exp='explorer.exe'
 
 	if [[ -f '/mnt/c/wsl/bin/neovide.exe' ]]; then
-		alias nvide='/mnt/c/wsl/bin/neovide.exe --nofork --notabs --frame=none --wsl'
+		alias nvide='/mnt/c/wsl/bin/neovide.exe --multigrid --nofork --notabs --frame=none --wsl'
 	else
-		alias nvide='neovide --nofork --notabs --frame=none --wsl'
+		alias nvide='neovide --multigrid --nofork --notabs --frame=none --wsl'
 	fi
 
 	# Windows installed browsers
