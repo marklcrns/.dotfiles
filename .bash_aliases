@@ -862,33 +862,33 @@ alias nvide='neovide --multigrid --nofork --notabs --frame=none'
 # WSL aliases
 if grep -i "microsoft" /proc/version &>/dev/null; then
 	# Directory Aliases
-	alias winhome="cd /mnt/c/Users/${WIN_USERNAME}"
-	alias windocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents"
-	alias wintrade="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive/Trading/Stocks"
-	alias windown="cd /mnt/c/Users/${WIN_USERNAME}/Downloads"
-	alias gdrv="cd /mnt/c/Users/${WIN_USERNAME}/Google Drive"
-	alias odrv="cd /mnt/c/Users/${WIN_USERNAME}/OneDrive"
-	alias drop="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox"
-	alias dropd="cd /mnt/c/Users/${WIN_USERNAME}/Dropbox/Dev"
-	alias winproj="cd /mnt/c/Users/${WIN_USERNAME}/Projects/"
-	alias winbin="cd /mnt/c/bin"
+	alias winhome="cd /c/Users/${WIN_USERNAME}"
+	alias windocs="cd /c/Users/${WIN_USERNAME}/Documents"
+	alias wintrade="cd /c/Users/${WIN_USERNAME}/OneDrive/Trading/Stocks"
+	alias windown="cd /c/Users/${WIN_USERNAME}/Downloads"
+	alias gdrv="cd /c/Users/${WIN_USERNAME}/Google Drive"
+	alias odrv="cd /c/Users/${WIN_USERNAME}/OneDrive"
+	alias drop="cd /c/Users/${WIN_USERNAME}/Dropbox"
+	alias dropd="cd /c/Users/${WIN_USERNAME}/Dropbox/Dev"
+	alias winproj="cd /c/Users/${WIN_USERNAME}/Projects/"
+	alias winbin="cd /c/bin"
 
 	# Secure files Aliases
-	alias secenter="cd /mnt/c/Users/${WIN_USERNAME}/Documents; cmd.exe /C Secure.bat; cd ./Secure"
-	alias seclock="cd /mnt/c/Users/${WIN_USERNAME}/Documents; cmd.exe /c Secure.bat"
-	alias sec="cd /mnt/c/Users/${WIN_USERNAME}/Documents/Secure"
-	alias secfiles="cd /mnt/c/Users/${WIN_USERNAME}/Documents/Secure"
-	alias secdocs="cd /mnt/c/Users/${WIN_USERNAME}/Documents/Secure/EDocs"
-	alias secpersonal="cd /mnt/c/Users/${WIN_USERNAME}/Documents/Secure/Personal"
-	alias secbrowse="cd /mnt/c/Users/${WIN_USERNAME}/Documents/Secure; explorer.exe .; cd -"
+	alias secenter="cd /c/Users/${WIN_USERNAME}/Documents; cmd.exe /C Secure.bat; cd ./Secure"
+	alias seclock="cd /c/Users/${WIN_USERNAME}/Documents; cmd.exe /c Secure.bat"
+	alias sec="cd /c/Users/${WIN_USERNAME}/Documents/Secure"
+	alias secfiles="cd /c/Users/${WIN_USERNAME}/Documents/Secure"
+	alias secdocs="cd /c/Users/${WIN_USERNAME}/Documents/Secure/EDocs"
+	alias secpersonal="cd /c/Users/${WIN_USERNAME}/Documents/Secure/Personal"
+	alias secbrowse="cd /c/Users/${WIN_USERNAME}/Documents/Secure; explorer.exe .; cd -"
 
 	# Running Windows executable
 	alias cmd='cmd.exe /C'
 	alias pows='powershell.exe /C'
 	alias exp='explorer.exe'
 
-	if [[ -f '/mnt/c/wsl/bin/neovide.exe' ]]; then
-		alias nvide='/mnt/c/wsl/bin/neovide.exe --multigrid --nofork --notabs --frame=none --wsl'
+	if [[ -f '/c/wsl/bin/neovide.exe' ]]; then
+		alias nvide='/c/wsl/bin/neovide.exe --multigrid --nofork --notabs --frame=none --wsl'
 	else
 		alias nvide='neovide --multigrid --nofork --notabs --frame=none --wsl'
 	fi

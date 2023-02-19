@@ -79,13 +79,13 @@ fi
 #   Editing /etc/pulse/default.pa       - https://github.com/microsoft/WSL/issues/5816#issuecomment-713702166
 if grep -i "microsoft" /proc/version &>/dev/null; then
 	# $PATHS
-	export PATH=$PATH:"/mnt/c/Program Files/Mozilla Firefox/"
-	export PATH=$PATH:"/mnt/c/Program Files (x86)/Google/Chrome/Application/"
-	export PATH=$PATH:"/mnt/c/wsl/bin/"
+	export PATH=$PATH:"/c/Program Files/Mozilla Firefox/"
+	export PATH=$PATH:"/c/Program Files (x86)/Google/Chrome/Application/"
+	export PATH=$PATH:"/c/wsl/bin/"
 
 	# Enable Vagrant access outisde of WSL.
 	export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
-	export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/mnt/c/vagrant"
+	export VAGRANT_WSL_WINDOWS_ACCESS_USER_HOME_PATH="/c/vagrant"
 
 	# Works with windows pulse server
 	# HOST_IP=$(host `hostname` | grep 192. | tail -1 | awk '{ print $NF }' | tr -d '\r')
@@ -109,8 +109,11 @@ if grep -i "microsoft" /proc/version &>/dev/null; then
 	# Export Windows username if in WSL
 	# 2>/dev/null to suppress UNC paths are not supported error
 	export WIN_USERNAME="$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)"
-	export WIN_APPDATA="/mnt/c/Users/${WIN_USERNAME}/AppData/Roaming"
-	export WIN_HOME="/mnt/c/Users/${WIN_USERNAME}"
+	export WIN_APPDATA="/c/Users/${WIN_USERNAME}/AppData/Roaming"
+	export WIN_HOME="/c/Users/${WIN_USERNAME}"
+
+	# Launch with wslview
+	export BROWSER="wslview"
 fi
 
 # Ref: https://unix.stackexchange.com/a/139787

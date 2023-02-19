@@ -6,66 +6,66 @@ export DOTFILES_LOCAL="${HOME}"
 export DOTFILES_REPO="${HOME}/.dotfiles"
 
 DOTFILES_LIST=(
-  "${DOTFILES_LOCAL}/.alacritty.yml"
-  "${DOTFILES_LOCAL}/.bash_aliases"
-  "${DOTFILES_LOCAL}/.bash_profile"
-  "${DOTFILES_LOCAL}/.bashrc"
-  "${DOTFILES_LOCAL}/.config/ranger/rc.conf"
-  "${DOTFILES_LOCAL}/.config/ranger/rifle.conf"
-  "${DOTFILES_LOCAL}/.config/zathura/"
-  "${DOTFILES_LOCAL}/.local/share/fonts"
-  "${DOTFILES_LOCAL}/.ctags"
-  "${DOTFILES_LOCAL}/.ctags.d/"
-  "${DOTFILES_LOCAL}/.dotfilesrc"
-  "${DOTFILES_LOCAL}/.ez-installrc"
-  "${DOTFILES_LOCAL}/.gdbinit"
-  "${DOTFILES_LOCAL}/.gitconfig"
-  "${DOTFILES_LOCAL}/.gitconfig.d/gitalias.txt"
-  "${DOTFILES_LOCAL}/.gitignore_global"
-  "${DOTFILES_LOCAL}/.gtd/"
-  "${DOTFILES_LOCAL}/.hushlogin"
-  "${DOTFILES_LOCAL}/.mutt/.pass.gpg"
-  "${DOTFILES_LOCAL}/.mutt/color.muttrc"
-  "${DOTFILES_LOCAL}/.mutt/mailcap"
-  "${DOTFILES_LOCAL}/.mutt/muttrc"
-  "${DOTFILES_LOCAL}/.p10k.zsh"
-  "${DOTFILES_LOCAL}/.profile"
-  "${DOTFILES_LOCAL}/.rclonesyncwd/Filters"
-  "${DOTFILES_LOCAL}/.ripgreprc"
-  "${DOTFILES_LOCAL}/.scimrc"
-  "${DOTFILES_LOCAL}/.tmux.conf"
-  "${DOTFILES_LOCAL}/.tmux/vim_tmux_pipenv_workaround.sh"
-  "${DOTFILES_LOCAL}/.tmux/wsl_statusline.conf"
-  "${DOTFILES_LOCAL}/.tmux/wsl_tmux_statusline.sh"
-  "${DOTFILES_LOCAL}/.zprofile"
-  "${DOTFILES_LOCAL}/.zshenv"
-  "${DOTFILES_LOCAL}/.zshrc"
-  "${DOTFILES_LOCAL}/bin/"
-  "${DOTFILES_LOCAL}/texmf/"
+	"${DOTFILES_LOCAL}/.alacritty.yml"
+	"${DOTFILES_LOCAL}/.bash_aliases"
+	"${DOTFILES_LOCAL}/.bash_profile"
+	"${DOTFILES_LOCAL}/.bashrc"
+	"${DOTFILES_LOCAL}/.config/ranger/rc.conf"
+	"${DOTFILES_LOCAL}/.config/ranger/rifle.conf"
+	"${DOTFILES_LOCAL}/.config/zathura/"
+	"${DOTFILES_LOCAL}/.local/share/fonts"
+	"${DOTFILES_LOCAL}/.ctags"
+	"${DOTFILES_LOCAL}/.ctags.d/"
+	"${DOTFILES_LOCAL}/.dotfilesrc"
+	"${DOTFILES_LOCAL}/.ez-installrc"
+	"${DOTFILES_LOCAL}/.gdbinit"
+	"${DOTFILES_LOCAL}/.gitconfig"
+	"${DOTFILES_LOCAL}/.gitconfig.d/gitalias.txt"
+	"${DOTFILES_LOCAL}/.gitignore_global"
+	"${DOTFILES_LOCAL}/.gtd/"
+	"${DOTFILES_LOCAL}/.hushlogin"
+	"${DOTFILES_LOCAL}/.mutt/.pass.gpg"
+	"${DOTFILES_LOCAL}/.mutt/color.muttrc"
+	"${DOTFILES_LOCAL}/.mutt/mailcap"
+	"${DOTFILES_LOCAL}/.mutt/muttrc"
+	"${DOTFILES_LOCAL}/.p10k.zsh"
+	"${DOTFILES_LOCAL}/.profile"
+	"${DOTFILES_LOCAL}/.rclonesyncwd/Filters"
+	"${DOTFILES_LOCAL}/.ripgreprc"
+	"${DOTFILES_LOCAL}/.scimrc"
+	"${DOTFILES_LOCAL}/.tmux.conf"
+	"${DOTFILES_LOCAL}/.tmux/vim_tmux_pipenv_workaround.sh"
+	"${DOTFILES_LOCAL}/.tmux/wsl_statusline.conf"
+	"${DOTFILES_LOCAL}/.tmux/wsl_tmux_statusline.sh"
+	"${DOTFILES_LOCAL}/.zprofile"
+	"${DOTFILES_LOCAL}/.zshenv"
+	"${DOTFILES_LOCAL}/.zshrc"
+	"${DOTFILES_LOCAL}/bin/"
+	"${DOTFILES_LOCAL}/texmf/"
 )
 
 DOTFILES_IGNORE_LIST=(
-  "${DOTFILES_LOCAL}/bin/pandoc"
+	"${DOTFILES_LOCAL}/bin/pandoc"
 )
 
 # WSL specific configs
-if grep -i "microsoft" /proc/version &> /dev/null; then
-  MOUNT="mnt"
-  DRIVE="c"
-  WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
+if grep -i "microsoft" /proc/version &>/dev/null; then
+	MOUNT="mnt"
+	DRIVE="c"
+	WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
 
-  USERPATH="/$MOUNT/$DRIVE/Users/$WIN_USERNAME"
+	USERPATH="/$MOUNT/$DRIVE/Users/$WIN_USERNAME"
 
-  # Append to DOTFILES_LIST
-  DOTFILES_LIST_WSL=(
-    "${USERPATH}/.wslconfig"
-    "${USERPATH}/AppData/Roaming/alacritty/alacritty.yml"
-    "/usr/local/bin/cronstart.sh"
-    "${DOTFILES_LOCAL}/.config/mimeapps.list"
-    "${DOTFILES_LOCAL}/.local/share/applications/firefox-windows.desktop"
-    "${DOTFILES_LOCAL}/.local/share/applications/google-chrome-windows.desktop"
-  )
+	# Append to DOTFILES_LIST
+	DOTFILES_LIST_WSL=(
+		"/etc/wsl.conf"
+		"${USERPATH}/.wslconfig"
+		"${USERPATH}/AppData/Roaming/alacritty/alacritty.yml"
+		"/usr/local/bin/cronstart.sh"
+		"${DOTFILES_LOCAL}/.config/mimeapps.list"
+		"${DOTFILES_LOCAL}/.local/share/applications/firefox-windows.desktop"
+		"${DOTFILES_LOCAL}/.local/share/applications/google-chrome-windows.desktop"
+	)
 fi
 
 export DOTFILES_LIST=(${DOTFILES_LIST[@]} ${DOTFILES_LIST_WSL[@]})
-
