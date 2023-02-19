@@ -50,17 +50,16 @@ DOTFILES_IGNORE_LIST=(
 
 # WSL specific configs
 if grep -i "microsoft" /proc/version &>/dev/null; then
-	MOUNT="mnt"
-	DRIVE="c"
-	WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
-
-	USERPATH="/$MOUNT/$DRIVE/Users/$WIN_USERNAME"
+	# MOUNT="mnt"
+	# DRIVE="c"
+	# WIN_USERNAME=$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)
+	# USERPATH="/$MOUNT/$DRIVE/Users/$WIN_USERNAME"
 
 	# Append to DOTFILES_LIST
 	DOTFILES_LIST_WSL=(
 		"/etc/wsl.conf"
-		"${USERPATH}/.wslconfig"
-		"${USERPATH}/AppData/Roaming/alacritty/alacritty.yml"
+		"${WIN_HOME}/.wslconfig"
+		"${WIN_HOME}/AppData/Roaming/alacritty/alacritty.yml"
 		"/usr/local/bin/cronstart.sh"
 		"${DOTFILES_LOCAL}/.config/mimeapps.list"
 		"${DOTFILES_LOCAL}/.local/share/applications/firefox-windows.desktop"
