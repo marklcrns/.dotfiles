@@ -860,7 +860,7 @@ alias rmwinjunk='find . \( -name "*Zone.*" -o -name "*dropbox.attrs" -o -name "d
 alias nvide='neovide --multigrid --nofork --notabs --frame=none'
 
 # WSL aliases
-if grep -i "microsoft" /proc/version &>/dev/null; then
+if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	# Directory Aliases
 	alias winhome="cd /c/Users/${WIN_USERNAME}"
 	alias windocs="cd /c/Users/${WIN_USERNAME}/Documents"
@@ -887,18 +887,21 @@ if grep -i "microsoft" /proc/version &>/dev/null; then
 	alias pows='powershell.exe /C'
 	alias exp='explorer.exe'
 
+	if command -v wslview &>/dev/null; then
+		alias open='wslview'
+		alias wview='wslview'
+		alias wslstart='wslview'
+		alias wstart='wslview'
+	fi
+
+	# if command -v wsl-open &>/dev/null; then
+	#   alias open='wsl-open'
+	# fi
+
 	if [[ -f '/c/wsl/bin/neovide.exe' ]]; then
 		alias nvide='/c/wsl/bin/neovide.exe --multigrid --nofork --notabs --frame=none --wsl'
 	else
 		alias nvide='neovide --multigrid --nofork --notabs --frame=none --wsl'
-	fi
-
-	# Windows installed browsers
-	alias ffox='firefox.exe'
-	alias gchrome='chrome.exe'
-
-	if command -v wsl-open &>/dev/null; then
-		alias open='wsl-open'
 	fi
 
 	function mount_drive() {

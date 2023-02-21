@@ -77,10 +77,8 @@ fi
 #   Setting proper host ip              - https://github.com/microsoft/WSL/issues/5816#issuecomment-760613983
 #   Remove pulse configs                - https://github.com/microsoft/WSL/issues/5816#issuecomment-755409888
 #   Editing /etc/pulse/default.pa       - https://github.com/microsoft/WSL/issues/5816#issuecomment-713702166
-if grep -i "microsoft" /proc/version &>/dev/null; then
+if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	# $PATHS
-	export PATH=$PATH:"/c/Program Files/Mozilla Firefox/"
-	export PATH=$PATH:"/c/Program Files (x86)/Google/Chrome/Application/"
 	export PATH=$PATH:"/c/wsl/bin/"
 
 	# Enable Vagrant access outisde of WSL.
@@ -156,7 +154,9 @@ fi
 # Requires neofetch or screenfetch, figlet and/or lolcat
 # Ref: https://stackoverflow.com/a/677212
 if [[ -n "$BASH_VERSION" ]]; then
-	if type neofetch &>/dev/null; then
+	if [[ $(grep -i "Microsoft" /proc/version) ]] && command -v wslfetch &>/dev/null; then
+		wslfetch
+	elif type neofetch &>/dev/null; then
 		neofetch
 	elif type screenfetch &>/dev/null; then
 		screenfetch
