@@ -23,7 +23,6 @@
 ~/Dev/my-repos/javascript-template-codes;https://github.com/marklcrns/javascript-template-codes.git
 ~/Dev/my-repos/surprise;https://github.com/marklcrns/surprise
 ~/Dev/my-repos/.secret;https://github.com/marklcrns/.secret
-~/Dev/cuda-samples;https://github.com/nvidia/cuda-samples
 ~/Dev/work-repos/cec-plc-plugs;https://github.com/derconnect-ucsd/cec-plc-plugs
 ~/Dev/cloned-repos/material-kit-react;https://github.com/minimal-ui-kit/material-kit-react
 ~/Dev/forked-repos/cisc187-sp21-fire24;https://github.com/marklcrns/cisc187-sp21-fire24
