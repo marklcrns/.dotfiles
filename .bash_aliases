@@ -9,6 +9,7 @@ alias reveille='gpullconf;pullalldevrepo;dotd -dV'
 alias taps='dotu -dV;gpushconf;pushalldevrepo'
 
 # Config files
+alias nvimc='nvim -u ~/.config/nvim/init_mininal.vim'
 alias vimrc='nvim ~/.vim/.vimrc'
 alias tmuxconf='nvim ~/.tmux.conf'
 alias bashrc='nvim ~/.bashrc'
@@ -890,9 +891,9 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 		alias wstart='wslview'
 	fi
 
-	# if command -v wsl-open &>/dev/null; then
-	#   alias open='wsl-open'
-	# fi
+	if command -v wsl-open &>/dev/null; then
+		alias open='wsl-open'
+	fi
 
 	if [[ -f '/c/wsl/bin/neovide.exe' ]]; then
 		alias nvide='/c/wsl/bin/neovide.exe --multigrid --nofork --notabs --frame=none --wsl'

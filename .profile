@@ -60,7 +60,12 @@ export TLDR_CODE='red'
 export TLDR_PARAM='blue'
 
 # Fix for Vimwiki perl error: https://stackoverflow.com/questions/2499794/how-to-fix-a-locale-setting-warning-from-perl
-export LC_ALL=C
+# Issues: /bin/bash: warning: setlocale: LANG: cannot change locale (en_US.UTF-8)
+#   Quickfix: run `sudo dpkg-reconfigure locales`, and select en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export LANG='en_US.UTF-8'
+export LC_CTYPE='en_US.UTF-8'
+export LC_ALL="en_US.UTF-8"
 
 # ez-install
 export EZ_INSTALL_HOME="${HOME}/.ez-install"
@@ -91,12 +96,15 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	HOST_IP=$(ip route | awk '/^default/{print $3; exit}')
 
 	# Workaround for WSL/WSL2 X Server not working
-	if grep -q "WSL2" /proc/version &>/dev/null; then
-		# WSL2
+	if grep -q "WSL2" /proc/version &>/dev/null; then # WSL2
 		export DISPLAY=$HOST_IP:0.0
 		export PULSE_SERVER=tcp:$HOST_IP
-	else
-		#WSL1
+		# Native DPI scaling. MUST turn off DPI Scaling in X-server
+		# Native DPI scaling is recommended for HiDPI monitors
+		# https://x410.dev/cookbook/running-x410-on-hidpi-screens/
+		export QT_SCALE_FACTOR=1
+		export GDK_SCALE=1
+	else # WSL1
 		export DISPLAY="${DISPLAY:-localhost:0.0}"
 		export PULSE_SERVER="${PULSE_SERVER:-tcp:127.0.0.1}"
 	fi
