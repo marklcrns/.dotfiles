@@ -141,7 +141,7 @@ font:
 
 window:
 
-  opacity: 0.85
+  # opacity: 0.85
 
   # Window dimensions (changes require restart)
   #
