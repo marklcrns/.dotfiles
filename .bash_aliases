@@ -886,13 +886,18 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 
 	if command -v wslview &>/dev/null; then
 		alias open='wslview'
-		alias wview='wslview'
+		alias wsl-open='wslview'
+		alias start='wslview'
 		alias wslstart='wslview'
 		alias wstart='wslview'
 	fi
 
 	if command -v wsl-open &>/dev/null; then
+		unalias wsl-open
 		alias open='wsl-open'
+		alias start='wsl-open'
+		alias wslstart='wsl-open'
+		alias wstart='wsl-open'
 	fi
 
 	if [[ -f '/c/wsl/bin/neovide.exe' ]]; then
