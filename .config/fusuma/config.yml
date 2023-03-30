@@ -1,0 +1,51 @@
+swipe:
+  3:
+    left:
+      workspace: "next" # Switch to previous workspace
+    right:
+      workspace: "prev" # Switch to previous workspace
+    up:
+      window:
+        maximized: toggle
+    down:
+      command: "xdotool key super+h" #hide
+  4:
+    left:
+      command: "xdotool key XF86AudioPrev" # Previous audio track
+    right:
+      command: "xdotool key XF86AudioNext" # Next audio track
+    up:
+      command: "xdotool key XF86AudioRaiseVolume" # Volume up
+    down:
+      command: "xdotool key XF86AudioLowerVolume" # Volume down
+pinch:
+  in:
+    command: "xdotool keydown ctrl click 4 keyup ctrl" # Zoom in
+    threshold: 0.3
+    interval: 0.2
+  out:
+    command: "xdotool keydown ctrl click 5 keyup ctrl" # Zoom out
+    threshold: 0.3
+    interval: 0.2
+tap:
+  3:
+    command: "xdotool click 2" # Mouse middle click
+  4:
+    command: "xdotool key XF86AudioPlay"
+hold:
+  3:
+    window: "next" # Move window to next workspace
+  4:
+    window: "close" # Close window
+interval:
+    rotate: 0.2
+
+threshold:
+    rotate: 0.5
+plugin:
+  inputs:
+    libinput_command_input: # options for lib/plugin/inputs/libinput_command_input
+      enable-tap: true # click to tap
+      enable-dwt: true # disable tap while typing
+      verbose: true
+      # show-keycodes: true # https://github.com/iberianpig/fusuma-plugin-keypress#add-show-keycode-option

@@ -10,6 +10,7 @@ DOTFILES_LIST=(
 	"${DOTFILES_LOCAL}/.bash_aliases"
 	"${DOTFILES_LOCAL}/.bash_profile"
 	"${DOTFILES_LOCAL}/.bashrc"
+	"${DOTFILES_LOCAL}/.config/fusuma/config.yml"
 	"${DOTFILES_LOCAL}/.config/ranger/rc.conf"
 	"${DOTFILES_LOCAL}/.config/ranger/rifle.conf"
 	"${DOTFILES_LOCAL}/.config/zathura/"
