@@ -17,23 +17,16 @@
 [core]
   excludesfile = ~/.gitignore_global
 # Resources:
-#   https://www.grzegorowski.com/using-vim-or-neovim-nvim-as-a-git-mergetool
-#   https://coderwall.com/p/qbtnsw/use-fugitive-as-git-mergetool
-#   https://github.com/tpope/vim-fugitive
-# [merge]
-#   tool = fugitive
-# [mergetool "fugitive"]
-#   cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"  # 3 way horizontal split
-#   cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"  # 3 way vertical split
-
-# Resources:
 #   https://www.rosipov.com/blog/use-vimdiff-as-git-mergetool/
 #   https://gist.github.com/karenyyng/f19ff75c60f18b4b8149
 #   https://stackoverflow.com/questions/14904644/how-do-i-use-vimdiff-to-resolve-a-git-merge-conflict
 [merge]
   tool = nvimdiff
 [mergetool "nvimdiff"]
-  cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J' -c 'call PrintMergeDiffMappings()'
+  ; diff 3-way
+  cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J' -c 'call PrintMergeDiffMappings()'
+  ; ; diff 4-way
+  ; cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J' -c 'call PrintMergeDiffMappings()'
 [mergetool]
   prompt = true
 [diff]

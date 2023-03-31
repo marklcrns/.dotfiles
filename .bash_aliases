@@ -41,6 +41,9 @@ alias flask='FLASK_APP=application.py FLASK_ENV=development FLASK_DEBUG=1 python
 
 # Python
 alias envactivate='source env/bin/activate'
+alias pyinit='python3 -m venv env && envactivate'
+alias pipgenreq='pip freeze > requirements.txt'
+alias pipinstreq='pip install -r requirements.txt'
 
 # Make native commands verbose
 alias mv='mv -v'
