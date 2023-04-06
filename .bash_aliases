@@ -26,9 +26,9 @@ alias aptinstall='sudo apt install -y'
 # Directory Aliases
 alias down='cd ~/Downloads'
 alias docs='cd ~/Documents'
-alias dev='cd ~/Dev'
+alias dev='cd ~/Documents/dev'
 alias drop='cd ~/Dropbox'
-alias dropd='cd ~/Dropbox/Dev'
+alias dropd='cd ~/Dropbox/dev'
 
 # tutorial https://www.youtube.com/watch?v=L9zfMeB2Zcc&app=desktop
 alias bsync='browser-sync start --server --files "*"'
@@ -286,7 +286,7 @@ statusrepo() {
 # Loop over lines in a variable: https://superuser.com/a/284226
 # Wait: https://stackoverflow.com/questions/49823080/use-bash-wait-in-for-loop
 # PID: https://www.cyberciti.biz/faq/linux-find-process-name/
-DEV_REPO_DIR="${HOME}/Dev"
+DEV_REPO_DIR="${HOME}/Documents/dev"
 DEV_REPO_LIST_NAME="devrepolist.txt"
 DEV_REPO_LIST_PATH=${DOTFILES}/${DEV_REPO_LIST_NAME}
 DEV_PULL_LIST_FILE="devpulllist.txt"
@@ -298,7 +298,7 @@ createalldevrepolists() {
 	CURRENT_DIR_SAVE=$(pwd)
 	# Get all dev repo and store in $DEV_REPO_LIST_PATH
 	# Convert home path to ~ and truncate .git
-	regex1="s,.*(/Dev/.*)/.git$,~\1,"
+	regex1="s,.*(/Documents/dev/.*)/.git$,~\1,"
 
 	# Create devpulllist.txt
 	find ${DEV_REPO_DIR} -name ".git" |
@@ -377,7 +377,7 @@ checkalldevrepos() {
 	PULL_DEV_LIST="$(cat ${DEV_PULL_LIST_PATH})" || return 1
 	PUSH_DEV_LIST="$(cat ${DEV_PUSH_LIST_PATH})" || return 1
 	# Find all dev repos and strip .git and home path substring and append ~/
-	regex1="s,.*(/Dev/.*)/.git$,~\1,"
+	regex1="s,.*(/Documents/dev/.*)/.git$,~\1,"
 	PULL_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" | sed -r "${regex1}")"
 	PUSH_DEV_REPO="$(find ${DEV_REPO_DIR} -name ".git" -not -path "*/cloned-repos/*" | sed -r "${regex1}")"
 
@@ -732,7 +732,7 @@ alias runpg='sudo -u postgres psql'
 
 # Rclonesynv-V2
 REMOTE="GoogleDrive:Dev"
-DEV="~/Dev"
+DEV="~/Documents/dev"
 # Resources: https://forum.rclone.org/t/how-to-speed-up-google-drive-sync/8444/9
 RCLONE_ARGS="--copy-links --fast-list --transfers=40 --checkers=40 --tpslimit=10 --drive-chunk-size=1M"
 
@@ -752,8 +752,8 @@ alias rcs="rclonesync.py --verbose --filters-file ~/.rclonesyncwd/Filters"
 # Rclone
 alias rccopy="rclone copy -vvP ${RCLONE_ARGS}"
 alias rcsync="rclone sync -vvP ${RCLONE_ARGS}"
-alias rcdevrmt="rclone sync ~/Dev GoogleDrive:Dev --backup-dir GoogleDrive:$(date '+%Y-%m-%d').Dev.bak -vvP ${RCLONE_ARGS}"
-alias rcrmtdev="rclone sync GoogleDrive:Dev ~/Dev --backup-dir $(date '+%Y-%m-%d').Dev.bak -vvP ${RCLONE_ARGS}"
+alias rcdevrmt="rclone sync ${DEV} GoogleDrive:Dev --backup-dir GoogleDrive:$(date '+%Y-%m-%d').Dev.bak -vvP ${RCLONE_ARGS}"
+alias rcrmtdev="rclone sync GoogleDrive:Dev ${DEV} --backup-dir $(date '+%Y-%m-%d').Dev.bak -vvP ${RCLONE_ARGS}"
 
 # Rsync
 alias rsync="sudo rsync -ahHv --stats --no-inc-recursive --delete --delete-after"
