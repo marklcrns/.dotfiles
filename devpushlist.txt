@@ -46,3 +46,4 @@
 ~/Documents/dev/my-repos/surprise;https://github.com/marklcrns/surprise
 ~/Documents/dev/my-repos/.secret;https://github.com/marklcrns/.secret
 ~/Documents/dev/forked-repos/cisc187-sp21-fire24;https://github.com/marklcrns/cisc187-sp21-fire24
+~/Documents/dev/work-repos/cec-plc-kafka-telegraf;https://github.com/derconnect-ucsd/cec-plc-kafka-telegraf
