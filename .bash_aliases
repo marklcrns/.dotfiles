@@ -31,7 +31,7 @@ alias drop='cd ~/Dropbox'
 alias dropd='cd ~/Dropbox/dev'
 
 # tutorial https://www.youtube.com/watch?v=L9zfMeB2Zcc&app=desktop
-alias bsync='browser-sync start --server --files "*"'
+alias bsync='browser-sync start --server --files "**/*"'
 # Proxy configured to work with Django
 # https://www.metaltoad.com/blog/instant-reload-django-npm-and-browsersync
 alias bsync-proxy='browser-sync start --proxy 127.0.0.1:8000 --files "*"'
