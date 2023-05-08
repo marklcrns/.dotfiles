@@ -38,6 +38,7 @@ DOTFILES_LIST=(
 	"${DOTFILES_LOCAL}/Sync/.stglobalignore"
 	"${DOTFILES_LOCAL}/Sync/.stglobalignoredev"
 	"${DOTFILES_LOCAL}/.tmux.conf"
+	"${DOTFILES_LOCAL}/.tmux/custom-macros"
 	"${DOTFILES_LOCAL}/.tmux/vim_tmux_pipenv_workaround.sh"
 	"${DOTFILES_LOCAL}/.tmux/wsl_statusline.conf"
 	"${DOTFILES_LOCAL}/.tmux/wsl_tmux_statusline.sh"
