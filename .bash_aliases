@@ -758,6 +758,9 @@ alias rcrmtdev="rclone sync GoogleDrive:Dev ${DEV} --backup-dir $(date '+%Y-%m-%
 # Rsync
 alias rsync="sudo rsync -ahHv --stats --no-inc-recursive --delete --delete-after"
 
+# Syncthing
+alias stg="open http://localhost:8384"
+
 MY_ENV_FILE='/etc/profile.d/jdk_environment.sh'
 
 # Alternative dynamic JAVA_HOME

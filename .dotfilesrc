@@ -35,6 +35,8 @@ DOTFILES_LIST=(
 	"${DOTFILES_LOCAL}/.rclonesyncwd/Filters"
 	"${DOTFILES_LOCAL}/.ripgreprc"
 	"${DOTFILES_LOCAL}/.scimrc"
+	"${DOTFILES_LOCAL}/Sync/.stglobalignore"
+	"${DOTFILES_LOCAL}/Sync/.stglobalignoredev"
 	"${DOTFILES_LOCAL}/.tmux.conf"
 	"${DOTFILES_LOCAL}/.tmux/vim_tmux_pipenv_workaround.sh"
 	"${DOTFILES_LOCAL}/.tmux/wsl_statusline.conf"

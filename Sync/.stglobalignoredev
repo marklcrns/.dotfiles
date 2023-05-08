@@ -1,0 +1,7 @@
+// .stglobalignoredev
+
+// ┌─────────────┐
+// │ Build Files │
+// └─────────────┘
+**/env
+**/node_modules
