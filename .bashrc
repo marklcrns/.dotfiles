@@ -75,7 +75,7 @@ unset color_prompt force_color_prompt
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm* | rxvt*)
-	PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+	PS1="\[\e]0;${debian_chroot:-}\u@\h: \w\a\]$PS1"
 	;;
 *) ;;
 esac
@@ -129,6 +129,7 @@ fi
 # https://www.youtube.com/watch?v=qgg5jhi_els
 # https://remysharp.com/2018/08/23/cli-improved
 if [[ -f ~/.fzf.bash ]]; then
+  . ~/.fzf.bash
 	# use ~~ as the trigger sequence instead of the default **
 	#export FZF_COMPLETION_TRIGGER='~~'
 

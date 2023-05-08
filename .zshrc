@@ -197,6 +197,8 @@ fi
 # https://www.youtube.com/watch?v=qgg5jhi_els
 # https://remysharp.com/2018/08/23/cli-improved
 if [[ -f ~/.fzf.zsh ]]; then
+  . ~/.fzf.zsh
+
   # use ~~ as the trigger sequence instead of the default **
   #export FZF_COMPLETION_TRIGGER='~~'
 
