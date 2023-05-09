@@ -191,16 +191,13 @@ alias openrepo=browsegithubrepo
 # Check if in git repo: https://stackoverflow.com/questions/2180270/check-if-current-directory-is-a-git-repository
 export CONF_REPO_LIST="\
   ${DOTFILES}
-  ${HOME}/.cache/vim/session/
-  ${HOME}/.config/nvim/UltiSnips/
+  ${HOME}/.config/nvim/snippets/
   ${HOME}/.config/nvim/
   ${HOME}/.task/
   ${HOME}/.timewarrior/
   ${HOME}/.tmuxinator/
   ${HOME}/Documents/my-wiki/
-  ${HOME}/Documents/my-neorg/
   ${HOME}/Documents/my-zettelkasten/
-  ${HOME}/Documents/mcwp-research/
   ${HOME}/scripts/
   ${HOME}/.ez-install.d/
 "
