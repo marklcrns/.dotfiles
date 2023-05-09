@@ -46,7 +46,6 @@ DOTFILES_LIST=(
 	"${DOTFILES_LOCAL}/.zshenv"
 	"${DOTFILES_LOCAL}/.zshrc"
 	"${DOTFILES_LOCAL}/bin/"
-	"${DOTFILES_LOCAL}/texmf/"
 )
 
 DOTFILES_IGNORE_LIST=(
