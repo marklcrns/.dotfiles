@@ -29,6 +29,7 @@ alias docs='cd ~/Documents'
 alias dev='cd ~/Documents/dev'
 alias drop='cd ~/Dropbox'
 alias dropd='cd ~/Dropbox/dev'
+alias dev='cd ~/Documents/dev'
 
 # tutorial https://www.youtube.com/watch?v=L9zfMeB2Zcc&app=desktop
 alias bsync='browser-sync start --server --files "**/*"'
@@ -758,6 +759,9 @@ alias rsync="sudo rsync -ahHv --stats --no-inc-recursive --delete --delete-after
 
 # Syncthing
 alias stg="open http://localhost:8384"
+alias st="cd ~/Sync/"
+alias stdev="cd ~/Sync/dev/"
+alias stnote="cd ~/Sync/notes/"
 
 MY_ENV_FILE='/etc/profile.d/jdk_environment.sh'
 
