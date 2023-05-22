@@ -44,12 +44,15 @@ export PATH=$PATH:$HOME/.npm-global/bin
 
 # ==================== OTHER GLOBAL VARIABLES ==================== #
 
-# Ripgrep global flags
-export RIPGREP_CONFIG_PATH=~/.ripgreprc
-
 # Default editor
 export VISUAL="nvim"
 export EDITOR=$VISUAL
+
+# Ripgrep global flags
+export RIPGREP_CONFIG_PATH=~/.ripgreprc
+
+# Tmuxinator config
+export TMUXINATOR_CONFIG=~/Sync/cache/tmuxinator
 
 # Tldr Config
 # Repo: https://github.com/raylee/tldr
