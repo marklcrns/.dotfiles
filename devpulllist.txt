@@ -27,3 +27,4 @@
 ~/Documents/dev/cloned-repos/material-kit-react;https://github.com/minimal-ui-kit/material-kit-react
 ~/Documents/dev/forked-repos/cisc187-sp21-fire24;https://github.com/marklcrns/cisc187-sp21-fire24
 ~/Documents/dev/work-repos/cec-plc-kafka-telegraf;https://github.com/derconnect-ucsd/cec-plc-kafka-telegraf
+~/Documents/dev/work-repos/cse110-sp23-group15;https://github.com/cse110-sp23-group15/cse110-sp23-group15
