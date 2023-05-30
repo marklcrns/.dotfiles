@@ -5,8 +5,8 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-alias reveille='gpullconf;pullalldevrepo;dotd -dV'
-alias taps='dotu -dV;gpushconf;pushalldevrepo'
+alias reveille='gpullconf;pullalldevrepo;dotd -V'
+alias taps='dotu -V;gpushconf;pushalldevrepo'
 
 # Config files
 alias nvimc='nvim -u ~/.config/nvim/init_mininal.vim'
