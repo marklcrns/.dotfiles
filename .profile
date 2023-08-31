@@ -118,8 +118,8 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	# Export Windows username if in WSL
 	# 2>/dev/null to suppress UNC paths are not supported error
 	export WIN_USERNAME="$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)"
-	export WIN_APPDATA="/c/Users/${WIN_USERNAME}/AppData/Roaming"
-	export WIN_HOME="/c/Users/${WIN_USERNAME}"
+	export WIN_APPDATA="/mnt/c/Users/${WIN_USERNAME}/AppData/Roaming"
+	export WIN_HOME="/mnt/c/Users/${WIN_USERNAME}"
 
 	# Launch with wslview
 	export BROWSER="wslview"
