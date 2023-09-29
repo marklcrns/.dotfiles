@@ -857,9 +857,9 @@ alias on="gtd -lmspt"
 alias mux="tmuxinator"
 
 # Remove zone modifiers, attributes
-alias rmzone='find . -name "*Zone.*" -type f && find . -name "*Zone.*" -type f -delete'
+alias rmzone='find . -name "*Zone.Identifier" -type f && find . -name "*Zone.Identifier" -type f -delete'
 alias rmdattrs='find . -name "*dropbox.attrs" -type f && find . -name "*dropbox.attrs" -type f -delete'
-alias rmwinjunk='find . \( -name "*Zone.*" -o -name "*dropbox.attrs" -o -name "desktop.ini" \) -type f && find . \( -name "*Zone.*" -o -name "*dropbox.attrs" -o -name "desktop.ini" \) -type f -delete'
+alias rmwinjunk='find . \( -name "*Zone.Identifier" -o -name "*dropbox.attrs" -o -name "desktop.ini" \) -type f && find . \( -name "*Zone.Identifier" -o -name "*dropbox.attrs" -o -name "desktop.ini" \) -type f -delete'
 
 # Neovide
 alias nvide='neovide --multigrid --nofork --notabs --frame=none'
