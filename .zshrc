@@ -305,3 +305,5 @@ if hash direnv &> /dev/null; then
   eval "$(direnv hook bash)"
 fi
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+[ -f "/home/marklcrns/.ghcup/env" ] && source "/home/marklcrns/.ghcup/env" # ghcup-env
