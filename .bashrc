@@ -233,3 +233,5 @@ export NVM_DIR="$HOME/.nvm"
 if hash direnv &>/dev/null; then
 	eval "$(direnv hook bash)"
 fi
+
+export QSYS_ROOTDIR="/home/marklcrns/intelFPGA_lite/20.1/quartus/sopc_builder/bin"
