@@ -862,7 +862,7 @@ alias rmdattrs='find . -name "*dropbox.attrs" -type f && find . -name "*dropbox.
 alias rmwinjunk='find . \( -name "*Zone.Identifier" -o -name "*dropbox.attrs" -o -name "desktop.ini" \) -type f && find . \( -name "*Zone.Identifier" -o -name "*dropbox.attrs" -o -name "desktop.ini" \) -type f -delete'
 
 # Neovide
-alias nvide='neovide --multigrid --nofork --notabs --frame=none'
+alias nvide='neovide --multigrid --nofork --frameless'
 
 # WSL aliases
 if [[ $(grep -i "Microsoft" /proc/version) ]]; then
@@ -909,9 +909,9 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	fi
 
 	if [[ -f '/c/wsl/bin/neovide.exe' ]]; then
-		alias nvide='/c/wsl/bin/neovide.exe --multigrid --nofork --notabs --frame=none --wsl'
+		alias nvide='/c/wsl/bin/neovide.exe --multigrid --nofork --frameless --wsl'
 	else
-		alias nvide='neovide --multigrid --nofork --notabs --frame=none --wsl'
+		alias nvide='neovide --multigrid --nofork --frameless --wsl'
 	fi
 
 	function mount_drive() {
