@@ -180,3 +180,4 @@ if [[ -n "$BASH_VERSION" ]]; then
 fi
 
 export QSYS_ROOTDIR="/home/marklcrns/intelFPGA_lite/20.1/quartus/sopc_builder/bin"
+. "$HOME/.cargo/env"

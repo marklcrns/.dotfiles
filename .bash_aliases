@@ -760,6 +760,7 @@ alias rsync="sudo rsync -ahHv --stats --no-inc-recursive --delete --delete-after
 # Syncthing
 alias stg="open http://localhost:8384"
 alias st="cd ~/Sync/"
+alias stmain="cd ~/Sync/main/"
 alias stdev="cd ~/Sync/dev/"
 alias stnote="cd ~/Sync/notes/"
 
