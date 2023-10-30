@@ -306,5 +306,4 @@ if hash direnv &> /dev/null; then
 fi
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-#[ -f "/home/marklcrns/.ghcup/env" ] && source "/home/marklcrns/.ghcup/env" # ghcup-env
-[ -f "/home/markl/.ghcup/env" ] && source "/home/markl/.ghcup/env" # ghcup-env
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env

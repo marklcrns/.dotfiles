@@ -902,7 +902,6 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	fi
 
 	if command -v wsl-open &>/dev/null; then
-		unalias wsl-open
 		alias open='wsl-open'
 		alias start='wsl-open'
 		alias wslstart='wsl-open'
