@@ -889,9 +889,8 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	alias secbrowse="cd /c/Users/${WIN_USERNAME}/Documents/Secure; explorer.exe .; cd -"
 
 	# Running Windows executable
-	alias cmd='cmd.exe /C'
-	alias pows='powershell.exe /C'
-	alias exp='explorer.exe'
+	alias cmd='/mnt/c/Windows/system32/cmd.exe /C'
+	alias exp='/mnt/c/Windows/explorer.exe'
 
 	if command -v wslview &>/dev/null; then
 		alias open='wslview'

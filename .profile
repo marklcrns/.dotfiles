@@ -87,7 +87,7 @@ fi
 #   Editing /etc/pulse/default.pa       - https://github.com/microsoft/WSL/issues/5816#issuecomment-713702166
 if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	# $PATHS
-	export PATH=$PATH:"/c/wsl/bin/"
+	export PATH=$PATH:"/mnt/c/wsl/bin/"
 
 	# Enable Vagrant access outisde of WSL.
 	export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
@@ -179,5 +179,5 @@ fi
 
 export QSYS_ROOTDIR="/home/marklcrns/intelFPGA_lite/20.1/quartus/sopc_builder/bin"
 . "$HOME/.cargo/env"
-export GDK_SCALE=1 #GWSL
+export GDK_SCALE=1       #GWSL
 export QT_SCALE_FACTOR=1 #GWSL
