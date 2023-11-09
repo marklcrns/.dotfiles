@@ -168,6 +168,8 @@ alias commit='git commit'
 alias commitall='git add . && git commit'
 # Ref: https://nickymeuleman.netlify.app/blog/delete-git-branches
 alias gdub='git fetch --prune && git branch --merged | egrep -v "(^\*|master|main|dev)" | xargs git branch -d'
+# Ref: https://stackoverflow.com/a/70690138
+alias gitzip="git archive HEAD -o ${PWD##*/}.zip"
 
 # Recursively store files over the given size in current dir into git-lfs
 # Default size = 100 (MiB)
