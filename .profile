@@ -111,7 +111,8 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	fi
 
 	export NO_AT_BRIDGE=1
-	export LIBGL_ALWAYS_INDIRECT=1
+	# NOTE: This is a workaround for WSL2. WSL2 does not support OpenGL
+	export LIBGL_ALWAYS_INDIRECT=0
 
 	# Export Windows username if in WSL
 	# 2>/dev/null to suppress UNC paths are not supported error
