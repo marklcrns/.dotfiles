@@ -3,5 +3,6 @@
 // ┌─────────────┐
 // │ Build Files │
 // └─────────────┘
+**/build
 **/env
 **/node_modules
