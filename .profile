@@ -45,9 +45,12 @@ export PATH=$PATH:$HOME/.npm-global/bin
 # ==================== OTHER GLOBAL VARIABLES ==================== #
 
 # System defaults
-export VISUAL="nvim"
+export VISUAL="vim"
+if [[ -e "/usr/bin/nvim" ]]; then
+	export VISUAL="nvim"
+fi
 export EDITOR=$VISUAL
-export BROWSER="firefox"
+export BROWSER="/usr/bin/firefox"
 
 # Ripgrep global flags
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
@@ -93,7 +96,7 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	export WIN_APPDATA="/mnt/c/Users/${WIN_USERNAME}/AppData/Roaming"
 	export WIN_HOME="/mnt/c/Users/${WIN_USERNAME}"
 
-  export BROWSER=wsl-open
+	export BROWSER=wsl-open
 
 	# $PATHS
 	export PATH=$PATH:"${WIN_HOME}/wsl/bin/"
