@@ -64,9 +64,6 @@ if grep -i "microsoft" /proc/version &>/dev/null; then
 		"/etc/wsl.conf"
 		"${WIN_HOME}/.wslconfig"
 		"${WIN_HOME}/AppData/Roaming/alacritty/alacritty.yml"
-		"${DOTFILES_LOCAL}/.config/mimeapps.list"
-		"${DOTFILES_LOCAL}/.local/share/applications/firefox-windows.desktop"
-		"${DOTFILES_LOCAL}/.local/share/applications/google-chrome-windows.desktop"
 	)
 fi
 
