@@ -36,6 +36,7 @@
 (?d)Thumbs.db
 (?d)$RECYCLE.BIN
 (?d)System Volume Information
+(?d)*.Zone.Identifier
 
 // ┌──────────┐
 // │ QNAP QTS │
