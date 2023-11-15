@@ -93,6 +93,8 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	export WIN_APPDATA="/mnt/c/Users/${WIN_USERNAME}/AppData/Roaming"
 	export WIN_HOME="/mnt/c/Users/${WIN_USERNAME}"
 
+  export BROWSER=wsl-open
+
 	# $PATHS
 	export PATH=$PATH:"${WIN_HOME}/wsl/bin/"
 
@@ -112,6 +114,9 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 		# Native DPI scaling. MUST turn off DPI Scaling in X-server
 		# Native DPI scaling is recommended for HiDPI monitors
 		# https://x410.dev/cookbook/running-x410-on-hidpi-screens/
+
+		# For running WSLg along with X410
+		export GDK_BACKEND=x11
 	else # WSL1
 		export DISPLAY="${DISPLAY:-localhost:0.0}"
 		export PULSE_SERVER="${PULSE_SERVER:-tcp:127.0.0.1}"
