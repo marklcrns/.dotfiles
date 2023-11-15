@@ -44,9 +44,10 @@ export PATH=$PATH:$HOME/.npm-global/bin
 
 # ==================== OTHER GLOBAL VARIABLES ==================== #
 
-# Default editor
+# System defaults
 export VISUAL="nvim"
 export EDITOR=$VISUAL
+export BROWSER="firefox"
 
 # Ripgrep global flags
 export RIPGREP_CONFIG_PATH=~/.ripgreprc
