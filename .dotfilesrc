@@ -58,7 +58,7 @@ if grep -i "microsoft" /proc/version &>/dev/null; then
 	# Append to DOTFILES_LIST
 	DOTFILES_LIST_WSL=(
 		"/etc/wsl.conf"
-		"/mnt/c/wsl/"
+		"${WIN_HOME}/wsl/"
 		"${WIN_HOME}/.wslconfig"
 		"${WIN_HOME}/AppData/Roaming/alacritty/alacritty.yml"
 	)

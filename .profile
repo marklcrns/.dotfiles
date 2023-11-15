@@ -86,8 +86,14 @@ fi
 #   Remove pulse configs                - https://github.com/microsoft/WSL/issues/5816#issuecomment-755409888
 #   Editing /etc/pulse/default.pa       - https://github.com/microsoft/WSL/issues/5816#issuecomment-713702166
 if [[ $(grep -i "Microsoft" /proc/version) ]]; then
+	# Export Windows username if in WSL
+	# 2>/dev/null to suppress UNC paths are not supported error
+	export WIN_USERNAME="$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)"
+	export WIN_APPDATA="/mnt/c/Users/${WIN_USERNAME}/AppData/Roaming"
+	export WIN_HOME="/mnt/c/Users/${WIN_USERNAME}"
+
 	# $PATHS
-	export PATH=$PATH:"/mnt/c/wsl/bin/"
+	export PATH=$PATH:"${WIN_HOME}/wsl/bin/"
 
 	# Enable Vagrant access outisde of WSL.
 	export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
@@ -113,15 +119,6 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	export NO_AT_BRIDGE=1
 	# NOTE: This is a workaround for WSL2. WSL2 does not support OpenGL
 	export LIBGL_ALWAYS_INDIRECT=0
-
-	# Export Windows username if in WSL
-	# 2>/dev/null to suppress UNC paths are not supported error
-	export WIN_USERNAME="$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)"
-	export WIN_APPDATA="/mnt/c/Users/${WIN_USERNAME}/AppData/Roaming"
-	export WIN_HOME="/mnt/c/Users/${WIN_USERNAME}"
-
-	# Launch with wslview
-	export BROWSER="wslview"
 fi
 
 # Ref: https://unix.stackexchange.com/a/139787
