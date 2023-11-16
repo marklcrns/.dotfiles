@@ -761,6 +761,8 @@ alias rsync="sudo rsync -ahHv --stats --no-inc-recursive --delete --delete-after
 
 # Syncthing
 alias stg="open http://localhost:8384"
+alias ststop="sudo systemctl stop --now syncthing@${USER}.service"
+alias ststart="sudo systemctl start --now syncthing@${USER}.service"
 alias st="cd ~/Sync/"
 alias stmain="cd ~/Sync/main/"
 alias stdev="cd ~/Sync/dev/"
