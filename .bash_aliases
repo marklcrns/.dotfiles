@@ -767,6 +767,7 @@ alias st="cd ~/Sync/"
 alias stmain="cd ~/Sync/main/"
 alias stdev="cd ~/Sync/dev/"
 alias stnote="cd ~/Sync/notes/"
+alias strmconf='find . -name "*sync-conflict*" -type f && find . -name "*sync-conflict*" -type f -delete'
 
 MY_ENV_FILE='/etc/profile.d/jdk_environment.sh'
 
