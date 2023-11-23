@@ -873,25 +873,24 @@ alias nvide='neovide --multigrid --nofork --frameless'
 # WSL aliases
 if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	# Directory Aliases
-	alias winhome="cd /c/Users/${WIN_USERNAME}"
-	alias windocs="cd /c/Users/${WIN_USERNAME}/Documents"
-	alias wintrade="cd /c/Users/${WIN_USERNAME}/OneDrive/Trading/Stocks"
-	alias windown="cd /c/Users/${WIN_USERNAME}/Downloads"
-	alias gdrv="cd /c/Users/${WIN_USERNAME}/Google Drive"
-	alias odrv="cd /c/Users/${WIN_USERNAME}/OneDrive"
-	alias drop="cd /c/Users/${WIN_USERNAME}/Dropbox"
-	alias dropd="cd /c/Users/${WIN_USERNAME}/Dropbox/Dev"
-	alias winproj="cd /c/Users/${WIN_USERNAME}/Projects/"
-	alias winbin="cd /c/bin"
+	alias winhome="cd ${WIN_HOME}"
+	alias windocs="cd ${WIN_HOME}/Documents"
+	alias wintrade="cd ${WIN_HOME}/OneDrive/Trading/Stocks"
+	alias windown="cd ${WIN_HOME}/Downloads"
+	alias gdrv="cd ${WIN_HOME}/Google Drive"
+	alias odrv="cd ${WIN_HOME}/OneDrive"
+	alias drop="cd ${WIN_HOME}/Dropbox"
+	alias dropd="cd ${WIN_HOME}/Dropbox/Dev"
+	alias winproj="cd ${WIN_HOME}/Projects/"
 
 	# Secure files Aliases
-	alias secenter="cd /c/Users/${WIN_USERNAME}/Documents; cmd.exe /C Secure.bat; cd ./Secure"
-	alias seclock="cd /c/Users/${WIN_USERNAME}/Documents; cmd.exe /c Secure.bat"
-	alias sec="cd /c/Users/${WIN_USERNAME}/Documents/Secure"
-	alias secfiles="cd /c/Users/${WIN_USERNAME}/Documents/Secure"
-	alias secdocs="cd /c/Users/${WIN_USERNAME}/Documents/Secure/EDocs"
-	alias secpersonal="cd /c/Users/${WIN_USERNAME}/Documents/Secure/Personal"
-	alias secbrowse="cd /c/Users/${WIN_USERNAME}/Documents/Secure; explorer.exe .; cd -"
+	alias secenter="cd ${WIN_HOME}/Documents; cmd.exe /C Secure.bat; cd ./Secure"
+	alias seclock="cd ${WIN_HOME}/Documents; cmd.exe /c Secure.bat"
+	alias sec="cd ${WIN_HOME}/Documents/Secure"
+	alias secfiles="cd ${WIN_HOME}/Documents/Secure"
+	alias secdocs="cd ${WIN_HOME}/Documents/Secure/EDocs"
+	alias secpersonal="cd ${WIN_HOME}/Documents/Secure/Personal"
+	alias secbrowse="cd ${WIN_HOME}/Documents/Secure; explorer.exe .; cd -"
 
 	# Running Windows executable
 	alias cmd='/mnt/c/Windows/system32/cmd.exe /C'
