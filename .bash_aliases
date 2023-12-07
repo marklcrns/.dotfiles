@@ -868,7 +868,7 @@ alias rmdattrs='find . -name "*dropbox.attrs" -type f && find . -name "*dropbox.
 alias rmwinjunk='find . \( -name "*Zone.Identifier" -o -name "*dropbox.attrs" -o -name "desktop.ini" \) -type f && find . \( -name "*Zone.Identifier" -o -name "*dropbox.attrs" -o -name "desktop.ini" \) -type f -delete'
 
 # Neovide
-alias nvide='neovide --multigrid --nofork --frameless'
+alias nvide='neovide --no-fork'
 
 # WSL aliases
 if [[ $(grep -i "Microsoft" /proc/version) ]]; then
@@ -893,8 +893,8 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	alias secbrowse="cd ${WIN_HOME}/Documents/Secure; explorer.exe .; cd -"
 
 	# Running Windows executable
-	alias cmd='/mnt/c/Windows/system32/cmd.exe /C'
-	alias exp='/mnt/c/Windows/explorer.exe'
+	alias cmd="${WIN_ROOT}/Windows/system32/cmd.exe /C"
+	alias exp="${WIN_ROOT}/Windows/explorer.exe"
 
 	if command -v wslview &>/dev/null; then
 		alias open='wslview'
@@ -911,11 +911,13 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 		alias wstart='wsl-open'
 	fi
 
-	if [[ -f '/c/wsl/bin/neovide.exe' ]]; then
-		alias nvide='/c/wsl/bin/neovide.exe --multigrid --nofork --frameless --wsl'
-	else
-		alias nvide='neovide --multigrid --nofork --frameless --wsl'
-	fi
+	# if [[ -f "${WIN_WSL_BIN}/neovide.exe" ]]; then
+	# 	alias nvide="${WIN_WSL_BIN}/neovide.exe --nofork --wsl"
+	# else
+	# 	alias nvide='neovide --no-fork --size=1280x720 --wsl'
+	# fi
+
+	alias nvide='neovide --no-fork --size=1280x720 --wsl'
 
 	function mount_drive() {
 		if [[ -z "${1+x}" ]]; then

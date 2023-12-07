@@ -92,14 +92,16 @@ fi
 if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	# Export Windows username if in WSL
 	# 2>/dev/null to suppress UNC paths are not supported error
+	export WIN_ROOT="/mnt/c"
 	export WIN_USERNAME="$(cmd.exe /c "<nul set /p=%USERNAME%" 2>/dev/null)"
-	export WIN_APPDATA="/mnt/c/Users/${WIN_USERNAME}/AppData/Roaming"
-	export WIN_HOME="/mnt/c/Users/${WIN_USERNAME}"
+	export WIN_APPDATA="${WIN_ROOT}/Users/${WIN_USERNAME}/AppData/Roaming"
+	export WIN_HOME="${WIN_ROOT}/Users/${WIN_USERNAME}"
+	export WIN_WSL_BIN="${WIN_HOME}/wsl/bin"
 
 	export BROWSER=wsl-open
 
 	# $PATHS
-	export PATH=$PATH:"${WIN_HOME}/wsl/bin/"
+	export PATH=$PATH:"${WIN_WSL_BIN}"
 
 	# Enable Vagrant access outisde of WSL.
 	export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS="1"
