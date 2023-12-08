@@ -87,6 +87,9 @@ alias vs='xclip -o -selection'
 alias nvimfzf='nvim "$(fzf)"'
 alias vimfzf='vim "$(fzf)"'
 
+# headless neovim server localhost:7777
+alias nvimh='nohup nvim --listen 127.0.0.1:7777 --headless </dev/null >/dev/null 2>&1'
+
 # leetcode-cli
 alias lc='leetcode'
 alias lcgen='leetcode show -gxe -l java'
@@ -917,7 +920,19 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	# 	alias nvide='neovide --no-fork --size=1280x720 --wsl'
 	# fi
 
-	alias nvide='neovide --no-fork --size=1280x720 --wsl'
+	alias nvide='neovide --no-fork --size=1920x1080 --wsl'
+
+	function neovide_headless() {
+		local args=()
+		local arg
+		for arg in "$@"; do
+			args+=("$arg")
+		done
+		nvimh "${args[@]}" &
+		neovide.exe --remote-tcp=127.0.0.1:7777 --multigrid
+	}
+	# headless neovide
+	alias nvideh='neovide_headless'
 
 	function mount_drive() {
 		if [[ -z "${1+x}" ]]; then

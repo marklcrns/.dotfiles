@@ -192,38 +192,6 @@ fi
 [[ ! -f /usr/share/autojump/autojump.sh ]] ||
 	. /usr/share/autojump/autojump.sh
 
-# Codi
-# Usage: codi [filetype] [filename]
-codi() {
-	local syntax="${1:-python}"
-	shift
-	nvim -c \
-		"let g:startify_disable_at_vimenter = 1 |\
-    set bt=nofile ls=0 noru nonu nornu |\
-    hi ColorColumn ctermbg=NONE |\
-    hi VertSplit ctermbg=NONE |\
-    hi NonText ctermfg=0 |\
-    Codi $syntax" "$@"
-}
-
-# shows if any TaskWarrior tasks are in need of attention
-function task_indicator {
-	if [ $(task +READY +OVERDUE count) -gt "0" ]; then
-		printf "%b" "\u$OVERDUE"
-	elif [ $(task +READY +DUETODAY count) -gt "0" ]; then
-		printf "%b" "\u$DUETODAY"
-	elif [ $(task +READY +DUETomorrow count) -gt "0" ]; then
-		printf "%b" "\u$DUETOMORROW"
-	elif [ $(task +READY urgency \> 10 count) -gt "0" ]; then
-		printf "%b" "\u$URGENT"
-	else
-		printf "%b" "\u$OK"
-	fi
-}
-task="\$(task_indicator)"
-addprompt=$task
-PROMPT="$addprompt $PROMPT"
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion

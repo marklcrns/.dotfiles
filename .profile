@@ -168,23 +168,30 @@ if [ -n "$PATH" ]; then
 	unset old_PATH x
 fi
 
+# Disabled since it causes issues with integration with other programs
+# because it outputs to stdout. This is a problem when other programs
+# runs the shell and reads the output.
+# Known issues:
+# - VSCode Neovim extension
+# - Neovide can't establish PATH properly and find nvim binary in WSL
+#
 # If running bash, display custom graphics
 # Requires neofetch or screenfetch, figlet and/or lolcat
 # Ref: https://stackoverflow.com/a/677212
-if [[ -n "$BASH_VERSION" ]]; then
-	if [[ $(grep -i "Microsoft" /proc/version) ]] && command -v wslfetch &>/dev/null; then
-		wslfetch
-	elif type neofetch &>/dev/null; then
-		neofetch
-	elif type screenfetch &>/dev/null; then
-		screenfetch
-	fi
-	if hash fortune &>/dev/null && hash lolcat &>/dev/null; then
-		fortune | lolcat
-	elif hash fortune &>/dev/null; then
-		fortune
-	fi
-fi
+# if [[ -n "$BASH_VERSION" ]]; then
+# 	if [[ $(grep -i "Microsoft" /proc/version) ]] && command -v wslfetch &>/dev/null; then
+# 		wslfetch
+# 	elif type neofetch &>/dev/null; then
+# 		neofetch
+# 	elif type screenfetch &>/dev/null; then
+# 		screenfetch
+# 	fi
+# 	if hash fortune &>/dev/null && hash lolcat &>/dev/null; then
+# 		fortune | lolcat
+# 	elif hash fortune &>/dev/null; then
+# 		fortune
+# 	fi
+# fi
 
 export QSYS_ROOTDIR="/home/marklcrns/intelFPGA_lite/20.1/quartus/sopc_builder/bin"
 . "$HOME/.cargo/env"
