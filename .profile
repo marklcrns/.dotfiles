@@ -195,5 +195,5 @@ fi
 
 export QSYS_ROOTDIR="/home/marklcrns/intelFPGA_lite/20.1/quartus/sopc_builder/bin"
 . "$HOME/.cargo/env"
-export GDK_SCALE=1       #GWSL
+export GDK_SCALE=1 #GWSL
 export QT_SCALE_FACTOR=1 #GWSL
