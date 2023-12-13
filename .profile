@@ -46,7 +46,7 @@ export PATH=$PATH:$HOME/.npm-global/bin
 
 # System defaults
 export VISUAL="vim"
-if [[ -e "/usr/bin/nvim" ]]; then
+if command -v nvim &>/dev/null; then
 	export VISUAL="nvim"
 fi
 export EDITOR=$VISUAL
@@ -195,5 +195,5 @@ fi
 
 export QSYS_ROOTDIR="/home/marklcrns/intelFPGA_lite/20.1/quartus/sopc_builder/bin"
 . "$HOME/.cargo/env"
-export GDK_SCALE=1 #GWSL
+export GDK_SCALE=1       #GWSL
 export QT_SCALE_FACTOR=1 #GWSL
