@@ -929,7 +929,7 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 			args+=("$arg")
 		done
 		nvimh "${args[@]}" &
-		neovide.exe --remote-tcp=127.0.0.1:7777 --multigrid
+		neovide.exe --remote-tcp=127.0.0.1:7777
 	}
 	# headless neovide
 	alias nvideh='neovide_headless'
