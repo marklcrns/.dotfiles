@@ -201,7 +201,6 @@ export CONF_REPO_LIST="\
   ${HOME}/.config/nvim/
   ${HOME}/.ez-install.d/
   ${HOME}/.task/
-  ${HOME}/.timewarrior/
   ${HOME}/.tmuxinator/
   ${HOME}/Documents/my-wiki/
   ${HOME}/Documents/my-zettelkasten/
