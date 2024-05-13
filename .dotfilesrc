@@ -46,6 +46,7 @@ DOTFILES_LIST=(
 	"${DOTFILES_LOCAL}/.zprofile"
 	"${DOTFILES_LOCAL}/.zshenv"
 	"${DOTFILES_LOCAL}/.zshrc"
+	"${DOTFILES_LOCAL}/.leetcode/"
 	"${DOTFILES_LOCAL}/bin/"
 )
 

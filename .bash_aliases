@@ -92,13 +92,13 @@ alias nvimh='nohup nvim --listen 127.0.0.1:7777 --headless </dev/null >/dev/null
 
 # leetcode-cli
 alias lc='leetcode'
-alias lcgen='leetcode show -gxe -l java'
-alias lcse='leetcode show -gxe -q eL -l java'
-alias lcsE='leetcode show -gxe -q EL -l java'
-alias lcsm='leetcode show -gxe -q mL -l java'
-alias lcsM='leetcode show -gxe -q ML -l java'
-alias lcsh='leetcode show -gxe -q hL -l java'
-alias lcsH='leetcode show -gxe -q HL -l java'
+alias lcgen='leetcode show -gxe'
+alias lcse='leetcode show -gxe -q eL'
+alias lcsE='leetcode show -gxe -q EL'
+alias lcsm='leetcode show -gxe -q mL'
+alias lcsM='leetcode show -gxe -q ML'
+alias lcsh='leetcode show -gxe -q hL'
+alias lcsH='leetcode show -gxe -q HL'
 
 # Taskwarrior
 alias tw='task'
