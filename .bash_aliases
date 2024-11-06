@@ -1,4 +1,4 @@
-# String ANSI colors
+# String ANSI color0
 # Resources: https://stackoverflow.com/a/5947802/11850077
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -169,10 +169,14 @@ alias gist='open https://gist.github.com'
 alias insigcommit='git add . && git commit -m "Insignificant commit" && git push'
 alias commit='git commit'
 alias commitall='git add . && git commit'
+# Delete all merged branches except master, main, and dev
 # Ref: https://nickymeuleman.netlify.app/blog/delete-git-branches
 alias gdub='git fetch --prune && git branch --merged | egrep -v "(^\*|master|main|dev)" | xargs git branch -d'
+# Zip and ignore all files specified in .gitignore
 # Ref: https://stackoverflow.com/a/70690138
-alias gitzip="git archive HEAD -o ${PWD##*/}.zip"
+alias gzip="git archive HEAD -o ${PWD##*/}.zip"
+# Pull without committing, stashing, resetting local changes
+alias gautopull="git pull --rebase --autostash"
 
 # Recursively store files over the given size in current dir into git-lfs
 # Default size = 100 (MiB)
@@ -769,7 +773,9 @@ alias st="cd ~/Sync/"
 alias stmain="cd ~/Sync/main/"
 alias stdev="cd ~/Sync/dev/"
 alias stnote="cd ~/Sync/notes/"
+alias stcache="cd ~/Sync/cache/"
 alias strmconf='find . -name "*sync-conflict*" -type f && find . -name "*sync-conflict*" -type f -delete'
+alias strmconflall='find ~/Sync -name "*sync-conflict*" -type f && find . -name "*sync-conflict*" -type f -delete'
 
 MY_ENV_FILE='/etc/profile.d/jdk_environment.sh'
 
