@@ -171,12 +171,14 @@ alias commit='git commit'
 alias commitall='git add . && git commit'
 # Delete all merged branches except master, main, and dev
 # Ref: https://nickymeuleman.netlify.app/blog/delete-git-branches
+# Git delete unused branches
 alias gdub='git fetch --prune && git branch --merged | egrep -v "(^\*|master|main|dev)" | xargs git branch -d'
 # Zip and ignore all files specified in .gitignore
 # Ref: https://stackoverflow.com/a/70690138
 alias gzip="git archive HEAD -o ${PWD##*/}.zip"
 # Pull without committing, stashing, resetting local changes
-alias gautopull="git pull --rebase --autostash"
+# Git auto pull
+alias gap="git pull --rebase --autostash"
 
 # Recursively store files over the given size in current dir into git-lfs
 # Default size = 100 (MiB)
