@@ -906,19 +906,14 @@ if [[ $(grep -i "Microsoft" /proc/version) ]]; then
 	alias cmd="${WIN_ROOT}/Windows/system32/cmd.exe /C"
 	alias exp="${WIN_ROOT}/Windows/explorer.exe"
 
+  alias start="${WIN_ROOT}/Windows/explorer.exe '$(wslpath -w "$1")'"
+
 	if command -v wslview &>/dev/null; then
 		alias open='wslview'
-		alias wsl-open='wslview'
-		alias start='wslview'
-		alias wslstart='wslview'
-		alias wstart='wslview'
 	fi
 
 	if command -v wsl-open &>/dev/null; then
 		alias open='wsl-open'
-		alias start='wsl-open'
-		alias wslstart='wsl-open'
-		alias wstart='wsl-open'
 	fi
 
 	# if [[ -f "${WIN_WSL_BIN}/neovide.exe" ]]; then
